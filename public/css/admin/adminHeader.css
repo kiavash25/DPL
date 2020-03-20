@@ -1,0 +1,423 @@
+
+nav{
+    transition: 0.2s;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    background-color: #30759d;
+}
+
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+.sideHeaderText{
+    display: flex;
+    font-size: 40px;
+    font-weight: bold;
+    width: 100px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 50%;
+    color: #30759d;
+}
+.arrow {
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 5px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.posRel{
+    position: relative;
+}
+.container{
+    max-width: 1440px;
+}
+.navContainer{
+    display: flex;
+    align-items: center;
+    height: 54px;
+}
+.logoNavDiv{
+    margin-top: 1px;
+    background-color: #fff;
+    width: 150px;
+}
+.navUl{
+    list-style: none;
+    margin: 0px;
+    height: 54px;
+    min-width: 565px;
+    padding: 0px;
+}
+.navLi{
+    float: left;
+    height: 100%;
+    border: 1px solid transparent;
+    margin-bottom: -1px;
+    color: #2c3e50;
+    font-size: 16px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+
+}
+.navPerson {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: solid rgb(204, 204, 204) 1px;
+    border-radius: 50%;
+    color: rgb(204, 204, 204);
+    font-size: 18px;
+}
+.navFlag{
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border-radius: 50%;
+}
+.navPhone{
+    margin-left: 12px;
+}
+.subList{
+    display: none;
+    position: absolute;
+    top: 54px;
+    border: 1px solid #ebeef2;
+}
+.navTabName{
+    background-color: white;
+    width: 100%;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    padding: 0px 10px;
+}
+.navLi:hover{
+    border-left: 1px solid #ebeef2;
+    border-right: 1px solid #ebeef2;
+    border-bottom: 1px solid #fff;
+}
+.navLi:hover .subList{
+    display: flex;
+}
+.navLi:hover .navTabName{
+    height: 55px;
+}
+.subLisL{
+    left: 0px;
+    width: 100%;
+    background-color: white;
+    padding: 35px 0px;
+    align-items: center;
+    justify-content: center;
+}
+.subLisM{
+    top: 53px;
+    min-width: 175px;
+    background-color: white;
+    right: 0px;
+}
+.navListSub{
+    max-width: 1250px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+.navSubListRow{
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+.navSubListRow > div{
+    padding: 8px;
+    margin: 4px;
+}
+.navSubListHeader{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.navSubListBody{
+    color: #2c3e50;
+    min-width: 135px;
+}
+.navSubListBody:hover{
+    background-color: #2d94ec;
+    color: white;
+}
+.navSubListFooter{
+    font-size: 12px;
+    font-weight: bold;
+    border-top: solid 1px lightgray;
+    margin-top: 15px;
+}
+.navSubListFooter:hover{
+    color: #2d94ec;
+}
+.navSubListHeader:hover{
+    color: #2d94ec;
+}
+.navSubListBodyM{
+    min-width: 175px;
+    margin: 0 !important;
+    padding: 10px 15px !important;
+}
+
+.mobileHide{
+    display: flex;
+}
+.pcHide{
+    display: none;
+}
+.navThreeLine{
+    width: 40px;
+    height: 5px;
+    margin-top: 5px;
+    background-color: white;
+    border-radius: 17px;
+}
+.threeLineDiv{
+    padding: 15px 0;
+    margin: 0 16px 0 6px;
+    cursor: pointer;
+}
+
+.navSearchBar{
+    background: #ebeef2;
+    width: 400px;
+    height: 40px;
+    margin-right: auto;
+    margin-left: 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    position: relative;
+}
+.navSearchBar:hover{
+    background-color: #d6d6d6;
+}
+.navSearchIcon{
+    width: 25px;
+    height: 40px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+}
+.searchNavInput{
+    border: none;
+    box-shadow: none;
+    width: 85%;
+    background: none;
+}
+.searchNavIconInFlag{
+    font-size: 30px;
+    margin-right: 15px;
+    color: #409bd0;
+}
+.sidenav {
+    height: 100%;
+    width: 250px;
+    left: 0px;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    overflow-x: hidden;
+    transition: 0.2s;
+    box-shadow: 0px 0px 53px 0px #30759d;
+    background-color: #30759d;
+}
+
+.sidenav a {
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.sideHeader{
+    width: 100%;
+    height: 125px;
+    background-color: #30759d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-weight: bold;
+}
+.sideBody{
+    padding-top: 15px;
+    min-height: calc(100% - 125px);
+    color: #30759d;
+    background-color: #30759d;
+    margin: 0;
+    right: 0;
+    padding-right: 0;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.sideNavTabs{
+    padding: 8px 20px;
+    margin: 10px;
+    border-radius: 30px;
+}
+.sideNavTabs:hover{
+    background-color: #b2d0f7;
+}
+.subSideNavTab{
+    transition: 0.2s;
+}
+.sideNavTabs:hover > .subSideNavTab{
+    color: white !important;
+}
+.sideNavTabs:hover > .arrow{
+    border-color: #000;
+}
+
+.sideNavTabsHeader{
+    align-items: center;
+    justify-content: center;
+    display: none;
+    border: solid 2px white;
+    margin: 0px 7px;
+    border-radius: 26px;
+    background: white;
+    color: #30759d;
+    cursor: pointer;
+}
+.subSideNavMenu{
+    position: absolute;
+    width: 100%;
+    min-height: calc(100% - 185px);
+    z-index: 1;
+    transition: 0.2s;
+    left: 250px;
+    top: 185px;
+    display: none;
+    background-color: #30759d;
+    overflow-y: auto;
+}
+.subSideNavTab{
+    font-weight: 500 !important;
+}
+.subSubSideNavMenu{
+    top: 0px !important;
+}
+
+.telPcLi{
+    display: flex;
+}
+.telMobileLi{
+    display: none;
+}
+.phoneIconHeader{
+    transform: rotate(90deg);
+    color: #409bd0;
+    font-size: 25px;
+}
+
+.searchBackBlack{
+    display: none;
+    top: 54px;
+}
+.searchNavMobile{
+    position: absolute;
+    width: 0%;
+    height: 54px;
+    top: 0px;
+    right: 0px;
+    background-color: white;
+    transition: 0.2s;
+    display: flex;
+    overflow: hidden;
+}
+.closeIcon{
+    width: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #409bd0;
+}
+.mobileNavSearchDiv{
+    width: calc(100% - 54px);
+    margin-right: auto;
+    padding: 5px;
+}
+.mobileNavSearchInput{
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    border: solid #409bd0 2px;
+    padding-left: 10px;
+}
+.mobileNavSearchInput:focus{
+    border: solid #409bd0 2px;
+}
+.searchResult{
+    position: absolute;
+    top: 46px;
+    width: 100%;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 12px rgba(0,0,0,.2);
+    z-index: 2;
+    overflow: hidden;
+    display: none;
+}
+.headerSearch{
+    color: #409bd0;
+    border-bottom: solid 1px;
+    font-size: 12px;
+    margin-top: 15px;
+    padding: 5px 5px;
+    margin: 10px 15px;
+}
+.resultsOFSearch{
+    font-size: 17px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+.resultsOFSearch:hover{
+    background-color: #409bd0;
+    color: white;
+}

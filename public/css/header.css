@@ -1,0 +1,400 @@
+
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+.arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 5px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.posRel{
+    position: relative;
+}
+.container{
+    max-width: 1440px;
+}
+.navContainer{
+    display: flex;
+    align-items: center;
+    height: 54px;
+}
+.logoNavDiv{
+    margin-top: 1px;
+    background-color: #fff;
+    width: 150px;
+}
+.navUl{
+    list-style: none;
+    margin: 0px;
+    height: 54px;
+    min-width: 565px;
+    padding: 0px;
+}
+.navLi{
+    float: left;
+    height: 100%;
+    border: 1px solid transparent;
+    margin-bottom: -1px;
+    color: #2c3e50;
+    font-size: 16px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+
+}
+.navPerson {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: solid rgb(204, 204, 204) 1px;
+    border-radius: 50%;
+    color: rgb(204, 204, 204);
+    font-size: 18px;
+}
+.navFlag{
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border-radius: 50%;
+}
+.navPhone{
+    margin-left: 12px;
+}
+.subList{
+    display: none;
+    position: absolute;
+    top: 54px;
+    border: 1px solid #ebeef2;
+}
+.navTabName{
+    background-color: white;
+    width: 100%;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    padding: 0px 10px;
+}
+.navLi:hover{
+    border-left: 1px solid #ebeef2;
+    border-right: 1px solid #ebeef2;
+    border-bottom: 1px solid #fff;
+}
+.navLi:hover .subList{
+    display: flex;
+}
+.navLi:hover .navTabName{
+    height: 55px;
+}
+.subLisL{
+    left: 0px;
+    width: 100%;
+    background-color: white;
+    padding: 35px 0px;
+    align-items: center;
+    justify-content: center;
+}
+.subLisM{
+    top: 53px;
+    min-width: 175px;
+    background-color: white;
+    right: 0px;
+}
+.navListSub{
+    max-width: 1250px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+.navSubListRow{
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+.navSubListRow > div{
+    padding: 8px;
+    margin: 4px;
+}
+.navSubListHeader{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.navSubListBody{
+    color: #2c3e50;
+    min-width: 135px;
+}
+.navSubListBody:hover{
+    background-color: #2d94ec;
+    color: white;
+}
+.navSubListFooter{
+    font-size: 12px;
+    font-weight: bold;
+    border-top: solid 1px lightgray;
+    margin-top: 15px;
+}
+.navSubListFooter:hover{
+    color: #2d94ec;
+}
+.navSubListHeader:hover{
+    color: #2d94ec;
+}
+.navSubListBodyM{
+    min-width: 175px;
+    margin: 0 !important;
+    padding: 10px 15px !important;
+}
+
+.mobileHide{
+    display: flex;
+}
+.pcHide{
+    display: none;
+}
+.navThreeLine{
+    border-radius: 100px;
+    width: 25px;
+    height: 2px;
+    margin-top: 5px;
+    background-color: #c7d0d9;
+}
+.threeLineDiv{
+    padding: 15px 0;
+    margin: 0 16px 0 6px;
+}
+
+.navSearchBar{
+    background: #ebeef2;
+    width: 400px;
+    height: 40px;
+    margin-right: auto;
+    margin-left: 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    position: relative;
+}
+.navSearchBar:hover{
+    background-color: #d6d6d6;
+}
+.navSearchIcon{
+    width: 25px;
+    height: 40px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+}
+.searchNavInput{
+    border: none;
+    box-shadow: none;
+    width: 85%;
+    background: none;
+}
+.searchNavIconInFlag{
+    font-size: 30px;
+    margin-right: 15px;
+    color: #409bd0;
+}
+.sidenav {
+    height: 100%;
+    width: 250px;
+    left: -250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.2s;
+}
+
+.sidenav a {
+    padding: 0px 20px;
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.sideHeader{
+    width: 100%;
+    height: 125px;
+    background-color: #30759d;
+}
+.sideBody{
+    padding-top: 15px;
+}
+
+.sideNavTabs{
+    height: 45px;
+    display: flex;
+}
+.subSideNavMenu{
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 125px);
+    z-index: 1;
+    transition: 0.2s;
+    left: 250px;
+    top: 175px;
+}
+.subSideNavTab{
+    font-weight: 500 !important;
+}
+.subSubSideNavMenu{
+    top: 0px !important;
+}
+
+.telPcLi{
+    display: flex;
+}
+.telMobileLi{
+    display: none;
+}
+.phoneIconHeader{
+    transform: rotate(90deg);
+    color: #409bd0;
+    font-size: 25px;
+}
+
+.searchBackBlack{
+    display: none;
+    top: 54px;
+}
+.searchNavMobile{
+    position: absolute;
+    width: 0%;
+    height: 54px;
+    top: 0px;
+    right: 0px;
+    background-color: white;
+    transition: 0.2s;
+    display: flex;
+    overflow: hidden;
+}
+.closeIcon{
+    width: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #409bd0;
+}
+.mobileNavSearchDiv{
+    width: calc(100% - 54px);
+    margin-right: auto;
+    padding: 5px;
+}
+.mobileNavSearchInput{
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    border: solid #409bd0 2px;
+    padding-left: 10px;
+}
+.mobileNavSearchInput:focus{
+    border: solid #409bd0 2px;
+}
+.searchResult{
+    position: absolute;
+    top: 46px;
+    width: 100%;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 12px rgba(0,0,0,.2);
+    z-index: 2;
+    overflow: hidden;
+    display: none;
+}
+.headerSearch{
+    color: #409bd0;
+    border-bottom: solid 1px;
+    font-size: 12px;
+    margin-top: 15px;
+    padding: 5px 5px;
+    margin: 10px 15px;
+}
+.resultsOFSearch{
+    font-size: 17px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+.resultsOFSearch:hover{
+    background-color: #409bd0;
+    color: white;
+}
+
+@media (max-width: 1023px){
+    .searchResult{
+        position: fixed;
+        border-radius: 0px;
+        top: 54px;
+        left: 0px;
+        width: 100%;
+        height: calc(100% - 54px);
+    }
+    .mobileHide{
+        display: none !important;
+    }
+    .pcHide{
+        display: block;
+    }
+    .logoNavDiv{
+        margin-right: auto;
+    }
+    .navUl{
+        min-width: 0px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .telPcLi{
+        display: none;
+    }
+    .telMobileLi{
+        display: block;
+    }
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
