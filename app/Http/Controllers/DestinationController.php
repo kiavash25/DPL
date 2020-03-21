@@ -116,14 +116,29 @@ class DestinationController extends Controller
         
     }
 
-    public function deleteDestination()
+    public function deleteDestination(Request $request)
     {
-        
-    }
+        if(isset($request->id)){
+            $dest = Destination::find($request->id);
+            if($dest != null){
+                DestinationTagRelation::where('destId', $dest->id)->delete();
+                $pics = DestinationPic::where('destId', $dest->id)->get();
 
-    public function imagesDestination($id)
-    {
-        return view('admin.destination.imgDestination',compact(['id']));
+                foreach ($pics as $item){
+                    \File::delete('destination/' . $item->destId . '/' . $item->pic);
+                    $item->delete();
+                }
+
+                $dest->delete();
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
     }
 
     public function storeImgDestination(Request $request)

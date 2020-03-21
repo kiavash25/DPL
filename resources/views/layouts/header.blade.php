@@ -1,5 +1,14 @@
 <link rel="stylesheet" href="{{asset('css/header.css')}}">
 
+<style>
+    @if( Request::is('/'))
+        .logoNavDiv{
+            margin-right: auto;
+        }
+    @endif
+
+</style>
+
 <div id="backBlackSideNav" class="backBlack" style="display: none">
     <div id="mySidenav" class="sidenav">
         <div class="sideHeader">
@@ -223,31 +232,33 @@
             </a>
         </div>
 
-        <div class="navSearchBar mobileHide">
-            <div class="navSearchIcon">
-                <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
-            </div>
-            <input type="text" class="searchNavInput" placeholder="Where do you want to go?" onfocus="$('.searchBackBlack').show(); inSearch = true;" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val('')" onkeydown="search(this.value)">
-            <div class="searchResult">
-                <div class="headerSearch">
-                    TOUR OPERATORS
+        @if( !Request::is('/'))
+            <div class="navSearchBar mobileHide">
+                <div class="navSearchIcon">
+                    <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
                 </div>
-                <div class="resultsOFSearch"> Iranian Tour</div>
-                <div class="resultsOFSearch"> Iran Welcomes You</div>
-                <div class="resultsOFSearch"> Top Iran Tour</div>
+                <input type="text" class="searchNavInput" placeholder="Where do you want to go?" onfocus="$('.searchBackBlack').show(); inSearch = true;" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val('')" onkeydown="search(this.value)">
+                <div class="searchResult">
+                    <div class="headerSearch">
+                        TOUR OPERATORS
+                    </div>
+                    <div class="resultsOFSearch"> Iranian Tour</div>
+                    <div class="resultsOFSearch"> Iran Welcomes You</div>
+                    <div class="resultsOFSearch"> Top Iran Tour</div>
 
-                <div class="headerSearch">PLACES</div>
-                <div class="resultsOFSearch"> Middle East</div>
-                <div class="resultsOFSearch"> Isfahan</div>
-                <div class="resultsOFSearch"> Shiraz</div>
+                    <div class="headerSearch">PLACES</div>
+                    <div class="resultsOFSearch"> Middle East</div>
+                    <div class="resultsOFSearch"> Isfahan</div>
+                    <div class="resultsOFSearch"> Shiraz</div>
 
-                <div class="headerSearch">TOURS</div>
-                <div class="resultsOFSearch"> From Turky To India</div>
-                <div class="resultsOFSearch"> Grand Asia Caravan</div>
-                <div class="resultsOFSearch">  Grand Asia Caravan Extended Journy</div>
-                <div class="resultsOFSearch">  See All Result For "iran"</div>
+                    <div class="headerSearch">TOURS</div>
+                    <div class="resultsOFSearch"> From Turky To India</div>
+                    <div class="resultsOFSearch"> Grand Asia Caravan</div>
+                    <div class="resultsOFSearch">  Grand Asia Caravan Extended Journy</div>
+                    <div class="resultsOFSearch">  See All Result For "iran"</div>
+                </div>
             </div>
-        </div>
+        @endif
 
         <ul class="navUl">
             <li class="navLi mobileHide">
