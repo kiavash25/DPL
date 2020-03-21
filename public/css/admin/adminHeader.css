@@ -32,22 +32,22 @@ a:hover{
     padding: 5px;
 }
 
-.right {
+.rightArrow {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }
 
-.left {
+.leftArrow {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
 }
 
-.up {
+.upArrow {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
 }
 
-.down {
+.downArrow {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }

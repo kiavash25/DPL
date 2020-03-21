@@ -18,7 +18,7 @@ class CreatePackagesTable extends Migration
             $table->unsignedInteger('destId');
             $table->string('name');
             $table->string('slug');
-            $table->text('description')->nullable() ;
+            $table->text('description')->nullable();
             $table->string('pic')->nullable();
             $table->string('day')->nullable();
             $table->string('season', 20)->nullable();

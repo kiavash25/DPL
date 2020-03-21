@@ -7,7 +7,7 @@
     <div class="sideBody">
         <div id="backSideNavMenuDiv" class="sideNavTabs sideNavTabsHeader"  onclick="backSideNavMenu()">
             <a href="#" style="font-weight: bold; justify-content: center; color: #30759d;">
-                <div class="arrow left" style="position: absolute; left: 20px; border-color: #30759d;"></div>
+                <div class="arrow leftArrow" style="position: absolute; left: 20px; border-color: #30759d;"></div>
                 <div id="backSideNavMenuName"></div>
             </a>
         </div>
@@ -15,11 +15,11 @@
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                 Destinations
-                <div class="arrow right"></div>
+                <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="#">
+                    <a class="subSideNavTab" href="{{route('admin.destination.list')}}">
                         All Destination
                     </a>
                 </div>
@@ -33,16 +33,16 @@
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                 Package
-                <div class="arrow right"></div>
+                <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="#">
+                    <a class="subSideNavTab" href="{{route('admin.package.list')}}">
                         All Package
                     </a>
                 </div>
                 <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="#">
+                    <a class="subSideNavTab" href="{{route('admin.package.new')}}">
                         Create New Package
                     </a>
                 </div>
