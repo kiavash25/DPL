@@ -35,7 +35,6 @@
         .searchCenter{
             top: -25px;
             width: 50%;
-            height: 80px;
             background: #ebeef2;
             position: absolute;
             z-index: 1;
@@ -43,6 +42,17 @@
             box-shadow: 0 0 8px rgba(0,0,0,.2);
             border-radius: 8px;
             padding: 10px;
+        }
+        .searchButton{
+            width: 100%;
+            background: #f39a2d;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-color: #f39a2d !important;
+        }
+        .searchButton:hover{
+            color: white;
         }
         .whereToSearch{
             display: flex;
@@ -53,11 +63,11 @@
             border-radius: 8px 0px 0px 8px;
             border: 1px solid #c7d0d9;
             margin: 0;
+            height: 60px;
         }
         .centerSearchInput{
             font-size: 15px;
             border: none;
-            padding-left: 20px;
             width: 80%;
             padding-top: 15px;
 
@@ -84,6 +94,7 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
+            z-index: 1;
         }
         .seasons{
             width: 45%;
@@ -93,12 +104,45 @@
             border-radius: 5px;
             cursor: pointer;
             transition: 0.1s;
+            padding: 10px;
         }
         .seasons:hover{
             background-color: #409bd0;
             color: white;
         }
 
+        .activity{
+            width: 100%;
+        }
+        .threeSearchDiv{
+            justify-content: space-evenly;
+            padding-right: 10px;
+        }
+
+        .map{
+            width: 100%;
+            height: 50vh;
+        }
+        .destinationMainSearch{
+            position: absolute;
+            width: 100%;
+            background: white;
+            top: 65px;
+            padding: 10px;
+            border: 1px solid #c7d0d9;
+            z-index: 3;
+            display: none;
+        }
+        .destinationMainSearchResult{
+            padding: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .destinationMainSearchResult:hover{
+            background-color: #409bd0;
+            color: white;
+            border-radius: 7px;
+        }
         @media (max-width:  1300px){
             .searchCenter{
                 width: 75%;
@@ -109,6 +153,40 @@
         @media (max-width:  1023px){
             .topSlider{
                 height: 300px;
+            }
+        }
+
+        @media (max-width:  991px){
+            .threeSearchDiv{
+                padding-right: 0px;
+                margin-bottom: 10px;
+            }
+            .searchCenter{
+                width: 80%;
+                top: 0px;
+                position: relative;
+                margin: 10px 0px;
+            }
+            .mainSearchCenter{
+                height: auto;
+                display: flex;
+                justify-content: center;
+            }
+            .map{
+                height: 100vh   ;
+            }
+        }
+
+        @media (max-width:  767px){
+            .whereToSearch{
+                border-radius: 0px;
+                margin-bottom: 10px;
+            }
+            .threeSearchDiv{
+                padding: 15px;
+            }
+            .seasons{
+                margin: 1%;
             }
         }
 
@@ -126,52 +204,68 @@
 
     <div class="mainSearchCenter">
         <div class="row searchCenter">
-            <label for="centerSearchInputWhere" class="col-lg-3 col-md-4 whereToSearch">
-                <div class="navSearchIcon" style="position: absolute; left: 0px">
-                    <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
+            <div class="col-lg-10" style="padding: 0px">
+                <div class="row threeSearchDiv">
+                    <label for="centerSearchInputWhere" class="col-md-5 whereToSearch">
+                        <div class="navSearchIcon" style="position: absolute; left: 0px">
+                            <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
+                        </div>
+                        <label class="centerSearchLabel" onclick="searchLabelClick(this)">Where to?</label>
+                        <input id="centerSearchInputWhere" class="centerSearchInput" type="text" onfocus="changeLabelInput(this, 1)" onfocusout="changeLabelInput(this, 0)" onkeyup="changeSearchDestination(this)">
+
+                        <div class="destinationMainSearch">
+                            <div class="destinationMainSearchResult">Rome</div>
+                            <div class="destinationMainSearchResult">Iran</div>
+                            <div class="destinationMainSearchResult">Tehran</div>
+                            <div class="destinationMainSearchResult">Italy</div>
+                        </div>
+                    </label>
+
+                    <label for="centerSearchInputSeason" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer" onclick="changeLabelInputSeason(this, 1)">
+                        <label class="centerSearchLabel" style="left: 10px">What season?</label>
+                        <input id="centerSearchInputSeason" class="centerSearchInput" type="text" onfocusout="changeLabelInputSeason(this, 0)" style="width: 100%; cursor: pointer" readonly>
+
+                        <div class="seasonSearch">
+                            <div class="seasons" onclick="selectSeason('Spring', this)">Spring</div>
+                            <div class="seasons" onclick="selectSeason('Summer', this)">Summer</div>
+                            <div class="seasons" onclick="selectSeason('Fall', this)">Fall</div>
+                            <div class="seasons" onclick="selectSeason('Winter', this)">Winter</div>
+                            <div class="seasons" onclick="selectSeason('close', this)" style="width: 100%">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+
+                    </label>
+
+                    <label for="centerSearchInputActivity" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer" onclick="changeLabelInputActivity(this, 1)">
+                        <label class="centerSearchLabel" style="left: 10px">What Activity?</label>
+                        <input id="centerSearchInputActivity" class="centerSearchInput" type="text" onfocusout="changeLabelInputActivity(this, 0)" style="width: 100%; cursor: pointer" readonly>
+
+                        <div class="seasonSearch">
+                            <div class="seasons activity" onclick="selectActivity('Ski', this)">Ski</div>
+                            <div class="seasons activity" onclick="selectActivity('Walking', this)">Walking</div>
+                            <div class="seasons activity" onclick="selectActivity('Mountaineering', this)">Mountaineering</div>
+                            <div class="seasons activity" onclick="selectActivity('OffRoad', this)">OffRoad</div>
+                            <div class="seasons activity" onclick="selectActivity('Ice climbing', this)">Ice climbing</div>
+                            <div class="seasons activity" onclick="selectActivity('Fieldwork', this)">Fieldwork</div>
+                            <div class="seasons activity" onclick="selectActivity('close', this)" style="width: 100%">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+
+                    </label>
+
                 </div>
-                <label class="centerSearchLabel" onclick="searchLabelClick(this)">Where to?</label>
-                <input id="centerSearchInputWhere" class="centerSearchInput" type="text" onfocus="changeLabelInput(this, 1)" onfocusout="changeLabelInput(this, 0)">
-            </label>
-            <label for="centerSearchInputSeason" class="col-lg-3 col-md-4 whereToSearch" style="margin-left: 10px; border-radius: 0px; cursor: pointer" onclick="changeLabelInputSeason(this, 1)">
-                <label class="centerSearchLabel" style="left: 10px">What season?</label>
-                <input id="centerSearchInputSeason" class="centerSearchInput" type="text" onfocusout="changeLabelInputSeason(this, 0)" style="width: 100%; cursor: pointer" readonly>
-
-                <div class="seasonSearch">
-                    <div class="seasons" onclick="selectSeason('Spring', this)">Spring</div>
-                    <div class="seasons" onclick="selectSeason('Summer', this)">Summer</div>
-                    <div class="seasons" onclick="selectSeason('Fall', this)">Fall</div>
-                    <div class="seasons" onclick="selectSeason('Winter', this)">Winter</div>
-                    <div class="seasons" onclick="selectSeason('close', this)" style="width: 100%">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-
-            </label>
-
-            <label for="centerSearchInputActivity" class="col-lg-3 col-md-4 whereToSearch" style="margin-left: 10px; border-radius: 0px; cursor: pointer" onclick="changeLabelInputActivity(this, 1)">
-                <label class="centerSearchLabel" style="left: 10px">What Activity?</label>
-                <input id="centerSearchInputActivity" class="centerSearchInput" type="text" onfocusout="changeLabelInputActivity(this, 0)" style="width: 100%; cursor: pointer" readonly>
-
-                <div class="seasonSearch">
-                    <div class="seasons" onclick="selectActivity('Ski', this)">Ski</div>
-                    <div class="seasons" onclick="selectActivity('Walking', this)">Walking</div>
-                    <div class="seasons" onclick="selectActivity('Mountaineering', this)">Mountaineering</div>
-                    <div class="seasons" onclick="selectActivity('OffRoad', this)">OffRoad</div>
-                    <div class="seasons" onclick="selectActivity('Ice climbing', this)">Ice climbing</div>
-                    <div class="seasons" onclick="selectActivity('Fieldwork', this)">Fieldwork</div>
-                    <div class="seasons" onclick="selectActivity('close', this)" style="width: 100%">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-
+            </div>
+            <label class="col-lg-2" style="display: flex; margin: 0; padding: 0px">
+                <button class="btn btn-warning searchButton"> Search</button>
             </label>
         </div>
     </div>
 
 
-    <div class="container" style="margin-bottom: 200px;">
-        <div id="map" style="width: 100%; height: 50vh;"></div>
+    <div class="container" style="margin-bottom: 50px;">
+        <div id="map" class="map"></div>
     </div>
 @endsection
 
@@ -191,6 +285,7 @@
                 var value = $(_element).val();
                 if(value.trim().length == 0)
                     $(_element).prev().removeClass('centerSearchLabelFocus');
+                $(_element).next().hide();
             }
         }
 
@@ -244,6 +339,17 @@
                 activity = _activity;
                 $(_element).parent().prev().val(activity);
             }
+        }
+
+        function changeSearchDestination(_element){
+            var value = $(_element).val();
+            if(value.trim().length > 0){
+                setTimeout(function(){
+                    $(_element).next().show();
+                }, 1000);
+            }
+            else
+                $(_element).next().hide();
         }
 
 
