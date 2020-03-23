@@ -1,5 +1,15 @@
 <?php
 
+function storeImage($source, $destination){
+    try {
+        move_uploaded_file($source, $destination);
+        return true;
+    }
+    catch (Exception $x){
+        return false;
+    }
+}
+
 function compressImage($source, $destination, $quality){
     $info = getimagesize($source);
 

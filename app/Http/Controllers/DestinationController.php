@@ -6,17 +6,17 @@ use App\models\City;
 use App\models\Countries;
 use App\models\Destination;
 use App\models\DestinationPic;
-use App\models\DestinationTag;
 use App\models\DestinationTagRelation;
+use App\models\Tags;
 use Illuminate\Http\Request;
 
 class DestinationController extends Controller
 {
     public function listDestination()
     {
-        
+
     }
-    
+
     public function newDestination()
     {
         $countries = Countries::all();
@@ -31,9 +31,13 @@ class DestinationController extends Controller
         $kind = 'edit';
 
         $destination = Destination::find($id);
+        if($destination == null)
+            return redirect(route('admin.destination.list'));
+
+
         $tags = DestinationTagRelation::where('destId', $id)->pluck('tagId')->toArray();
         if(count($tags) != 0)
-            $destination->tags = DestinationTag::whereIn('id', $tags)->pluck('tag')->toArray();
+            $destination->tags = Tags::whereIn('id', $tags)->pluck('tag')->toArray();
         else
             $destination->tags = [];
 
@@ -44,11 +48,11 @@ class DestinationController extends Controller
             $destination->city = '';
 
         if($destination->pic != null)
-            $destination->pic = asset('destination/'. $id . '/' . $destination->pic);
+            $destination->pic = asset('uploaded/destination/'. $id . '/' . $destination->pic);
 
         $sideImage = DestinationPic::where('destId', $id)->get();
         foreach ($sideImage as $item)
-            $item->pic = asset('destination/'. $id . '/' . $item->pic);
+            $item->pic = asset('uploaded/destination/'. $id . '/' . $item->pic);
         $destination->sidePic = $sideImage;
 
         return view('admin.destination.newDestination', compact(['countries', 'destination', 'kind']));
@@ -67,6 +71,12 @@ class DestinationController extends Controller
                 $dest = new Destination();
             }
             else{
+                $dest = Destination::where('name', $request->name)->where('id' , '!=', $request->id)->first();
+                if($dest != null) {
+                    echo json_encode(['nok2']);
+                    return;
+                }
+
                 $dest = Destination::find($request->id);
                 if($dest == null){
                     echo json_encode(['nok3']);
@@ -87,9 +97,9 @@ class DestinationController extends Controller
             $tags = json_decode($request->tags);
             $query = '';
             foreach ($tags as $tag){
-                $t = DestinationTag::where('tag', $tag)->first();
+                $t = Tags::where('tag', $tag)->first();
                 if($t == null){
-                    $t = new DestinationTag();
+                    $t = new Tags();
                     $t->tag = $tag;
                     $t->save();
                 }
@@ -111,43 +121,13 @@ class DestinationController extends Controller
         return;
     }
 
-    public function doEditDestination()
-    {
-        
-    }
-
-    public function deleteDestination(Request $request)
-    {
-        if(isset($request->id)){
-            $dest = Destination::find($request->id);
-            if($dest != null){
-                DestinationTagRelation::where('destId', $dest->id)->delete();
-                $pics = DestinationPic::where('destId', $dest->id)->get();
-
-                foreach ($pics as $item){
-                    \File::delete('destination/' . $item->destId . '/' . $item->pic);
-                    $item->delete();
-                }
-
-                $dest->delete();
-                echo json_encode(['status' => 'ok']);
-            }
-            else
-                echo json_encode(['status' => 'nok1']);
-        }
-        else
-            echo json_encode(['status' => 'nok']);
-
-        return;
-    }
-
     public function storeImgDestination(Request $request)
     {
-        if(isset($request->id) && isset($request->kind) && isset($request->pic) && $_FILES['pic']['error'] == 0){
+        if(isset($request->id) && isset($request->kind) && isset($request->pic) && $_FILES['pic'] && $_FILES['pic']['error'] == 0){
             $dest = Destination::find($request->id);
             if($dest != null){
                 $fileName = time() . $_FILES['pic']['name'];
-                $location = __DIR__ . '/../../../public/destination';
+                $location = __DIR__ . '/../../../public/uploaded/destination';
                 if(!file_exists($location))
                     mkdir($location);
                 $location .= '/' . $request->id;
@@ -159,7 +139,7 @@ class DestinationController extends Controller
                 if ($picResult) {
                     if($request->kind == 'mainPic') {
                         if ($dest->pic != null)
-                            \File::delete('destination/' . $request->id . '/' . $dest->pic);
+                            \File::delete('uploaded/destination/' . $request->id . '/' . $dest->pic);
                         $dest->pic = $fileName;
                         $dest->save();
                         echo json_encode(['ok']);
@@ -191,7 +171,7 @@ class DestinationController extends Controller
         if(isset($request->id)){
             $pic = DestinationPic::find($request->id);
             if($pic != null){
-                \File::delete('destination/' . $pic->destId . '/' . $pic->pic);
+                \File::delete('uploaded/destination/' . $pic->destId . '/' . $pic->pic);
                 $pic->delete();
                 echo json_encode(['status' => 'ok']);
             }
@@ -204,14 +184,29 @@ class DestinationController extends Controller
         return;
     }
 
-    public function findTagDestination(Request $request)
+
+
+    public function deleteDestination(Request $request)
     {
-        if(isset($request->tag) && $request->tag != ''){
-            $tags = DestinationTag::where('tag', 'like', '%' . $request->tag . '%')->get();
-            echo json_encode(['ok', $tags]);
+        if(isset($request->id)){
+            $dest = Destination::find($request->id);
+            if($dest != null){
+                DestinationTagRelation::where('destId', $dest->id)->delete();
+                $pics = DestinationPic::where('destId', $dest->id)->get();
+
+                foreach ($pics as $item){
+                    \File::delete('uploaded/destination/' . $item->destId . '/' . $item->pic);
+                    $item->delete();
+                }
+
+                $dest->delete();
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
         }
         else
-            echo json_encode(['nok']);
+            echo json_encode(['status' => 'nok']);
 
         return;
     }

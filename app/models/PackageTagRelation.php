@@ -4,8 +4,8 @@ namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DestinationTag extends Model
+class PackageTagRelation extends Model
 {
-    protected $table = 'destinationTags';
+    protected $table = 'packageTagRelations';
     public $timestamps = false;
 }

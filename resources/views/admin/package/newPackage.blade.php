@@ -171,7 +171,7 @@
                         <div class="form-group">
                             <label for="destination" class="inputLabel">Destination</label>
                             <div id="destination" class="ui fluid search selection dropdown">
-                                <input type="hidden" name="destination" id="DestinationId" onchange="changeDestination(this.value)" value="{{isset($package->destinationId) ? $package->destinationId : 0}}">
+                                <input type="hidden" name="destination" id="DestinationId" onchange="changeDestination(this.value)" value="{{isset($package->destId) ? $package->destId : 0}}">
                                 <div class="default text">Select Destination</div>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
@@ -194,60 +194,12 @@
                     </div>
                     <div class="row marg30">
                         <div class="form-group">
-                            <label for="activity" class="inputLabel">Activity</label>
-                            <select id="activity" class="ui fluid search dropdown" multiple="">
-                                <option value="">State</option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DE">Delaware</option>
-                                <option value="DC">District Of Columbia</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="IA">Iowa</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MT">Montana</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NY">New York</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VT">Vermont</option>
-                                <option value="VA">Virginia</option>
-                                <option value="WA">Washington</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WY">Wyoming</option>
+                            <label for="activity" class="inputLabel">Main Activity</label>
+                            <select id="activity" class="ui fluid search dropdown">
+                                <option value="0"></option>
+                                @foreach($activity as $item)
+                                    <option value="{{$item->id}}" {{isset($package->mainActivityId) && $item->id == $package->mainActivityId ? 'selected' : ''}}>{{$item->name}}</option>
+                                @endforeach
                             </select>
 
                         </div>
@@ -256,58 +208,9 @@
                         <div class="form-group">
                             <label for="sideActivity" class="inputLabel">Side Activity</label>
                             <select id="sideActivity" class="ui fluid search dropdown" multiple="">
-                                <option value="">State</option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DE">Delaware</option>
-                                <option value="DC">District Of Columbia</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="IA">Iowa</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MT">Montana</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NY">New York</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VT">Vermont</option>
-                                <option value="VA">Virginia</option>
-                                <option value="WA">Washington</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WY">Wyoming</option>
+                                @foreach($activity as $item)
+                                    <option value="{{$item->id}}" {{isset($package->activities) && in_array($item->id, $package->activities) ? 'selected' : ''}}>{{$item->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -326,39 +229,40 @@
                             <div class="form-group">
                                 <label class="inputLabel" for="season">Season</label>
                                 <select name="season" id="season" class="form-control">
-                                    <option value="spring">Spring</option>
-                                    <option value="summer">Summer</option>
-                                    <option value="fall">Fall</option>
-                                    <option value="winter">winter</option>
+                                    <option value="spring" {{isset($package->season) && $package->season == 'spring' ? 'selected' : ''}}>Spring</option>
+                                    <option value="summer" {{isset($package->season) && $package->season == 'summer' ? 'selected' : ''}}>Summer</option>
+                                    <option value="fall" {{isset($package->season) && $package->season == 'fall' ? 'selected' : ''}}>Fall</option>
+                                    <option value="winter" {{isset($package->season) && $package->season == 'winter' ? 'selected' : ''}}>winter</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="day">Day</label>
-                                <input type="number" id="day" name="day" class="form-control">
+                                <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="sDate">Start Date</label>
-                                <input type="text" id="sDate" name="sDate" class="form-control" readonly>
+                                <input type="text" id="sDate" name="sDate" class="form-control" value="{{isset($package->sDate) ? $package->sDate : ''}}" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="sDate">End Date</label>
-                                <input type="text" id="eDate" name="eDate" class="form-control" readonly>
+                                <input type="text" id="eDate" name="eDate" class="form-control" value="{{isset($package->eDate) ? $package->eDate : ''}}" readonly>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="inputLabel" for="Cost">Cost</label>
-                                <input type="text" id="Cost" name="Cost" class="form-control">
+                                <label class="inputLabel" for="cost">Cost</label>
+                                <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : ''}}">
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="row" style="padding: 10px; border: solid lightgray 1px; border-radius: 10px;">
                         <div class="col-md-12">
@@ -376,7 +280,7 @@
                                 @for($i = 0; $i < count($package->tags); $i++)
                                     <div class="col-lg-4">
                                         <div class="form-group" style="position: relative">
-                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$package->tags[$i]}}">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$package->tags[$i]}}">
                                             <div class="closeTagIcon" onclick="deleteTag(this)">
                                                 <i class="fas fa-times"></i>
                                             </div>
@@ -389,7 +293,7 @@
                                 @for($i = 0; $i < 5; $i++)
                                     <div class="col-lg-4">
                                         <div class="form-group" style="position: relative">
-                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
                                             <div class="closeTagIcon" onclick="deleteTag(this)">
                                                 <i class="fas fa-times"></i>
                                             </div>
@@ -403,6 +307,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row marg30" id="pictureSection" style="display: {{$kind == 'new'? 'none': 'flex'}}">
                 <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
                     <label class="inputLabel">
@@ -472,9 +377,7 @@
             });
 
         $('#sideActivity')
-            .dropdown({
-                allowAdditions: true
-            });
+            .dropdown();
         $('#activity')
             .dropdown({
                 allowAdditions: true
@@ -519,7 +422,7 @@
         var destinations = {!! $allDestination !!};
         var map;
         var marker = 0;
-        var destId = {{isset($package->id) ? $package->id : 0}};
+        var packageId = {{isset($package->id) ? $package->id : 0}};
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -532,18 +435,18 @@
             });
 
             @if(isset($package->lat) && isset($package->lng))
-            map.setZoom(8);
-            map.panTo({
-                lat: parseFloat( {{$package->lat}} ),
-                lng: parseFloat( {{$package->lng}} )
-            });
-            marker = new google.maps.Marker({
-                position: {
+                map.setZoom(12);
+                map.panTo({
                     lat: parseFloat( {{$package->lat}} ),
                     lng: parseFloat( {{$package->lng}} )
-                },
-                map: map,
-            })
+                });
+                marker = new google.maps.Marker({
+                    position: {
+                        lat: parseFloat( {{$package->lat}} ),
+                        lng: parseFloat( {{$package->lng}} )
+                    },
+                    map: map,
+                })
             @endif
         }
 
@@ -585,6 +488,8 @@
                 },
                 map: map,
             });
+            $('#lat').val(parseFloat(lat));
+            $('#lng').val(parseFloat(lng));
         }
 
         var tagSelected;
@@ -594,7 +499,7 @@
             if(value.trim().length != 0){
                 $.ajax({
                     type: 'post',
-                    url: '{{route("admin.package.findTag")}}',
+                    url: '{{route("findTag")}}',
                     data: {
                         _token: '{{csrf_token()}}',
                         tag: value
@@ -654,9 +559,17 @@
             var lat = $('#lat').val();
             var lng = $('#lng').val();
             var destinationId = $('#DestinationId').val();
+            var mainActivity = $('#activity').val();
+            var sideActivity = $('#sideActivity').val();
+            var day = $('#day').val();
+            var sDate = $('#sDate').val();
+            var eDate = $('#eDate').val();
+            var cost = $('#cost').val();
+            var season = $('#season').val();
             var tagsElement = $("input[name*='tags']");
             var tags = [];
-            var error = '<ul>';
+            var error = '<ul style="text-align: left">';
+            var checkError = '<ul style="text-align: left">' ;
 
             for(i = 0; i < tagsElement.length; i++){
                 if($(tagsElement[i]).val() != null && $(tagsElement[i]).val().trim().length != 0)
@@ -664,16 +577,25 @@
             }
 
             if(name.trim().length == 0)
-                error += '<li> Please Choose Name.</li>';
+                error += '<li style="margin: 15px 0px"> Please Choose Name.</li>';
 
             if(destinationId == 0)
-                error += '<li> Please Choose Destination.</li>';
+                error += '<li style="margin: 15px 0px"> Please Choose Destination.</li>';
 
             if(lat == 0 && lng == 0)
-                error += '<li> Please Map Cordination.</li>';
+                error += '<li style="margin: 15px 0px"> Please select a location from the map.</li>';
+
+            if(mainActivity == 0 )
+                error += '<li style="margin: 15px 0px"> Please Choose MainActivity.</li>';
+
+            if(day == 0 )
+                error += '<li style="margin: 15px 0px"> Please specify the number of days.</li>';
+
+            if(sDate.trim().length == 0 || eDate.trim().length == 0)
+                error += '<li style="margin: 15px 0px"> Please specify the start and end dates.</li>';
 
 
-            if(error != '<ul>'){
+            if(error != checkError){
                 error += '</ul>';
                 resultLoading(error, 'danger');
             }
@@ -689,17 +611,31 @@
                         lat: lat,
                         lng: lng,
                         tags: JSON.stringify(tags),
-                        id: destId
+                        id: packageId,
+                        mainActivity: mainActivity,
+                        sideActivity: sideActivity,
+                        day: day,
+                        sDate: sDate,
+                        eDate: eDate,
+                        cost: cost,
+                        season: season
                     },
                     success: function(response){
-                        response = JSON.parse(response);
-                        if(response[0] == 'ok'){
-                            destId = response[1];
-                            resultLoading('Your Package Stored', 'success', goToImagePage);
-                            $('#pictureSection').css('display', 'flex')
+                        try{
+                            response = JSON.parse(response);
+                            if(response['status'] == 'ok'){
+                                packageId = response['id'];
+                                resultLoading('Your Package Stored', 'success', goToImagePage);
+                                $('#pictureSection').css('display', 'flex')
+                            }
+                            else if(response['status'] == 'nok2')
+                                resultLoading('The name of the pack at this destination is a duplicate', 'danger');
+                            else
+                                resultLoading('Please Try Again', 'danger');
                         }
-                        else
+                        catch (e) {
                             resultLoading('Please Try Again', 'danger');
+                        }
                     },
                     error: function(err){
                         resultLoading('Please Try Again', 'danger');
@@ -720,7 +656,7 @@
             init: function() {
                 this.on("sending", function(file, xhr, formData){
                     formData.append("kind", 'side');
-                    formData.append("id", destId);
+                    formData.append("id", packageId);
                 });
             },
 
@@ -760,7 +696,7 @@
                     var data = new FormData();
 
                     data.append('pic', _input.files[0]);
-                    data.append('id', destId);
+                    data.append('id', packageId);
                     data.append('kind', 'mainPic');
                     data.append('_token', '{{csrf_token()}}');
 
@@ -772,7 +708,7 @@
                         contentType: false,
                         success: function(response){
                             response = JSON.parse(response);
-                            if(response[0] == 'ok'){
+                            if(response['status'] == 'ok'){
                                 $('#mainPicImg').css('display', 'block');
                                 $('#mainPicImg').next().css('display', 'none');
                                 $('#mainPicImg').next().next().css('display', 'none');

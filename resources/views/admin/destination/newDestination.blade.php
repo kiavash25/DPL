@@ -244,7 +244,7 @@
                         <i class="fas fa-plus-circle" style="cursor: pointer;  display: {{isset($destination->pic) && $destination->pic != null ? 'none' : 'block'}};"></i>
                     </label>
 
-                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPic(this, 'mainPic')">
+                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPic', showMainPic)">
                 </div>
                 <div class="col-md-9">
                     <div id="uploadedPic" class="row">
@@ -481,7 +481,7 @@
             if(value.trim().length != 0){
                 $.ajax({
                     type: 'post',
-                    url: '{{route("admin.destination.findTag")}}',
+                    url: '{{route("findTag")}}',
                     data: {
                         _token: '{{csrf_token()}}',
                         tag: value
@@ -561,7 +561,7 @@
                 error += '<li> Please Choose City.</li>';
 
             if(lat == 0 && lng == 0)
-                error += '<li> Please Map Cordination.</li>';
+                error += '<li> Please select a location from the map.</li>';
 
 
             if(error != '<ul>'){
@@ -637,50 +637,40 @@
             $('#uploadPicButton').css('display', 'block');
         }
 
-        function showPic(_input, _kind){
+        function showMainPic(_pic){
+            var mainPic = _pic;
 
-            if(_input.files && _input.files[0]){
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var mainPic = e.target.result;
-                    $('#mainPicImg').attr('src', mainPic);
+            $('#mainPicImg').css('display', 'none');
+            $('#mainPicImg').next().css('display', 'block');
+            $('#mainPicImg').next().next().css('display', 'none');
 
-                    $('#mainPicImg').css('display', 'none');
-                    $('#mainPicImg').next().css('display', 'block');
-                    $('#mainPicImg').next().next().css('display', 'none');
+            var data = new FormData();
 
-                    var data = new FormData();
+            data.append('pic', mainPic);
+            data.append('id', destId);
+            data.append('kind', 'mainPic');
+            data.append('_token', '{{csrf_token()}}');
 
-                    data.append('pic', _input.files[0]);
-                    data.append('id', destId);
-                    data.append('kind', 'mainPic');
-                    data.append('_token', '{{csrf_token()}}');
-
-                    $.ajax({
-                        type: 'post',
-                        url: '{{route("admin.destination.storeImg")}}',
-                        data: data,
-                        processData: false,
-                        contentType: false,
-                        success: function(response){
-                            response = JSON.parse(response);
-                            if(response[0] == 'ok'){
-                                $('#mainPicImg').css('display', 'block');
-                                $('#mainPicImg').next().css('display', 'none');
-                                $('#mainPicImg').next().next().css('display', 'none');
-                            }
-                            else{
-                                $('#mainPicImg').css('display', 'none');
-                                $('#mainPicImg').next().css('display', 'none');
-                                $('#mainPicImg').next().next().css('display', 'block');
-                            }
-                        }
-                    })
-
-                };
-                reader.readAsDataURL(_input.files[0]);
-            }
-
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.destination.storeImg")}}',
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    response = JSON.parse(response);
+                    if(response[0] == 'ok'){
+                        $('#mainPicImg').css('display', 'block');
+                        $('#mainPicImg').next().css('display', 'none');
+                        $('#mainPicImg').next().next().css('display', 'none');
+                    }
+                    else{
+                        $('#mainPicImg').css('display', 'none');
+                        $('#mainPicImg').next().css('display', 'none');
+                        $('#mainPicImg').next().next().css('display', 'block');
+                    }
+                }
+            })
         }
 
         function deletePic(_id, _element){

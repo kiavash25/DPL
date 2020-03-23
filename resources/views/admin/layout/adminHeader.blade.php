@@ -49,6 +49,19 @@
             </div>
         </div>
         <div class="sideNavTabs">
+            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                Activity
+                <div class="arrow rightArrow"></div>
+            </a>
+            <div class="subSideNavMenu">
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
+                        All Activity
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="sideNavTabs">
             <a href="#" class="subSideNavTab">
                 Log out
             </a>

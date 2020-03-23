@@ -35,6 +35,20 @@
 </div>
 </body>
 
+<script>
+    function showPics(_input, _kind, _callBack){
+        if(_input.files && _input.files[0]){
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var pic = e.target.result;
+                $('#' + _kind).attr('src', pic);
+                if(typeof _callBack == 'function')
+                    _callBack(_input.files[0]);
+            };
+            reader.readAsDataURL(_input.files[0]);
+        }
+    }
+</script>
 
 @yield('script')
 

@@ -30,7 +30,6 @@ Route::post('/admin/destination/store', 'DestinationController@storeDestination'
 Route::post('/admin/destination/storeImg', 'DestinationController@storeImgDestination')->name('admin.destination.storeImg');
 Route::post('/admin/destination/deleteImg', 'DestinationController@deleteImgDestination')->name('admin.destination.deleteImg');
 Route::post('/admin/destination/delete', 'DestinationController@deleteDestination')->name('admin.destination.delete');
-Route::post('/admin/destination/findTag', 'DestinationController@findTagDestination')->name('admin.destination.findTag');
 
 Route::get('/admin/package/list', 'PackageController@listPackage')->name('admin.package.list');
 Route::get('/admin/package/new', 'PackageController@newPackage')->name('admin.package.new');
@@ -41,9 +40,15 @@ Route::post('/admin/package/deleteImg', 'PackageController@deleteImgPackage')->n
 Route::post('/admin/package/delete', 'PackageController@deletePackage')->name('admin.package.delete');
 Route::post('/admin/package/findTag', 'PackageController@findTagPackage')->name('admin.package.findTag');
 
+Route::get('/admin/activity/list', 'ActivityController@listActivity')->name('admin.activity.list');
+Route::post('/admin/activity/store', 'ActivityController@storeActivity')->name('admin.activity.store');
+Route::post('/admin/activity/doEdit', 'ActivityController@doEditActivity')->name('admin.activity.doEdit');
+Route::post('/admin/activity/delete', 'ActivityController@deleteActivity')->name('admin.activity.delete');
+Route::post('/admin/activity/check', 'ActivityController@checkActivity')->name('admin.activity.check');
 
 
 Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');
 
 
 Route::post('findCity', 'AjaxController@findCity')->name('findCity');
+Route::post('findTag', 'AjaxController@findTag')->name('findTag');
