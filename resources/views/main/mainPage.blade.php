@@ -198,7 +198,7 @@
     <div class="topSlider">
         <img class="mainSliderPic" src="{{ asset('images/slider.jpg')}}" alt="">
         <div class="textSlider" style="font-family: 'Kaushan Script', cursive; flex-direction: column;">
-            It's Time To <span style="font-family: 'Archivo Black', sans-serif; font-size: 100px"> Travel</span>
+            It's Time To <span style="font-family: 'Archivo Black', sans-serif; font-size: 100px; color: white"> Travel</span>
         </div>
     </div>
 

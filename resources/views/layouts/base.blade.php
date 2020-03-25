@@ -15,6 +15,13 @@
 
     <script src="{{ asset('js/jquery-3.4.1.min.js')}}"></script>
     <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
+
+    <style>
+        body{
+            font-family: 'Varela Round', sans-serif;
+        }
+    </style>
 
     @yield('head')
 

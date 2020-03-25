@@ -84,7 +84,6 @@ class DestinationController extends Controller
                 }
             }
 
-
             $dest->name = $request->name;
             $dest->description = $request->description;
             $dest->cityId = $request->cityId;

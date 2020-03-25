@@ -12,8 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('mainPage');
+    return view('main.mainPage');
 });
+
+Route::get('list/', 'MainController@list')->name('show.list');
+Route::get('destination/{country}/{slug}', 'MainController@showDestination')->name('show.destination');
+Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
+
 
 Auth::routes();
 
