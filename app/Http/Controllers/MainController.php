@@ -32,8 +32,12 @@ class MainController extends Controller
 //        $continentsList = Continents::whereIn('code', $conutr)->get();
 //        foreach ($continentsList as $item)
 //            $item->countries = Countries::where('continent_code', $item->code)->whereIn('id', $desst)->get();
-
         View::share(['continents' => $continentsList]);
+    }
+
+    public function mainPage()
+    {
+        return \view('main.mainPage');
     }
 
     public function showDestination($country, $slug)
@@ -136,6 +140,8 @@ class MainController extends Controller
         }
         $content->packages = $pac;
 
+        $content->money = commaMoney($content->money);
+
         $continents = Continents::where('code', $destination->country->continent_code)->first();
 
         $guidance = ['continents' => $continents->name, 'country' => $destination->country->name, 'countryId' => $destination->country->id,
@@ -148,6 +154,8 @@ class MainController extends Controller
 
     public function list()
     {
-        return \view('main.list');
+        $kind = 'package';
+
+        return \view('main.list', compact(['kind']));
     }
 }

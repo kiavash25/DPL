@@ -48,13 +48,15 @@ function showNavSearchMobile(){
     $('.searchBackBlack').show();
     $('#searchNavMobile').css('width', '100%');
     $('.mobileNavSearchInput').focus();
+    $('body').css('overflow-y', 'hidden');
 }
 function closeNavSearchMobile(){
     inSearch = false;
     clearResult();
     $('.searchBackBlack').hide();
     $('#searchNavMobile').css('width', '0%');
-    $(".mobileNavSearchInput").val('')
+    $(".mobileNavSearchInput").val('');
+    $('body').css('overflow-y', 'auto');
 }
 
 function search(_value){

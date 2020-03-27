@@ -84,14 +84,14 @@
         border: solid 2px;
         font-weight: bold;
         font-size: 21px;
-        color: #409bd0;
+        color: #1f75b9;
         border-radius: 5px;
         cursor: pointer;
         transition: .2s;
     }
     .orderButton:hover{
         color: white;
-        background: #409bd0;
+        background: #1f75b9;
     }
     .moneyValue{
         font-size: 35px;

@@ -42,3 +42,16 @@ function makeSlug($name){
 
     return $name;
 }
+
+function commaMoney($_money){
+    $nMoney = '';
+    $j = 0;
+    $split = str_split($_money);
+    for ($i = count($split)-1; $i >= 0 ; $i--){
+        if($j % 3 == 0 && $j != 0)
+            $nMoney = ','.$nMoney;
+        $nMoney = $split[$i] . $nMoney;
+        $j++;
+    }
+    return $nMoney;
+}

@@ -44,7 +44,7 @@
             border-width: 0 4px 4px 0;
         }
         .sliderImg{
-            /*width: 100%;*/
+            width: 100%;
         }
 
         .likeButton{
@@ -92,11 +92,11 @@
                 <div class="mainSliderPic">
                     <div class="swiper-container mainSS" style="height: 100%;">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide" style="overflow: hidden">
+                            <div class="swiper-slide" style="overflow: hidden; display: flex; justify-content: center; align-items: center;">
                                 <img src="{{$content->pic}}" class="sliderImg">
                             </div>
                             @foreach($content->sidePic as $item)
-                                <div class="swiper-slide" style="overflow: hidden">
+                                <div class="swiper-slide" style="overflow: hidden; display: flex; justify-content: center; align-items: center;">
                                     <img src="{{$item->pic}}" class="sliderImg">
                                 </div>
                             @endforeach
@@ -142,44 +142,17 @@
 @section('script')
 
     <script>
-        $(document).ready(function(){
-            var mainSliderPic = $('.mainSliderPic');
+        var swiper = new Swiper('.mainSS', {
+            loop: true,
+            navigation: {
+                nextEl: '#nextSlider',
+                prevEl: '#prevSlider',
+            },
+        });
 
-            var sliderImg = $('.sliderImg');
-            for(var i = 0; i < sliderImg.length; i++){
-                x = mainSliderPic.width() / $(sliderImg[i]).width();
-                minH = x * $(sliderImg[i]).height();
-                y =  mainSliderPic.height() / $(sliderImg[i]).height();
-                minW = y * $(sliderImg[i]).width();
-
-                deffW = 999999;
-                deffH = 999999;
-                if(minW > mainSliderPic.width())
-                    deffW = minW - mainSliderPic.width();
-
-                if(minH > mainSliderPic.height())
-                    deffH = minH - mainSliderPic.height();
-
-
-                if(deffW < deffH) {
-                    $(sliderImg[i]).css('height', '100%');
-                    $(sliderImg[i]).parent().css('display', 'flex');
-                    $(sliderImg[i]).parent().css('justify-content', 'center');
-                }
-                else {
-                    $(sliderImg[i]).css('width', '100%');
-                    $(sliderImg[i]).parent().css('display', 'flex');
-                    $(sliderImg[i]).parent().css('align-items', 'center');
-                }
-            }
-
-            var swiper = new Swiper('.mainSS', {
-                loop: true,
-                navigation: {
-                    nextEl: '#nextSlider',
-                    prevEl: '#prevSlider',
-                },
-            });
+        resizeImg('sliderImg');
+        $(window).resize(function(){
+            resizeImg('sliderImg');
         });
 
         function initMap() {

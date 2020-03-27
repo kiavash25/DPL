@@ -54,7 +54,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #409bd0;
+        background-color: #1f75b9;
         border-radius: 50%;
         color: white;
         top: -15px;
@@ -64,7 +64,7 @@
     .packageActivity{
         color: white;
         position: absolute;
-        background-color: #409bd0;
+        background-color: #1f75b9;
         padding: 3px 10px;
         top: -20px;
         left: 0px;
@@ -92,8 +92,8 @@
         text-align: center;
         justify-content: center;
         align-items: center;
-        border: solid 1px #409bd0;
-        color: #409bd0 !important;
+        border: solid 1px #1f75b9;
+        color: #1f75b9 !important;
         overflow: hidden;
         padding: 3px;
         transition: .3s;
@@ -109,7 +109,7 @@
     }
 
     .packageButton:hover{
-        background: #409bd0;
+        background: #1f75b9;
         color: white !important;
     }
     .packageSwiper{

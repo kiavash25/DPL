@@ -2,7 +2,9 @@
 
 <div id="mySidenav" class="sidenav">
     <div class="sideHeader">
-        <div class="sideHeaderText"> DPL </div>
+        <div class="sideHeaderText">
+            <img src="{{asset('images/mainImage/mainIcon3.png')}}" alt="DPL" style="width: 100%">
+        </div>
     </div>
     <div class="sideBody">
         <div id="backSideNavMenuDiv" class="sideNavTabs sideNavTabsHeader"  onclick="backSideNavMenu()">

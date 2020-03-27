@@ -53,7 +53,7 @@
         padding: 5px 5px;
     }
     .navCountries:hover{
-        background-color: #2d94ec;
+        background-color: #1f75b9;
         color: white !important;
     }
 </style>
@@ -64,39 +64,11 @@
 
         </div>
         <div class="sideBody">
-            <div id="backSideNavMenuDiv" class="sideNavTabs" style="margin-bottom: 20px; display: none;">
+            <div id="backSideNavMenuDiv" class="sideNavTabs" style="margin-bottom: 20px; display: none">
                 <a href="#" onclick="backSideNavMenu()" style="justify-content: center">
                     <div class="arrow left" style="position: absolute; left: 15px;"></div>
                     <div id="backSideNavMenuName"></div>
                 </a>
-
-                <div class="subSideNavMenu">
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            See all
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Adventure
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Hiking & Trekking
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Wildlife
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Safari
-                        </a>
-                    </div>
-                </div>
             </div>
 
             <div class="sideNavTabs">
@@ -132,7 +104,7 @@
             </div>
             <div class="sideNavTabs">
                 <a href="#" onclick="showSubSideNavMenu(this)">
-                    Travel Styles
+                    Activities
                     <div class="arrow right"></div>
                 </a>
                 <div class="subSideNavMenu">
@@ -243,23 +215,33 @@
             </div>
             <div class="sideNavTabs">
                 <a href="#">
-                    Deals
+                    Fest & Events
                     <div class="arrow right"></div>
                 </a>
             </div>
             <div class="sideNavTabs">
                 <a href="#">
-                    Why TourRadar
+                    Pre-Trips
                 </a>
             </div>
             <div class="sideNavTabs">
                 <a href="#">
-                    Win a Tour
+                    Community
                 </a>
             </div>
             <div class="sideNavTabs">
                 <a href="#">
-                    Tour the World - Follow Now!
+                    About us
+                </a>
+            </div>
+            <div class="sideNavTabs">
+                <a href="#">
+                    Contact us
+                </a>
+            </div>
+            <div class="sideNavTabs">
+                <a href="#">
+                    Journal
                 </a>
             </div>
         </div>
@@ -274,8 +256,8 @@
             <div class="navThreeLine"></div>
         </div>
         <div class="logoNavDiv">
-            <a href="#">
-                <img src="{{asset('images/mainImage/logo.png')}}" alt="DPL" style="width: 100%">
+            <a href="{{url('/')}}">
+                <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="width: 100%">
             </a>
         </div>
 
@@ -342,7 +324,7 @@
             </li>
             <li class="navLi mobileHide">
                 <div class="navTabName">
-                    Travel Styles
+                    Activities
                 </div>
                 <div class="subList subLisL">
 
@@ -350,7 +332,7 @@
             </li>
             <li class="navLi posRel mobileHide">
                 <div class="navTabName">
-                    Deals
+                    Fest&Event
                 </div>
                 <div class="subList subLisM">
                     <div class="navSubListRow">
@@ -362,7 +344,7 @@
             </li>
             <li class="navLi posRel mobileHide">
                 <div class="navTabName">
-                    Help
+                    Pre-Trips
                 </div>
                 <div class="subList subLisM">
                     <div class="navSubListRow">
@@ -374,9 +356,18 @@
             </li>
             <li class="navLi posRel mobileHide">
                 <div class="navTabName">
-                    <div class="navPerson">
-                        <i class="far fa-user" aria-hidden="true"></i>
+                    About us
+                </div>
+                <div class="subList subLisM">
+                    <div class="navSubListRow">
+                        <div class="navSubListBody navSubListBodyM">Community</div>
+                        <div class="navSubListBody navSubListBodyM">Contact us</div>
                     </div>
+                </div>
+            </li>
+            <li class="navLi posRel mobileHide">
+                <div class="navTabName">
+                    Journal
                 </div>
                 <div class="subList subLisM">
                     <div class="navSubListRow">
@@ -386,20 +377,35 @@
                     </div>
                 </div>
             </li>
-            <li class="navLi">
+
+{{--            <li class="navLi posRel mobileHide">--}}
+{{--                <div class="navTabName">--}}
+{{--                    <div class="navPerson">--}}
+{{--                        <i class="far fa-user" aria-hidden="true"></i>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="subList subLisM">--}}
+{{--                    <div class="navSubListRow">--}}
+{{--                        <div class="navSubListBody navSubListBodyM">Namibia</div>--}}
+{{--                        <div class="navSubListBody navSubListBodyM">Namibia</div>--}}
+{{--                        <div class="navSubListBody navSubListBodyM">Namibia</div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </li>--}}
+{{--            <li class="navLi">--}}
                 <div class="searchNavIconInFlag pcHide" onclick="showNavSearchMobile()">
                     <i class="fas fa-search" style="color: #459ed1"></i>
                 </div>
-                <div class="telPcLi">
-                    <div class="navFlag"></div>
-                    <div class="navPhone">
-                        +989122474393
-                    </div>
-                </div>
-                <div class="telMobileLi">
-                    <i class="fas fa-phone phoneIconHeader"></i>
-                </div>
-            </li>
+{{--                <div class="telPcLi">--}}
+{{--                    <div class="navFlag"></div>--}}
+{{--                    <div class="navPhone">--}}
+{{--                        +989122474393--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="telMobileLi">--}}
+{{--                    <i class="fas fa-phone phoneIconHeader"></i>--}}
+{{--                </div>--}}
+{{--            </li>--}}
         </ul>
 
         <div id="searchNavMobile" class="searchNavMobile pcHide">
@@ -429,7 +435,7 @@
                     </div>
                 </div>
                 <div class="closeIcon" onclick="closeNavSearchMobile()">
-                    <i class="fas fa-times" style="color: #409bd0"></i>
+                    <i class="fas fa-times" style="color: #1f75b9"></i>
                 </div>
             </div>
         </div>

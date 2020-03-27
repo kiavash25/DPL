@@ -11,11 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('main.mainPage');
-});
+Route::get('/', 'MainController@mainPage');
 
-Route::get('list/', 'MainController@list')->name('show.list');
+Route::get('list', 'MainController@list')->name('show.list');
 Route::get('destination/{country}/{slug}', 'MainController@showDestination')->name('show.destination');
 Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
 

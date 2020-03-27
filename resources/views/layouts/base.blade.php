@@ -38,6 +38,29 @@
 </div>
 </body>
 
+<script>
+    function resizeImg(_class) {
+        var imgs = $('.' + _class);
+        for(i = 0; i < imgs.length; i++){
+            var img = $(imgs[i]);
+            var imgW = img.width();
+            var imgH = img.height();
+
+            var secW = img.parent().width();
+            var secH = img.parent().height();
+
+            if(imgH < secH){
+                img.css('height', '100%');
+                img.css('width', 'auto');
+            }
+            else if(imgW < secW){
+                img.css('width', '100%');
+                img.css('height', 'auto');
+            }
+
+        }
+    }
+</script>
 
 @yield('script')
 

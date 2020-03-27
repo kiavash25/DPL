@@ -1,6 +1,9 @@
 *{
     color: #2c3e50;
 }
+*:focus {
+    outline: none;
+}
 
 input{
     outline: none;

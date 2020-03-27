@@ -24,6 +24,7 @@ a:hover{
     background: white;
     border-radius: 50%;
     color: #30759d;
+    overflow: hidden;
 }
 .arrow {
     border: solid white;
@@ -175,7 +176,7 @@ a:hover{
     min-width: 135px;
 }
 .navSubListBody:hover{
-    background-color: #2d94ec;
+    background-color: #1f75b9;
     color: white;
 }
 .navSubListFooter{
@@ -185,10 +186,10 @@ a:hover{
     margin-top: 15px;
 }
 .navSubListFooter:hover{
-    color: #2d94ec;
+    color: #1f75b9;
 }
 .navSubListHeader:hover{
-    color: #2d94ec;
+    color: #1f75b9;
 }
 .navSubListBodyM{
     min-width: 175px;
@@ -247,7 +248,7 @@ a:hover{
 .searchNavIconInFlag{
     font-size: 30px;
     margin-right: 15px;
-    color: #409bd0;
+    color: #1f75b9;
 }
 .sidenav {
     height: 100%;
@@ -351,7 +352,7 @@ a:hover{
 }
 .phoneIconHeader{
     transform: rotate(90deg);
-    color: #409bd0;
+    color: #1f75b9;
     font-size: 25px;
 }
 
@@ -376,7 +377,7 @@ a:hover{
     justify-content: center;
     align-items: center;
     font-size: 40px;
-    color: #409bd0;
+    color: #1f75b9;
 }
 .mobileNavSearchDiv{
     width: calc(100% - 54px);
@@ -387,11 +388,11 @@ a:hover{
     width: 100%;
     height: 100%;
     box-shadow: none;
-    border: solid #409bd0 2px;
+    border: solid #1f75b9 2px;
     padding-left: 10px;
 }
 .mobileNavSearchInput:focus{
-    border: solid #409bd0 2px;
+    border: solid #1f75b9 2px;
 }
 .searchResult{
     position: absolute;
@@ -405,7 +406,7 @@ a:hover{
     display: none;
 }
 .headerSearch{
-    color: #409bd0;
+    color: #1f75b9;
     border-bottom: solid 1px;
     font-size: 12px;
     margin-top: 15px;
@@ -418,6 +419,6 @@ a:hover{
     cursor: pointer;
 }
 .resultsOFSearch:hover{
-    background-color: #409bd0;
+    background-color: #1f75b9;
     color: white;
 }
