@@ -7,6 +7,9 @@ use App\models\City;
 use App\models\Continents;
 use App\models\Countries;
 use App\models\Destination;
+use App\models\DestinationCategory;
+use App\models\DestinationCategoryTitle;
+use App\models\DestinationCategoryTitleText;
 use App\models\DestinationPic;
 use App\models\DestinationTagRelation;
 use App\models\Package;
@@ -22,43 +25,54 @@ class MainController extends Controller
 {
     public function __construct()
     {
-        $continentsList = Continents::all();
-        foreach ($continentsList as $item)
-            $item->countries = Countries::where('continent_code', $item->code)->get();
+        $destCategory = DestinationCategory::all();
+        foreach ($destCategory as $item)
+            $item->destination = Destination::where('categoryId', $item->id)->get();
 
-//        $pack = Package::select(['destId'])->groupBy('destId')->pluck('destId')->toArray();
-//        $desst = Destination::whereIn('id', $pack)->groupBy('countryId')->pluck('countryId')->toArray();
-//        $conutr = Countries::whereIn('id', $desst)->groupBy('continent_code')->pluck('continent_code')->toArray();
-//        $continentsList = Continents::whereIn('code', $conutr)->get();
-//        foreach ($continentsList as $item)
-//            $item->countries = Countries::where('continent_code', $item->code)->whereIn('id', $desst)->get();
-        View::share(['continents' => $continentsList]);
+        $activitiesList = Activity::all();
+
+        View::share(['destCategory' => $destCategory, 'activitiesList' => $activitiesList]);
     }
 
     public function mainPage()
     {
-        return \view('main.mainPage');
+        $mapDestination = Destination::all();
+        foreach ($mapDestination as $item)
+            $item->category = DestinationCategory::find($item->categoryId);
+
+
+        return \view('main.mainPage', compact(['activities', 'mapDestination']));
     }
 
-    public function showDestination($country, $slug)
+    public function aboutUs()
+    {
+        return \view('main.aboutUs');
+    }
+
+    public function showDestination($categoryId, $slug)
     {
         $kind = 'destination';
+        $category = DestinationCategory::find($categoryId);
+        if($category == null)
+            return redirect(url('/'));
 
-        $country = Countries::where('name', $country)->first();
-        $content = Destination::where('slug', $slug)->where('countryId', $country->id)->first();
+        $content = Destination::where('slug', $slug)->where('categoryId', $category->id)->first();
+        if($content == null)
+            return redirect(url('/'));
+
+        $content->category = $category;
+        $content->titles = DestinationCategoryTitle::where('categoryId', $content->categoryId)->get();
+        foreach ($content->titles as $item){
+            $item->text = DestinationCategoryTitleText::where('destId', $content->id)->where('titleId', $item->id)->first();
+            if($item->text != null)
+                $item->text = $item->text->text;
+        }
+
         $tags = DestinationTagRelation::where('destId', $content->id)->pluck('tagId')->toArray();
         if(count($tags) != 0)
             $content->tags = Tags::whereIn('id', $tags)->pluck('tag')->toArray();
         else
             $content->tags = [];
-
-        $city = City::find($content->cityId);
-        if($city != null)
-            $content->city = $city->name;
-        else
-            $content->city = '';
-
-        $content->country = $country;
 
         if($content->pic != null)
             $content->pic = asset('uploaded/destination/'. $content->id . '/' . $content->pic);
@@ -69,7 +83,7 @@ class MainController extends Controller
         $content->sidePic = $sideImage;
 
         $today = Carbon::now()->format('Y-m-d');
-        $packages = Package::where('sDate', '>', $today)->where('destId', $content->id)->orderBy('sDate')->take(10)->get();
+        $packages = Package::where('sDate', '>', $today)->where('destId', $content->id)->orderBy('sDate')->take(5)->get();
         foreach ($packages as $item) {
             $item->mainActivity = Activity::find($item->mainActivityId);
             $item->pic = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
@@ -79,12 +93,16 @@ class MainController extends Controller
         }
         $content->packages = $packages;
 
-        $continents = Continents::where('code', $country->continent_code)->first();
+        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $content->slug]);
+
+        if($content->video != null)
+            $content->video = asset('uploaded/destination/'. $content->id . '/' . $content->video);
+        if($content->podcast != null)
+            $content->podcast = asset('uploaded/destination/'. $content->id . '/' . $content->podcast);
 
 
-        $guidance = ['continents' => $continents->name, 'country' => $country->name, 'countryId' => $country->id,
-                    'city' => $content->city, 'cityId' => $city->id,
-                    'destination' => $content->name, 'destinationSlug' => $content->slug];
+        $guidance = ['value1' => $content->category->name, 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => $content->category->name]),
+                    'value2' => $content->name, 'value2Url' => route('show.destination', ['city' => $content->categoryId, 'slug' => $content->slug])];
 
         return view('main.content', compact(['content', 'kind', 'guidance']));
     }
@@ -102,7 +120,7 @@ class MainController extends Controller
             return redirect(url('/'));
 
         $destination->city = City::find($destination->cityId);
-        $destination->country = Countries::find($destination->countryId);
+        $destination->category = DestinationCategory::find($destination->categoryId);
 
         $content->destination = $destination;
 
@@ -129,8 +147,7 @@ class MainController extends Controller
         $content->sidePic = $sideImage;
 
         $today = Carbon::now()->format('Y-m-d');
-        $pac = Package::all();
-//        $pac = Package::where('id', '!=', $content->id)->where('sDate', '>', $today)->where('destId', $content->destination->id)->orderBy('sDate')->take(10)->get();
+        $pac = Package::where('id', '!=', $content->id)->where('sDate', '>', $today)->where('destId', $content->destination->id)->orderBy('sDate')->take(5)->get();
         foreach ($pac as $item) {
             $item->mainActivity = Activity::find($item->mainActivityId);
             $item->pic = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
@@ -142,20 +159,222 @@ class MainController extends Controller
 
         $content->money = commaMoney($content->money);
 
-        $continents = Continents::where('code', $destination->country->continent_code)->first();
+        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $destination->slug]);
 
-        $guidance = ['continents' => $continents->name, 'country' => $destination->country->name, 'countryId' => $destination->country->id,
-            'city' => $destination->city->name, 'cityId' => $destination->city->id,
-            'destination' => $destination->name, 'destinationSlug' => $destination->slug,
-            'package' => $content->name, 'pakcageId' => $content->id];
+        $guidance = ['value1' => $destination->category->name, 'value1Url' => '#',
+            'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug]),
+            'value3' => $content->name, 'value3Url' => $content->id];
 
         return view('main.content', compact(['content', 'kind', 'guidance']));
     }
 
-    public function list()
+    public function beforeList(Request $request)
     {
-        $kind = 'package';
+        if(isset($request->activityId)){
+            session('activityId', $request->activityId);
+        }
 
-        return \view('main.list', compact(['kind']));
+        dd(session()->all());
+//        session([
+//           'destination' => $request->destination,
+//            'season' => $request->season,
+//            'activity' => $request->activity
+//        ]);
+//        return redirect(route())
+    }
+
+    public function list($kind, $value1)
+    {
+        if($kind == 'destination'){
+            $category = DestinationCategory::where('name', $value1)->first();
+            if($category == null)
+                return redirect(url('/'));
+
+            $today = Carbon::now()->format('Y-m-d');
+            $destinations = Destination::where('categoryId', $category->id)->get();
+            foreach ($destinations as $item) {
+                $item->pic = asset('uploaded/destination/' . $item->id . '/' . $item->pic);
+                $item->package = Package::where('destId', $item->id)->where('sDate', '>', $today)->count();
+            }
+
+            $title = 'List of ' . $category->name . ' category destinations';
+            $guidance = ['value1' => $category->name, 'value1Url' => '#'];
+
+            return \view('main.list', compact(['kind', 'destinations', 'guidance', 'title']));
+        }
+        else{
+            $guidance = [];
+            $destination = 'all';
+            $season = 'all';
+            $tag = 'all';
+            $activity = 'all';
+            switch ($kind){
+                case 'activity':
+                    $activity = Activity::where('name', $value1)->first();
+                    if ($activity != null) {
+                        $guidance = ['value1' => 'Activity', 'value1Url' => '#',
+                            'value2' => $activity->name, 'value2Url' => '#'];
+                        $title = $activity->name . ' Package List';
+                        $activity = $activity->id;
+                    }
+                    else {
+                        $guidance = ['value1' => 'Activity', 'value1Url' => '#'];
+                        $title = 'All Activity List';
+                    }
+                    break;
+                case 'destinationPackage':
+                    $destination = Destination::where('slug', $value1)->first();
+                    if ($destination != null) {
+                        $ci = City::find($destination->cityId);
+                        $guidance = ['value1' => 'Destination', 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => 'All']),
+                            'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug])];
+                        $title = $destination->name . ' Package List';
+                        $destination = $destination->id;
+                    }
+                    else {
+                        $guidance = ['value1' => 'Destination', 'value1Url' => '#'];
+                        $title = 'All Destination List';
+                    }
+                    break;
+                case 'tags':
+                    $tag = $value1;
+                    $title = $value1 . ' Tag Package List';
+                    $guidance = ['value1' => 'Tags', 'value1Url' => '#',
+                        'value2' => $value1, 'value2Url' => '#'];
+                    break;
+            }
+
+            return \view('main.list', compact(['kind', 'activity', 'destination', 'season', 'guidance', 'title', 'tag']));
+        }
+
+
+    }
+
+    public function getListElems(Request $request)
+    {
+        $packagesId = [];
+
+        $page = $request->page;
+        $take = $request->perPage;
+        $sort = $request->sort;
+        $money = $request->cost;
+        $kind = $request->kind;
+        $activityId = $request->activityId;
+        $activityIds = [];
+        $isSearchInActivityId = false;
+        $sqlQuery = '';
+
+        if($activityId != null) {
+            foreach ($activityId as $item) {
+                if ($item != '0') {
+                    $isSearchInActivityId = true;
+                    array_push($activityIds, $item);
+                }
+            }
+            if ($isSearchInActivityId) {
+                $sqlQuery = 'mainActivityId In (' . implode(",", $activityIds) . ')';
+            }
+        }
+
+        $sea = $request->season;
+        $seasons = [];
+        $isSearchInSeason = false;
+        if($sea != null) {
+            foreach ($sea as $item) {
+                if ($item != '0') {
+                    $isSearchInSeason = true;
+                    array_push($seasons, $item);
+                }
+            }
+            if($isSearchInSeason){
+                if($sqlQuery != '')
+                    $sqlQuery .= ' AND';
+
+                $sqlQuery .= ' season In (';
+                foreach ($seasons as $key => $item) {
+                    $sqlQuery .= '"' . $item. '"';
+                    if($key != count($seasons)-1)
+                        $sqlQuery .= ', ';
+                }
+                $sqlQuery .= ')';
+            }
+        }
+
+        $tag = $request->tag;
+        if($tag != 'all'){
+            $tag = Tags::where('tag', $tag)->first();
+            $packagesId = PackageTagRelation::where('tagId', $tag->id)->pluck('packageId')->toArray();
+
+            if(count($packagesId) == 0){
+                echo json_encode(['status' => 'ok', 'result' => $packagesId]);
+                return;
+            }
+            if($sqlQuery != '')
+                $sqlQuery .= ' AND';
+            $sqlQuery .= ' id IN (' . implode(",", $packagesId) . ')';
+        }
+
+        $destinationId = $request->destinationId;
+        if($destinationId != 'all'){
+            $destinat = Destination::find($destinationId);
+            if($destinat == null){
+                echo json_encode(['status' => 'ok', 'result' => []]);
+                return;
+            }
+            else{
+                if($sqlQuery != '')
+                    $sqlQuery .= ' AND';
+                $sqlQuery .= ' destId = ' . $destinat->id;
+            }
+        }
+
+        if($sqlQuery != '')
+            $sqlQuery .= ' AND';
+        $sqlQuery .= ' money >= ' . $money[0] . ' AND money < ' . $money[1];
+
+
+        $today = Carbon::now()->format('Y-m-d');
+        switch ($sort){
+            case 'nearestDate':
+                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('sDate', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                break;
+            case 'minConst':
+                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('money', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                break;
+            case 'maxConst':
+                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('money', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
+                break;
+            case 'minDay':
+                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('day', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                break;
+            case 'maxDay':
+                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('day', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
+                break;
+        }
+
+        foreach ($packages as $item){
+            $item->bad = false;
+            $item->imgUrl = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
+            $destination = Destination::find($item->destId);
+            if($destination == null)
+                $item->bad = true;
+            else {
+                $item->url = route('show.package', ['destination' => $destination->slug, 'slug' => $item->slug]);
+                $item->destinationName = $destination->name;
+                $item->destinationUrl = route('show.destination', ['categoryId' => $destination->categoryId, 'slug'=>$destination->slug]);
+            }
+
+            $item->circleSDate = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('d') . ' ' . Carbon::createFromFormat('Y-m-d', $item->sDate)->format('M');
+            $item->money = commaMoney($item->money);
+            $actv = Activity::find($item->mainActivityId);
+            if($actv == null)
+                $item->bad = true;
+            else
+                $item->activity = $actv->name;
+        }
+
+        echo json_encode(['status' => 'ok', 'result' => $packages]);
+        return;
+
     }
 }

@@ -24,7 +24,7 @@ class CreatePackagesTable extends Migration
             $table->string('season', 20)->nullable();
             $table->string('sDate', 20)->nullable();
             $table->string('eDate',20)->nullable();
-            $table->string('money')->nullable();
+            $table->string('money')->default(0);
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
             $table->unsignedInteger('mainActivityId')->nullable();

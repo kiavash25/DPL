@@ -88,7 +88,18 @@
 @section('body')
     <div class="container">
         <div class="row" style="margin-bottom: 30px">
-            <div class="col-lg-7">
+            <?php
+                if($kind == 'destination'){
+                    $picNum = 8;
+                    $sideNum = 3;
+                }
+                else{
+                    $picNum = 7;
+                    $sideNum = 5;
+                }
+            ?>
+
+            <div class="col-lg-{{$picNum}}">
                 <div class="mainSliderPic">
                     <div class="swiper-container mainSS" style="height: 100%;">
                         <div class="swiper-wrapper">
@@ -115,7 +126,7 @@
 {{--                    <i class="far fa-heart likeBorder" ></i>--}}
 {{--                </div>--}}
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-{{$sideNum}}">
                 @if($kind == 'destination')
                     @include('main.destination.destinationSidePic')
                 @else
@@ -150,15 +161,17 @@
             },
         });
 
-        resizeImg('sliderImg');
-        $(window).resize(function(){
+        $(document).ready(function(){
             resizeImg('sliderImg');
+            $(window).resize(function(){
+                resizeImg('sliderImg');
+            });
         });
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: {{$content->lat}}, lng: {{$content->lng}}},
-                zoom: 18
+                zoom: 10
             });
             marker = new google.maps.Marker({
                 position: {

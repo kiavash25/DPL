@@ -77,7 +77,7 @@
                     <div class="arrow right"></div>
                 </a>
                 <div class="subSideNavMenu">
-                    @foreach($continents as $item)
+                    @foreach($destCategory as $item)
                         <div class="sideNavTabs">
                             <a href="#" onclick="showSubSideNavMenu(this)">
                                 {{$item->name}}
@@ -86,14 +86,14 @@
 
                             <div class="subSideNavMenu subSubSideNavMenu">
                                 <div class="sideNavTabs">
-                                    <a class="subSideNavTab" href="#">
+                                    <a class="subSideNavTab" href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">
                                         See all
                                     </a>
                                 </div>
-                                @for($i = 0; $i < count($item->countries); $i++)
+                                @for($i = 0; $i < count($item->destination); $i++)
                                     <div class="sideNavTabs">
-                                        <a class="subSideNavTab" href="#">
-                                            {{$item->countries[$i]->name}}
+                                        <a class="subSideNavTab" href="{{route('show.destination', ['categoryId' => $item->destination[$i]->categoryId, 'slug' => $item->destination[$i]->slug])}}">
+                                            {{$item->destination[$i]->name}}
                                         </a>
                                     </div>
                                 @endfor
@@ -108,109 +108,13 @@
                     <div class="arrow right"></div>
                 </a>
                 <div class="subSideNavMenu">
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            See all Travel
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Adventure Travel
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a href="#" onclick="showSubSideNavMenu(this)">
-                            Hiking & Trekking Travel
-                            <div class="arrow right"></div>
-                        </a>
-                        <div class="subSideNavMenu subSubSideNavMenu">
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    See all1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Adventure1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Hiking & Trekking1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Wildlife1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Safari1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    See all1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Adventure1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Hiking & Trekking1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Wildlife1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Safari1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    See all1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Adventure1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Hiking & Trekking1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Wildlife1
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="#">
-                                    Safari1
-                                </a>
-                            </div>
+                    @foreach($activitiesList as $item)
+                        <div class="sideNavTabs">
+                            <a class="subSideNavTab" href="{{url('list/activity/'. $item->name)}}">
+                                {{$item->name}}
+                            </a>
                         </div>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Wildlife Travel
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            Safari Travel
-                        </a>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="sideNavTabs">
@@ -230,7 +134,7 @@
                 </a>
             </div>
             <div class="sideNavTabs">
-                <a href="#">
+                <a href="{{route('aboutUs')}}">
                     About us
                 </a>
             </div>
@@ -240,7 +144,7 @@
                 </a>
             </div>
             <div class="sideNavTabs">
-                <a href="#">
+                <a href="{{route('journal.index')}}">
                     Journal
                 </a>
             </div>
@@ -266,26 +170,8 @@
                 <div class="navSearchIcon">
                     <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
                 </div>
-                <input type="text" class="searchNavInput" placeholder="Where do you want to go?" onfocus="$('.searchBackBlack').show(); inSearch = true;" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val('')" onkeydown="search(this.value)">
-                <div class="searchResult">
-                    <div class="headerSearch">
-                        TOUR OPERATORS
-                    </div>
-                    <div class="resultsOFSearch"> Iranian Tour</div>
-                    <div class="resultsOFSearch"> Iran Welcomes You</div>
-                    <div class="resultsOFSearch"> Top Iran Tour</div>
-
-                    <div class="headerSearch">PLACES</div>
-                    <div class="resultsOFSearch"> Middle East</div>
-                    <div class="resultsOFSearch"> Isfahan</div>
-                    <div class="resultsOFSearch"> Shiraz</div>
-
-                    <div class="headerSearch">TOURS</div>
-                    <div class="resultsOFSearch"> From Turky To India</div>
-                    <div class="resultsOFSearch"> Grand Asia Caravan</div>
-                    <div class="resultsOFSearch">  Grand Asia Caravan Extended Journy</div>
-                    <div class="resultsOFSearch">  See All Result For "iran"</div>
-                </div>
+                <input type="text" class="searchNavInput" placeholder="Where do you want to go?" onfocus="$('.searchBackBlack').show(); inSearch = true;" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val('')" onkeydown="gollobalSearch(this.value)">
+                <div class="searchResult"></div>
             </div>
         @endif
 
@@ -296,13 +182,13 @@
                 </div>
                 <div class="subList subLisL">
                     <div class="navListSub">
-                        @foreach($continents as $item)
+                        @foreach($destCategory as $item)
                             <div class="navSubListRow">
-                                <div class="navSubListHeader">{{$item->name}}</div>
-                                @for($i = 0; $i < count($item->countries) && $i < 6; $i++)
-                                    <div class="navSubListBody">{{$item->countries[$i]->name}}</div>
+                                <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}" class="navSubListHeader">{{$item->name}}</a>
+                                @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
+                                    <a href="{{route('show.destination', ['categoryId' => $item->destination[$i]->categoryId, 'slug' => $item->destination[$i]->slug])}}" class="navSubListBody">{{$item->destination[$i]->name}}</a>
                                 @endfor
-                                @if(count($item->countries) > 6)
+                                @if(count($item->destination) > 6)
                                     <div class="navSubListFooter" onclick="openAllCountryHeader(this)">See all</div>
                                 @endif
                             </div>
@@ -311,9 +197,9 @@
                                     <div class="arrow down closeCountryArrow"></div>
                                 </div>
                                 <div class="navSubListAllCountriesList">
-                                    @foreach($item->countries as $countri)
+                                    @foreach($item->destination as $desti)
                                         <a class="navCountries">
-                                            {{$countri->name}}
+                                            {{$desti->name}}
                                         </a>
                                     @endforeach
                                 </div>
@@ -322,12 +208,16 @@
                     </div>
                 </div>
             </li>
-            <li class="navLi mobileHide">
+            <li class="navLi posRel mobileHide">
                 <div class="navTabName">
                     Activities
                 </div>
-                <div class="subList subLisL">
-
+                <div class="subList subLisM">
+                    <div class="navSubListRow">
+                        @foreach($activitiesList as $item)
+                            <a href="{{url('list/activity/'. $item->name)}}" class="navSubListBody navSubListBodyM">{{$item->name}}</a>
+                        @endforeach
+                    </div>
                 </div>
             </li>
             <li class="navLi posRel mobileHide">
@@ -343,39 +233,19 @@
                 </div>
             </li>
             <li class="navLi posRel mobileHide">
-                <div class="navTabName">
-                    Pre-Trips
-                </div>
-                <div class="subList subLisM">
-                    <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                    </div>
-                </div>
-            </li>
-            <li class="navLi posRel mobileHide">
-                <div class="navTabName">
+                <a href="{{route('aboutUs')}}" class="navTabName">
                     About us
-                </div>
-                <div class="subList subLisM">
-                    <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">Community</div>
-                        <div class="navSubListBody navSubListBodyM">Contact us</div>
-                    </div>
-                </div>
+                </a>
             </li>
             <li class="navLi posRel mobileHide">
-                <div class="navTabName">
+                <a href="{{url('/')}}" class="navTabName">
+                    Contact us
+                </a>
+            </li>
+            <li class="navLi posRel mobileHide">
+                <a href="{{route('journal.index')}}" class="navTabName">
                     Journal
-                </div>
-                <div class="subList subLisM">
-                    <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                    </div>
-                </div>
+                </a>
             </li>
 
 {{--            <li class="navLi posRel mobileHide">--}}
@@ -411,28 +281,8 @@
         <div id="searchNavMobile" class="searchNavMobile pcHide">
             <div style="width: 100%; display: flex; height: 100%;">
                 <div class="mobileNavSearchDiv">
-                    <input type="text" class="mobileNavSearchInput" placeholder="Where do you want to go?" onkeyup="search(this.value)">
-                    <div class="searchResult">
-
-                        <div class="headerSearch">
-                            TOUR OPERATORS
-                        </div>
-                        <div class="resultsOFSearch"> Iranian Tour</div>
-                        <div class="resultsOFSearch"> Iran Welcomes You</div>
-                        <div class="resultsOFSearch"> Top Iran Tour</div>
-
-                        <div class="headerSearch">PLACES</div>
-                        <div class="resultsOFSearch"> Middle East</div>
-                        <div class="resultsOFSearch"> Isfahan</div>
-                        <div class="resultsOFSearch"> Shiraz</div>
-
-                        <div class="headerSearch">TOURS</div>
-                        <div class="resultsOFSearch"> From Turky To India</div>
-                        <div class="resultsOFSearch"> Grand Asia Caravan</div>
-                        <div class="resultsOFSearch">  Grand Asia Caravan Extended Journy</div>
-                        <div class="resultsOFSearch">  See All Result For "iran"</div>
-
-                    </div>
+                    <input type="text" class="mobileNavSearchInput" placeholder="Where do you want to go?" onkeyup="gollobalSearch(this.value)">
+                    <div class="searchResult"></div>
                 </div>
                 <div class="closeIcon" onclick="closeNavSearchMobile()">
                     <i class="fas fa-times" style="color: #1f75b9"></i>
@@ -452,19 +302,19 @@
                 <div>
                     <a href="{{url('/')}}" class="topMenuGuide">Home</a>
                     <span class="topMenuGuide"> > </span>
-                    <a href="#" class="topMenuGuide">{{$guidance['continents']}}</a>
-                    @if(isset($guidance['country']))
+                    <a href="{{$guidance['value1Url']}}" class="topMenuGuide">{{$guidance['value1']}}</a>
+                    @if(isset($guidance['value2']))
                         <a href="#" class="topMenuGuide"> > </a>
-                        <a href="#" class="topMenuGuide">{{$guidance['country']}}</a>
-                        @if(isset($guidance['city']))
+                        <a href="{{$guidance['value2Url']}}" class="topMenuGuide">{{$guidance['value2']}}</a>
+                        @if(isset($guidance['value3']))
                             <a href="#" class="topMenuGuide"> > </a>
-                            <a href="#" class="topMenuGuide">{{$guidance['city']}}</a>
-                            @if(isset($guidance['destination']))
+                            <a href="{{$guidance['value3Url']}}" class="topMenuGuide">{{$guidance['value3']}}</a>
+                            @if(isset($guidance['value4']))
                                 <a href="#" class="topMenuGuide"> > </a>
-                                <a href="{{route('show.destination', ['country' => $guidance['country'], 'slug' => $guidance['destinationSlug']])}}" class="topMenuGuide">{{$guidance['destination']}}</a>
-                                @if(isset($guidance['package']))
+                                <a href="{{$guidance['value4Url']}}" class="topMenuGuide">{{$guidance['value4']}}</a>
+                                @if(isset($guidance['value5']))
                                     <a href="#" class="topMenuGuide"> > </a>
-                                    <a href="#" class="topMenuGuide">{{$guidance['package']}}</a>
+                                    <a href="#" class="topMenuGuide">{{$guidance['value5']}}</a>
                                 @endif
                             @endif
                         @endif
@@ -481,6 +331,50 @@
     }
     function closeAllCountry(_element){
         $(_element).parent().css('height', '0')
+    }
+
+    function gollobalSearch(_value){
+
+        if(_value.trim().length > 1){
+            $.ajax({
+                type: 'post',
+                url: '{{route("search")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    value: _value
+                },
+                success: function(response){
+                    try {
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok'){
+                            createSearchResult(response['result']);
+                        }
+                    }
+                    catch (e) {
+                        console.log(e)
+                    }
+                },
+                error: function(err){
+
+                }
+            })
+        }
+    }
+
+    function createSearchResult(_result){
+        var fk = Object.keys(_result);
+        var text = '';
+        for (var x of fk) {
+            if(_result[x].length > 0)
+                text += '<div class="headerSearch">' + x + '</div>';
+            for(var i = 0; i < _result[x].length; i++){
+                console.log(_result[x][i]["url"]);
+                text += '<a href="' + _result[x][i]["url"] + '"><div class="resultsOFSearch">' + _result[x][i]["name"] + '</div></a>';
+            }
+        }
+
+        $('.searchResult').show();
+        $('.searchResult').html(text);
     }
 
 </script>

@@ -1,123 +1,7 @@
 @extends('admin.layout.adminLayout')
 
 @section('head')
-
-    <style>
-        hr{
-            width: 100%;
-        }
-        .form-group{
-            width: 100%;
-        }
-        .inputLabel{
-            font-size: 23px;
-            font-weight: 500;
-        }
-        .whiteBase{
-            background-color: white;
-            border-radius: 20px;
-            width: 100%;
-            margin: 0;
-            padding: 15px;
-        }
-        .marg30{
-            margin-top: 30px;
-        }
-        .closeTagIcon{
-            position: absolute;
-            color: white;
-            top: 8px;
-            right: 10px;
-            height: 20px;
-            font-size: 13px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            background: red;
-            width: 20px;
-            border-radius: 50%;
-        }
-        .addTagIcon{
-            color: green;
-            font-size: 35px;
-        }
-        .tagSearchResult{
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            z-index: 1;
-            background: white;
-            width: 93%;
-            border: solid lightgray 1px;
-            border-radius: 4px;
-            padding: 10px;
-            top: 35px;
-        }
-        .tagResult{
-            padding: 5px;
-            font-size: 14px;
-            transition: 0.1s;
-            color: gray;
-            cursor: pointer;
-        }
-        .tagResult:hover{
-            background-color: #30759d;
-            color: white;
-            border-radius: 8px;
-        }
-        .mainPicSection{
-            overflow: hidden;
-            cursor: pointer;
-            width: 100%;
-            height: 200px;
-            border-radius: 10px;
-            border: dashed 1px gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 90px;
-            color: green;
-        }
-        .uploadedPic{
-            margin: 10px 0px;
-            position: relative;
-            padding: 0px;
-            overflow: hidden;
-            height: 180px;
-            border-radius: 15px;
-            display: flex;
-        }
-        .uploadedPicHover{
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            width: 100%;
-            height: 0%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000000d1;
-            border-radius: 15px;
-            transition: 0.3s;
-            overflow: hidden;
-        }
-        .uploadedPic:hover .uploadedPicHover{
-            height: 100%;
-        }
-        .uploadedPicImg{
-            width: 100%;
-            border-radius: 15px;
-            padding: 0px 10px;
-        }
-        @media (max-width: 768px){
-            .addTagIcon{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{asset('css/admin/adminAllPages.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset('semanticUi/semantic.css')}}">
     <link rel="stylesheet" href="{{asset('css/dropZone/basic.css')}}">
@@ -126,6 +10,20 @@
     <script src="{{asset('semanticUi/semantic.min.js')}}"></script>
     <script src="{{asset('js/dropZone/dropzone.js')}}"></script>
     <script src="{{asset('js/dropZone/dropzone-amd-module.js')}}"></script>
+
+    <script src="{{asset('js/ckeditor.js')}}"></script>
+
+    <style>
+        .videoButton{
+            cursor: pointer;
+            padding: 10px;
+            font-size: 13px;
+            border-radius: 10px;
+            background-color: #30759d;
+            color: white;
+        }
+    </style>
+
 @endsection
 
 
@@ -160,25 +58,26 @@
 
             <div class="row marg30">
                 <div class="col-xl-3">
+
                     <div class="row">
                         <div class="form-group">
-                            <label for="country" class="inputLabel">Destination Country</label>
-
-                            <div id="country" class="ui fluid search selection dropdown">
-                                <input type="hidden" name="country" id="CountryId" onchange="changeCountry(this.value)" value="{{isset($destination->countryId) ? $destination->countryId : 0}}">
-                                <div class="default text">Select Country</div>
+                            <label for="category" class="inputLabel">Destination Category</label>
+                            <div id="category" class="ui fluid search selection dropdown">
+                                <input type="hidden" name="categoryId" id="categoryId" value="{{isset($destination->categoryId) ? $destination->categoryId : 0}}">
+                                <div class="default text">Select Category</div>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
-                                    @foreach($countries as $country)
-                                        <div class="item" data-value="{{$country->id}}"><i class="{{strtolower($country->code)}} flag"></i>{{$country->name}}</div>
+                                    @foreach($category as $item)
+                                        <div class="item" data-value="{{$item->id}}">{{$item->name}}</div>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row marg30" style="position: relative">
                         <div class="form-group">
-                            <label for="city" class="inputLabel">Destination City</label>
+                            <label for="city" class="inputLabel">Destination City (Optional)</label>
                             <input type="text" id="city" name="city" class="form-control" placeholder="Destination City" onkeyup="findCity(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{isset($destination->city) ? $destination->city : ''}}">
                             <input type="hidden" id="cityId" name="cityId" value="{{isset($destination->cityId) ? $destination->cityId : 0}}">
                         </div>
@@ -191,6 +90,7 @@
                     <input type="hidden" id="lng" name="lng" value="{{isset($destination->lng) ? $destination->lng : 0}}">
                 </div>
             </div>
+
 
             <div class="row marg30">
                 <div class="col-md-12">
@@ -233,6 +133,9 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row"></div>
+
             <div class="row marg30" id="pictureSection" style="display: {{$kind == 'new'? 'none': 'flex'}}">
                 <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
                     <label class="inputLabel">
@@ -244,7 +147,7 @@
                         <i class="fas fa-plus-circle" style="cursor: pointer;  display: {{isset($destination->pic) && $destination->pic != null ? 'none' : 'block'}};"></i>
                     </label>
 
-                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPic', showMainPic)">
+                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPicImg', showMainPic)">
                 </div>
                 <div class="col-md-9">
                     <div id="uploadedPic" class="row">
@@ -263,10 +166,48 @@
                 <div class="col-12" style="display: flex; justify-content: center">
                     <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Picture</button>
                 </div>
+
+                <div class="col-md-6" style="margin-top: 40px;">
+                    <label class="inputLabel">
+                        Video
+                        <label for="video" class="videoButton">
+                            {{isset($destination->video) ? 'change' : 'add'}} video
+                        </label>
+                    </label>
+                    <label class="mainPicSection">
+                        <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($destination->video) ? 'block' : 'none'}} ">
+                            <source id="videoSource" src="{{isset($destination->video) ? $destination->video : '#'}}">
+                        </video>
+                        <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
+                    </label>
+
+                    <input type="file" name="video" id="video" accept="video/*" style="display: none" onchange="uploadVideo(this)">
+                </div>
+                <div class="col-md-6" style="margin-top: 40px;">
+                    <label class="inputLabel">
+                        podcast
+                        <label for="audio" class="videoButton">
+                            {{isset($destination->podcast) ? 'change' : 'add'}} podcast
+                        </label>
+                    </label>
+                    <label style="height: 50px; width: 100%;">
+                        <audio id="audioTag" preload="none" controls style="width: 100%; height: 100%; display: {{isset($destination->podcast) ? 'block' : 'none'}} ">
+                            <source id="audioSource" src="{{isset($destination->podcast) ? $destination->podcast : '#'}}">
+                        </audio>
+                        <img id="audioLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
+                    </label>
+
+                    <input type="file" name="audio" id="audio" accept="audio/*" style="display: none" onchange="uploadAudio(this)">
+                </div>
             </div>
 
-            <div class="row marg30" style="display: flex; justify-content: center;">
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px" onclick="submitForm()">Submit</button>
+            <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
+                <a id="descriptionButton" href="{{isset($destination->id) ? route('admin.destination.description', ['id' => $destination->id]) : ''}}" style="display: {{isset($destination->id) ? 'block' : 'none'}}">
+                    <button class="btn btn-warning" style="font-size: 30px; border-radius: 20px;">Descriptions Page</button>
+                </a>
+
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">Submit</button>
+
             </div>
 
         </div>
@@ -295,7 +236,10 @@
 @section('script')
 
     <script>
-        $('#country')
+
+        let descriptionButtonUrl = '{{url("/admin/destination/description")}}';
+
+        $('#category')
             .dropdown({
                 clearable: true,
                 placeholder: 'any'
@@ -321,8 +265,8 @@
 
 
     <script>
-        var lat = 33.340562481212146;
-        var lng = 54.711382812500005;
+        var lat = 32.427908;
+        var lng = 53.688046;
         var countries = {!! $countries !!};
         var map;
         var marker = 0;
@@ -331,7 +275,7 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: lat, lng: lng},
-                zoom: 2
+                zoom: 5
             });
 
             google.maps.event.addListener(map, 'click', function(event) {
@@ -540,8 +484,8 @@
             var description = $('#description').val();
             var lat = $('#lat').val();
             var lng = $('#lng').val();
-            var countryId = $('#CountryId').val();
             var cityId = $('#cityId').val();
+            var categoryId = $('#categoryId').val();
             var tagsElement = $("input[name*='tags']");
             var tags = [];
             var error = '<ul>';
@@ -554,11 +498,8 @@
             if(name.trim().length == 0)
                 error += '<li> Please Choose Name.</li>';
 
-            if(countryId == 0)
-                error += '<li> Please Choose Country.</li>';
-
-            if(cityId == 0)
-                error += '<li> Please Choose City.</li>';
+            if(categoryId == 0)
+                error += '<li> Please Choose Category.</li>';
 
             if(lat == 0 && lng == 0)
                 error += '<li> Please select a location from the map.</li>';
@@ -576,7 +517,7 @@
                         _token: '{{csrf_token()}}',
                         name: name,
                         description: description,
-                        countryId: countryId,
+                        categoryId: categoryId,
                         cityId: cityId,
                         lat: lat,
                         lng: lng,
@@ -588,7 +529,10 @@
                         if(response[0] == 'ok'){
                             destId = response[1];
                             resultLoading('Your Destination Stored', 'success', goToImagePage);
-                            $('#pictureSection').css('display', 'flex')
+                            $('#pictureSection').css('display', 'flex');
+
+                            $('#descriptionButton').attr('href', descriptionButtonUrl +'/'+ response[1]);
+                            $('#descriptionButton').css('display', 'block');
                         }
                         else
                             resultLoading('Please Try Again', 'danger');
@@ -688,7 +632,147 @@
                 }
             })
         }
+
+        function uploadVideo(_element){
+
+            if(_element.files && _element.files[0]) {
+
+                $('#videoLoader').css('display', 'block');
+                $('#videoTag').css('display', 'none');
+
+                var data = new FormData();
+
+                data.append('file', _element.files[0]);
+                data.append('id', destId);
+                data.append('kind', 'video');
+                data.append('_token', '{{csrf_token()}}');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.destination.storeVideoAudio")}}',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        try {
+                            response = JSON.parse(response);
+                            if (response['status'] == 'ok') {
+                                $('#videoLoader').css('display', 'none');
+                                $('#videoTag').css('display', 'block');
+                                $('#videoSource').attr('src', response['result']);
+                            }
+                            else {
+                                let src = $('#videoSource').attr('src');
+                                if(src != '#'){
+                                    $('#videoLoader').css('display', 'none');
+                                    $('#videoTag').css('display', 'block');
+                                }
+                                else{
+                                    $('#videoLoader').css('display', 'none');
+                                    $('#videoTag').css('display', 'none');
+                                }
+                            }
+                        }
+                        catch (e) {
+                            let src = $('#videoSource').attr('src');
+                            if(src != '#'){
+                                $('#videoLoader').css('display', 'none');
+                                $('#videoTag').css('display', 'block');
+                            }
+                            else{
+                                $('#videoLoader').css('display', 'none');
+                                $('#videoTag').css('display', 'none');
+                            }
+                        }
+                    },
+                    error: function(err){
+                        console.log(err);
+                        let src = $('#videoSource').attr('src');
+                        if(src != '#'){
+                            $('#videoLoader').css('display', 'none');
+                            $('#videoTag').css('display', 'block');
+                        }
+                        else{
+                            $('#videoLoader').css('display', 'none');
+                            $('#videoTag').css('display', 'none');
+                        }
+                    }
+                });
+            }
+        }
+
+        function uploadAudio(_element){
+
+            if(_element.files && _element.files[0]) {
+
+                $('#audioLoader').css('display', 'block');
+                $('#audioTag').css('display', 'none');
+
+                var data = new FormData();
+
+                data.append('file', _element.files[0]);
+                data.append('id', destId);
+                data.append('kind', 'audio');
+                data.append('_token', '{{csrf_token()}}');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.destination.storeVideoAudio")}}',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        try {
+                            response = JSON.parse(response);
+                            if (response['status'] == 'ok') {
+                                $('#audioLoader').css('display', 'none');
+                                $('#audioTag').css('display', 'block');
+                                $('#audioTag').attr('src', response['result']);
+                            }
+                            else {
+                                let src = $('#audioSource').attr('src');
+                                if(src != '#'){
+                                    $('#audioLoader').css('display', 'none');
+                                    $('#audioTag').css('display', 'block');
+                                }
+                                else{
+                                    $('#audioLoader').css('display', 'none');
+                                    $('#audioTag').css('display', 'none');
+                                }
+                            }
+                        }
+                        catch (e) {
+                            let src = $('#audioSource').attr('src');
+                            if(src != '#'){
+                                $('#audioLoader').css('display', 'none');
+                                $('#audioTag').css('display', 'block');
+                            }
+                            else{
+                                $('#audioLoader').css('display', 'none');
+                                $('#audioTag').css('display', 'none');
+                            }
+                        }
+                    },
+                    error: function(err){
+                        console.log(err);
+                        let src = $('#audioSource').attr('src');
+                        if(src != '#'){
+                            $('#audioLoader').css('display', 'none');
+                            $('#audioTag').css('display', 'block');
+                        }
+                        else{
+                            $('#audioLoader').css('display', 'none');
+                            $('#audioTag').css('display', 'none');
+                        }
+                    }
+                });
+            }
+        }
+
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>
+
 @endsection
 

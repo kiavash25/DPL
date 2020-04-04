@@ -178,8 +178,7 @@
                                     @foreach($destinations as $destination)
                                         <div class="divider"></div>
                                         <div class="header">
-                                            <i class="{{strtolower($destination->country->code)}} flag"></i>
-                                            {{$destination->country->name}}
+                                            {{$destination->category->name}}
                                         </div>
                                         <div class="divider"></div>
                                         @for($i = 0; $i < count($destination); $i++)

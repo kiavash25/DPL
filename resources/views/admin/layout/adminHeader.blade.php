@@ -2,9 +2,9 @@
 
 <div id="mySidenav" class="sidenav">
     <div class="sideHeader">
-        <div class="sideHeaderText">
+        <a href="{{url('/')}}" class="sideHeaderText">
             <img src="{{asset('images/mainImage/mainIcon3.png')}}" alt="DPL" style="width: 100%">
-        </div>
+        </a>
     </div>
     <div class="sideBody">
         <div id="backSideNavMenuDiv" class="sideNavTabs sideNavTabsHeader"  onclick="backSideNavMenu()">
@@ -21,6 +21,11 @@
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.destination.category.index')}}">
+                        Destination Category
+                    </a>
+                </div>
+                <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.destination.list')}}">
                         All Destination
                     </a>
@@ -28,6 +33,19 @@
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.destination.new')}}">
                         Create New Destination
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="sideNavTabs">
+            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                Activity
+                <div class="arrow rightArrow"></div>
+            </a>
+            <div class="subSideNavMenu">
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
+                        All Activity
                     </a>
                 </div>
             </div>
@@ -52,21 +70,36 @@
         </div>
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Activity
+                Journal
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
-                        All Activity
+                    <a class="subSideNavTab" href="{{route('admin.journal.list')}}">
+                        Journal List
+                    </a>
+                </div>
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.journal.category.index')}}">
+                        Journal Category List
+                    </a>
+                </div>
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.journal.new')}}">
+                        Create New Journal
                     </a>
                 </div>
             </div>
         </div>
         <div class="sideNavTabs">
-            <a href="#" class="subSideNavTab">
+            <a class="subSideNavTab"href="{{ route('logout') }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Log out
             </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
     </div>
 </div>

@@ -3,6 +3,16 @@
 @section('head')
     <link rel="stylesheet" href="{{asset('css/pages/mainPage.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Archivo+Black|Caveat|Kaushan+Script|Lobster&display=swap" rel="stylesheet">
+
+    <style>
+        .fullLabel{
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+            padding: 15px 10px;;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -16,63 +26,57 @@
     <div class="mainSearchCenter">
         <div class="row searchCenter">
             <div class="col-lg-10" style="padding: 0px">
-                <div class="row threeSearchDiv">
+                <form id="searchForm" class="row threeSearchDiv" action="{{route('beforeList')}}" method="post">
+                    {{csrf_field()}}
                     <label for="centerSearchInputWhere" class="col-md-5 whereToSearch">
                         <div class="navSearchIcon" style="position: absolute; left: 0px">
                             <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
                         </div>
-                        <label class="centerSearchLabel" onclick="searchLabelClick(this)">Where to?</label>
-                        <input id="centerSearchInputWhere" class="centerSearchInput" type="text" onfocus="changeLabelInput(this, 1)" onfocusout="changeLabelInput(this, 0)" onkeyup="changeSearchDestination(this)">
+                        <label class="centerSearchLabel fullLabel" onclick="searchLabelClick(this)" style="right: 0; left: auto; width: 85%">Where to?</label>
+                        <input id="centerSearchInputWhere" class="centerSearchInput" name="destination" type="text" onfocus="changeLabelInput(this)" onfocusout="closeAllMainSearchSuggestion()" onkeyup="changeSearchDestination(this)">
 
-                        <div class="destinationMainSearch">
-                            <div class="destinationMainSearchResult">Rome</div>
-                            <div class="destinationMainSearchResult">Iran</div>
-                            <div class="destinationMainSearchResult">Tehran</div>
-                            <div class="destinationMainSearchResult">Italy</div>
-                        </div>
+                        <div id="destinationMainSearch" class="destinationMainSearch"> </div>
                     </label>
 
-                    <label for="centerSearchInputSeason" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer" onclick="changeLabelInputSeason(this, 1)">
-                        <label class="centerSearchLabel" style="left: 10px">What season?</label>
-                        <input id="centerSearchInputSeason" class="centerSearchInput" type="text" onfocusout="changeLabelInputSeason(this, 0)" style="width: 100%; cursor: pointer" readonly>
+                    <label for="centerSearchInputSeason" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer">
+                        <label class="centerSearchLabel fullLabel" onclick="changeLabelInputSeason(this)">What season?</label>
+                        <input id="centerSearchInputSeason" class="centerSearchInput" name="season" type="text" onfocusout="closeAllMainSearchSuggestion()" style="width: 100%; cursor: pointer" readonly>
 
                         <div class="seasonSearch">
-                            <div class="seasons" onclick="selectSeason('Spring', this)">Spring</div>
-                            <div class="seasons" onclick="selectSeason('Summer', this)">Summer</div>
-                            <div class="seasons" onclick="selectSeason('Fall', this)">Fall</div>
-                            <div class="seasons" onclick="selectSeason('Winter', this)">Winter</div>
-                            <div class="seasons" onclick="selectSeason('close', this)" style="width: 100%">
+                            <div class="seasons" onclick="selectSeason(this)">Spring</div>
+                            <div class="seasons" onclick="selectSeason(this)">Summer</div>
+                            <div class="seasons" onclick="selectSeason(this)">Fall</div>
+                            <div class="seasons" onclick="selectSeason(this)">Winter</div>
+                            <div class="seasons" onclick="selectSeason(this)" style="width: 100%">
                                 <i class="fas fa-times"></i>
                             </div>
                         </div>
 
                     </label>
 
-                    <label for="centerSearchInputActivity" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer" onclick="changeLabelInputActivity(this, 1)">
-                        <label class="centerSearchLabel" style="left: 10px">What Activity?</label>
-                        <input id="centerSearchInputActivity" class="centerSearchInput" type="text" onfocusout="changeLabelInputActivity(this, 0)" style="width: 100%; cursor: pointer" readonly>
+                    <label for="centerSearchInputActivity" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer">
+                    <label class="centerSearchLabel fullLabel" onclick="changeLabelInputActivity(this)">What Activity?</label>
+                    <input id="centerSearchInputActivity" name="activity" class="centerSearchInput" type="text" onfocusout="closeAllMainSearchSuggestion()" style="width: 100%; cursor: pointer" readonly>
 
-                        <div class="seasonSearch">
-                            <div class="seasons activity" onclick="selectActivity('Ski', this)">Ski</div>
-                            <div class="seasons activity" onclick="selectActivity('Walking', this)">Walking</div>
-                            <div class="seasons activity" onclick="selectActivity('Mountaineering', this)">Mountaineering</div>
-                            <div class="seasons activity" onclick="selectActivity('OffRoad', this)">OffRoad</div>
-                            <div class="seasons activity" onclick="selectActivity('Ice climbing', this)">Ice climbing</div>
-                            <div class="seasons activity" onclick="selectActivity('Fieldwork', this)">Fieldwork</div>
-                            <div class="seasons activity" onclick="selectActivity('close', this)" style="width: 100%">
-                                <i class="fas fa-times"></i>
-                            </div>
+                    <div class="seasonSearch">
+                        @foreach($activitiesList as $item)
+                            <div class="seasons activity" onclick="selectActivity(this)">{{$item->name}}</div>
+                        @endforeach
+                        <div class="seasons activity" onclick="selectActivity(this)" style="width: 100%">
+                            <i class="fas fa-times"></i>
                         </div>
+                    </div>
 
-                    </label>
-
-                </div>
+                </label>
+                </form>
             </div>
             <label class="col-lg-2" style="display: flex; margin: 0; padding: 0px">
-                <button class="btn btn-warning searchButton"> Search</button>
+                <button class="btn btn-warning searchButton" onclick="mainSearch()"> Search</button>
             </label>
         </div>
     </div>
+
+
 
 
     <div class="container" style="margin-bottom: 50px;">
@@ -85,6 +89,7 @@
     <script>
         var season = 0;
         var activity = 0;
+        var isOpenSearch = 0;
 
         $(window).resize(function(){
             resizeImg('mainSliderPic');
@@ -93,86 +98,162 @@
         function searchLabelClick(_element){
             $(_element).next().focus();
         }
-        function changeLabelInput(_element, _kind){
-            if(_kind == 1)
+        function changeLabelInput(_element){
+
+            closeAllMainSearchSuggestion(function(){
                 $(_element).prev().addClass('centerSearchLabelFocus');
-            else{
-                var value = $(_element).val();
-                if(value.trim().length == 0)
-                    $(_element).prev().removeClass('centerSearchLabelFocus');
-                $(_element).next().hide();
-            }
+            });
         }
 
-        function changeLabelInputSeason(_element, _kind){
-            if(_kind == 1) {
-                $($(_element).children()[0]).addClass('centerSearchLabelFocus');
-                $($(_element).children()[2]).css('display', 'flex');
-            }
-            else{
-                setTimeout(function (){
-                    if(season == 0)
-                        $(_element).prev().removeClass('centerSearchLabelFocus');
+        function changeLabelInputSeason(_element){
 
-                    $(_element).next().hide();
-                }, 100);
-            }
+            closeAllMainSearchSuggestion(function(){
+                $(_element).addClass('centerSearchLabelFocus');
+                $(_element).next().next().css('display', 'flex');
+                $(_element).next().focus();
+            });
+
         }
 
-        function selectSeason(_season, _element){
-            if(_season == 'close'){
+        function selectSeason(_element){
+            var text = $(_element).text();
+            if(text.trim().length == 0){
                 season = 0;
                 $(_element).parent().prev().val('');
             }
             else {
-                season = _season;
+                season = text;
                 $(_element).parent().prev().val(season);
             }
+            closeAllMainSearchSuggestion();
         }
 
         function changeLabelInputActivity(_element, _kind){
-            if(_kind == 1) {
-                $($(_element).children()[0]).addClass('centerSearchLabelFocus');
-                $($(_element).children()[2]).css('display', 'flex');
-            }
-            else{
-                setTimeout(function (){
-                    if(activity == 0)
-                        $(_element).prev().removeClass('centerSearchLabelFocus');
-
-                    $(_element).next().hide();
-                }, 100);
-            }
+            closeAllMainSearchSuggestion(function(){
+                $(_element).addClass('centerSearchLabelFocus');
+                $(_element).next().next().css('display', 'flex');
+                $(_element).next().focus();
+            });
         }
 
-        function selectActivity(_activity, _element){
-            if(_activity == 'close'){
+        function selectActivity(_element){
+            var activityInput = $(_element).text();
+            console.log('in')
+
+            if(activityInput.trim().length == 0){
                 activity = 0;
                 $(_element).parent().prev().val('');
             }
             else {
-                activity = _activity;
-                $(_element).parent().prev().val(activity);
+                activity = activityInput;
+                $(_element).parent().prev().val(activityInput);
+                console.log(activityInput)
             }
+            closeAllMainSearchSuggestion();
         }
 
         function changeSearchDestination(_element){
             var value = $(_element).val();
             if(value.trim().length > 0){
-                setTimeout(function(){
-                    $(_element).next().show();
-                }, 1000);
+                $('#destinationMainSearch').html('');
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("findDestination")}}',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        name: value,
+                    },
+                    success: function(response){
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok'){
+                            var text = '';
+                            for(var i = 0; i < response['result'].length; i++)
+                                text += '<div class="destinationMainSearchResult" data-value="' + response["result"][i]["id"] + '" onclick="chooseWhereSearch(this)">' + response["result"][i]["name"] + '</div>';
+
+                            $('#destinationMainSearch').html(text);
+                            $(_element).next().show();
+                        }
+                        else{
+                            console.log(response);
+                        }
+                    },
+                    error: function(err){
+                        console.log(err)
+                    }
+                });
             }
             else
                 $(_element).next().hide();
         }
 
+        function chooseWhereSearch(_element){
+            var text = $(_element).text();
+            $('#centerSearchInputWhere').val(text);
 
+            closeAllMainSearchSuggestion();
+        }
+
+        function closeAllMainSearchSuggestion(_callBack = ''){
+
+            setTimeout(function(){
+                if($('#centerSearchInputActivity').val() == '')
+                    $('#centerSearchInputActivity').prev().removeClass('centerSearchLabelFocus');
+                $('#centerSearchInputActivity').next().css('display', 'none');
+
+                if($('#centerSearchInputSeason').val() == '')
+                    $('#centerSearchInputSeason').prev().removeClass('centerSearchLabelFocus');
+                $('#centerSearchInputSeason').next().css('display', 'none');
+
+                if(isOpenSearch != 'whereTo') {
+                    if ($('#centerSearchInputWhere').val() == '')
+                        $('#centerSearchInputWhere').prev().removeClass('centerSearchLabelFocus');
+                    $('#centerSearchInputWhere').next().css('display', 'none');
+                }
+
+                if(typeof _callBack == 'function')
+                    _callBack();
+            }, 200);
+        }
+
+        function mainSearch(){
+            var destination = $('#centerSearchInputWhere').val();
+            var season = $('#centerSearchInputSeason').val();
+            var activity = $('#centerSearchInputActivity').val();
+
+            if(destination.trim().length == 0)
+                destination = 'all';
+
+            if(season.trim().length == 0)
+                season = 'all';
+
+            if(activity.trim().length == 0)
+                activity = 'all';
+
+            if(activity != 'all' || season != 'all' || destination != 'all'){
+                $('#searchForm').submit();
+            }
+
+
+        }
+
+        let mapMarker = {!! $mapDestination !!};
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 54.711382812500005, lng: 33.340562481212146},
-                zoom: 2
+                center: {lat: 32.427908, lng: 53.688046},
+                zoom: 5
             });
+
+            for(let i = 0; i < mapMarker.length; i++){
+                mapMarker[i]['marker'] = new google.maps.Marker({
+                    position: new google.maps.LatLng(mapMarker[i]['lat'], mapMarker[i]['lng']),
+                    map: map,
+                    title: mapMarker[i]['name']
+                });
+
+                mapMarker[i]['marker'].addListener('click', function(){
+                    window.open('{{url('destination')}}/' + mapMarker[i]['categoryId'] + '/' + mapMarker[i]['slug']);
+                })
+            }
         }
 
     </script>

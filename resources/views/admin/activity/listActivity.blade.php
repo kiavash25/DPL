@@ -482,19 +482,17 @@
                             }
                         }
                         else
-                            resultLoading('!!!!', 'danger');
+                            resultLoading('Error 1', 'danger');
                     }
                     catch (e) {
                         console.log(e);
-                        resultLoading('!!!!', 'danger');
+                        resultLoading('Error 2', 'danger');
                     }
                 },
                 error: function(){
-                    resultLoading('!!!!', 'danger');
+                    resultLoading('Error 3', 'danger');
                 }
             })
-
-
         }
 
         function deleteActivity(){
@@ -517,15 +515,15 @@
                             resultLoading('This Activity used in mainActivity of some Packages', 'danger');
                         }
                         else{
-                            resultLoading('!!!!', 'danger');
+                            resultLoading('Error 4', 'danger');
                         }
                     }
                     catch (e) {
-                        resultLoading('!!!!', 'danger');
+                        resultLoading('Error 5', 'danger');
                     }
                 },
                 error: function(){
-                    resultLoading('!!!!', 'danger');
+                    resultLoading('Error 6', 'danger');
                 }
             })
         }

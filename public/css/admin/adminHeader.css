@@ -14,17 +14,17 @@ a:hover{
     text-decoration: none;
 }
 .sideHeaderText{
-    display: flex;
-    font-size: 40px;
-    font-weight: bold;
-    width: 100px;
-    height: 100px;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    border-radius: 50%;
-    color: #30759d;
-    overflow: hidden;
+    display: flex !important;
+    font-size: 40px !important;
+    font-weight: bold !important;
+    width: 100px !important;
+    height: 100px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: white !important;
+    border-radius: 50% !important;
+    color: #30759d !important;
+    overflow: hidden !important;
 }
 .arrow {
     border: solid white;

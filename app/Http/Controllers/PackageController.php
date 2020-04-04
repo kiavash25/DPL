@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\models\Activity;
+use App\models\City;
 use App\models\Countries;
 use App\models\Destination;
+use App\models\DestinationCategory;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackagePic;
@@ -17,16 +19,23 @@ class PackageController extends Controller
 {
     public function listPackage()
     {
-        return view('admin.package.listPackage');
+        $packages = Package::all();
+        foreach ($packages as $item){
+            $item->destination = Destination::find($item->destId);
+            $item->city = City::find($item->destination->cityId);
+            $item->activity = Activity::find($item->mainActivityId);
+        }
+
+        return view('admin.package.listPackage', compact(['packages']));
     }
 
     public function newPackage()
     {
         $kind = 'new';
-        $destinations = Destination::all()->groupBy('countryId');
+        $destinations = Destination::all()->groupBy('categoryId');
 
         foreach ($destinations as $key => $item)
-            $item->country = Countries::find($key);
+            $item->category = DestinationCategory::find($key);
 
         $activity = Activity::all();
 
@@ -209,5 +218,30 @@ class PackageController extends Controller
         return;
     }
 
+    public function deletePackage(Request $request)
+    {
+        if(isset($request->id)){
+            $package = Package::find($request->id);
+            if($package != null){
+                PackageTagRelation::where('packageId', $package->id)->delete();
+                PackageActivityRelations::where('packageId', $package->id)->delete();
+                $pics = PackagePic::where('packageId', $package->id)->get();
+                foreach ($pics as $pic){
+                    \File::delete('uploaded/packages/' . $pic->packageId . '/' . $pic->pic);
+                    $pic->delete();
+                }
+
+                \File::delete('uploaded/packages/' . $package->id . '/' . $package->pic);
+                $package->delete();
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
 
 }

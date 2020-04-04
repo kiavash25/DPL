@@ -29,18 +29,6 @@
         text-decoration: none;
         background-color: #b3d6e9;
     }
-
-    .sidePicTextContent{
-        max-height: 400px;
-        overflow-y: auto;
-        text-align: justify;
-        padding-right: 25px;
-    }
-    @media (max-width: 991px){
-        .sidePicTextContent{
-            max-height: none;
-        }
-    }
 </style>
 
 <div class="sidePicContent">
@@ -48,16 +36,13 @@
         {{$content->name}}
     </h1>
     <h4 class="sidePicCountry">
-        {{$content->country->name}} , {{$content->city}}
+        {{$content->category->name}}
     </h4>
     <div class="sidePicTagContent">
         @foreach($content->tags as $item)
-            <div class="tagContent">
+            <a href="{{route('show.list', ['kind' => 'tags', 'value1' => $item])}}" class="tagContent">
                 {{$item}}
-            </div>
+            </a>
         @endforeach
-    </div>
-    <div class="sidePicTextContent">
-        {!! $content->description !!}
     </div>
 </div>

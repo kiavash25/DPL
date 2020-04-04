@@ -116,14 +116,14 @@
     <h1 class="sidePicHeader">
         {{$content->name}}
     </h1>
-    <h4 class="sidePicCountry">
-        {{$content->destination->country->name}} , {{$content->destination->city->name}}
-    </h4>
+{{--    <h4 class="sidePicCountry">--}}
+{{--        {{$content->destination->country->name}} , {{$content->destination->city->name}}--}}
+{{--    </h4>--}}
     <div class="sidePicTagContent">
         @foreach($content->tags as $item)
-            <div class="tagContent">
+            <a href="{{route('show.list', ['kind' => 'tags', 'value1' => $item])}}" class="tagContent">
                 {{$item}}
-            </div>
+            </a>
         @endforeach
     </div>
     <div class="sideInfo">

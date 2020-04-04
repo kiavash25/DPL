@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\models\City;
+use App\models\Destination;
+use App\models\Package;
 use App\models\Tags;
 use Illuminate\Http\Request;
 
@@ -28,6 +30,48 @@ class AjaxController extends Controller
         }
         else
             echo json_encode(['nok']);
+
+        return;
+    }
+
+    function findDestination(Request $request){
+        if(isset($request->name) && $request->name != ''){
+            $destination = Destination::where('name', 'LIKE', '%' . $request->name . '%')->get();
+            echo json_encode(['status' => 'ok', 'result' => $destination]);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function search(Request $request)
+    {
+        if(isset($request->value) && $request->value != ''){
+            $value = $request->value;
+
+            $destiantion = Destination::where('name', 'LIKE', '%' . $value . '%')->get();
+            foreach ($destiantion as $item){
+                $item->url = route('show.destination', ['categoryId' => $item->categoryId, 'slug' => $item->slug]);
+                $item->kind = 'destination';
+            }
+
+            $package = Package::where('name', 'LIKE', '%' . $value . '%')->get();
+            foreach ($package as $item){
+                $dest = Destination::find($item->destId);
+                $item->url = route('show.package', ['destination' => $dest->slug, 'slug' => $item->slug]);
+                $item->kind = 'destination';
+            }
+
+            $result = [
+                'Destination' => $destiantion,
+                'Package' => $package
+            ];
+
+            echo json_encode(['status' => 'ok', 'result' => $result]);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
 
         return;
     }

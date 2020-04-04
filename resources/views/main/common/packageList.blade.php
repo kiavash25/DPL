@@ -117,14 +117,17 @@
     }
 </style>
 
+@if(count($content->packages) > 0)
 <div style="width: 100%; margin-top: 45px">
-    <div class="aboutHeader">
-        @if(Request::is('destination/*'))
-            Packages
-        @else
-            Other Packages In {{$content->destination->name}}
-        @endif
-    </div>
+    <a href="{{$content->packageListUrl}}">
+        <div class="aboutHeader">
+            @if(Request::is('destination/*'))
+                Packages
+            @else
+                Other Packages In {{$content->destination->name}}
+            @endif
+        </div>
+    </a>
     <div class="mainContentPackages">
         <div class="swiper-container packageSwiper" >
 
@@ -223,3 +226,4 @@
 
     resizePackageSwiper();
 </script>
+@endif

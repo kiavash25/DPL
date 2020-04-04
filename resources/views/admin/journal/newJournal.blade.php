@@ -1,0 +1,381 @@
+@extends('admin.layout.adminLayout')
+
+@section('head')
+    <link rel="stylesheet" href="{{asset('css/admin/adminAllPages.css')}}">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        .videoButton{
+            cursor: pointer;
+            padding: 10px;
+            font-size: 13px;
+            border-radius: 10px;
+            background-color: #30759d;
+            color: white;
+        }
+        .textEditor{
+            height: 400px;
+            border: solid 1px var(--ck-color-toolbar-border) !important;
+            border-top: none !important;
+            border-radius: 5px !important;
+        }
+    </style>
+
+@endsection
+
+
+@section('body')
+    <div class="row whiteBase" style="margin-bottom: 100px">
+        <div class="col-md-12">
+            <h2>
+                @if($kind == 'new')
+                    Create New Journal
+                @else
+                    Edit {{$journal->name}} Journal
+                @endif
+            </h2>
+        </div>
+        <hr>
+
+        <div class="col-md-12">
+
+            <input type="hidden" id="code" name="code" value="{{isset($code) ? $code : 0}}">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name" class="inputLabel">Journal Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Journal Name" value="{{isset($journal->name) ? $journal->name : ''}}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="releaseDateType" class="inputLabel">Release Type</label>
+                        <select name="releaseDateType" id="releaseDateType" class="form-control" onchange="changeRelease(this.value)">
+                            <option value="draft" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'draft' ? 'selected': ''}}>draft</option>
+                            <option value="now" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'now' ? 'selected': ''}}>now</option>
+                            <option value="future" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'future' ? 'selected': ''}}>select date</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="selectReleaseDate" class="col-md-3" style="display: {{isset($journal->releaseDateType) && $journal->releaseDateType == 'future' ? 'block': 'none'}};">
+                    <label for="releaseDate" class="inputLabel">Release Date</label>
+                    <input type="text" id="releaseDate"  class="form-control" name="releaseDate" readonly>
+                </div>
+            </div>
+
+            <div class="row marg30">
+                <div class="col-xl-3">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="categoryId" class="inputLabel">Journal Category</label>
+                            <select name="categoryId" id="categoryId" class="form-control">
+                                <option value="0" >....</option>
+                                @foreach($category as $item)
+                                    <option value="{{$item->id}}" {{isset($journal->categoryId) && $item->id == $journal->categoryId ? 'selected' : ''}}>{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <div class="form-group">
+                        <label for="summery" class="inputLabel">Journal Summery</label>
+                        <input type="text" id="summery" name="summery" class="form-control" placeholder="Journal Summery" maxlength="100" value="{{isset($journal->summery) ? $journal->summery : ''}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row marg30">
+                <div style="width: 100%; height: 450px;">
+                    <div class="toolbar-container"></div>
+                    <div id="titleDesc" class="textEditor">{!! isset($journal->text) ? $journal->text : '' !!}</div>
+                </div>
+            </div>
+
+
+            <div class="row marg30">
+                <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
+                    <label class="inputLabel">
+                        Main Picture
+                    </label>
+                    <label for="mainPic" class="mainPicSection">
+                        <img id="mainPicImg" src="{{isset($journal->pic) && $journal->pic != null ? $journal->pic : '#'}}" style="width: 100%; display: {{isset($journal->pic) && $journal->pic != null ? 'block' : 'none'}};" >
+                        <img src="{{asset('images/mainImage/loading.gif')}}" style="width: 100%; display: none;" >
+                        <i class="fas fa-plus-circle" style="cursor: pointer;  display: {{isset($journal->pic) && $journal->pic != null ? 'none' : 'block'}};"></i>
+                    </label>
+
+                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPicImg', showMainPic)">
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="inputLabel"> Journal Tags</label>
+                        <div class="row" style="width: 100%">
+                            @if(isset($journal->tags) && count($journal->tags) != 0)
+                                @for($i = 0; $i < count($journal->tags); $i++)
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-group" style="position: relative">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$journal->tags[$i]}}">
+                                            <div class="closeTagIcon" onclick="deleteTag(this)">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="tagSearchResult"></div>
+                                    </div>
+                                @endfor
+                            @else
+                                @for($i = 0; $i < 5; $i++)
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-group" style="position: relative">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
+                                            <div class="closeTagIcon" onclick="deleteTag(this)">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="tagSearchResult"></div>
+                                    </div>
+                                @endfor
+                            @endif
+                            <div id="addNewTag" class="col-lg-2 col-md-2">
+                                <div class="addTagIcon">
+                                    <i class="fas fa-plus-circle" style="cursor: pointer" onclick="addTag()"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+            <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">Submit</button>
+            </div>
+
+        </div>
+
+    </div>
+@endsection
+
+
+@section('script')
+
+    <script src="{{asset('js/ckeditor.js')}}"></script>
+    <script src="{{asset('js/ckeditorUpload.js')}}"></script>
+    <script>
+        let mainPic;
+        let journalId = {{isset($journal->id) ? $journal->id : 0}};
+        let code = {{isset($code) ? $code : 0}};
+        let textEditor;
+        let tagSelected;
+
+        $('#category')
+            .dropdown({
+                clearable: true,
+                placeholder: 'any'
+            });
+
+        function deleteTag(_element){
+            $(_element).parent().parent().remove();
+        }
+        function addTag() {
+            text = '<div class="col-md-3">\n' +
+                '<div class="form-group" style="position: relative">\n' +
+                '<input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)"> \n' +
+                '<div class="closeTagIcon" onclick="deleteTag(this)">\n' +
+                '<i class="fas fa-times"></i>\n' +
+                '</div>\n' +
+                '</div>\n' +
+                '<div class="tagSearchResult"></div>' +
+                '</div>';
+
+            $(text).insertBefore($('#addNewTag'));
+        }
+
+        $('#releaseDate').datepicker();
+        $('#releaseDate').datepicker("option", "dateFormat", "yy-mm-dd");
+        @if(isset($journal->releaseDateType) && $journal->releaseDateType == 'future')
+            let releaseDate = '{{$journal->releaseDate}}'
+            let exploded = releaseDate.split('-');
+            $('#releaseDate').datepicker("setDate", new Date(exploded[0],exploded[1],exploded[2]) );
+        @endif
+
+        function changeRelease(_value){
+            if(_value == 'future'){
+                $('#selectReleaseDate').css('display', 'block');
+            }
+            else{
+                $('#selectReleaseDate').css('display', 'none');
+            }
+        }
+
+        function findTag(_element){
+            var value = $(_element).val();
+
+            if(value.trim().length != 0){
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("findTag")}}',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        tag: value
+                    },
+                    success: function(response){
+                        response = JSON.parse(response);
+                        if(response[0] == 'ok'){
+                            tagSelected = _element;
+                            var answers = '';
+                            var tags = response[1];
+                            for(i = 0; i < tags.length; i++)
+                                answers += '<div class="tagResult" onclick="setTag(this)">' + tags[i]["tag"] + '</div>';
+
+                            $(_element).parent().next().html(answers);
+                            if(answers == '')
+                                $(_element).parent().next().css('display', 'none');
+                            else
+                                $(_element).parent().next().css('display', 'flex');
+                        }
+                    }
+                })
+            }
+            else{
+                $(_element).parent().next().html('');
+                $(_element).parent().next().css('display', 'none');
+            }
+
+        }
+
+        function setTag(_element){
+            var value = $(_element).text();
+            $(tagSelected).val(value);
+
+            $(tagSelected).parent().next().html('');
+            $(tagSelected).parent().next().css('display', 'none');
+
+            tagSelected = '';
+        }
+
+        function clearAllSearchResult(){
+            $('.tagSearchResult').html('');
+            $('.tagSearchResult').css('display', 'none');
+        }
+
+        function closeSearch(_element){
+            setTimeout(function () {
+                $(_element).parent().next().html('');
+                $(_element).parent().next().css('display', 'none');
+            }, 100)
+        }
+
+        function showMainPic(_pic){
+            mainPic = _pic;
+            $('#mainPicImg').css('display', 'block');
+            $('#mainPicImg').next().next().css('display', 'none');
+        }
+
+        function submitForm(){
+            openLoading();
+
+            var name = $('#name').val();
+            var summery = $('#summery').val();
+            var description = textEditor.getData();
+            var categoryId = $('#categoryId').val();
+            var releaseDate = $('#releaseDate').val();
+            var releaseDateType = $('#releaseDateType').val();
+            var tagsElement = $("input[name*='tags']");
+            var tags = [];
+            var error = '<ul>';
+
+            for(i = 0; i < tagsElement.length; i++){
+                if($(tagsElement[i]).val() != null && $(tagsElement[i]).val().trim().length != 0)
+                    tags[tags.length] = $(tagsElement[i]).val().trim();
+            }
+
+            if(name.trim().length == 0)
+                error += '<li> Please Choose Name.</li>';
+
+            if(categoryId == 0)
+                error += '<li> Please Choose Category.</li>';
+
+            if(releaseDateType == 'future' && releaseDate == '')
+                error += '<li> Please Choose Release Date.</li>';
+
+            if(error != '<ul>'){
+                error += '</ul>';
+                resultLoading(error, 'danger');
+            }
+            else{
+                var data = new FormData();
+
+                data.append('_token', '{{csrf_token()}}');
+                data.append('name', name);
+                data.append('description', description);
+                data.append('summery', summery);
+                data.append('categoryId', categoryId);
+                data.append('releaseDateType', releaseDateType);
+                data.append('releaseDate', releaseDate);
+                data.append('tags', JSON.stringify(tags));
+                data.append('id', journalId);
+                data.append('code', code);
+                data.append('pic', mainPic);
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.journal.store")}}',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        try{
+                            response = JSON.parse(response);
+                            if(response['status'] == 'ok'){
+                                code = 0;
+                                journalId = response['result'];
+                                resultLoading('Journal Stored', 'success');
+                            }
+                            else
+                                resultLoading('Please Try Again', 'danger');
+                        }
+                        catch (e) {
+                            resultLoading('error1', 'danger')
+                        }
+                    },
+                    error: function(err){
+                        resultLoading('Please Try Again', 'danger');
+                    }
+                })
+            }
+
+        }
+
+        DecoupledEditor.create( document.querySelector( '#titleDesc'))
+            .then( editor => {
+                const toolbarContainer = document.querySelector( 'main .toolbar-container');
+                toolbarContainer.prepend( editor.ui.view.toolbar.element );
+
+                window.editor = editor;
+                textEditor = editor;
+
+                editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                    let data = {
+                        id: journalId,
+                        code: code
+                    };
+                    data = JSON.stringify(data);
+                    console.log(data)
+                    return new MyUploadAdapter( loader, '{{route("admin.journal.storeDescriptionImg")}}', '{{csrf_token()}}', data);
+                };
+
+            } )
+            .catch( err => {
+                console.error( err.stack );
+            } );
+
+    </script>
+
+@endsection
+

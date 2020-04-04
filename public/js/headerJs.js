@@ -59,17 +59,11 @@ function closeNavSearchMobile(){
     $('body').css('overflow-y', 'auto');
 }
 
-function search(_value){
-    clearResult();
-    setTimeout(function(){
-        if(inSearch)
-            $('.searchResult').show();
-    }, 100)
-}
-
 function clearResult(){
-    // $('.searchResult').html('');
-    $('.searchResult').hide();
+    setTimeout(function(){
+        $('.searchResult').html('');
+        $('.searchResult').hide();
+    }, 100);
 }
 
 $(window).on('click', function(e){

@@ -22,8 +22,8 @@ function compressImage($source, $destination, $quality){
         return imagejpeg($image, $destination, $quality);
     }
     catch (Exception $x) {
-        dd($x);
         return false;
+//        dd($x);
     }
 }
 
