@@ -178,7 +178,7 @@
                                     @foreach($destinations as $destination)
                                         <div class="divider"></div>
                                         <div class="header">
-                                            {{$destination->category->name}}
+                                            {{$destination->category}}
                                         </div>
                                         <div class="divider"></div>
                                         @for($i = 0; $i < count($destination); $i++)

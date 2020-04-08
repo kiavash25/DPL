@@ -95,6 +95,40 @@
                 </div>
             </div>
 
+            <div class="row marg30">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="seoTitle" class="inputLabel">Seo Title:</label>
+                        <input type="text" name="seoTitle" id="seoTitle" class="form-control" value="{{isset($journal->seoTitle) ? $journal->seoTitle : ''}}">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="slug" class="inputLabel">Slug:</label>
+                        <input type="text" name="slug" id="slug" class="form-control" value="{{isset($journal->slug) ? $journal->slug : ''}}">
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="keyword" class="inputLabel">Keyword:</label>
+                        <input type="text" name="keyword" id="keyword" class="form-control" value="{{isset($journal->keyword) ? $journal->keyword : ''}}">
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <label for="meta" class="inputLabel">Meta:</label>
+                        <textarea name="meta" id="meta" class="form-control">{!! isset($journal->meta) ? $journal->meta : '' !!}</textarea>
+                    </div>
+                </div>
+
+                <div class="col-lg-12" style="display: flex; justify-content: center">
+                    <button class="btn btn-primary" onclick="checkSeo()">Check Seo</button>
+                </div>
+                <div id="seoResult" class="col-lg-12" style="background: #f7f7f7; padding: 15px; border-radius: 10px"></div>
+            </div>
+
 
             <div class="row marg30">
                 <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
@@ -153,7 +187,7 @@
             <div class="row"></div>
 
             <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">Submit</button>
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="storeData()">Submit</button>
             </div>
 
         </div>
@@ -277,13 +311,17 @@
             $('#mainPicImg').next().next().css('display', 'none');
         }
 
-        function submitForm(){
+        function checkSeo(){
             openLoading();
 
             var name = $('#name').val();
             var summery = $('#summery').val();
             var description = textEditor.getData();
             var categoryId = $('#categoryId').val();
+            var keyword = $('#keyword').val();
+            var meta = $('#meta').val();
+            var slug = $('#slug').val();
+            var seoTitle = $('#seoTitle').val();
             var releaseDate = $('#releaseDate').val();
             var releaseDateType = $('#releaseDateType').val();
             var tagsElement = $("input[name*='tags']");
@@ -301,6 +339,15 @@
             if(categoryId == 0)
                 error += '<li> Please Choose Category.</li>';
 
+            if(keyword == 0)
+                error += '<li> Please Fill Keyword.</li>';
+            if(slug == 0)
+                error += '<li> Please Fill Slug.</li>';
+            if(seoTitle == 0)
+                error += '<li> Please Fill Seo Title.</li>';
+            if(meta == 0)
+                error += '<li> Please Fill Meta.</li>';
+
             if(releaseDateType == 'future' && releaseDate == '')
                 error += '<li> Please Choose Release Date.</li>';
 
@@ -315,6 +362,109 @@
                 data.append('name', name);
                 data.append('description', description);
                 data.append('summery', summery);
+                data.append('keyword', keyword);
+                data.append('slug', slug);
+                data.append('seoTitle', seoTitle);
+                data.append('meta', meta);
+                data.append('categoryId', categoryId);
+                data.append('releaseDateType', releaseDateType);
+                data.append('releaseDate', releaseDate);
+                data.append('tags', JSON.stringify(tags));
+                data.append('id', journalId);
+                data.append('code', code);
+                data.append('pic', mainPic);
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.journal.checkSeo")}}',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        try{
+                            response = JSON.parse(response);
+                            if(response['status'] == 'ok'){
+                                $('#seoResult').html('');
+
+                                $('#seoResult').append(response['result'][0]);
+                                $('#seoResult').append(response['result'][1]);
+                                $('#seoResult').append(response['result'][2]);
+
+                                closeAlert(0);
+                            }
+                            else{
+                                resultLoading('Opss1 ...', 'danger');
+                            }
+                        }
+                        catch (e) {
+                            resultLoading('Opss2 ...', 'danger');
+                        }
+                    },
+                    error: function(err){
+                        resultLoading('Opss3 ...', 'danger');
+                    }
+                })
+
+            }
+
+        }
+
+        function storeData(){
+
+            openLoading();
+
+            var name = $('#name').val();
+            var summery = $('#summery').val();
+            var description = textEditor.getData();
+            var categoryId = $('#categoryId').val();
+            var keyword = $('#keyword').val();
+            var meta = $('#meta').val();
+            var slug = $('#slug').val();
+            var seoTitle = $('#seoTitle').val();
+            var releaseDate = $('#releaseDate').val();
+            var releaseDateType = $('#releaseDateType').val();
+            var tagsElement = $("input[name*='tags']");
+            var tags = [];
+            var error = '<ul>';
+
+            for(i = 0; i < tagsElement.length; i++){
+                if($(tagsElement[i]).val() != null && $(tagsElement[i]).val().trim().length != 0)
+                    tags[tags.length] = $(tagsElement[i]).val().trim();
+            }
+
+            if(name.trim().length == 0)
+                error += '<li> Please Choose Name.</li>';
+
+            if(categoryId == 0)
+                error += '<li> Please Choose Category.</li>';
+
+            if(keyword == 0)
+                error += '<li> Please Fill Keyword.</li>';
+            if(slug == 0)
+                error += '<li> Please Fill Slug.</li>';
+            if(seoTitle == 0)
+                error += '<li> Please Fill Seo Title.</li>';
+            if(meta == 0)
+                error += '<li> Please Fill Meta.</li>';
+
+            if(releaseDateType == 'future' && releaseDate == '')
+                error += '<li> Please Choose Release Date.</li>';
+
+            if(error != '<ul>'){
+                error += '</ul>';
+                resultLoading(error, 'danger');
+            }
+            else{
+                var data = new FormData();
+
+                data.append('_token', '{{csrf_token()}}');
+                data.append('name', name);
+                data.append('description', description);
+                data.append('summery', summery);
+                data.append('keyword', keyword);
+                data.append('slug', slug);
+                data.append('seoTitle', seoTitle);
+                data.append('meta', meta);
                 data.append('categoryId', categoryId);
                 data.append('releaseDateType', releaseDateType);
                 data.append('releaseDate', releaseDate);
@@ -349,7 +499,6 @@
                     }
                 })
             }
-
         }
 
         DecoupledEditor.create( document.querySelector( '#titleDesc'))

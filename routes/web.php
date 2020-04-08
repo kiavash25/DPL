@@ -28,17 +28,16 @@ Route::get('destination/{categoryId}/{slug}', 'MainController@showDestination')-
 
 Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
 
-
-Route::get('journal', 'JournalController@mainPageJournal')->name('journal.index');
-
 Route::post('findDestination', 'AjaxController@findDestination')->name('findDestination');
 
 Route::post('search', 'AjaxController@search')->name('search');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('journal', 'JournalController@mainPageJournal')->name('journal.index');
+Route::get('journal/show/{id}/{slug?}', 'JournalController@showJournalContent')->name('journal.show');
+Route::get('journal/list/{kind}/{value?}', 'JournalController@listJournal')->name('journal.list');
+Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
 
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/admin', 'AdminController@adminIndex')->name('admin.index');
@@ -46,6 +45,8 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/admin/category/list', 'DestinationController@listCategory')->name('admin.destination.category.index');
     Route::post('/admin/category/store', 'DestinationController@storeCategory')->name('admin.destination.category.store');
     Route::post('/admin/category/edit', 'DestinationController@editCategory')->name('admin.destination.category.edit');
+    Route::post('/admin/category/delete', 'DestinationController@deleteCategory')->name('admin.destination.category.delete');
+    Route::post('/admin/category/check', 'DestinationController@checkCategoryDestination')->name('admin.destination.category.check');
 
     Route::post('/admin/category/title/store', 'DestinationController@storeCategoryTitle')->name('admin.destination.category.title.store');
     Route::post('/admin/category/title/delete', 'DestinationController@deleteCategoryTitle')->name('admin.destination.category.title.delete');
@@ -88,6 +89,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/admin/journal/store/', 'JournalAdminController@storeJournal')->name('admin.journal.store');
     Route::post('/admin/journal/delete', 'JournalAdminController@deleteJournal')->name('admin.journal.delete');
     Route::post('/admin/journal/storeDescriptionImg', 'JournalAdminController@storeDescriptionImgJournal')->name('admin.journal.storeDescriptionImg');
+    Route::post('/admin/journal/checkSeo', 'JournalAdminController@checkSeo')->name('admin.journal.checkSeo');
 
     Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');
 });

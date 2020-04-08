@@ -55,3 +55,11 @@ function commaMoney($_money){
     }
     return $nMoney;
 }
+
+function trueShowForTextArea($text){
+    $breaks = array("<br />","<br>","<br/>");
+    $text = str_ireplace("\r\n", "", $text);
+    $text = str_ireplace($breaks, "\r\n", $text);
+
+    return $text;
+}

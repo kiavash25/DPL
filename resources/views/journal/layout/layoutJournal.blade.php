@@ -37,6 +37,7 @@
             width: 80%;
             height: 100vh;
             overflow-y: auto;
+            overflow-x: hidden;
         }
         .sideNavButton{
             position: absolute;
@@ -45,6 +46,31 @@
             display: none;
             z-index: 5;
         }
+        .navThreeLine1, .navThreeLine2, .navThreeLine3{
+            border-radius: 100px;
+            width: 30px;
+            height: 5px;
+            margin-top: 5px;
+            background-color: black;
+        }
+        .threeLineDiv{
+            padding: 15px 0;
+            margin: 0 16px 0 6px;
+            position: fixed;
+        }
+
+        .change .navThreeLine1 {
+            -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+            transform: rotate(-45deg) translate(-6px, 6px);
+        }
+
+        .change .navThreeLine2 {opacity: 0;}
+
+        .change .navThreeLine3 {
+            -webkit-transform: rotate(45deg) translate(-8px, -8px);
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
         @media (max-width: 1200px) {
             .mainBase{
                 width: 70%;
@@ -73,7 +99,11 @@
 
     <main>
         <div class="mainBase">
-            <button class="sideNavButton" onclick="toggleSideNav()">click</button>
+            <div class="sideNavButton threeLineDiv" onclick="toggleSideNav(this)">
+                <div class="navThreeLine1"></div>
+                <div class="navThreeLine2"></div>
+                <div class="navThreeLine3"></div>
+            </div>
             @yield('body')
         </div>
     </main>
@@ -100,11 +130,32 @@
                 img.css('width', '100%');
                 img.css('height', 'auto');
             }
-
         }
     }
+
 </script>
 
 @yield('script')
+
+<script >
+    $(document).ready(function(){
+        resizeImg('resizeImage');
+        $(window).resize(function(){
+            resizeImg('resizeImage');
+        });
+
+        $('#mainContentDiv').transition({
+            animation  : 'fade up',
+            duration   : '1s',
+        });
+
+        setTimeout(function(){
+            $('#sideContentDiv').transition({
+                animation  : 'fade up',
+                duration   : '1s',
+            });
+        }, 300);
+    });
+</script>
 
 </html>

@@ -13,6 +13,7 @@ use App\models\DestinationTagRelation;
 use App\models\Package;
 use App\models\Tags;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Descriptor\DescriptorInterface;
 
 class DestinationController extends Controller
 {
@@ -110,9 +111,11 @@ class DestinationController extends Controller
         if(isset($request->id)){
             $title = DestinationCategoryTitle::find($request->id);
             if($title != null){
-                DestinationCategoryTitleText::where('titleId', $title->id)->delete();
-                $title->delete();
+                $dest = DestinationCategoryTitleText::where('titleId', $title->id)->get();
+                foreach ($dest as $item)
+                    DestinationCategoryTitleText::deleteWithPic($item->id);
 
+                $title->delete();
                 echo json_encode(['status' => 'ok']);
             }
             else
@@ -124,7 +127,73 @@ class DestinationController extends Controller
         return;
     }
 
+    public function deleteCategory(Request $request)
+    {
+        if(isset($request->id)) {
+            $category = DestinationCategory::find($request->id);
+            if($category != null){
 
+                $destinations = Destination::where('categoryId', $category->id)->get();
+
+                if(count($destinations) != 0) {
+                    echo json_encode(['status' => 'nok3']);
+                    return;
+                }
+
+                $titles = DestinationCategoryTitle::where('categoryId', $category->id)->get();
+                foreach ($titles as $title){
+                    $texts = DestinationCategoryTitleText::where('titleId', $title->id)->get();
+                    foreach ($texts as $text)
+                        DestinationCategoryTitleText::deleteWithPic($text->id);
+
+                    $title->delete();
+                }
+
+                $category->delete();
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function checkCategoryDestination(Request $request)
+    {
+        if(isset($request->id)){
+            $category = DestinationCategory::find($request->id);
+            if($category != null){
+                $error = false;
+                $mainDestinationError = [];
+                $mainDestination = Destination::where('categoryId', $category->id)->get();
+
+                if(count($mainDestination) != 0){
+                    $error = true;
+                    foreach ($mainDestination as $item){
+                        $d = [
+                            'name' => $item->name,
+                            'url' => route('admin.destination.list')
+                        ];
+                        array_push($mainDestinationError, $d);
+                    }
+                }
+
+                if($error)
+                    echo json_encode(['status' => 'nok2', 'main' => $mainDestinationError]);
+                else
+                    echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1' ]);
+        }
+        else
+            echo json_encode(['status' => 'nok' ]);
+
+        return;
+    }
 
     public function listDestination()
     {
@@ -469,53 +538,9 @@ class DestinationController extends Controller
     public function deleteDestination(Request $request)
     {
         if(isset($request->id)){
-            $dest = Destination::find($request->id);
-            if($dest != null){
-                $destTitlesId = DestinationCategoryTitleText::where('destId', $dest->id)->pluck('titleId')->toArray();
-                $location = __DIR__ . '/../../../public/uploaded/destination/' . $dest->id;
-                foreach ($destTitlesId as $item) {
-                    $nLoc = $location . '/' . $item;
-                    if(file_exists($nLoc)){
-                        $scan = scandir($nLoc);
-                        foreach ($scan as $file) {
-                            if(is_file($nLoc . '/' . $file))
-                                unlink($nLoc . '/' . $file);
-                        }
-                        try {
-                            rmdir($nLoc);
-                        }
-                        catch (\Exception $exception){
-                            continue;
-                        }
-                    }
-                }
-
-                DestinationCategoryTitleText::where('destId', $dest->id)->delete();
-
-                DestinationTagRelation::where('destId', $dest->id)->delete();
-                $pics = DestinationPic::where('destId', $dest->id)->get();
-                foreach ($pics as $item){
-                    \File::delete('uploaded/destination/' . $item->destId . '/' . $item->pic);
-                    $item->delete();
-                }
-
-                if($dest->video != null)
-                    \File::delete('uploaded/destination/' . $dest->id . '/' . $dest->video);
-                if($dest->podcast != null)
-                    \File::delete('uploaded/destination/' . $dest->id . '/' . $dest->podcast);
-                if($dest->pic != null)
-                    \File::delete('uploaded/destination/' . $dest->id . '/' . $dest->pic);
-
-                try {
-                    rmdir($location);
-                }
-                catch (\Exception $exception){
-                    //
-                }
-
-                $dest->delete();
+            $result = Destination::deleteWithPic($request->id);
+            if($result)
                 echo json_encode(['status' => 'ok']);
-            }
             else
                 echo json_encode(['status' => 'nok1']);
         }

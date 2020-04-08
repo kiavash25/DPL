@@ -22,7 +22,9 @@ class CreateJournalsTable extends Migration
             $table->string('pic')->nullable();
             $table->unsignedBigInteger('categoryId');
             $table->string('releaseDate')->default('draft');
-            $table->unsignedBigInteger('userId');
+            $table->text('meta');
+            $table->string('seoTitle', 255);
+            $table->string('keyword', 200);
             $table->timestamps();
         });
     }

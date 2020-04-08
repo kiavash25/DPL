@@ -170,17 +170,21 @@ class MainController extends Controller
 
     public function beforeList(Request $request)
     {
-        if(isset($request->activityId)){
-            session('activityId', $request->activityId);
+        if(isset($request->season)){
+            session(['season' => $request->season]);
+        }
+        if(isset($request->activity)){
+            $activit = Activity::where('name', $request->activity)->first();
+            if($activit != null)
+                session(['activityId' => $activit->id]);
+        }
+        if(isset($request->destination)){
+            $destId = Destination::where('name', $request->destination)->first();
+            if($destId != null)
+                session(['destId' => $destId->id]);
         }
 
-        dd(session()->all());
-//        session([
-//           'destination' => $request->destination,
-//            'season' => $request->season,
-//            'activity' => $request->activity
-//        ]);
-//        return redirect(route())
+        return redirect(route('show.list', ['kind' => 'mainSearch', 'value1' => 'all']));
     }
 
     public function list($kind, $value1)
@@ -241,6 +245,40 @@ class MainController extends Controller
                     $title = $value1 . ' Tag Package List';
                     $guidance = ['value1' => 'Tags', 'value1Url' => '#',
                         'value2' => $value1, 'value2Url' => '#'];
+                    break;
+                default:
+                    $title = '';
+                    if(session('destId')){
+                        $destId = session('destId');
+                        $destination = Destination::find($destId);
+                        if ($destination != null) {
+                            $ci = City::find($destination->cityId);
+                            $guidance = ['value1' => 'Destination', 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => 'All']),
+                                'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug])];
+                            $title = $destination->name . ' Package List';
+                            $destination = $destination->id;
+                        }
+                        session()->forget('destId');
+                    }
+
+                    if(session('season')){
+                        $season = session('season');
+                        session()->forget('season');
+                    }
+
+                    if(session('activityId')){
+                        $activityId = Activity::find(session('activityId'));
+                        if ($activityId != null)
+                            $activity = $activityId->id;
+
+                        session()->forget('activityId');
+                    }
+
+                    if(count($guidance) == 0) {
+                        $guidance = ['value1' => 'All Packages', 'value1Url' => '#'];
+                        $title = 'All Package List';
+                    }
+
                     break;
             }
 

@@ -1,0 +1,23 @@
+
+.image{
+    display: table;
+    clear: both;
+    text-align: center;
+    margin: 1em auto;
+}
+.image-style-align-right{
+    float: right;
+    margin-left: 15px;
+    max-width: 50%;
+}
+.image-style-align-left{
+    float: left;
+    margin-right: 15px;
+    max-width: 50%;
+}
+.image>img{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    min-width: 50px;
+}

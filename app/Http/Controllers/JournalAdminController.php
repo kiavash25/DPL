@@ -193,7 +193,10 @@ class JournalAdminController extends Controller
             }
 
             $journal->name = $request->name;
-            $journal->slug = makeSlug($request->name);
+            $journal->slug = makeSlug($request->slug);
+            $journal->keyword = $request->keyword;
+            $journal->meta = $request->meta;
+            $journal->seoTitle = $request->seoTitle;
             $journal->categoryId= $request->categoryId;
             $journal->summery = $request->summery;
             $journal->text = $request->description;
@@ -287,6 +290,283 @@ class JournalAdminController extends Controller
         }
 
     }
+
+
+    public function checkSeo(Request $request)
+    {
+        $text = $request->description;
+        $meta = $request->meta;
+        $key = $request->keyword;
+        $seoTitle = $request->seoTitle;
+        $slug= $request->slug;
+        $name = $request->name;
+
+        $goodResultCount = 0;
+        $warningResultCount = 0;
+        $badResultCount = 0;
+
+        $badResult = '';
+        $warningResult = '';
+        $goodResult = '';
+
+        $uniqueKey = true;
+        $uniqueSlug = true;
+        $uniqueSeoTitle = true;
+
+
+        if($key != null){
+            $keyWordDensity = SeoController::keywordDensity($text, $key);
+            if($keyWordDensity > 1.5 && $keyWordDensity < 3) {
+                $goodResult .= '<div style="color: green;">Repetition of the keyword in the text is appropriate. : %'. $keyWordDensity .'</div>';
+                $goodResultCount++;
+            }
+            else if($keyWordDensity >= 3){
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">Repetition of the keyword in the text is too high. : %'. $keyWordDensity .'</div>';
+            }
+            else {
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">Repetition of the keyword in the text is too low. : %'. $keyWordDensity .'</div>';
+            }
+
+            $keywordDensityInTitle = SeoController::keywordDensityInTitle($text, $key);
+            if($keywordDensityInTitle > 30) {
+                $goodResult .= '<div style="color: green;">Subheadings include keyword. : %'. $keywordDensityInTitle .'</div>';
+                $goodResultCount++;
+            }
+            else if($keywordDensityInTitle == 9999){
+            }
+            else {
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Use the keyword in the subheadings. : %'. $keywordDensityInTitle .'</div>';
+            }
+
+            $keywordInMeta = SeoController::keywordInText($meta, $key, 'common');
+            if($keywordInMeta > 0) {
+                $goodResult .= '<div style="color: green;">Meta descriptions include keyword</div>';
+                $goodResultCount++;
+            }
+            else {
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Use the keyword in the meta description.</div>';
+            }
+
+            if($slug != null){
+                $keywordInSlugTitle = SeoController::keywordInText($slug, $key, 'slug');
+                if($keywordInSlugTitle > 0) {
+                    $goodResult .= '<div style="color: green;">slug contains the keyword</div>';
+                    $goodResultCount++;
+                }
+                else {
+                    $badResultCount++;
+                    $badResult .= '<div style="color: red;">Use the keyword in slug.</div>';
+                }
+            }
+
+            $keywordInSeoTitle = SeoController::keywordInText($seoTitle, $key, 'common');
+            if($keywordInSeoTitle > 0) {
+                $goodResult .= '<div style="color: green;">SEO title is a keyword term</div>';
+                $goodResultCount++;
+            }
+            else {
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Use the keyword in the SEO title.</div>';
+            }
+
+            $keywordNumWord = count(explode(' ', $key));
+            if($keywordNumWord > 0 && $keywordNumWord <= 6){
+                $goodResult .= '<div style="color: green;">The length of the keyword is appropriate</div>';
+                $goodResultCount++;
+            }
+            else if($keywordNumWord > 6 && $keywordNumWord <= 10){
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">The length of the keyword can be more optimal</div>';
+            }
+            else{
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">The length of the keyword is inappropriate </div>';
+            }
+
+            $keywordSimiralInDataBase = SeoController::uniqueJournalKeyword($key, $request->id);
+            if(!$keywordSimiralInDataBase){
+                $uniqueKey = false;
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Your keyword is completely repetitive. Change it.</div>';
+            }
+            else{
+                $goodResult .= '<div style="color: green;"> Your keyword is completely new.</div>';
+                $goodResultCount++;
+            }
+
+            if($name != null && $name != ''){
+                $keywordInName = SeoController::keywordInText($name, $key, 'common');
+                if($keywordInSeoTitle > 0) {
+                    $goodResult .= '<div style="color: green;">The name contains a key phrase</div>';
+                    $goodResultCount++;
+                }
+                else {
+                    $badResultCount++;
+                    $badResult .= '<div style="color: red;">Use the key phrase in the name.</div>';
+                }
+            }
+
+        }
+
+        if($slug != null){
+            $slugInDataBase = SeoController::uniqueJournalSlug($slug, $request->id);
+            if($slugInDataBase) {
+                $goodResult .= '<div style="color: green;">Slug is unique.</div>';
+                $goodResultCount++;
+            }
+            else {
+                $uniqueSlug = false;
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Your Slug is duplicate. Please change it</div>';
+            }
+        }
+
+        if($seoTitle != null) {
+            $seoTitleInDataBase = SeoController::uniqueJournalSeoTitle($seoTitle, $request->id);
+            if ($seoTitleInDataBase) {
+                $goodResult .= '<div style="color: green;">Seo title is unique.</div>';
+                $goodResultCount++;
+            } else {
+                $uniqueSeoTitle = false;
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Your Seo title is duplicate. Please change it</div>';
+            }
+        }
+
+        if($text != null){
+            $allWordCountInPTotal = SeoController::allWordCountInP($text);
+            $allWordCountInP = $allWordCountInPTotal[0];
+            $parError = $allWordCountInPTotal[1];
+
+            if($allWordCountInP[0] > 300 && $allWordCountInP[0] <= 900){
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;"> Your page is currently considered a post. If you want the article to be considered, change its length to more than 900 words :' . $allWordCountInP[0] . ' word </div>';
+            }
+            else if($allWordCountInP[0] > 900){
+                $goodResult .= '<div style="color: green;">Your page is considered a specialized text or article and is appropriate.:' . $allWordCountInP[0] . ' word</div>';
+                $goodResultCount++;
+            }
+            else{
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #ffb938;">Your text is shorter than 300 words and is not recommended at all. :' . $allWordCountInP[0] . 'کلمه</div>';
+            }
+
+            if(count($allWordCountInP) > 3) {
+                $goodResult .= '<div style="color: green;">The readability of your text is appropriate.</div>';
+                $goodResultCount++;
+            }
+            else {
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">The number of paragraphs in your text is very small and may cause problems in its readability</div>';
+            }
+
+            if($parError != 0){
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">The length of some paragraphs is more than 150 words, which is not recommended. Paragraph: ' . $parError . '</div>';
+            }
+            else{
+                $goodResult .= '<div style="color: green;">The length of the paragraphs is appropriate.</div>';
+                $goodResultCount++;
+            }
+
+            $titles = SeoController::getAllTitles($text);
+            if(count($titles[0]) < 1){
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">Your text is probably not comprehensive, it is better to use subheadings</div>';
+            }
+            else{
+                $goodResult .= '<div style="color: green;">The use of subheadings is appropriate</div>';
+                $goodResultCount++;
+            }
+            if($titles[1] == true){
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Distribution of headlines in the text is not appropriate. </div>';
+            }
+            else{
+                $goodResult .= '<div style="color: green;">Headline distribution is appropriate</div>';
+                $goodResultCount++;
+            }
+
+            $sentences = SeoController::sentencesCount($text);
+            if($sentences > 30){
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">More than thirty percent of sentences have more than twenty words that are not suggested.: %' . $sentences . '</div>';
+            }
+            else{
+                $goodResult .= '<div style="color: green;">All sentences below have 20 words.</div>';
+                $goodResultCount++;
+            }
+
+            $img = SeoController::imgInText($text);
+            if($img[0] > 0){
+                $goodResult .= '<div style="color: green;">Your text has a photo.</div>';
+                $goodResultCount++;
+            }
+            else{
+                $warningResultCount++;
+                $warningResult .= '<div style="color: #dec300;">Your text needs a photo. Without photos, the text is not readable.</div>';
+            }
+            if($img[1] == $img[0]){
+                $goodResult .= '<div style="color: green;">All photos have an alternative phrase.</div>';
+                $goodResultCount++;
+            }
+            else{
+                $badResultCount++;
+                $badResult .= '<div style="color: red;">Define an alternative phrase for all photos.</div>';
+            }
+        }
+        else{
+            $badResultCount++;
+            $badResult .= '<div style="color: red;">It is necessary to write the text of the journal.</div>';
+        }
+
+        $countAllWord = SeoController::myWordsCount($text);
+        $countError = $countAllWord[1];
+        $allWord = $countAllWord[0];
+        if(count($countError) > 0){
+            $warningResultCount++;
+            $warningResult .= '<div style="color: #dec300;">The number of repetitions of the following words is more than 10%:';
+            $warningResult .= '<ul>';
+            foreach ($countError as $item){
+                $warningResult .= '<li>' . $item . '</li>';
+            }
+            $warningResult .= '</ul></div>';
+        }
+
+        if(mb_strlen($seoTitle, 'utf8') <= 85 && mb_strlen($seoTitle, 'utf8') > 60){
+            $goodResultCount++;
+            $goodResult .= '<div style="color: green;">The length of the SEO title is appropriate.</div>';
+        }
+        else if(mb_strlen($seoTitle, 'utf8') > 85){
+            $badResultCount++;
+            $badResult .= '<div style="color: red;">The SEO title is too long: ' . mb_strlen($seoTitle, 'utf8') . ' character</div>';
+        }
+        else{
+            $badResultCount++;
+            $badResult .= '<div style="color: red;">The SEO title is too short: ' . mb_strlen($seoTitle, 'utf8') . ' character</div>';
+        }
+
+        if(mb_strlen($meta, 'utf8') <= 160 && mb_strlen($meta, 'utf8') > 120){
+            $goodResultCount++;
+            $goodResult .= '<div style="color: green;">The length of the meta description is appropriate.</div>';
+        }
+        else if(mb_strlen($meta, 'utf8') > 160){
+            $badResultCount++;
+            $badResult .= '<div style="color: red;">Meta\'s explanation is too long: ' . mb_strlen($meta, 'utf8') . ' character</div>';
+        }
+        else{
+            $badResultCount++;
+            $badResult .= '<div style="color: red;">The meta description is too short: ' . mb_strlen($meta, 'utf8') . ' character</div>';
+        }
+
+        echo json_encode(['status' => 'ok', 'result' => [$badResult, $warningResult, $goodResult, $badResultCount, $warningResultCount, $uniqueKey, $uniqueSlug, $uniqueSeoTitle]]);
+        return;
+    }
+
 
     public function deleteJournal(Request $request)
     {

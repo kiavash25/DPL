@@ -57,11 +57,11 @@
     </a>
 
     <div class="sideNavMenuDiv">
-        <a href="{{route('journal.index')}}" class="sideNavLink sideNavLinkChoose">
+        <a href="{{route('journal.index')}}" class="sideNavLink {{!isset($sideNavChoose) ? 'sideNavLinkChoose' : ''}}">
             Home
         </a>
         @foreach($allCategory as $item)
-            <a href="#" class="sideNavLink">
+            <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="sideNavLink {{isset($sideNavChoose) && $sideNavChoose == $item->name ? 'sideNavLinkChoose' : ''}}">
                 {{$item->name}}
             </a>
         @endforeach
@@ -69,7 +69,9 @@
 </nav>
 
 <script>
-    function toggleSideNav(){
+    function toggleSideNav(x){
+        x.classList.toggle("change");
+
         $('nav').toggleClass('openSideNav');
         $('.mainBase').toggleClass('openMain');
     }

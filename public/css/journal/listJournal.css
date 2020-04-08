@@ -1,0 +1,85 @@
+.listPics{
+    transition: .4s;
+}
+a:hover{
+    outline: none;
+    text-decoration: none;
+}
+.listElemsDiv{
+    display: flex;
+    width: 100%;
+    margin: 15px 0px;
+}
+.listElemsPicDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /*width: 33%;*/
+    position: relative;
+}
+.imageHref{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.listElemsContentDiv{
+    /*width: 67%;*/
+    padding: 20px;
+    background: #f9f9f9;
+}
+.listContentHeight{
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.listElemsSideData{
+    position: absolute;
+    background: white;
+    padding: 20px;
+    right: 0px;
+    top: 15px;
+    text-align: right;
+}
+.listElemsSideDataCategory{
+    margin-top: 15px;
+    font-weight: bold;
+    color: black;
+}
+.listElemsContentName{
+    font-size: 30px;
+    font-weight: 300;
+    display: inline-block;
+    cursor: pointer;
+    transition: .2s;
+    color: black;
+}
+.listElemsContentName:hover{
+    color: #1f75b9;
+}
+.listElemsContentSummery{
+    font-size: 17px;
+    font-weight: 100;
+    margin-top: 25px;
+}
+.listElemsContentButton{
+    margin-top: 35px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 11px;
+    color: white;
+    background-color: #1f75b9;
+    border-radius: 20px;
+    font-size: 17px;
+    width: 140px;
+    text-align: center;
+    transition: .2s;
+}
+.listElemsContentButton:hover{
+    background: #17588c;
+    color: white;
+}

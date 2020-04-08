@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\models\City;
+use App\models\Destination;
+use App\models\Journal;
+use App\models\Package;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function adminIndex(){
+    public function adminIndex()
+    {
+        $destinationCount = Destination::all()->count();
+        $packageCount = Package::all()->count();
+        $journalCount = Journal::all()->count();
 
-        return view('admin.adminIndex');
+        return view('admin.adminIndex', compact(['destinationCount', 'packageCount', 'journalCount']));
     }
 
 

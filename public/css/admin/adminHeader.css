@@ -17,8 +17,8 @@ a:hover{
     display: flex !important;
     font-size: 40px !important;
     font-weight: bold !important;
-    width: 100px !important;
-    height: 100px !important;
+    width: 80px !important;
+    height: 80px !important;
     justify-content: center !important;
     align-items: center !important;
     background: white !important;
@@ -283,6 +283,7 @@ a:hover{
     align-items: center;
     color: black;
     font-weight: bold;
+    flex-direction: column;
 }
 .sideBody{
     padding-top: 15px;

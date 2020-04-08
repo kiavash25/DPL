@@ -23,7 +23,6 @@
                 <tr>
                     <th>name</th>
                     <th>destination</th>
-                    <th>city</th>
                     <th>Season</th>
                     <th>Start Date</th>
                     <th>Activity</th>
@@ -35,7 +34,6 @@
                     <tr id="package{{$item->id}}">
                         <td>{{$item->name}}</td>
                         <td>{{$item->destination->name}}</td>
-                        <td>{{$item->city->name}}</td>
                         <td>{{$item->season}}</td>
                         <td>{{$item->sDate}}</td>
                         <td>{{$item->activity->name}}</td>

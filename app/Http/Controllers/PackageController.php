@@ -22,7 +22,6 @@ class PackageController extends Controller
         $packages = Package::all();
         foreach ($packages as $item){
             $item->destination = Destination::find($item->destId);
-            $item->city = City::find($item->destination->cityId);
             $item->activity = Activity::find($item->mainActivityId);
         }
 
@@ -70,7 +69,7 @@ class PackageController extends Controller
         $destinations = Destination::all()->groupBy('countryId');
 
         foreach ($destinations as $key => $item)
-            $item->country = Countries::find($key);
+            $item->category = DestinationCategory::find($key);
 
         $activity = Activity::all();
 

@@ -58,7 +58,7 @@
         </thead>
         <tbody id="addNewCategory">
         @foreach($category as $item)
-            <tr id="activity{{$item->id}}">
+            <tr id="category{{$item->id}}">
                 <td>
                     <div id="activityName{{$item->id}}">
                         {{$item->name}}
@@ -83,7 +83,7 @@
                     </div>
                     <div style="display: flex">
                         <button class="btn btn-primary" onclick="editCategory(this, {{$item->id}})">edit</button>
-                        <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">delete</button>
+                        <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}', 'category')">delete</button>
                     </div>
                 </td>
             </tr>
@@ -127,23 +127,28 @@
         <div class="modal-dialog modal-lg" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Activity</h4>
+                    <h4 class="modal-title" id="deleteTitle"></h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        Are you sure you want to remove the <span id="deletedActivityName" style="font-weight: bold; color: red"></span>?
+                    <div id="deleteTitleDivText" class="row" style="display: none">
+                        Are you sure you want to remove the <span class="deletedModalName" style="font-weight: bold; color: red"></span>?
+                    </div>
+                    <div id="deleteCategoryDivText" class="row" style="display: none">
+                        Are you sure you want to remove the <span class="deletedModalName" style="font-weight: bold; color: red"></span>?
                     </div>
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: center;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" onclick="checkActivity()" data-dismiss="modal">Yes Deleted</button>
-                    <input type="hidden" id="deletedActivityId">
+                    <button id="deleteCategoryButton" type="button" class="btn btn-danger" onclick="checkCategory()" data-dismiss="modal" style="display: none;">Yes Deleted</button>
+                    <button id="deleteTitleButton" type="button" class="btn btn-danger" onclick="checkActivity()" data-dismiss="modal" style="display: none;">Yes Deleted</button>
+                    <input type="hidden" id="deletedModalId">
                 </div>
             </div>
         </div>
     </div>
-@endsection
+
+    @endsection
 
 @section('script')
     <script>
@@ -201,7 +206,7 @@
         }
 
         function createNew(_id, _name){
-            var text = '<tr id="activity' + _id + '">\n' +
+            var text = '<tr id="category' + _id + '">\n' +
                 '                <td>\n' +
                 '                    <div id="activityName' + _id + '">' + _name + '</div>\n' +
                 '                    <div id="activityNameInput' + _id + '" style="display: none;">\n' +
@@ -218,7 +223,7 @@
                 '                    </div>\n' +
                 '                    <div style="display: flex">\n' +
                 '                        <button class="btn btn-primary" onclick="editCategory(this, ' + _id + ')">edit</button>\n' +
-                '                        <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + _name + '\')">delete</button>\n' +
+                '                        <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + _name + '\', \'category\')">delete</button>\n' +
                 '                    </div>\n' +
                 '                </td>\n' +
                 '            </tr>';
@@ -447,6 +452,104 @@
                     }
                 }
             })
+        }
+
+        function deleteCategory(_id){
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.destination.category.delete")}}',
+                data:{
+                    _token: '{{csrf_token()}}',
+                    id: _id
+                },
+                success: function(response){
+                    try {
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok') {
+                            resultLoading('category deleted', 'success');
+                            $('#category' + _id).remove();
+                        }
+                        else if(response['status'] == 'nok3'){
+                            resultLoading('category have destinations', 'danger');
+                        }
+                        else
+                            resultLoading('Error 9', 'danger');
+                    }
+                    catch (e) {
+                        resultLoading('Error 8', 'danger');
+                    }
+                },
+                error: function(error){
+                    resultLoading('Error 7', 'danger');
+                    console.log(e);
+                }
+            })
+
+        }
+
+        function checkCategory(){
+            let _id = $('#deletedModalId').val();
+            openLoading();
+
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.destination.category.check")}}',
+                data:{
+                    _token: '{{csrf_token()}}',
+                    id: _id
+                },
+                success: function(response){
+                    try {
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok'){
+                            deleteCategory(_id);
+                        }
+                        else if(response['status'] == 'nok2'){
+                            let text = '<div style="display: flex; flex-direction: column; max-height: 65vh; overflow-y: auto">';
+
+                            if(response['main'].length != 0){
+                                text += '<div style="">This Category has Destination And You cant Delete this Category:</div>';
+                                for(i = 0; i < response['main'].length; i++)
+                                    text += '<a href="' + response["main"][i]["url"] + '" target="_blank" style="width: 100%;">' + response["main"][i]["name"] + '</a>';
+                                text += '</div>';
+                                resultLoading(text, 'danger');
+                            }
+                        }
+                        else
+                            resultLoading('Error 1', 'danger');
+                    }
+                    catch (e) {
+                        console.log(e);
+                        resultLoading('Error 2', 'danger');
+                    }
+                },
+                error: function(error){
+                    console.log(e);
+                    resultLoading('Error 3', 'danger');
+                }
+            })
+        }
+
+        function openDeletedModal(_id, _name, _kind){
+
+            if(_kind == 'category'){
+                $('#deleteCategoryButton').css('display', 'block');
+                $('#deleteTitleButton').css('display', 'none');
+
+                $('#deleteCategoryDivText').css('display', 'block');
+                $('#deleteTitleDivText').css('display', 'none');
+            }
+            else{
+                $('#deleteCategoryButton').css('display', 'none');
+                $('#deleteTitleButton').css('display', 'block');
+
+                $('#deleteCategoryDivText').css('display', 'none');
+                $('#deleteTitleDivText').css('display', 'block');
+            }
+
+            $('#deletedModalId').val(_id);
+            $('.deletedModalName').text(_name);
+            $('#deleteModal').modal('show');
         }
     </script>
 @endsection

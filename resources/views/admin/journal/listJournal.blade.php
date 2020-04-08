@@ -85,7 +85,7 @@
     <script>
         $(document).ready( function () {
             $('#table_id').DataTable( {
-                "scrollY":        "200px",
+                "scrollY":        "70vh",
                 "scrollCollapse": true,
                 "paging":         false
             });
