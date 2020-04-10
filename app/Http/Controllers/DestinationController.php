@@ -12,6 +12,7 @@ use App\models\DestinationPic;
 use App\models\DestinationTagRelation;
 use App\models\Package;
 use App\models\Tags;
+use Carbon\FactoryImmutable;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Descriptor\DescriptorInterface;
 
@@ -21,8 +22,10 @@ class DestinationController extends Controller
     public function listCategory()
     {
         $category = DestinationCategory::all();
-        foreach ($category as $item)
+        foreach ($category as $item) {
             $item->title = DestinationCategoryTitle::where('categoryId', $item->id)->get();
+            $item->icon = asset('uploaded/MapIcon/' . $item->icon);
+        }
 
         return view('admin.destination.categoryDestination', compact(['category']));
     }
@@ -32,8 +35,24 @@ class DestinationController extends Controller
         if(isset($request->name)){
             $check = DestinationCategory::where('name', $request->name)->first();
             if($check == null){
+
+                $iconName = null;
+                if(isset($_FILES['icon']) && $_FILES['icon']['error'] == 0){
+                    $location = __DIR__ . '/../../../public/uploaded/MapIcon';
+                    if(!file_exists($location))
+                        mkdir($location);
+
+                    $iconName = time().$_FILES['icon']['name'];
+                    $location .= '/'.$iconName;
+
+                    $picResult = storeImage($_FILES['icon']['tmp_name'], $location);
+                    if(!$picResult)
+                        $iconName = null;
+                }
+
                 $category = new DestinationCategory();
                 $category->name = $request->name;
+                $category->icon = $iconName;
                 $category->save();
 
                 echo json_encode(['status' => 'ok', 'result' => $category->id]);
@@ -48,21 +67,50 @@ class DestinationController extends Controller
     }
 
     public function editCategory(Request $request){
-        if(isset($request->id) && isset($request->name) && $request->name != ''){
-            $check = DestinationCategory::where('name', $request->name)->where('id', '!=', $request->id)->first();
-            if($check == null){
-                $category = DestinationCategory::find($request->id);
-                if($category != null){
-                    $category->name = $request->name;
-                    $category->save();
 
-                    echo json_encode(['status' => 'ok']);
+        if(isset($request->kind) && isset($request->id)){
+            if($request->kind == 'name' && isset($request->name) && $request->name != ''){
+                $check = DestinationCategory::where('name', $request->name)->where('id', '!=', $request->id)->first();
+                if($check == null){
+                    $category = DestinationCategory::find($request->id);
+                    if($category != null){
+                        $category->name = $request->name;
+                        $category->save();
+
+                        echo json_encode(['status' => 'ok']);
+                    }
+                    else
+                        echo json_encode(['status' => 'nok2']);
                 }
                 else
-                    echo json_encode(['status' => 'nok2']);
+                    echo json_encode(['status' => 'nok1']);
+            }
+            else if($request->kind == 'editIcon' && $_FILES['icon'] && $_FILES['icon']['error'] == 0){
+                $category = DestinationCategory::find($request->id);
+                if($category != null){
+                    $location = __DIR__ . '/../../../public/uploaded/MapIcon';
+                    if(!file_exists($location))
+                        mkdir($location);
+
+                    $iconName = time().$_FILES['icon']['name'];
+                    $location .= '/'.$iconName;
+
+                    $picResult = storeImage($_FILES['icon']['tmp_name'], $location);
+                    if($picResult){
+                        if($category->icon != null)
+                            \File::delete('uploaded/MapIcon/' . $category->icon);
+                        $category->icon = $iconName;
+                        $category->save();
+                        echo json_encode(['status' => 'ok']);
+                    }
+                    else
+                        echo json_encode(['status' => 'nok5']);
+                }
+                else
+                    echo json_encode(['status' => 'nok4']);
             }
             else
-                echo json_encode(['status' => 'nok1']);
+                echo json_encode(['status' => 'nok0']);
         }
         else
             echo json_encode(['status' => 'nok']);
@@ -149,6 +197,7 @@ class DestinationController extends Controller
                     $title->delete();
                 }
 
+                \File::delete('uploaded/MapIcon/' . $category->icon);
                 $category->delete();
                 echo json_encode(['status' => 'ok']);
             }

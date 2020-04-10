@@ -52,6 +52,7 @@
         <thead class="thead-dark">
         <tr>
             <th>Category Name</th>
+            <th>Map Icon</th>
             <th>Titles</th>
             <th></th>
         </tr>
@@ -67,7 +68,10 @@
                         <input type="text" id="nameInput{{$item->id}}" class="form-control" value="{{$item->name}}">
                     </div>
                 </td>
-                <td onclick="openTitleTable({{$item->id}})">
+                <td onclick="openIconTable(this, {{$item->id}})" title="Edit Icon" style="cursor:pointer;">
+                    <img src="{{$item->icon}}" style="width: 50px; height: 50px">
+                </td>
+                <td onclick="openTitleTable({{$item->id}})" title="Edit Titles" style="cursor:pointer;">
                     <ul id="ulTitle{{$item->id}}">
                         @foreach($item->title as $title)
                            <li id="title{{$title->id}}">
@@ -94,11 +98,82 @@
 
     <div class="row" style="justify-content: center">
         <div class="addIcon">
-            <i class="fas fa-plus-circle" style="cursor: pointer" onclick="addNewCategory()"></i>
+            <i class="fas fa-plus-circle" style="cursor: pointer" onclick="openNewCategoryModal()"></i>
         </div>
     </div>
 
-    <div class="modal" id="titleModal">
+    <div class="modal" id="newCategoryModal">
+            <div class="modal-dialog modal-lg" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">New Category</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="newName">Category Name</label>
+                                    <input type="text" class="form-control" name="newName" id="newName">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label >Icon (Optional)</label>
+                                <label for="newIcon" class="mainPicSection">
+                                    <img src="#" id="mainIcon" style="display: none; width: auto">
+                                    <i class="fas fa-plus-circle" style="cursor: pointer;"></i>
+                                </label>
+
+                                <input type="file" id="newIcon" style="display: none;" onchange="showPics(this, 'mainIcon', disableIcon)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: center;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="submitCategory()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="editIcon">
+            <div class="modal-dialog modal-lg" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Icon</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label >Last Icon</label>
+                                <label class="mainPicSection">
+                                    <img id="editIconImg" src="" style="width: 200px; height: 200px">
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label >New Icon</label>
+                                <label for="newIconEdit" class="mainPicSection">
+                                    <img src="#" id="mainIconEdit" style="display: none; width: 200px; height: 200px;">
+                                    <i class="fas fa-plus-circle" style="cursor: pointer;"></i>
+                                </label>
+                                <input type="file" id="newIconEdit" style="display: none;" onchange="showPics(this, 'mainIconEdit', disableEditIcon)">
+                                <input type="hidden" id="editIconId" >
+                            </div>
+{{--                            <div class="col-md-12" style="justify-content: center; display: flex">--}}
+{{--                                <button class="btn btn-danger" onclick="deleteIcon()">Delete Icon</button>--}}
+{{--                            </div>--}}
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: center;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="submitEditIcon()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="titleModal">
         <div class="modal-dialog modal-lg" >
             <div class="modal-content">
                 <div class="modal-header">
@@ -152,89 +227,64 @@
 
 @section('script')
     <script>
+        var newIcon;
+        var editedIcon;
         var categories = {!! $category !!};
         var newCategory = 0;
 
-        function addNewCategory(){
-            var text = '<tr id="newCategory' + newCategory + '">\n' +
-                '                    <td>\n' +
-                '                        <div id="newCategoryNameInput' + newCategory + '" style="display: flex;">\n' +
-                '                            <input type="text" id="newNameInput' + newCategory + '" class="form-control">\n' +
-                '                        </div>\n' +
-                '                    </td>\n' +
-                '                    <td>\n' +
-                '                        <div style="display: flex;">\n' +
-                '                            <button class="btn btn-success" onclick="submitNew(' + newCategory + ')">submit</button>\n' +
-                '                            <button class="btn btn-secondary" onclick="cancelNew(' + newCategory + ')">cancel</button>\n' +
-                '                        </div>\n' +
-                '                    </td>\n' +
-                '                </tr>';
-
-            $('#addNewCategory').append(text);
-            newCategory++;
+        function openNewCategoryModal(){
+            $('#newName').val('');
+            $('#newIcon').val('');
+            $('#newCategoryModal').modal('show');
         }
 
-        function cancelNew(_id){
-            $('#newCategory' + _id).remove();
-        }
-
-        function submitNew(_id){
-            var name = $('#newNameInput' + _id).val();
+        function submitCategory(_id){
+            var name = $('#newName').val();
             if(name.trim().length > 1){
+                openLoading();
+
+                var data = new FormData();
+
+                data.append('name', name);
+                data.append('icon', newIcon);
+                data.append('_token', '{{csrf_token()}}');
+
                 $.ajax({
                     type: 'post',
                     url: '{{route("admin.destination.category.store")}}',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        name: name
-                    },
+                    data: data,
+                    processData: false,
+                    contentType: false,
                     success: function(response){
-                        response = JSON.parse(response)
-                        if(response['status'] == 'ok'){
-                            id = response['result'];
-                            cancelNew(_id);
-                            createNew(id, name);
+                        try{
+                            response = JSON.parse(response);
+                            if(response['status'] == 'ok')
+                                window.location.reload();
+                            else if(response['status'] == 'nok1')
+                                resultLoading('The category name is duplicate', 'danger');
                         }
-                        else if(response['status'] == 'nok1')
-                            alert("The category name is duplicate");
+                        catch (e) {
+                            resultLoading('Error 2', 'danger');
+                        }
                     },
                     error: function(err){
-
+                        resultLoading('Error 2', 'danger');
                     }
                 })
             }
         }
 
-        function createNew(_id, _name){
-            var text = '<tr id="category' + _id + '">\n' +
-                '                <td>\n' +
-                '                    <div id="activityName' + _id + '">' + _name + '</div>\n' +
-                '                    <div id="activityNameInput' + _id + '" style="display: none;">\n' +
-                '                        <input type="text" id="nameInput' + _id + '" class="form-control" value="' + _name + '">\n' +
-                '                    </div>\n' +
-                '                </td>\n' +
-                '                <td onclick="openTitleTable(' + _id + ')">\n' +
-                '                    <ul id="ulTitle' + _id + '"></ul>\n' +
-                '                </td>\n' +
-                '                <td>\n' +
-                '                    <div id="editButton' + _id + '" style="display: none;">\n' +
-                '                        <button class="btn btn-success" onclick="doEdit(this, ' + _id + ')">submit</button>\n' +
-                '                        <button class="btn btn-secondary" onclick="cancelEdit(this, ' + _id + ')">cancel</button>\n' +
-                '                    </div>\n' +
-                '                    <div style="display: flex">\n' +
-                '                        <button class="btn btn-primary" onclick="editCategory(this, ' + _id + ')">edit</button>\n' +
-                '                        <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + _name + '\', \'category\')">delete</button>\n' +
-                '                    </div>\n' +
-                '                </td>\n' +
-                '            </tr>';
+        function disableIcon(_icon){
+            newIcon = _icon;
+            $('#mainIcon').css('display', 'block');
+            $('#mainIcon').next().css('display', 'none');
+        }
 
-            categories.push({
-                'id' : _id,
-                'name' : _name,
-                'title' : []
-            })
-
-            $('#addNewCategory').append(text);
+        function openIconTable(_element,_id){
+            var icon = $($(_element).children()[0]).attr('src');
+            $('#editIconImg').attr('src', icon);
+            $('#editIconId').val(_id);
+            $('#editIcon').modal('show');
         }
 
         function editCategory(_element, _id){
@@ -262,6 +312,7 @@
                     data: {
                         _token: '{{csrf_token()}}',
                         name: name,
+                        kind: 'name',
                         id: _id
                     },
                     success: function(response){
@@ -283,6 +334,48 @@
                 })
             }
         }
+
+        function disableEditIcon(_icon){
+            editedIcon = _icon;
+            $('#mainIconEdit').css('display', 'block');
+            $('#mainIconEdit').next().css('display', 'none');
+        }
+
+        function submitEditIcon(){
+            var id = $('#editIconId').val()
+            if(id.trim().length > 0 && editedIcon != 0){
+                openLoading();
+                var data = new FormData();
+
+                data.append('id', id);
+                data.append('icon', editedIcon);
+                data.append('kind', 'editIcon');
+                data.append('_token', '{{csrf_token()}}');
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.destination.category.edit")}}',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        try{
+                            response = JSON.parse(response);
+                            if(response['status'] == 'ok')
+                                window.location.reload();
+                            else
+                                resultLoading('Error 1 In Upadate Icon', 'danger');
+                        }
+                        catch (e) {
+                            resultLoading('Error 2 In Upadate Icon', 'danger');
+                        }
+                    },
+                    error: function () {
+                        resultLoading('Error 3 In Upadate Icon', 'danger');
+                    }
+                })
+            }
+        }
+
 
 
         var titleOpenId = 0;

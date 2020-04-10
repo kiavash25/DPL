@@ -36,12 +36,21 @@ class MainController extends Controller
 
     public function mainPage()
     {
-        $mapDestination = Destination::all();
-        foreach ($mapDestination as $item)
-            $item->category = DestinationCategory::find($item->categoryId);
 
+        $mapDestination = Destination::select(['id', 'slug', 'name', 'lat', 'lng', 'categoryId'])->get()->groupBy('categoryId');
+        foreach ($mapDestination as $key => $item) {
+            $categ = DestinationCategory::find($key);
+            if($categ->icon != null)
+                $mapIcon = asset('uploaded/MapIcon/' . $categ->icon);
+            else
+                $mapIcon = null;
+            foreach ($item as $it)
+                $it->mapIcon = $mapIcon;
+        }
 
-        return \view('main.mainPage', compact(['activities', 'mapDestination']));
+        $catId = DestinationCategory::get()->pluck('id')->toArray();
+        $catId = json_encode($catId);
+        return \view('main.mainPage', compact(['activities', 'mapDestination', 'catId']));
     }
 
     public function aboutUs()

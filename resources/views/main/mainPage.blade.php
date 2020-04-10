@@ -138,7 +138,6 @@
 
         function selectActivity(_element){
             var activityInput = $(_element).text();
-            console.log('in')
 
             if(activityInput.trim().length == 0){
                 activity = 0;
@@ -147,7 +146,6 @@
             else {
                 activity = activityInput;
                 $(_element).parent().prev().val(activityInput);
-                console.log(activityInput)
             }
             closeAllMainSearchSuggestion();
         }
@@ -237,22 +235,33 @@
         }
 
         let mapMarker = {!! $mapDestination !!};
+        let catIds = {!! $catId !!};
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 32.427908, lng: 53.688046},
                 zoom: 5
             });
 
-            for(let i = 0; i < mapMarker.length; i++){
-                mapMarker[i]['marker'] = new google.maps.Marker({
-                    position: new google.maps.LatLng(mapMarker[i]['lat'], mapMarker[i]['lng']),
-                    map: map,
-                    title: mapMarker[i]['name']
-                });
+            for(let i = 0; i < catIds.length; i++){
+                if(mapMarker[catIds[i]]) {
+                    for (let j = 0; j < mapMarker[catIds[i]].length; j++) {
+                        mapMarker[catIds[i]][j]['marker'] = new google.maps.Marker({
+                            position: new google.maps.LatLng(mapMarker[catIds[i]][j]['lat'], mapMarker[catIds[i]][j]['lng']),
+                            title: mapMarker[catIds[i]][j]['name'],
+                            icon: {
+                                url: mapMarker[catIds[i]][j]['mapIcon'], // url
+                                scaledSize: new google.maps.Size(30, 30), // scaled size
+                                origin: new google.maps.Point(0,0), // origin
+                                anchor: new google.maps.Point(15, 30) // anchor
+                            },
+                            map: map,
+                        });
 
-                mapMarker[i]['marker'].addListener('click', function(){
-                    window.open('{{url('destination')}}/' + mapMarker[i]['categoryId'] + '/' + mapMarker[i]['slug']);
-                })
+                        mapMarker[catIds[i]][j]['marker'].addListener('click', function () {
+                            window.open('{{url('destination')}}/' + mapMarker[catIds[i]][j]['categoryId'] + '/' + mapMarker[catIds[i]][j]['slug']);
+                        })
+                    }
+                }
             }
         }
 
