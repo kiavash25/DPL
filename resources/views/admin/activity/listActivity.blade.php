@@ -213,6 +213,8 @@
                             if(response['status'] == 'ok'){
                                 var _id = response['id'];
                                 var reader = new FileReader();
+                                console.log(newIcon)
+                                console.log(reader);
                                 reader.onload = function(e) {
                                     var pic = e.target.result;
                                     text = '<tr id="activity' + _id + '">\n' +
@@ -252,8 +254,39 @@
                             }
                         }
                         catch (e) {
-                            console.log(e)
-                            resultLoading('Problem in server', 'danger');
+                            if(response['status'] == 'ok'){
+                                text = '<tr id="activity' + _id + '">\n' +
+                                    '                    <td>\n' +
+                                    '                        <div id="activityName' + _id + '">' + name + '</div>\n' +
+                                    '                        <div id="activityNameInput' + _id + '" style="display: none;">\n' +
+                                    '                            <input type="text" id="nameInput' + _id + '" class="form-control" value="' + name + '">\n' +
+                                    '                        </div>\n' +
+                                    '                    </td>\n' +
+                                    '                    <td>\n' +
+                                    '                        <div id="activityPic' + _id + '">\n' +
+                                    '                            <img id="activityIcon' + _id + '" src="#" style="width: 50px; height: 50px;">\n' +
+                                    '                        </div>\n' +
+                                    '                        <div id="activityPicInput' + _id + '" style="display: none; cursor: pointer" onclick="showEditIcon(this, ' + _id + ')">\n' +
+                                    '                            <img id="picInputShow' + _id + '" src="#" style="width: 50px; height: 50px; cursor: pointer">\n' +
+                                    '                        </div>\n' +
+                                    '                    </td>\n' +
+                                    '                    <td>\n' +
+                                    '                        <div style="display: none;">\n' +
+                                    '                            <button class="btn btn-success" onclick="submitEdit(this, ' + _id + ')">submit</button>\n' +
+                                    '                            <button class="btn btn-secondary" onclick="cancelEdit(this, ' + _id + ')">cancel</button>\n' +
+                                    '                        </div>\n' +
+                                    '                        <div style="display: flex">\n' +
+                                    '                            <button class="btn btn-primary" onclick="editActivity(this, ' + _id + ')">edit</button>\n' +
+                                    '                            <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + name + '\')">delete</button>\n' +
+                                    '                        </div>\n' +
+                                    '                    </td>\n' +
+                                    '                </tr>';
+
+                                $('#tableBody').append(text);
+                                resultLoading('Activity Stored', 'success');
+                            }
+                            else
+                                resultLoading('Problem in server', 'danger');
                         }
                     },
                     error: function(response){

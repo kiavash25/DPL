@@ -32,7 +32,6 @@ class PackageController extends Controller
     {
         $kind = 'new';
         $destinations = Destination::all()->groupBy('categoryId');
-
         foreach ($destinations as $key => $item)
             $item->category = DestinationCategory::find($key);
 
@@ -66,8 +65,7 @@ class PackageController extends Controller
         $package->sidePic = $sideImage;
 
         $kind = 'edit';
-        $destinations = Destination::all()->groupBy('countryId');
-
+        $destinations = Destination::all()->groupBy('categoryId');
         foreach ($destinations as $key => $item)
             $item->category = DestinationCategory::find($key);
 
@@ -134,12 +132,14 @@ class PackageController extends Controller
             }
 
             PackageActivityRelations::where('packageId', $pack->id)->delete();
-            foreach ($request->sideActivity as $item){
-                if($item != $pack->mainActivityId){
-                    $newAct = new PackageActivityRelations();
-                    $newAct->packageId = $pack->id;
-                    $newAct->activityId = $item;
-                    $newAct->save();
+            if(isset($request->sideActivity) && count($request->sideActivity) > 0) {
+                foreach ($request->sideActivity as $item) {
+                    if ($item != $pack->mainActivityId) {
+                        $newAct = new PackageActivityRelations();
+                        $newAct->packageId = $pack->id;
+                        $newAct->activityId = $item;
+                        $newAct->save();
+                    }
                 }
             }
 

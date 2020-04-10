@@ -178,7 +178,7 @@
                                     @foreach($destinations as $destination)
                                         <div class="divider"></div>
                                         <div class="header">
-                                            {{$destination->category}}
+                                            {{$destination->category->name}}
                                         </div>
                                         <div class="divider"></div>
                                         @for($i = 0; $i < count($destination); $i++)
@@ -416,8 +416,8 @@
 
 
     <script>
-        var lat = 33.340562481212146;
-        var lng = 54.711382812500005;
+        var lat = 32.427908;
+        var lng = 53.688046;
         var destinations = {!! $allDestination !!};
         var map;
         var marker = 0;
@@ -426,7 +426,7 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: lat, lng: lng},
-                zoom: 2
+                zoom: 5
             });
 
             google.maps.event.addListener(map, 'click', function(event) {
