@@ -4,6 +4,30 @@
 
     <link rel="stylesheet" href="{{asset('css/ckeditor.css')}}">
     <link rel="stylesheet" href="{{asset('css/journal/contentJournal.css')}}">
+    <title>{{isset($journal->setTitle) ? $journal->setTitle : 'DPL'}}</title>
+    <meta content="article" property="og:type"/>
+
+    <meta name="keywords" content="{{$journal->keyword}}">
+    <meta property="og:title" content=" {{$journal->seoTitle}} " />
+    <meta property="og:description" content=" {{$journal->meta}}" />
+    <meta name="twitter:title" content=" {{$journal->seoTitle}} " />
+    <meta name="twitter:description" content=" {{$journal->meta}}" />
+    <meta name="description" content=" {{$journal->meta}}"/>
+    <meta property="article:section" content="article"/>
+    @if(isset($journal->pic))
+        <meta property="og:image" content="{{$journal->pic}}"/>
+        <meta property="og:image:secure_url" content="{{$journal->pic}}"/>
+        <meta property="og:image:width" content="550"/>
+        <meta property="og:image:height" content="367"/>
+        <meta name="twitter:image" content="{{$journal->pic}}"/>
+    @endif
+
+    @if(isset($journal->tag))
+        @foreach($journal->tag as $item)
+            <meta property="article:tag" content="{{$item}}"/>
+        @endforeach
+    @endif
+
 
 @endsection
 

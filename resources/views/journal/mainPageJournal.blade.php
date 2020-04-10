@@ -203,7 +203,7 @@
                     <div class="blogDiv height500">
                         <img src="##image3##" class="resizeImage">
                         <div class="blogDivContentDiv">
-                            <a href="####url3" class="mainSliderContent">
+                            <a href="##url3##" class="mainSliderContent">
                                 <div class="blogContentCategory">
                                     ##category3##
                                 </div>

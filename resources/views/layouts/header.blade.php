@@ -198,7 +198,7 @@
                                 </div>
                                 <div class="navSubListAllCountriesList">
                                     @foreach($item->destination as $desti)
-                                        <a class="navCountries">
+                                        <a href="{{route('show.destination', ['categoryId' => $desti->categoryId, 'slug' => $desti->slug])}}" class="navCountries">
                                             {{$desti->name}}
                                         </a>
                                     @endforeach

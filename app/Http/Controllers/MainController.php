@@ -27,7 +27,7 @@ class MainController extends Controller
     {
         $destCategory = DestinationCategory::all();
         foreach ($destCategory as $item)
-            $item->destination = Destination::where('categoryId', $item->id)->get();
+            $item->destination = Destination::where('categoryId', $item->id)->orderBy('name')->get();
 
         $activitiesList = Activity::all();
 

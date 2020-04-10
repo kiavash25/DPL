@@ -11,20 +11,28 @@ function storeImage($source, $destination){
 }
 
 function compressImage($source, $destination, $quality){
-    $info = getimagesize($source);
 
-    if ($info['mime'] == 'image/jpeg')
-        $image = imagecreatefromjpeg($source);
-    elseif ($info['mime'] == 'image/png')
-        $image = imagecreatefrompng($source);
-
-    try{
-        return imagejpeg($image, $destination, $quality);
+    try {
+        move_uploaded_file($source, $destination);
+        return true;
     }
-    catch (Exception $x) {
+    catch (Exception $x){
         return false;
-//        dd($x);
     }
+//    $info = getimagesize($source);
+//
+//    if ($info['mime'] == 'image/jpeg')
+//        $image = imagecreatefromjpeg($source);
+//    elseif ($info['mime'] == 'image/png')
+//        $image = imagecreatefrompng($source);
+//
+//    try{
+//        return imagejpeg($image, $destination, $quality);
+//    }
+//    catch (Exception $x) {
+//        return false;
+////        dd($x);
+//    }
 }
 
 function makeSlug($name){

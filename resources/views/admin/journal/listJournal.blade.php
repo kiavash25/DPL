@@ -31,7 +31,11 @@
                 <tbody>
                 @foreach($journal as $item)
                     <tr id="journal{{$item->id}}">
-                        <td>{{$item->name}}</td>
+                        <td>
+                            <a href="{{route('journal.show', ['id' => $item->id, 'slug' => $item->slug])}}" target="_blank">
+                                {{$item->name}}
+                            </a>
+                        </td>
                         <td>
                             @if(isset($item->category->name))
                                 {{$item->category->name}}

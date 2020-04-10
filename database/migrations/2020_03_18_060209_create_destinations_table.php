@@ -17,7 +17,7 @@ class CreateDestinationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->unsignedInteger('countryId')->nullable();
             $table->unsignedInteger('cityId')->nullable();
             $table->unsignedInteger('categoryId');

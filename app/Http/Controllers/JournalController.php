@@ -148,6 +148,7 @@ class JournalController extends Controller
         if(count($tags) > 0)
             $journal->tag = Tags::whereIn('id', $tags)->pluck('tag')->toArray();
 
+
         $sideNavChoose = $journal->category;
 
         return view('journal.contentJournal', compact(['journal', 'sideNavChoose']));

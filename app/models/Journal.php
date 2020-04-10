@@ -16,10 +16,15 @@ class Journal extends Model
         else{
             JournalTag::where('journalId', $journal->id)->delete();
             $pics = JournalPic::where('journalId', $journal->id)->get();
+            $location = __DIR__ . '../../public/uploaded/journal';
             foreach ($pics as $pic){
+//                if(is_file($location . '/description/' . $pic->pic))
+//                    unlink($location . '/description/' . $pic->pic);
                 \File::delete('uploaded/journal/description/' . $pic->pic);
                 $pic->delete();
             }
+//            if(is_file($location . '/mainPics/' . $pic->pic))
+//                unlink($location . '/mainPics/' . $pic->pic);
             \File::delete('uploaded/journal/mainPics/' . $journal->pic);
             $journal->delete();
 
