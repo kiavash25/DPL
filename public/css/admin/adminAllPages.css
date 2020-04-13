@@ -143,6 +143,7 @@ hr{
     border-radius: 15px;
     padding: 0px 10px;
 }
+
 @media (max-width: 768px){
     .addTagIcon{
         display: flex;
