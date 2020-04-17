@@ -1,0 +1,141 @@
+.aboutHeader{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.mainContentPackages{
+    display: flex;
+    flex-wrap: wrap;
+}
+.packages{
+    width: 250px;
+    height: 250px;
+    background: #d6d6d6;
+    margin: 10px 0px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: .5s;
+}
+.packageImgDiv{
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border-radius: 8px;
+}
+.packageImg{
+    height: 100%;
+}
+.packageContentDiv{
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    z-index: 1;
+    background-color: #ebeef2;
+    border-radius: 0px 0px 8px 8px;
+    padding: 10px;
+    transition: 0.5s;
+    height: 20%;
+}
+.packageName{
+    font-size: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+.packageDate{
+    display: flex;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1f75b9;
+    border-radius: 50%;
+    color: white;
+    top: -15px;
+    right: -15px;
+    z-index: 1;
+}
+.packageActivity{
+    color: white;
+    position: absolute;
+    background-color: #1f75b9;
+    padding: 3px 10px;
+    top: -20px;
+    left: 0px;
+    border-radius: 4px;
+}
+.packageDescription{
+    overflow: hidden;
+    height: 0%;
+    font-size: 12px;
+    text-align: justify;
+    margin-top: 8px;
+}
+.packageButtonDiv{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0%;
+    transition: .2s;
+    overflow: hidden;
+}
+.packageButton{
+    display: flex;
+    width: 90%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px #1f75b9;
+    color: #1f75b9 !important;
+    overflow: hidden;
+    padding: 3px;
+    transition: .3s;
+}
+.packages:hover .packageContentDiv{
+    height: 100%;
+}
+.packages:hover .packageDescription{
+    height: 64%;
+}
+.packages:hover .packageButtonDiv{
+    height: 20%;
+}
+
+.packageButton:hover{
+    background: #1f75b9;
+    color: white !important;
+}
+.packageSwiper{
+    width: 100%;
+}
+
+
+.swiper-wrapper{
+    display: flex;
+    align-items: center;
+}
+.sliderButton{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background-color: #ebeef2;
+    border-radius: 50%;
+    top: 45%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.nextSlider{
+    right: 15px;
+}
+.prevSlider{
+    left: 15px;
+}

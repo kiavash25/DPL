@@ -45,8 +45,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('journal/show/{id}/{slug?}', 'JournalController@showJournalContent')->name('journal.show');
     Route::get('journal/list/{kind}/{value?}', 'JournalController@listJournal')->name('journal.list');
     Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
-
-
 });
 
 //admin panel

@@ -1,8 +1,8 @@
 @extends('journal.layout.layoutJournal')
 
 @section('head')
-    <link rel="stylesheet" href="{{asset('css/swiper/swiper.css')}}">
     <link rel="stylesheet" href="{{asset('css/journal/mainPageJournal.css')}}">
+    <link rel="stylesheet" href="{{asset('css/swiper/swiper.css')}}">
     <script src="{{asset('js/swiper/swiper.js')}}"></script>
 @endsection
 

@@ -36,20 +36,43 @@ class MainController extends Controller
 
     public function mainPage()
     {
-        $mapDestination = Destination::select(['id', 'slug', 'name', 'lat', 'lng', 'categoryId'])->get()->groupBy('categoryId');
-        foreach ($mapDestination as $key => $item) {
-            $categ = DestinationCategory::find($key);
-            if($categ->icon != null)
-                $mapIcon = asset('uploaded/MapIcon/' . $categ->icon);
-            else
-                $mapIcon = null;
-            foreach ($item as $it)
-                $it->mapIcon = $mapIcon;
+        $destinationCategoryMain = DestinationCategory::get();
+        foreach ($destinationCategoryMain as $categ) {
+            $categ->destination = Destination::where('categoryId', $categ->id)->orderBy('name')->get(['id', 'name', 'slug', 'categoryId', 'pic', 'description']);
+            foreach ($categ->destination as $dest){
+                $dest->pic = asset('uploaded/destination/' . $dest->id . '/' . $dest->pic);
+                $dest->url = route('show.destination', ['slug' => $dest->slug, 'categoryId' => $dest->categoryId]);
+            }
         }
 
-        $catId = DestinationCategory::get()->pluck('id')->toArray();
-        $catId = json_encode($catId);
-        return \view('main.mainPage', compact(['activities', 'mapDestination', 'catId']));
+
+        $today = Carbon::now()->format('Y-m-d');
+        $recentlyPackage = Package::where('sDate', '>', $today)->where('showPack', 1)->orderBy('sDate')->take(5)->get();
+        foreach ($recentlyPackage as $item) {
+            $destPack = Destination::select(['id', 'name', 'slug'])->find($item->destId);
+            $item->mainActivity = Activity::find($item->mainActivityId);
+            $item->pic = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
+            $item->sD = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('d');
+            $item->sM = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('M');
+            if ($destPack != null)
+                $item->url = route('show.package', ['destination' => $destPack->slug, 'slug' => $item->slug]);
+        }
+
+//        $mapDestination = Destination::select(['id', 'slug', 'name', 'lat', 'lng', 'categoryId'])->get()->groupBy('categoryId');
+//        foreach ($mapDestination as $key => $item) {
+//            $categ = DestinationCategory::find($key);
+//            if($categ->icon != null)
+//                $mapIcon = asset('uploaded/MapIcon/' . $categ->icon);
+//            else
+//                $mapIcon = null;
+//            foreach ($item as $it)
+//                $it->mapIcon = $mapIcon;
+//        }
+//
+//        $catId = DestinationCategory::get()->pluck('id')->toArray();
+//        $catId = json_encode($catId);
+//        return \view('main.mainPage', compact(['activities', 'mapDestination', 'catId', 'destinationCategoryMain']));
+        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage']));
     }
 
     public function aboutUs()
