@@ -13,32 +13,43 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+Route::get('locale/{locale}', function ($locale){
+    Session::put('locale', $locale);
+    return redirect()->back();
+});
 
-Route::get('/', 'MainController@mainPage');
+Route::middleware(['web'])->group(function () {
+    Route::get('/', 'MainController@mainPage');
 
-Route::get('/about_us', 'MainController@aboutUs')->name('aboutUs');
+    Route::get('welcome/{local?}', 'MainController@mainPage');
 
-Route::post('beforeList', 'MainController@beforeList')->name('beforeList');
+    Route::get('/about_us', 'MainController@aboutUs')->name('aboutUs');
 
-Route::get('list/{kind}/{value1}/{value2?}/{value3?}', 'MainController@list')->name('show.list');
+    Route::post('beforeList', 'MainController@beforeList')->name('beforeList');
 
-Route::post('getListElems', 'MainController@getListElems')->name('getListElems');
+    Route::get('list/{kind}/{value1}/{value2?}/{value3?}', 'MainController@list')->name('show.list');
 
-Route::get('destination/{categoryId}/{slug}', 'MainController@showDestination')->name('show.destination');
+    Route::post('getListElems', 'MainController@getListElems')->name('getListElems');
 
-Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
+    Route::get('destination/{categoryId}/{slug}', 'MainController@showDestination')->name('show.destination');
 
-Route::post('findDestination', 'AjaxController@findDestination')->name('findDestination');
+    Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
 
-Route::post('search', 'AjaxController@search')->name('search');
+    Route::post('findDestination', 'AjaxController@findDestination')->name('findDestination');
 
-Auth::routes();
+    Route::post('search', 'AjaxController@search')->name('search');
 
-Route::get('journal', 'JournalController@mainPageJournal')->name('journal.index');
-Route::get('journal/show/{id}/{slug?}', 'JournalController@showJournalContent')->name('journal.show');
-Route::get('journal/list/{kind}/{value?}', 'JournalController@listJournal')->name('journal.list');
-Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
+    Auth::routes();
 
+    Route::get('journal', 'JournalController@mainPageJournal')->name('journal.index');
+    Route::get('journal/show/{id}/{slug?}', 'JournalController@showJournalContent')->name('journal.show');
+    Route::get('journal/list/{kind}/{value?}', 'JournalController@listJournal')->name('journal.list');
+    Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
+
+
+});
+
+//admin panel
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/admin', 'AdminController@adminIndex')->name('admin.index');
 

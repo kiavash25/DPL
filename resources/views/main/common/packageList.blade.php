@@ -191,7 +191,7 @@
             $('.swiperSlidePackage').css('height', 'auto');
             $('.swiperSlidePackage').parent().css('overflow-x', 'auto');
             $('.swiperSlidePackage').parent().css('height', '275px');
-            $('.packages').css('margin', '10px 10px');
+            $('.packages').css('margin', '10px 20px');
             if(packageSwiper != 0)
                 packageSwiper.destroy(true, true);
             packageSwiper = 0;

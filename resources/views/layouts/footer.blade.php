@@ -5,7 +5,7 @@
         <div class="footerContent pcFooter">
             <div class="contentRow">
                 <div class="footerContentHeader">
-                    Destinations
+                    {{__('Destinations')}}
                 </div>
                 @foreach($destCategory as $item)
                     <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}" class="footerContentNormal">
@@ -15,7 +15,7 @@
             </div>
             <div class="contentRow">
                 <div class="footerContentHeader">
-                    Activity
+                    {{__('Activities')}}
                 </div>
                 @foreach($activitiesList as $item)
                     <a href="{{url('list/activity/'. $item->name)}}" class="footerContentNormal">
@@ -25,25 +25,25 @@
             </div>
             <div class="contentRow">
                 <div class="footerContentHeader">
-                    Fest & Event
+                    {{__('Fest & Events')}}
                 </div>
             </div>
             <div class="contentRow">
                 <a href="{{route('journal.index')}}" class="footerContentHeader">
-                    Journal
+                    {{__('Journal')}}
                 </a>
                 <a href="{{route('aboutUs')}}" class="footerContentHeader">
-                    About us
+                    {{__('About us')}}
                 </a>
                 <a href="#" class="footerContentHeader">
-                    Contact us
+                    {{__('Contact us')}}
                 </a>
             </div>
 
         </div>
 
         <div class="mobileFooter">
-            <button class="accordion">Destinations</button>
+            <button class="accordion">{{__('Destinations')}}</button>
             <div class="panel">
                 @foreach($destCategory as $item)
                     <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}" class="inPanel">
@@ -52,7 +52,7 @@
                 @endforeach
             </div>
 
-            <button class="accordion">Activity</button>
+            <button class="accordion">{{__('Activities')}}</button>
             <div class="panel">
                 @foreach($activitiesList as $item)
                     <a href="{{url('list/activity/'. $item->name)}}" class="inPanel">
@@ -61,18 +61,18 @@
                 @endforeach
             </div>
 
-            <button class="accordion"> Fest & Event</button>
+            <button class="accordion">{{__('Fest & Events')}}</button>
 
             <a href="{{route('journal.index')}}">
-                <button class="accordion">Journal</button>
+                <button class="accordion">{{__('Journal')}}</button>
             </a>
 
             <a href="{{route('aboutUs')}}">
-                <button class="accordion">About us</button>
+                <button class="accordion">{{__('About us')}}</button>
             </a>
 
             <a href="#">
-                <button class="accordion">Contact us</button>
+                <button class="accordion">{{__('Contact us')}}</button>
             </a>
         </div>
 

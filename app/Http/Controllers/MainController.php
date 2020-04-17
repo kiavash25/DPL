@@ -36,7 +36,6 @@ class MainController extends Controller
 
     public function mainPage()
     {
-
         $mapDestination = Destination::select(['id', 'slug', 'name', 'lat', 'lng', 'categoryId'])->get()->groupBy('categoryId');
         foreach ($mapDestination as $key => $item) {
             $categ = DestinationCategory::find($key);

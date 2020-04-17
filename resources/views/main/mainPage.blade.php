@@ -13,11 +13,16 @@
             padding: 15px 10px;;
         }
     </style>
+
+    @if(app()->getLocale() == 'fa')
+        <link rel="stylesheet" href="{{asset('css/rtl/rtlMainPage.css')}}">
+    @endif
+
 @endsection
 
 @section('body')
     <div class="topSlider">
-        <img class="mainSliderPic" src="{{ asset('images/slider.jpg')}}" alt="">
+        <img class="mainSliderPic resizeImage" src="{{ asset('images/slider.jpg')}}" alt="DPL">
         <div class="textSlider" style="font-family: 'Kaushan Script', cursive; flex-direction: column;">
             It's Time To <span style="font-family: 'Archivo Black', sans-serif; font-size: 100px; color: white"> Travel</span>
         </div>
@@ -32,22 +37,22 @@
                         <div class="navSearchIcon" style="position: absolute; left: 0px">
                             <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
                         </div>
-                        <label class="centerSearchLabel fullLabel" onclick="searchLabelClick(this)" style="right: 0; left: auto; width: 85%">Where to?</label>
+                        <label class="centerSearchLabel fullLabel" onclick="searchLabelClick(this)" style="right: 0; left: auto; width: 85%">{{__('Where to?')}}</label>
                         <input id="centerSearchInputWhere" class="centerSearchInput" name="destination" type="text" onfocus="changeLabelInput(this)" onfocusout="closeAllMainSearchSuggestion()" onkeyup="changeSearchDestination(this)">
 
                         <div id="destinationMainSearch" class="destinationMainSearch"> </div>
                     </label>
 
                     <label for="centerSearchInputSeason" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer">
-                        <label class="centerSearchLabel fullLabel" onclick="changeLabelInputSeason(this)">What season?</label>
+                        <label class="centerSearchLabel fullLabel" onclick="changeLabelInputSeason(this)">{{__('What season?')}}</label>
                         <input id="centerSearchInputSeason" class="centerSearchInput" name="season" type="text" onfocusout="closeAllMainSearchSuggestion()" style="width: 100%; cursor: pointer" readonly>
 
                         <div class="seasonSearch">
-                            <div class="seasons" onclick="selectSeason(this)">Spring</div>
-                            <div class="seasons" onclick="selectSeason(this)">Summer</div>
-                            <div class="seasons" onclick="selectSeason(this)">Fall</div>
-                            <div class="seasons" onclick="selectSeason(this)">Winter</div>
-                            <div class="seasons" onclick="selectSeason(this)" style="width: 100%">
+                            <div class="seasons" onclick="selectSeason(this, 'Spring')">{{__('Spring')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'Summer')">{{__('Summer')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'Fall')">{{__('Fall')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'Winter')">{{__('Winter')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'none')" style="width: 100%">
                                 <i class="fas fa-times"></i>
                             </div>
                         </div>
@@ -55,7 +60,7 @@
                     </label>
 
                     <label for="centerSearchInputActivity" class="col-md-3 whereToSearch" style="border-radius: 0px; cursor: pointer">
-                    <label class="centerSearchLabel fullLabel" onclick="changeLabelInputActivity(this)">What Activity?</label>
+                    <label class="centerSearchLabel fullLabel" onclick="changeLabelInputActivity(this)">{{__('What Activity?')}}</label>
                     <input id="centerSearchInputActivity" name="activity" class="centerSearchInput" type="text" onfocusout="closeAllMainSearchSuggestion()" style="width: 100%; cursor: pointer" readonly>
 
                     <div class="seasonSearch">
@@ -71,7 +76,7 @@
                 </form>
             </div>
             <label class="col-lg-2" style="display: flex; margin: 0; padding: 0px">
-                <button class="btn btn-warning searchButton" onclick="mainSearch()"> Search</button>
+                <button class="btn btn-warning searchButton" onclick="mainSearch()">{{__('Search')}}</button>
             </label>
         </div>
     </div>
@@ -94,7 +99,6 @@
         $(window).resize(function(){
             resizeImg('mainSliderPic');
         });
-
         function searchLabelClick(_element){
             $(_element).next().focus();
         }
@@ -115,15 +119,15 @@
 
         }
 
-        function selectSeason(_element){
-            var text = $(_element).text();
-            if(text.trim().length == 0){
+        function selectSeason(_element, _season){
+            if(_season == 'none'){
                 season = 0;
                 $(_element).parent().prev().val('');
             }
             else {
-                season = text;
-                $(_element).parent().prev().val(season);
+                season = _season;
+                text = $(_element).text();
+                $(_element).parent().prev().val(text);
             }
             closeAllMainSearchSuggestion();
         }
@@ -230,8 +234,6 @@
             if(activity != 'all' || season != 'all' || destination != 'all'){
                 $('#searchForm').submit();
             }
-
-
         }
 
         let mapMarker = {!! $mapDestination !!};
