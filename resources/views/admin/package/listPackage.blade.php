@@ -22,7 +22,8 @@
                 <thead>
                 <tr>
                     <th>name</th>
-                    <th>destination</th>
+                    <th>Draft/Show</th>
+                    <th>Destination</th>
                     <th>Season</th>
                     <th>Start Date</th>
                     <th>Activity</th>
@@ -31,8 +32,9 @@
                 </thead>
                 <tbody>
                 @foreach($packages as $item)
-                    <tr id="package{{$item->id}}">
+                    <tr id="package{{$item->id}}"  style="background: {{$item->showPack == 1 ? '' : '#ffe6e6'}}">
                         <td>{{$item->name}}</td>
+                        <td>{{$item->showPack == 1 ? 'Show' : 'Draft'}}</td>
                         <td>{{$item->destination->name}}</td>
                         <td>{{$item->season}}</td>
                         <td>{{$item->sDate}}</td>

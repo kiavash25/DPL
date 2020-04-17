@@ -91,7 +91,7 @@ class MainController extends Controller
         $content->sidePic = $sideImage;
 
         $today = Carbon::now()->format('Y-m-d');
-        $packages = Package::where('sDate', '>', $today)->where('destId', $content->id)->orderBy('sDate')->take(5)->get();
+        $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->where('destId', $content->id)->orderBy('sDate')->take(5)->get();
         foreach ($packages as $item) {
             $item->mainActivity = Activity::find($item->mainActivityId);
             $item->pic = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
@@ -155,7 +155,7 @@ class MainController extends Controller
         $content->sidePic = $sideImage;
 
         $today = Carbon::now()->format('Y-m-d');
-        $pac = Package::where('id', '!=', $content->id)->where('sDate', '>', $today)->where('destId', $content->destination->id)->orderBy('sDate')->take(5)->get();
+        $pac = Package::where('id', '!=', $content->id)->where('showPack', 1)->where('sDate', '>', $today)->where('destId', $content->destination->id)->orderBy('sDate')->take(5)->get();
         foreach ($pac as $item) {
             $item->mainActivity = Activity::find($item->mainActivityId);
             $item->pic = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
@@ -206,7 +206,7 @@ class MainController extends Controller
             $destinations = Destination::where('categoryId', $category->id)->get();
             foreach ($destinations as $item) {
                 $item->pic = asset('uploaded/destination/' . $item->id . '/' . $item->pic);
-                $item->package = Package::where('destId', $item->id)->where('sDate', '>', $today)->count();
+                $item->package = Package::where('destId', $item->id)->where('showPack', 1)->where('sDate', '>', $today)->count();
             }
 
             $title = 'List of ' . $category->name . ' category destinations';
@@ -382,19 +382,19 @@ class MainController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         switch ($sort){
             case 'nearestDate':
-                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('sDate', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('sDate', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
                 break;
             case 'minConst':
-                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('money', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('money', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
                 break;
             case 'maxConst':
-                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('money', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
+                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('money', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
                 break;
             case 'minDay':
-                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('day', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('day', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
                 break;
             case 'maxDay':
-                $packages = Package::where('sDate', '>', $today)->whereRaw($sqlQuery)->orderBy('day', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
+                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('day', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
                 break;
         }
 

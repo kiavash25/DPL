@@ -120,6 +120,148 @@
                 align-items: center;
             }
         }
+
+        /*on off button   */
+        /* Switch starts here */
+        .rocker {
+            display: inline-block;
+            position: relative;
+            /*
+            SIZE OF SWITCH
+            ==============
+            All sizes are in em - therefore
+            changing the font-size here
+            will change the size of the switch.
+            See .rocker-small below as example.
+            */
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            color: #888;
+            width: 7em;
+            height: 4em;
+            overflow: hidden;
+            border-bottom: 0.5em solid #eee;
+        }
+
+        .rocker-small {
+            font-size: 0.75em; /* Sizes the switch */
+            margin: 1em;
+        }
+
+        .rocker::before {
+            content: "";
+            position: absolute;
+            top: 0.5em;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #999;
+            border: 0.5em solid #eee;
+            border-bottom: 0;
+        }
+
+        .rocker input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-left,
+        .switch-right {
+            cursor: pointer;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 2.5em;
+            width: 3em;
+            transition: 0.2s;
+        }
+
+        .switch-left {
+            height: 2.4em;
+            width: 2.75em;
+            left: 0.85em;
+            bottom: 0.4em;
+            background-color: #ddd;
+            transform: rotate(15deg) skewX(15deg);
+        }
+
+        .switch-right {
+            right: 0.5em;
+            bottom: 0;
+            background-color: #bd5757;
+            color: #fff;
+        }
+
+        .switch-left::before,
+        .switch-right::before {
+            content: "";
+            position: absolute;
+            width: 0.4em;
+            height: 2.45em;
+            bottom: -0.45em;
+            background-color: #ccc;
+            transform: skewY(-65deg);
+        }
+
+        .switch-left::before {
+            left: -0.4em;
+        }
+
+        .switch-right::before {
+            right: -0.375em;
+            background-color: transparent;
+            transform: skewY(65deg);
+        }
+
+        input:checked + .switch-left {
+            background-color: #0084d0;
+            color: #fff;
+            bottom: 0px;
+            left: 0.5em;
+            height: 2.5em;
+            width: 3em;
+            transform: rotate(0deg) skewX(0deg);
+        }
+
+        input:checked + .switch-left::before {
+            background-color: transparent;
+            width: 3.0833em;
+        }
+
+        input:checked + .switch-left + .switch-right {
+            background-color: #ddd;
+            color: #888;
+            bottom: 0.4em;
+            right: 0.8em;
+            height: 2.4em;
+            width: 2.75em;
+            transform: rotate(-15deg) skewX(-15deg);
+        }
+
+        input:checked + .switch-left + .switch-right::before {
+            background-color: #ccc;
+        }
+
+        /* Keyboard Users */
+        input:focus + .switch-left {
+            color: #333;
+        }
+
+        input:checked:focus + .switch-left {
+            color: #fff;
+        }
+
+        input:focus + .switch-left + .switch-right {
+            color: #fff;
+        }
+
+        input:checked:focus + .switch-left + .switch-right {
+            color: #333;
+        }
     </style>
 
     <link rel="stylesheet" type="text/css" href="{{asset('semanticUi/semantic.css')}}">
@@ -152,9 +294,28 @@
         <div class="col-md-12">
 
             <div class="row">
-                <div class="form-group">
-                    <label for="name" class="inputLabel">Package Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Package Name" value="{{isset($package->name) ? $package->name : ''}}">
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label for="name" class="inputLabel">Package Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Package Name" value="{{isset($package->name) ? $package->name : ''}}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="rocker">
+                            <input id="showPack" type="checkbox" {{isset($package->showPack) && $package->showPack == 1 ? 'checked' : ''}}>
+                            <span class="switch-left">
+                                <div style="font-size: 12px">
+                                    Show
+                                </div>
+                            </span>
+                            <span class="switch-right">
+                                <div style="font-size: 12px">
+                                    Draft
+                                </div>
+                            </span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -256,6 +417,12 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="inputLabel" for="cost">Cost</label>
+                                <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : ''}}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="inputLabel" for="cost">Draft</label>
                                 <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : ''}}">
                             </div>
                         </div>
@@ -416,12 +583,12 @@
 
 
     <script>
-        var lat = 32.427908;
-        var lng = 53.688046;
-        var destinations = {!! $allDestination !!};
-        var map;
-        var marker = 0;
-        var packageId = {{isset($package->id) ? $package->id : 0}};
+        let lat = 32.427908;
+        let lng = 53.688046;
+        let destinations = {!! $allDestination !!};
+        let map;
+        let marker = 0;
+        let packageId = {{isset($package->id) ? $package->id : 0}};
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -462,8 +629,8 @@
         }
 
         function changeDestination(_value){
-            var lat;
-            var lng;
+            let lat;
+            let lng;
             for(i = 0; i < destinations.length; i++){
                 if(destinations[i]['id'] == _value){
                     lat = destinations[i]['lat'];
@@ -491,9 +658,9 @@
             $('#lng').val(parseFloat(lng));
         }
 
-        var tagSelected;
+        let tagSelected;
         function findTag(_element){
-            var value = $(_element).val();
+            let value = $(_element).val();
 
             if(value.trim().length != 0){
                 $.ajax({
@@ -507,8 +674,8 @@
                         response = JSON.parse(response);
                         if(response[0] == 'ok'){
                             tagSelected = _element;
-                            var answers = '';
-                            var tags = response[1];
+                            let answers = '';
+                            let tags = response[1];
                             for(i = 0; i < tags.length; i++)
                                 answers += '<div class="tagResult" onclick="setTag(this)">' + tags[i]["tag"] + '</div>';
 
@@ -529,7 +696,7 @@
         }
 
         function setTag(_element){
-            var value = $(_element).text();
+            let value = $(_element).text();
             $(tagSelected).val(value);
 
             $(tagSelected).parent().next().html('');
@@ -553,22 +720,28 @@
         function submitForm(){
             openLoading();
 
-            var name = $('#name').val();
-            var description = $('#description').val();
-            var lat = $('#lat').val();
-            var lng = $('#lng').val();
-            var destinationId = $('#DestinationId').val();
-            var mainActivity = $('#activity').val();
-            var sideActivity = $('#sideActivity').val();
-            var day = $('#day').val();
-            var sDate = $('#sDate').val();
-            var eDate = $('#eDate').val();
-            var cost = $('#cost').val();
-            var season = $('#season').val();
-            var tagsElement = $("input[name*='tags']");
-            var tags = [];
-            var error = '<ul style="text-align: left">';
-            var checkError = '<ul style="text-align: left">' ;
+            let name = $('#name').val();
+            let showPack = $('#showPack:checked').val();
+            if(showPack == undefined)
+                showPack = 0;
+            else
+                showPack = 1;
+
+            let description = $('#description').val();
+            let lat = $('#lat').val();
+            let lng = $('#lng').val();
+            let destinationId = $('#DestinationId').val();
+            let mainActivity = $('#activity').val();
+            let sideActivity = $('#sideActivity').val();
+            let day = $('#day').val();
+            let sDate = $('#sDate').val();
+            let eDate = $('#eDate').val();
+            let cost = $('#cost').val();
+            let season = $('#season').val();
+            let tagsElement = $("input[name*='tags']");
+            let tags = [];
+            let error = '<ul style="text-align: left">';
+            let checkError = '<ul style="text-align: left">' ;
 
             for(i = 0; i < tagsElement.length; i++){
                 if($(tagsElement[i]).val() != null && $(tagsElement[i]).val().trim().length != 0)
@@ -617,7 +790,8 @@
                         sDate: sDate,
                         eDate: eDate,
                         cost: cost,
-                        season: season
+                        season: season,
+                        showPack: showPack
                     },
                     success: function(response){
                         try{
@@ -644,7 +818,7 @@
 
         }
 
-        var myDropzone = new Dropzone("div#dropzone", {
+        let myDropzone = new Dropzone("div#dropzone", {
             url: "{{route('admin.package.storeImg')}}",
             paramName: "pic",
             headers: {
@@ -662,7 +836,7 @@
         }).on('success', function(file, response){
 
             if(response['status'] == 'ok'){
-                var text =  '<div class="col-md-3 uploadedPic">\n' +
+                let text =  '<div class="col-md-3 uploadedPic">\n' +
                     '<img src="' + file['dataURL'] + '" class="uploadedPicImg">\n' +
                     '<div class="uploadedPicHover">\n' +
                     '<button class="btn btn-danger" onclick="deletePic(' + response['id'] + ', this)">delete</button>\n' +
@@ -683,16 +857,16 @@
         function showPic(_input, _kind){
 
             if(_input.files && _input.files[0]){
-                var reader = new FileReader();
+                let reader = new FileReader();
                 reader.onload = function(e) {
-                    var mainPic = e.target.result;
+                    let mainPic = e.target.result;
                     $('#mainPicImg').attr('src', mainPic);
 
                     $('#mainPicImg').css('display', 'none');
                     $('#mainPicImg').next().css('display', 'block');
                     $('#mainPicImg').next().next().css('display', 'none');
 
-                    var data = new FormData();
+                    let data = new FormData();
 
                     data.append('pic', _input.files[0]);
                     data.append('id', packageId);

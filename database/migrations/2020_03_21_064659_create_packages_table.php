@@ -28,7 +28,7 @@ class CreatePackagesTable extends Migration
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
             $table->unsignedInteger('mainActivityId')->nullable();
-
+            $table->tinyInteger('showPack')->default(0);
             $table->timestamps();
         });
     }

@@ -113,6 +113,7 @@ class PackageController extends Controller
             $pack->sDate = $request->sDate;
             $pack->eDate = $request->eDate;
             $pack->money = $request->cost;
+            $pack->showPack = $request->showPack;
             $pack->mainActivityId = $request->mainActivity;
             $pack->save();
 
