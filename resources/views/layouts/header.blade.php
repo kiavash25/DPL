@@ -116,6 +116,10 @@
             <a href="{{url('/')}}">
                 <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="width: 100%">
             </a>
+            <a href="#">
+                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
+            </a>
+
         </div>
 
         @if( !Request::is('/'))

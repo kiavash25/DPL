@@ -21,8 +21,21 @@
     <link rel="stylesheet" href="{{asset('css/common/sliderPacks.css')}}">
 
 
+    <style>
+        .textSlider{
+            font-size: 45px;
+        }
+    </style>
+
     @if(app()->getLocale() == 'fa')
         <link rel="stylesheet" href="{{asset('css/rtl/rtlMainPage.css')}}">
+    @else
+        <style>
+            .textSlider{
+                /*font-family: 'Kaushan Script', cursive;*/
+                font-family: 'Archivo Black', sans-serif;
+            }
+        </style>
     @endif
 
 @endsection
@@ -30,9 +43,10 @@
 @section('body')
     <div class="topSlider">
         <img class="mainSliderPic resizeImage" src="{{ asset('images/slider.jpg')}}" alt="DPL">
-        <div class="textSlider" style="font-family: 'Kaushan Script', cursive; flex-direction: column;">
-            It's Time To <span
-                style="font-family: 'Archivo Black', sans-serif; font-size: 100px; color: white"> Travel</span>
+        <div class="textSlider" style=" flex-direction: column; text-align: center;">
+{{--            It's Time To <span--}}
+{{--                style="font-family: 'Archivo Black', sans-serif; font-size: 100px; color: white"> Travel</span>--}}
+            {{__('Culventure: metamorphosis of travel Experience')}}
         </div>
     </div>
 

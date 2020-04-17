@@ -47,6 +47,8 @@ a:hover{
     margin-top: 1px;
     background-color: #fff;
     width: 150px;
+    display: flex;
+    align-items: center;
 }
 .navUl{
     display: flex;
