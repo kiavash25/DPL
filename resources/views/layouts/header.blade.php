@@ -7,6 +7,37 @@
         }
     @endif
 
+    .destTitles{
+        width: 0%;
+        overflow: hidden;
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        color: white;
+        background: #1f75b9;
+        left: 90%;
+        top: 0px;
+        align-items: center;
+        justify-content: center;
+        transition: .3s;
+        border-radius: 10px;
+    }
+    .navSubListBody:hover{
+        border-radius: 10px;
+    }
+    .navSubListBody:hover .destTitles{
+        width: 100%;
+    }
+    .destTitlesName{
+        color: white;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+    }
+    .destTitlesName:hover{
+        color: white;
+        background: #2b393a;
+    }
 </style>
 
 <div id="backBlackSideNav" class="backBlack" style="display: none">
@@ -113,23 +144,29 @@
             <div class="navThreeLine"></div>
         </div>
         <div class="logoNavDiv">
+            <a href="#" class="mobileHide" style="background-color: #ff2727; padding: 4px 7px; border-radius: 50%; margin-right: 15px">
+                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
+            </a>
             <a href="{{url('/')}}">
                 <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="width: 100%">
-            </a>
-            <a href="#">
-                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
             </a>
 
         </div>
 
         @if( !Request::is('/'))
-            <div class="navSearchBar mobileHide">
-                <div class="navSearchIcon">
-                    <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
+            <div class="searchNavIconInFlag navSearchBar mobileHide" style="margin-right: auto; background: white; margin-left: 0;" onclick="$('.searchBackBlack').show(); inSearch = true; $('#pcSearchHeaderInput').css('display', 'flex'); $('.searchNavInput').focus();">
+                <i class="fas fa-search" style="color: #459ed1"></i>
+
+
+                <div id="pcSearchHeaderInput" class="navSearchBar mobileHide" style="display: none; position: absolute; z-index: 10; width: 400px; left: -20px">
+                    <div class="navSearchIcon">
+                        <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
+                    </div>
+                    <input type="text" class="searchNavInput" placeholder="{{__('Where do you want to go?')}}" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val(''); $('#pcSearchHeaderInput').css('display', 'none')" onkeydown="gollobalSearch(this.value)">
+                    <div class="searchResult"></div>
                 </div>
-                <input type="text" class="searchNavInput" placeholder="{{__('Where do you want to go?')}}" onfocus="$('.searchBackBlack').show(); inSearch = true;" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val('')" onkeydown="gollobalSearch(this.value)">
-                <div class="searchResult"></div>
             </div>
+
         @endif
 
         <div class="navUl">
@@ -144,9 +181,21 @@
                                 <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}"
                                    class="navSubListHeader">{{$item->name}}</a>
                                 @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
-                                    <a href="{{route('show.destination', ['categoryId' => $item->destination[$i]->categoryId, 'slug' => $item->destination[$i]->slug])}}"
-                                       class="navSubListBody">{{$item->destination[$i]->name}}</a>
+                                    <div href="{{$item->destination[$i]->url}}" class="navSubListBody">
+                                        {{$item->destination[$i]->name}}
+                                        <div class="destTitles">
+                                            <a href="{{$item->destination[$i]->url}}" class="destTitlesName">
+                                                See {{$item->destination[$i]->name}}
+                                            </a>
+                                            @foreach($item->destination[$i]->titles as $titles)
+                                                <a href="{{$item->destination[$i]->url . '#' . $titles}}" class="destTitlesName">
+                                                    {{$titles}}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 @endfor
+
                                 @if(count($item->destination) > 6)
                                     <div class="navSubListFooter" onclick="openAllCountryHeader(this)">See all</div>
                                 @endif
@@ -194,13 +243,23 @@
                 </div>
             </div>
             <div class="navLi posRel mobileHide">
-                <a href="{{route('aboutUs')}}" class="navTabName">
-                    {{ __('About us') }}
+                <a href="#" class="navTabName">
+                    {{ __('Accomodation') }}
                 </a>
             </div>
             <div class="navLi posRel mobileHide">
-                <a href="{{url('/')}}" class="navTabName">
-                    {{ __('Contact us') }}
+                <a href="#" class="navTabName">
+                    {{ __('Community') }}
+                </a>
+            </div>
+            <div class="navLi posRel mobileHide">
+                <a href="#" class="navTabName">
+                    {{ __('Nature friend') }}
+                </a>
+            </div>
+            <div class="navLi posRel mobileHide">
+                <a href="{{route('aboutUs')}}" class="navTabName">
+                    {{ __('About us') }}
                 </a>
             </div>
             <div class="navLi posRel mobileHide">

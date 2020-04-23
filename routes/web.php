@@ -100,6 +100,10 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/admin/journal/storeDescriptionImg', 'JournalAdminController@storeDescriptionImgJournal')->name('admin.journal.storeDescriptionImg');
     Route::post('/admin/journal/checkSeo', 'JournalAdminController@checkSeo')->name('admin.journal.checkSeo');
 
+    Route::get('/admin/setting/mainPageSlider', 'SettingController@mainPageSlider')->name('admin.setting.mainPageSlider');
+    Route::post('/admin/setting/mainPageSliderStore', 'SettingController@mainPageSliderStore')->name('admin.setting.mainPageSliderStore');
+    Route::post('/admin/setting/mainPageSliderChangeNumber', 'SettingController@mainPageSliderChangeNumber')->name('admin.setting.mainPageSliderChangeNumber');
+
     Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');
 });
 

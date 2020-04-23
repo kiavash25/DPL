@@ -16,6 +16,9 @@ class CreateDestinationCategoriesTable extends Migration
         Schema::create('destinationCategories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('video', 255)->nullable();
+            $table->string('podcast', 255)->nullable();
             $table->string('icon')->nullable();
         });
     }

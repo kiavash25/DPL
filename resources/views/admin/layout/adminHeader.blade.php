@@ -86,6 +86,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="sideNavTabs">
+            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                Setting
+                <div class="arrow rightArrow"></div>
+            </a>
+            <div class="subSideNavMenu">
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.setting.mainPageSlider')}}">
+                        Main Page Slider
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="sideNavTabs">
             <a class="subSideNavTab"href="{{ route('register') }}">
                 Register New Admin

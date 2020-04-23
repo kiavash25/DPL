@@ -12,6 +12,7 @@ use App\models\DestinationCategoryTitle;
 use App\models\DestinationCategoryTitleText;
 use App\models\DestinationPic;
 use App\models\DestinationTagRelation;
+use App\models\MainPageSlider;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackagePic;
@@ -26,8 +27,15 @@ class MainController extends Controller
     public function __construct()
     {
         $destCategory = DestinationCategory::all();
-        foreach ($destCategory as $item)
+        foreach ($destCategory as $item) {
             $item->destination = Destination::where('categoryId', $item->id)->orderBy('name')->get();
+            foreach ($item->destination as $dest){
+                $titleId = DestinationCategoryTitleText::where('destId', $dest->id)->pluck('titleId')->toArray();
+                $dest->titles = DestinationCategoryTitle::whereIn('id', $titleId)->pluck('name')->toArray();
+
+                $dest->url = route('show.destination', ['categoryId' => $dest->categoryId, 'slug' => $dest->slug]);
+            }
+        }
 
         $activitiesList = Activity::all();
 
@@ -36,6 +44,11 @@ class MainController extends Controller
 
     public function mainPage()
     {
+
+        $mainPageSlider = MainPageSlider::orderByDesc('showNumber')->get();
+        foreach ($mainPageSlider as $item)
+            $item->pic = asset('images/MainSliderPics/' . $item->pic);
+
         $destinationCategoryMain = DestinationCategory::get();
         foreach ($destinationCategoryMain as $categ) {
             $categ->destination = Destination::where('categoryId', $categ->id)->orderBy('name')->get(['id', 'name', 'slug', 'categoryId', 'pic', 'description']);
@@ -72,7 +85,7 @@ class MainController extends Controller
 //        $catId = DestinationCategory::get()->pluck('id')->toArray();
 //        $catId = json_encode($catId);
 //        return \view('main.mainPage', compact(['activities', 'mapDestination', 'catId', 'destinationCategoryMain']));
-        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage']));
+        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage', 'mainPageSlider']));
     }
 
     public function aboutUs()

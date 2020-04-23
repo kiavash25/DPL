@@ -25,6 +25,10 @@
         .textSlider{
             font-size: 45px;
         }
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 
     @if(app()->getLocale() == 'fa')
@@ -42,11 +46,27 @@
 
 @section('body')
     <div class="topSlider">
-        <img class="mainSliderPic resizeImage" src="{{ asset('images/slider.jpg')}}" alt="DPL">
-        <div class="textSlider" style=" flex-direction: column; text-align: center;">
-{{--            It's Time To <span--}}
-{{--                style="font-family: 'Archivo Black', sans-serif; font-size: 100px; color: white"> Travel</span>--}}
+
+        <div class="swiper-container picSliderSwiper">
+            <div class="swiper-wrapper">
+                @foreach($mainPageSlider as $item)
+                    <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
+                        <img class="resizeImage" src="{{$item->pic}}" alt="DPL" style="height: 450px">
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="textSlider" style=" flex-direction: column; text-align: center; z-index: 1; cursor: context-menu;">
             {{__('Culventure: metamorphosis of travel Experience')}}
+
+
+            <div id="nextMainSlider" class="sliderButton nextSlider">
+                <div class="slider arrow right"></div>
+            </div>
+            <div id="prevMainSlider" class="sliderButton prevSlider">
+                <div class="slider arrow left"></div>
+            </div>
         </div>
     </div>
 
@@ -128,7 +148,7 @@
             <div class="mainContentPackages">
                 <div class="swiper-container packageSwiper">
 
-                    <div class="swiper-wrapper" style="padding: 10px 0px">
+                    <div class="swiper-wrapper swiperResize" style="padding: 10px 0px">
                         @foreach($recentlyPackage as $item)
                             <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
                                 <div class=" packages">
@@ -183,7 +203,7 @@
                     <div class="mainContentPackages">
                         <div class="swiper-container packageSwiper">
 
-                            <div class="swiper-wrapper" style="padding: 10px 0px">
+                            <div class="swiper-wrapper swiperResize" style="padding: 10px 0px">
                                 @foreach($categ->destination as $item)
                                     <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
                                         <div class=" packages">
@@ -243,7 +263,7 @@
         function resizePackageSwiper() {
             rowsNum = 0;
             let windowW = $(window).width();
-            let rows = $('.swiper-wrapper');
+            let rows = $('.swiperResize');
             for (item of rows) {
                 packageCount = $(item).children().length;
 
@@ -273,6 +293,25 @@
                 } else {
                     packageSwiper[rowsNum] = new Swiper($(item).parent(), {
                         loop: false,
+                        on: {
+                            init: function(){
+                                $(item).next().next().hide();
+                            },
+                            slideChange: function (){
+                                $(item).next().show();
+                                $(item).next().next().show();
+                            },
+                            reachEnd: function () {
+                                setTimeout(() =>{
+                                    $(item).next().hide();
+                                }, 200);
+                            },
+                            reachBeginning: function () {
+                                setTimeout(() => {
+                                    $(item).next().next().hide();
+                                }, 200);
+                            },
+                        },
                         navigation: {
                             nextEl: $(item).next(),
                             prevEl: $(item).next().next()
@@ -301,6 +340,19 @@
             }
         }
 
+        var swiper = new Swiper('.picSliderSwiper', {
+            loop: true,
+            centeredSlides: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '#nextMainSlider',
+                prevEl: '#prevMainSlider',
+            },
+        });
+
         resizePackageSwiper();
     </script>
 
@@ -311,7 +363,7 @@
         let isOpenSearch = 0;
 
         $(window).resize(function () {
-            resizeImg('mainSliderPic');
+            resizeImg('resizeImage');
         });
 
         function searchLabelClick(_element) {

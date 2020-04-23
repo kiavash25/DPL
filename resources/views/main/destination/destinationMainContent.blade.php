@@ -123,14 +123,6 @@
                 <source src="{{$content->video}}#t=1">
             </video>
         @endif
-        @if($content->podcast)
-            <div class="aboutHeader" style="margin-top: 10px">
-                Podcast
-            </div>
-            <audio id="audioTag" preload="none" controls style="width: 100%; ">
-                <source id="audioSource" src="{{$content->podcast}}">
-            </audio>
-        @endif
     </div>
 </div>
 
@@ -158,8 +150,9 @@
 </div>
 
 <hr>
-@include('main.common.packageList')
-
+<div class="pcHide">
+    @include('main.common.packageList')
+</div>
 <div class="row" style="margin-bottom: 100px; margin-top: 40px; width: 100%;">
     <div class="col-md-12">
         <div id="map" class="map"></div>

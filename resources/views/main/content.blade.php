@@ -91,7 +91,7 @@
             <?php
                 if($kind == 'destination'){
                     $picNum = 8;
-                    $sideNum = 3;
+                    $sideNum = 4;
                 }
                 else{
                     $picNum = 7;
@@ -121,6 +121,7 @@
                         </div>
                     </div>
                 </div>
+
 {{--                <div class="likeButton">--}}
 {{--                    <i class="fas fa-heart likeBack"></i>--}}
 {{--                    <i class="far fa-heart likeBorder" ></i>--}}
