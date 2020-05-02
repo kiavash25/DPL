@@ -20,6 +20,9 @@ class Destination extends Model
             DestinationTagRelation::where('destId', $dest->id)->delete();
             $pics = DestinationPic::where('destId', $dest->id)->get();
             foreach ($pics as $item){
+                \File::delete('uploaded/destination/' . $item->destId . '/list_' . $item->pic);
+                \File::delete('uploaded/destination/' . $item->destId . '/slide_' . $item->pic);
+                \File::delete('uploaded/destination/' . $item->destId . '/min_' . $item->pic);
                 \File::delete('uploaded/destination/' . $item->destId . '/' . $item->pic);
                 $item->delete();
             }
@@ -28,8 +31,12 @@ class Destination extends Model
                 \File::delete('uploaded/destination/' . $dest->id . '/' . $dest->video);
             if($dest->podcast != null)
                 \File::delete('uploaded/destination/' . $dest->id . '/' . $dest->podcast);
-            if($dest->pic != null)
-                \File::delete('uploaded/destination/' . $dest->id . '/' . $dest->pic);
+            if($dest->pic != null) {
+                \File::delete('uploaded/destination/' . $dest->destId . '/list_' . $dest->pic);
+                \File::delete('uploaded/destination/' . $dest->destId . '/slide_' . $dest->pic);
+                \File::delete('uploaded/destination/' . $dest->destId . '/min_' . $dest->pic);
+                \File::delete('uploaded/destination/' . $dest->destId . '/' . $dest->pic);
+            }
 
             try {
                 rmdir($location);

@@ -142,7 +142,7 @@
 
                 </div>
                     <div id="scroleBase" class="col-lg-9" style="margin-bottom: 50px">
-                        <div id="listSample" style="display: flex; flex-wrap: wrap; justify-content: center;">
+                        <div id="listSample" style="display: none; flex-wrap: wrap; justify-content: center;">
                             <div class="row listSectionDiv">
                                     <div class="col-md-4 col-sm-12 picSection">
                                         <img src="##imgUrl##" class="imgList" >
@@ -448,7 +448,8 @@
             function getListElem(){
                 if(listSample == 0) {
                     listSample = $('#listSample').html();
-                    $('#listSample').html('')
+                    $('#listSample').html('');
+                    $('#listSample').css('display', 'flex');
                 }
                 createFilters();
 

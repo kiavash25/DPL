@@ -39,6 +39,9 @@
                 /*font-family: 'Kaushan Script', cursive;*/
                 font-family: 'Archivo Black', sans-serif;
             }
+            .navTabName{
+                font-size: 15px ;
+            }
         </style>
     @endif
 
@@ -518,19 +521,19 @@
     {{--            for (let j = 0; j < mapMarker[catIds[i]].length; j++) {--}}
     {{--                mapMarker[catIds[i]][j]['marker'] = new google.maps.Marker({--}}
     {{--                    position: new google.maps.LatLng(mapMarker[catIds[i]][j]['lat'], mapMarker[catIds[i]][j]['lng']),--}}
-    {{--                    title: mapMarker[catIds[i]][j]['name'],--}}
-    {{--                    icon: {--}}
-    {{--                        url: mapMarker[catIds[i]][j]['mapIcon'], // url--}}
-    {{--                        scaledSize: new google.maps.Size(30, 30), // scaled size--}}
-    {{--                        origin: new google.maps.Point(0,0), // origin--}}
-    {{--                        anchor: new google.maps.Point(15, 30) // anchor--}}
-    {{--                    },--}}
+{{--                        title: mapMarker[catIds[i]][j]['name'],--}}
+{{--                        icon: {--}}
+{{--                            url: mapMarker[catIds[i]][j]['mapIcon'], // url--}}
+{{--                            scaledSize: new google.maps.Size(30, 30), // scaled size--}}
+{{--                            origin: new google.maps.Point(0,0), // origin--}}
+{{--                            anchor: new google.maps.Point(15, 30) // anchor--}}
+{{--                        },--}}
     {{--                    map: map,--}}
     {{--                });--}}
 
-    {{--                mapMarker[catIds[i]][j]['marker'].addListener('click', function () {--}}
-    {{--                    window.open('{{url('destination')}}/' + mapMarker[catIds[i]][j]['categoryId'] + '/' + mapMarker[catIds[i]][j]['slug']);--}}
-    {{--                })--}}
+{{--                    mapMarker[catIds[i]][j]['marker'].addListener('click', function () {--}}
+{{--                        window.open('{{url('destination')}}/' + mapMarker[catIds[i]][j]['categoryId'] + '/' + mapMarker[catIds[i]][j]['slug']);--}}
+{{--                    })--}}
     {{--            }--}}
     {{--        }--}}
     {{--    }--}}

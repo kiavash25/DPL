@@ -135,12 +135,12 @@
         @foreach($content->titles as $key => $item)
             @if($item->text != null)
                 @if($first)
-                    <a class="activeTitle" href="javascript:void(0)" onclick="showDescription(this, {{$item->id}})">{{$item->name}}</a>
+                    <a id="title_{{$item->id}}" class="activeTitle" href="javascript:void(0)" onclick="showDescription(this, {{$item->id}})">{{$item->name}}</a>
                     <?php
                         $first = false;
                     ?>
                 @else
-                    <a href="javascript:void(0)" onclick="showDescription(this, {{$item->id}})">{{$item->name}}</a>
+                    <a id="title_{{$item->id}}" href="javascript:void(0)" onclick="showDescription(this, {{$item->id}})">{{$item->name}}</a>
                 @endif
             @endif
         @endforeach
@@ -165,6 +165,10 @@
     let sticky = navbar.offset().top;
     let stickeNum = 0;
     let descCont;
+    let descriptionTitles = {!! $content->titles !!};
+    let nowUrl = location.href;
+    let selectedTitle = nowUrl.split('#')[1];
+    selectedTitle = decodeURI(selectedTitle);
 
     function myFunction() {
         if(stickeNum == 0)
@@ -212,4 +216,29 @@
         else
             stickeNum = navbar.offset().top;
     });
+
+    $(window).ready(function(){
+        for(let i = 0; i < descriptionTitles.length; i++){
+            if(descriptionTitles[i]['name'] == selectedTitle){
+                let id = descriptionTitles[i]['id'];
+                showDescription($('#title_' + id), id);
+                break;
+            }
+        }
+    });
+
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: {{$content->lat}}, lng: {{$content->lng}}},
+            zoom: 10
+        });
+        marker = new google.maps.Marker({
+            position: {
+                lat: parseFloat( {{$content->lat}} ),
+                lng: parseFloat( {{$content->lng}} )
+            },
+            map: map,
+        })
+    }
 </script>

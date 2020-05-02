@@ -73,7 +73,7 @@
         align-items: baseline;
     }
     .orderDiv{
-
+        display: flex;
     }
     .orderButton{
         display: flex;
@@ -89,10 +89,20 @@
         cursor: pointer;
         transition: .2s;
     }
+    .orderButtonRevers{
+        background: white ;
+        color: #2b393a;
+    }
     .orderButton:hover{
         color: white;
         background: #1f75b9;
     }
+
+    .orderButtonRevers:hover{
+        background: #2b393a;
+        color: white;
+    }
+
     .moneyValue{
         font-size: 35px;
         font-weight: bold;
@@ -110,9 +120,9 @@
 </style>
 
 <div class="sidePicContent">
-    <div class="days">
-        {{$content->day}} Days
-    </div>
+{{--    <div class="days">--}}
+{{--        {{$content->day}} Days--}}
+{{--    </div>--}}
     <h1 class="sidePicHeader">
         {{$content->name}}
     </h1>
@@ -154,16 +164,20 @@
     <div class="moneyAndOrderDiv">
         <div class="moneyDiv">
             <div class="moneyName">
-                US
+                Euro
             </div>
             <div class="moneyValue">
-                ${{$content->money}}
+                €{{$content->money}}
             </div>
         </div>
         <div class="orderDiv">
-            <div class="orderButton">
+            <div class="orderButton" style="width: {{isset($content->brochure) && $content->brochure != null ? '50%' : ''}}">
                 Book Now
             </div>
+            <a class="orderButton orderButtonRevers" href="{{$content->brochure}}"  style="display: {{isset($content->brochure) && $content->brochure != null ? 'flex' : 'none'}}; width: 50%;">
+                Brochure
+            </a>
+
         </div>
     </div>
 </div>

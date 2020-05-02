@@ -262,6 +262,32 @@
         input:checked:focus + .switch-left + .switch-right {
             color: #333;
         }
+
+        .thumbnailPicDiv{
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3px 3px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .thumbnailPicDiv:hover .uploadedPicHover{
+            height: 100%;
+        }
+        .thumbnailPic{
+            width: 100%;
+        }
+        .thumbnailUploadButton{
+            font-size: 30px;
+            border-radius: 20px;
+            background: #d81aef;
+            border-color: #d81aef;
+            color: white;
+            margin-top: 40px;
+        }
     </style>
 
     <link rel="stylesheet" type="text/css" href="{{asset('semanticUi/semantic.css')}}">
@@ -275,6 +301,22 @@
 
     <script src="{{asset('js/calendar/moment.min.js')}}"></script>
     <script src="{{asset('js/calendar/daterangepicker.js')}}"></script>
+
+    <script src="{{asset('js/ckeditor.js')}}"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+
+        .textEditor{
+            height: 30vh;
+            border: solid 1px var(--ck-color-toolbar-border) !important;
+            border-top: none !important;
+            border-radius: 5px !important;
+        }
+    </style>
+
 @endsection
 
 
@@ -322,7 +364,10 @@
             <div class="row marg30">
                 <div class="form-group">
                     <label for="description" class="inputLabel">Package Description</label>
-                    <textarea type="text" id="description" name="description" class="form-control" placeholder="Package Description" rows="6"> {!! isset($package->description) ? $package->description : '' !!}</textarea>
+                    <div class="toolbar-container"></div>
+                    <div id="description" class="textEditor" >
+                        {!! isset($package->description) ? $package->description : '' !!}
+                    </div>
                 </div>
             </div>
 
@@ -385,6 +430,14 @@
             <div class="row marg30">
                 <div class="col-md-6">
                     <div class="row" style="padding: 10px; border: solid lightgray 1px; border-radius: 10px;">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="inputLabel" for="code">Package Code</label>
+                                <input type="text" id="code" name="code" class="form-control" value="{{isset($package->code) ? $package->code : ''}}">
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="season">Season</label>
@@ -396,35 +449,52 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="inputLabel" for="day">Day</label>
-                                <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">
+                                <label class="inputLabel" for="level">Level</label>
+                                <select name="level" id="level" class="form-control">
+                                    <option value="easy" {{isset($package->level) && $package->level == 'easy' ? 'selected' : ''}}>Easy</option>
+                                    <option value="medium" {{isset($package->level) && $package->level == 'medium' ? 'selected' : ''}}>Medium</option>
+                                    <option value="hard" {{isset($package->level) && $package->level == 'hard' ? 'selected' : ''}}>Hard</option>
+                                </select>
                             </div>
                         </div>
+
+{{--                        <div class="col-md-6">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label class="inputLabel" for="day">Day</label>--}}
+{{--                                <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="sDate">Start Date</label>
                                 <input type="text" id="sDate" name="sDate" class="form-control" value="{{isset($package->sDate) ? $package->sDate : ''}}" readonly>
+                                <button class="btn btn-danger" onclick="$('#sDate').val('')">clear Start Date</button>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="inputLabel" for="sDate">End Date</label>
+                                <label class="inputLabel" for="eDate">End Date</label>
                                 <input type="text" id="eDate" name="eDate" class="form-control" value="{{isset($package->eDate) ? $package->eDate : ''}}" readonly>
+                                <button class="btn btn-danger" onclick="$('#eDate').val('')">clear End Date</button>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="inputLabel" for="cost">Cost</label>
+                                <label class="inputLabel" for="cost">Cost (Euro)</label>
                                 <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : ''}}">
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="inputLabel" for="cost">Draft</label>
-                                <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : ''}}">
-                            </div>
+
+                        <div id="brochureDiv" class="col-md-6" style="display: {{isset($package->id) ? 'block' : 'none'}}">
+                            <label class="inputLabel" for="brochure">Brochure</label>
+                            <input type="file" name="brochure" id="brochure" onchange="uploadBrochure(this)">
+                            <a href="{{isset($package->brochureUrl) ? $package->brochureUrl : ''}}">
+                                <button id="brochureName" class="btn btn-success">{{isset($package->brochure) ? $package->brochure : ''}}</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -502,7 +572,28 @@
                     </div>
                 </div>
                 <div class="col-12" style="display: flex; justify-content: center">
-                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Picture</button>
+                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Main Picture</button>
+                </div>
+                <hr>
+                <div class="col-md-12">
+                    <h2>
+                        Thumbnail Picture
+                    </h2>
+                    <div id="thumbnailRow" class="row">
+                        @foreach($package->thumbnail as $item)
+                            <div id="thumbnail_{{$item->id}}" class="thumbnailPicDiv">
+                                <img src="{{$item->pic}}" class="resizeImageClass thumbnailPic">
+                                <div class="uploadedPicHover">
+                                    <button class="btn btn-danger" onclick="deleteThumbnailPic({{$item->id}}, this)">delete</button>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center">
+                            <button id="uploadPicButton" class="btn thumbnailUploadButton" onclick="uploadThumbnailPicModal()">Upload Thumbnail Picture</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -529,6 +620,23 @@
             </div>
         </div>
 
+        <div class="modal" id="uploadThumbnailPic">
+            <div class="modal-dialog modal-xl" style="max-width: 1500px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Upload Thumbnail Pictures</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="dropzoneThumbnail" class="dropzone"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 
@@ -536,6 +644,26 @@
 @section('script')
 
     <script>
+        DecoupledEditor.create( document.querySelector('#description'), {
+            toolbar: [ 'bold', 'italic', 'link' ]
+        }).then( editor => {
+            const toolbarContainer = document.querySelector( 'main .toolbar-container');
+            toolbarContainer.prepend( editor.ui.view.toolbar.element );
+            window.editor = editor ;
+        } )
+            .catch( err => {
+                console.error( err.stack );
+            } );
+
+        $('#sDate').datepicker({
+            dateFormat: "yy-mm-dd"
+
+        });
+        $('#eDate').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+
+
         $('#destination')
             .dropdown({
                 clearable: true,
@@ -548,20 +676,6 @@
             .dropdown({
                 allowAdditions: true
             });
-
-        $(function() {
-
-            $('#sDate').daterangepicker({
-                "autoUpdateInput": false,
-            }, function(start, end, label) {
-                $('#sDate').val(start.format('YYYY-MM-DD'));
-                $('#eDate').val(end.format('YYYY-MM-DD'));
-            });
-
-            $('#eDate').on('click', function(){
-                document.getElementById('sDate').click();
-            })
-        });
 
         function deleteTag(_element){
             $(_element).parent().parent().remove();
@@ -727,9 +841,10 @@
             else
                 showPack = 1;
 
-            let description = $('#description').val();
+            let description = window.editor.getData();
             let lat = $('#lat').val();
             let lng = $('#lng').val();
+            let code = $('#code').val();
             let destinationId = $('#DestinationId').val();
             let mainActivity = $('#activity').val();
             let sideActivity = $('#sideActivity').val();
@@ -738,6 +853,7 @@
             let eDate = $('#eDate').val();
             let cost = $('#cost').val();
             let season = $('#season').val();
+            let level = $('#level').val();
             let tagsElement = $("input[name*='tags']");
             let tags = [];
             let error = '<ul style="text-align: left">';
@@ -751,6 +867,9 @@
             if(name.trim().length == 0)
                 error += '<li style="margin: 15px 0px"> Please Choose Name.</li>';
 
+            if(code.trim().length == 0)
+                error += '<li style="margin: 15px 0px"> Please Choose Code.</li>';
+
             if(destinationId == 0)
                 error += '<li style="margin: 15px 0px"> Please Choose Destination.</li>';
 
@@ -763,8 +882,8 @@
             if(day == 0 )
                 error += '<li style="margin: 15px 0px"> Please specify the number of days.</li>';
 
-            if(sDate.trim().length == 0 || eDate.trim().length == 0)
-                error += '<li style="margin: 15px 0px"> Please specify the start and end dates.</li>';
+            // if(sDate.trim().length == 0 || eDate.trim().length == 0)
+            //     error += '<li style="margin: 15px 0px"> Please specify the start and end dates.</li>';
 
 
             if(error != checkError){
@@ -782,6 +901,7 @@
                         destinationId: destinationId,
                         lat: lat,
                         lng: lng,
+                        code: code,
                         tags: JSON.stringify(tags),
                         id: packageId,
                         mainActivity: mainActivity,
@@ -791,6 +911,7 @@
                         eDate: eDate,
                         cost: cost,
                         season: season,
+                        level: level,
                         showPack: showPack
                     },
                     success: function(response){
@@ -799,10 +920,13 @@
                             if(response['status'] == 'ok'){
                                 packageId = response['id'];
                                 resultLoading('Your Package Stored', 'success', goToImagePage);
-                                $('#pictureSection').css('display', 'flex')
+                                $('#pictureSection').css('display', 'flex');
+                                $('#brochureDiv').css('display', 'block');
                             }
                             else if(response['status'] == 'nok2')
                                 resultLoading('The name of the pack at this destination is a duplicate', 'danger');
+                            else if(response['status'] == 'nok9')
+                                resultLoading('The Code is duplicate', 'danger');
                             else
                                 resultLoading('Please Try Again', 'danger');
                         }
@@ -832,9 +956,8 @@
                     formData.append("id", packageId);
                 });
             },
-
         }).on('success', function(file, response){
-
+            response = JSON.parse(response);
             if(response['status'] == 'ok'){
                 let text =  '<div class="col-md-3 uploadedPic">\n' +
                     '<img src="' + file['dataURL'] + '" class="uploadedPicImg">\n' +
@@ -845,6 +968,36 @@
                 $('#uploadedPic').append(text);
             }
         });
+
+        let myDropzoneThumbnail = new Dropzone("div#dropzoneThumbnail", {
+            url: "{{route('admin.package.storeImg')}}",
+            paramName: "pic",
+            headers: {
+                'X-CSRF-TOKEN': '{{csrf_token()}}'
+            },
+            parallelUploads: 1,
+            acceptedFiles: 'image/*',
+            init: function() {
+                this.on("sending", function(file, xhr, formData){
+                    formData.append("kind", 'thumbnail');
+                    formData.append("id", packageId);
+                });
+            },
+        }).on('success', function(file, response){
+            response = JSON.parse(response);
+            if(response['status'] == 'ok'){
+                let text =  '<div id="thubmnail_' + response['id'] + '" class="thumbnailPicDiv">\n' +
+                            '   <img src="' + file['dataURL'] + '" class="resizeImageClass thumbnailPic">\n' +
+                            '   <div class="uploadedPicHover">\n' +
+                            '       <button class="btn btn-danger" onclick="deleteThumbnailPic(' + response['id'] + ', this)">delete</button>\n' +
+                            '   </div>\n' +
+                            '</div>';
+                $('#thumbnailRow').append(text);
+                resizeImg('resizeImageClass');
+            }
+        });
+
+
 
         function uploadPicModal(){
             $('#uploadPic').modal('show');
@@ -906,7 +1059,65 @@
                 url: '{{route("admin.package.deleteImg")}}',
                 data:{
                     _token: '{{csrf_token()}}',
-                    id: _id
+                    id: _id,
+                    kind: 'side'
+                },
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if(response['status'] == 'ok')
+                        $(_element).parent().parent().remove();
+                }
+            })
+        }
+
+        function uploadBrochure(_element){
+            if(_element.files && _element.files[0]) {
+                var data = new FormData();
+
+                data.append('file', _element.files[0]);
+                data.append('id', packageId);
+                data.append('kind', 'brochure');
+                data.append('_token', '{{csrf_token()}}');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.package.storeVideoAudio")}}',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        try {
+                            response = JSON.parse(response);
+                            if (response['status'] == 'ok') {
+                                $('#brochureName').text(response['name']);
+                                $('#brochureName').parent().attr('href', response['url']);
+                            }
+                        }
+                        catch (e) {
+
+                        }
+                    },
+                    error: function(err){
+                        console.log(err);
+                    }
+                });
+            }
+        }
+
+
+
+        function uploadThumbnailPicModal(){
+            $('#uploadThumbnailPic').modal('show');
+        }
+
+        function deleteThumbnailPic(_id, _element){
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.package.deleteImg")}}',
+                data:{
+                    _token: '{{csrf_token()}}',
+                    id: _id,
+                    kind: 'thumbnail'
                 },
                 success: function (response) {
                     response = JSON.parse(response);

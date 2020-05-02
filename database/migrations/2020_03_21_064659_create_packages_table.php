@@ -27,6 +27,9 @@ class CreatePackagesTable extends Migration
             $table->string('money')->default(0);
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
+            $table->string('level', 10)->default('easy');
+            $table->integer('code');
+            $table->string('brochure')->nullable();
             $table->unsignedInteger('mainActivityId')->nullable();
             $table->tinyInteger('showPack')->default(0);
             $table->timestamps();

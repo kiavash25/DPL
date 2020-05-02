@@ -178,7 +178,7 @@
                     <div class="navListSub">
                         @foreach($destCategory as $item)
                             <div class="navSubListRow">
-                                <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}"
+                                <a href="{{route('show.category', ['categoryName' => $item->name ])}}"
                                    class="navSubListHeader">{{$item->name}}</a>
                                 @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
                                     <div href="{{$item->destination[$i]->url}}" class="navSubListBody">
@@ -217,18 +217,50 @@
                     </div>
                 </div>
             </div>
-            <div class="navLi posRel mobileHide">
+
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
                 <div class="navTabName">
                     {{__('Activities')}}
                 </div>
-                <div class="subList subLisM">
-                    <div class="navSubListRow">
+
+                <div class="subList subLisL">
+                    <div class="navListSub">
                         @foreach($activitiesList as $item)
-                            <a href="{{url('list/activity/'. $item->name)}}"
-                               class="navSubListBody navSubListBodyM">{{$item->name}}</a>
+                            <div class="navSubListRow">
+                                <a href="{{url('list/activity/'. $item->name)}}"
+                                   class="navSubListHeader">{{$item->name}}</a>
+                                @for($i = 0; $i < count($item->packages) && $i < 6; $i++)
+                                    <a href="{{$item->packages[$i]->url}}" class="navSubListBody">
+                                        {{$item->packages[$i]->name}}
+{{--                                        <div class="destTitles">--}}
+{{--                                            <a href="{{$item->packages[$i]->url}}" class="destTitlesName">--}}
+{{--                                                See {{$item->packages[$i]->name}}--}}
+{{--                                            </a>--}}
+{{--                                        </div>--}}
+                                    </a>
+                                @endfor
+
+                                @if(count($item->packages) > 6)
+                                    <div class="navSubListFooter" onclick="openAllCountryHeader(this)">See all</div>
+                                @endif
+                            </div>
+                            <div class="navSubListAllCountries">
+                                <div class="navSubListAllCountriesClose" onclick="closeAllCountry(this)">
+                                    <div class="arrow down closeCountryArrow"></div>
+                                </div>
+                                <div class="navSubListAllCountriesList">
+                                    @foreach($item->packages as $packi)
+                                        <a href="{{$packi->url}}"
+                                           class="navCountries">
+                                            {{$packi->name}}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 </div>
+
             </div>
             <div class="navLi posRel mobileHide">
                 <div class="navTabName">

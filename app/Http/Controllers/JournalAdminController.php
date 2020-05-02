@@ -131,7 +131,7 @@ class JournalAdminController extends Controller
                 mkdir($location);
 
             $location .= '/' . $fileName;
-            if (compressImage($_FILES['file']['tmp_name'], $location, 80)) {
+            if (storeImage($_FILES['file']['tmp_name'], $location)) {
                 if($id != 0){
                     $journal = Journal::find($id);
                     if($journal == null){
@@ -219,7 +219,7 @@ class JournalAdminController extends Controller
 
                 $location .= '/' . $fileName;
 
-                if(compressImage($_FILES['pic']['tmp_name'], $location, 80)){
+                if(storeImage($_FILES['pic']['tmp_name'], $location)){
                     \File::delete('uploaded/journal/mainPics/' . $journal->pic);
                     $journal->pic = $fileName;
                     $journal->save();

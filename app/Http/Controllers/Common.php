@@ -1,5 +1,9 @@
 <?php
 
+use App\models\Activity;
+use App\models\Destination;
+use Carbon\Carbon;
+
 function storeImage($source, $destination){
     try {
         move_uploaded_file($source, $destination);
@@ -41,7 +45,7 @@ function resizeImage($pic, $size){
     try {
         $image = $pic;
         $randNum = random_int(100,999);
-        $fileName = time() . $randNum. '.' . $image->getClientOriginalExtension();;
+        $fileName = time() . $randNum. '.' . $image->getClientOriginalExtension();
 
         foreach ($size as $item){
             $input['imagename'] = $item['name'] .  $fileName ;
@@ -93,4 +97,26 @@ function trueShowForTextArea($text){
     $text = str_ireplace($breaks, "\r\n", $text);
 
     return $text;
+}
+
+function getKindPic($dir, $pic, $kind){
+    $loc = __DIR__ .'/../../../public/' . $dir . '/' . $kind . '_' . $pic;
+    if(is_file($loc) && $kind != '')
+        return asset($dir. '/' . $kind . '_' . $pic);
+    else
+        return asset($dir. '/' . $pic);
+}
+
+function getMinPackage($pack){
+    $destPack = Destination::select(['id', 'name', 'slug'])->find($pack->destId);
+    $pack->mainActivity = Activity::find($pack->mainActivityId);
+    $loc = 'uploaded/packages/' . $pack->id;
+    $pack->pic = getKindPic($loc, $pack->pic, 'min');
+    $pack->description = strip_tags($pack->description);
+    $pack->sD = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('d');
+    $pack->sM = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('M');
+    if ($destPack != null)
+        $pack->url = route('show.package', ['destination' => $destPack->slug, 'slug' => $pack->slug]);
+
+    return $pack;
 }

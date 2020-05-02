@@ -14,6 +14,12 @@
     <script src="{{asset('js/ckeditor.js')}}"></script>
 
     <style>
+        .textEditor{
+            height: 30vh;
+            border: solid 1px var(--ck-color-toolbar-border) !important;
+            border-top: none !important;
+            border-radius: 5px !important;
+        }
         .videoButton{
             cursor: pointer;
             padding: 10px;
@@ -52,7 +58,12 @@
             <div class="row marg30">
                 <div class="form-group">
                     <label for="description" class="inputLabel">Destination Description</label>
-                    <textarea type="text" id="description" name="description" class="form-control" placeholder="Destination Description" rows="6"> {!! isset($destination->description) ? $destination->description : '' !!}</textarea>
+
+                    <div class="toolbar-container"></div>
+                    <div id="description" class="textEditor" >
+                        {!! isset($destination->description) ? $destination->description : '' !!}
+                    </div>
+
                 </div>
             </div>
 
@@ -236,6 +247,17 @@
 @section('script')
 
     <script>
+
+        DecoupledEditor.create( document.querySelector('#description'), {
+            toolbar: [ 'bold', 'italic', 'link' ]
+        }).then( editor => {
+            const toolbarContainer = document.querySelector( 'main .toolbar-container');
+            toolbarContainer.prepend( editor.ui.view.toolbar.element );
+            window.editor = editor ;
+        } )
+            .catch( err => {
+                console.error( err.stack );
+            } );
 
         let descriptionButtonUrl = '{{url("/admin/destination/description")}}';
 
@@ -481,7 +503,7 @@
              openLoading();
 
             var name = $('#name').val();
-            var description = $('#description').val();
+            var description = window.editor.getData();
             var lat = $('#lat').val();
             var lng = $('#lng').val();
             var cityId = $('#cityId').val();
@@ -534,6 +556,8 @@
                             $('#descriptionButton').attr('href', descriptionButtonUrl +'/'+ response[1]);
                             $('#descriptionButton').css('display', 'block');
                         }
+                        else if(response[0] == 'nok2')
+                            resultLoading('Your destination name is duplicate', 'danger');
                         else
                             resultLoading('Please Try Again', 'danger');
                     },
@@ -561,7 +585,7 @@
             },
 
         }).on('success', function(file, response){
-
+            response = JSON.parse(response);
             if(response['status'] == 'ok'){
                 var text =  '<div class="col-md-3 uploadedPic">\n' +
                             '<img src="' + file['dataURL'] + '" class="uploadedPicImg">\n' +
@@ -769,8 +793,8 @@
             }
         }
 
-        // Get the element with id="defaultOpen" and click on it
-        document.getElementById("defaultOpen").click();
+        // // Get the element with id="defaultOpen" and click on it
+        // document.getElementById("defaultOpen").click();
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>
 

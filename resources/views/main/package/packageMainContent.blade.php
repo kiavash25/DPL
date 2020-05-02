@@ -28,6 +28,41 @@
         width: 100%;
         height: 50vh;
     }
+    .thumbnailSection{
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+    .thumbnailDiv{
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        cursor: pointer;
+        transition: .2s;
+        position: relative;
+    }
+    .thumbnailDiv:hover .thumbnailPic{
+        transform: scale(1.1);
+    }
+    .thumbnailDiv:hover .matteBack{
+        background: none;
+    }
+    .matteBack{
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: #00000035;
+        transition: .2s;
+    }
+    .thumbnailPic{
+        width: 100%;
+        transition: .2s;
+    }
 </style>
 
 
@@ -63,7 +98,69 @@
             <div id="map" class="map"></div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12 thumbnailSection">
+            @foreach($content->thumbnails as $item)
+                <div class="thumbnailDiv" onclick="openThumbnailPic({{$item->id}})">
+                    <img src="{{$item->thumbnail}}" class="resizeImage thumbnailPic">
+                    <div class="matteBack"></div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 </div>
 
 @include('main.common.packageList')
+
+<script !src="">
+    let thumbnails = {!! $content->thumbnails !!}
+
+    function openThumbnailPic(_id){
+        let main = [];
+        let main0 = [];
+        let thumb = [];
+        let thumb0 = [];
+        let allow = false;
+
+        for(let i = 0; i < thumbnails.length; i++){
+            if(allow){
+                main.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '" style="max-height: 100%; max-width: 100%;"></div>');
+                thumb.push('<div class="swiper-slide albumePic" style="background-image:url(' + thumbnails[i]["thumbnail"] + '); cursor:pointer;"></div>');
+            }
+            else {
+                if (thumbnails[i]['id'] == _id){
+                    main.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
+                    thumb.push('<div class="swiper-slide albumePic" style="background-image:url(' + thumbnails[i]["thumbnail"] + '); cursor:pointer;"></div>');
+                    allow = true;
+                }
+                else{
+                    main0.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
+                    thumb0.push('<div class="swiper-slide albumePic" style="background-image:url(' + thumbnails[i]["thumbnail"] + '); cursor:pointer;"></div>');
+                }
+            }
+        }
+
+        main = main.concat(main0);
+        thumb = thumb.concat(thumb0);
+
+        createAlbum(main, thumb);
+    }
+
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: {{$content->lat}}, lng: {{$content->lng}}},
+            zoom: 10
+        });
+        marker = new google.maps.Marker({
+            position: {
+                lat: parseFloat( {{$content->lat}} ),
+                lng: parseFloat( {{$content->lng}} )
+            },
+            map: map,
+        })
+    }
+
+</script>
 
