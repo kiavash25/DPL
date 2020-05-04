@@ -21,6 +21,7 @@
         justify-content: center;
         transition: .3s;
         border-radius: 10px;
+        z-index: 1;
     }
     .navSubListBody:hover{
         border-radius: 10px;
@@ -183,7 +184,7 @@
                                 @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
                                     <div href="{{$item->destination[$i]->url}}" class="navSubListBody">
                                         {{$item->destination[$i]->name}}
-                                        <div class="destTitles">
+                                        <div class="destTitles" style="z-index: 9">
                                             <a href="{{$item->destination[$i]->url}}" class="destTitlesName">
                                                 See {{$item->destination[$i]->name}}
                                             </a>
