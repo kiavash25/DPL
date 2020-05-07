@@ -108,7 +108,7 @@
                 @foreach($content->sideInfos as $sideInfo)
                     <div class="activityRow" style="display: flex">
                         <img src="{{$sideInfo->icon}}" style="width: 50px; height: 50px;">
-                        <div style="margin-left: 10px">{{$sideInfo->text}}</div>
+                        <div style="margin-left: 10px; width: calc(100% - 70px);">{{$sideInfo->text}}</div>
                     </div>
                 @endforeach
             </div>

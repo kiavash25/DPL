@@ -43,10 +43,17 @@ class MainController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $activitiesList = Activity::all();
         foreach($activitiesList as $item){
-            $item->packages = Package::where('mainActivityId', $item->id)->where('sDate', '>', $today)->where('showPack', 1)->orderBy('sDate')->get();
+            $item->packages = Package::where('mainActivityId', $item->id)
+                                        ->where('showPack', 1)
+                                        ->where(function ($query) {
+                                            $today = Carbon::now()->format('Y-m-d');
+                                            $query->where('sDate', '>', $today)
+                                                ->orWhereNull('sDate');
+                                        })
+                                        ->orderBy('sDate')->get();
+
             foreach ($item->packages as $pack){
                 $desti = Destination::find($pack->destId);
-
                 $pack->url = route('show.package', ['destination' => $desti->slug, 'slug' => $pack->slug]);
             }
         }
@@ -72,16 +79,15 @@ class MainController extends Controller
 
 
         $today = Carbon::now()->format('Y-m-d');
-        $recentlyPackage = Package::where('sDate', '>', $today)->where('showPack', 1)->orderBy('sDate')->take(5)->get();
-        foreach ($recentlyPackage as $item) {
-            $destPack = Destination::select(['id', 'name', 'slug'])->find($item->destId);
-            $item->mainActivity = Activity::find($item->mainActivityId);
-            $item->pic = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
-            $item->sD = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('d');
-            $item->sM = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('M');
-            if ($destPack != null)
-                $item->url = route('show.package', ['destination' => $destPack->slug, 'slug' => $item->slug]);
-        }
+        $recentlyPackage = Package::where('showPack', 1)
+                                    ->where(function ($query) {
+                                        $today = Carbon::now()->format('Y-m-d');
+                                        $query->where('sDate', '>', $today)
+                                            ->orWhereNull('sDate');
+                                    })
+                                    ->orderBy('sDate')->take(5)->get();
+        foreach ($recentlyPackage as $item)
+            $item = getMinPackage($item);
 
 //        $mapDestination = Destination::select(['id', 'slug', 'name', 'lat', 'lng', 'categoryId'])->get()->groupBy('categoryId');
 //        foreach ($mapDestination as $key => $item) {
@@ -152,7 +158,14 @@ class MainController extends Controller
         $content->slidePic = $slip;
 
         $today = Carbon::now()->format('Y-m-d');
-        $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->where('destId', $content->id)->orderBy('sDate')->take(5)->get();
+        $packages = Package::where('showPack', 1)
+                            ->where('destId', $content->id)
+                            ->where(function ($query) {
+                                $today = Carbon::now()->format('Y-m-d');
+                                $query->where('sDate', '>', $today)
+                                    ->orWhereNull('sDate');
+                            })
+                            ->orderBy('sDate')->take(5)->get();
         foreach ($packages as $item)
             $item = getMinPackage($item);
         $content->packages = $packages;
@@ -234,7 +247,15 @@ class MainController extends Controller
         }
 
         $today = Carbon::now()->format('Y-m-d');
-        $pac = Package::where('id', '!=', $content->id)->where('showPack', 1)->where('sDate', '>', $today)->where('destId', $content->destination->id)->orderBy('sDate')->take(5)->get();
+        $pac = Package::where('id', '!=', $content->id)
+                        ->where('showPack', 1)
+                        ->where(function ($query) {
+                            $today = Carbon::now()->format('Y-m-d');
+                            $query->where('sDate', '>', $today)
+                                ->orWhereNull('sDate');
+                        })
+                        ->where('destId', $content->destination->id)
+                        ->orderBy('sDate')->take(5)->get();
         foreach ($pac as $item)
             $item = getMinPackage($item);
 
@@ -323,7 +344,13 @@ class MainController extends Controller
                 $item->description = strip_tags($item->description);
                 $item->url = route('show.destination', ['categoryId' => $content->id, 'slug' => $item->slug]);
 
-                $p = Package::where('sDate', '>', $today)->where('destId', $item->id)->where('showPack', 1)->orderBy('day', 'DESC')->take(1)->get();
+                $p = Package::where('destId', $item->id)
+                            ->where('showPack', 1)
+                            ->where(function ($query) {
+                                $today = Carbon::now()->format('Y-m-d');
+                                $query->where('sDate', '>', $today)
+                                    ->orWhereNull('sDate');
+                            })->orderBy('day', 'DESC')->take(1)->get();
                 if(count($p) != 0) {
                     $p = getMinPackage($p[0]);
                     array_push($packages, $p);
@@ -380,7 +407,13 @@ class MainController extends Controller
             $destinations = Destination::where('categoryId', $category->id)->get();
             foreach ($destinations as $item) {
                 $item->pic = asset('uploaded/destination/' . $item->id . '/' . $item->pic);
-                $item->package = Package::where('destId', $item->id)->where('showPack', 1)->where('sDate', '>', $today)->count();
+                $item->package = Package::where('destId', $item->id)
+                                        ->where('showPack', 1)
+                                        ->where(function ($query) {
+                                            $today = Carbon::now()->format('Y-m-d');
+                                            $query->where('sDate', '>', $today)
+                                                ->orWhereNull('sDate');
+                                        })->count();
             }
 
             $title = 'List of ' . $category->name . ' category destinations';
@@ -556,21 +589,35 @@ class MainController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         switch ($sort){
             case 'nearestDate':
-                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('sDate', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                $orderBy = 'sDate';
+                $orderType = 'ASC';
                 break;
             case 'minConst':
-                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('money', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                $orderBy = 'money';
+                $orderType = 'ASC';
                 break;
             case 'maxConst':
-                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('money', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
+                $orderBy = 'money';
+                $orderType = 'DESC';
                 break;
             case 'minDay':
-                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('day', 'ASC')->skip(($page - 1) * $take)->take($take)->get();
+                $orderBy = 'day';
+                $orderType = 'ASC';
                 break;
             case 'maxDay':
-                $packages = Package::where('sDate', '>', $today)->where('showPack', 1)->whereRaw($sqlQuery)->orderBy('day', 'DESC')->skip(($page - 1) * $take)->take($take)->get();
+                $orderBy = 'day';
+                $orderType = 'DESC';
                 break;
         }
+        $packages = Package::where('showPack', 1)->whereRaw($sqlQuery)
+            ->where(function ($query) {
+                $today = Carbon::now()->format('Y-m-d');
+                $query->where('sDate', '>', $today)
+                        ->orWhereNull('sDate');
+            })
+            ->orderBy($orderBy, $orderType)
+            ->skip(($page - 1) * $take)
+            ->take($take)->get();
 
         foreach ($packages as $item){
             $item->bad = false;
@@ -584,7 +631,11 @@ class MainController extends Controller
                 $item->destinationUrl = route('show.destination', ['categoryId' => $destination->categoryId, 'slug'=>$destination->slug]);
             }
 
-            $item->circleSDate = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('d') . ' ' . Carbon::createFromFormat('Y-m-d', $item->sDate)->format('M');
+            if($item->sDate != null)
+                $item->circleSDate = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('d') . ' ' . Carbon::createFromFormat('Y-m-d', $item->sDate)->format('M');
+            else
+                $item->circleSDate = 'Call Us';
+
             $item->money = commaMoney($item->money);
             $actv = Activity::find($item->mainActivityId);
             if($actv == null)

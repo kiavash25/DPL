@@ -113,8 +113,14 @@ function getMinPackage($pack){
     $loc = 'uploaded/packages/' . $pack->id;
     $pack->pic = getKindPic($loc, $pack->pic, 'min');
     $pack->description = strip_tags($pack->description);
-    $pack->sD = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('d');
-    $pack->sM = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('M');
+    if($pack->sDate != null) {
+        $pack->sD = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('d');
+        $pack->sM = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('M');
+    }
+    else{
+        $pack->sD = 'Call';
+        $pack->sM = 'Us';
+    }
     if ($destPack != null)
         $pack->url = route('show.package', ['destination' => $destPack->slug, 'slug' => $pack->slug]);
 
