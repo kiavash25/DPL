@@ -87,6 +87,7 @@
                     @endforeach
                 </div>
             </div>
+
             <div class="sideNavTabs">
                 <a href="#" onclick="showSubSideNavMenu(this)">
                     {{__('Activities')}}
@@ -102,30 +103,174 @@
                     @endforeach
                 </div>
             </div>
+
             <div class="sideNavTabs">
-                <a href="#">
+                <a href="#" onclick="showSubSideNavMenu(this)">
                     {{__('Fest & Events')}}
                     <div class="arrow right"></div>
                 </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Sport
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+{{--                            <div class="sideNavTabs">--}}
+{{--                                <a class="subSideNavTab"--}}
+{{--                                   href="#">--}}
+{{--                                    See all--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Bisotun
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Skimo
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Sky running
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Ice climbing
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Local events
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+{{--                            <div class="sideNavTabs">--}}
+{{--                                <a class="subSideNavTab"--}}
+{{--                                   href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">--}}
+{{--                                    See all--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Regions
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Saffron
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Kurdish music
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Rose water
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Street music
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Cherry
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Training
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+{{--                            <div class="sideNavTabs">--}}
+{{--                                <a class="subSideNavTab"--}}
+{{--                                   href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">--}}
+{{--                                    See all--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Youth Camp
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Ski
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Grass Ski
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
             <div class="sideNavTabs">
                 <a href="#">
-                    {{__('Pre-Trips')}}
+                    {{__('Accommodation')}}
                 </a>
             </div>
+
             <div class="sideNavTabs">
-                <a href="#">
+                <a href="#" onclick="showSubSideNavMenu(this)">
                     {{ __('Community') }}
+                    <div class="arrow right"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab">
+                            Topical discussion
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab">
+                            GO-Live
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab">
+                            Your shots
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab">
+                            Our shots
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sideNavTabs">
+                <a href="#">
+                    {{ __('Nature friend') }}
                 </a>
             </div>
+
             <div class="sideNavTabs">
                 <a href="{{route('aboutUs')}}">
                     {{ __('About us') }}
-                </a>
-            </div>
-            <div class="sideNavTabs">
-                <a href="#">
-                    {{ __('Contact us') }}
                 </a>
             </div>
             <div class="sideNavTabs">
@@ -133,6 +278,7 @@
                     {{ __('Journal') }}
                 </a>
             </div>
+
         </div>
     </div>
 </div>
@@ -263,28 +409,91 @@
                 </div>
 
             </div>
-            <div class="navLi posRel mobileHide">
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
                 <div class="navTabName">
                     {{__('Fest & Events')}}
                 </div>
-                <div class="subList subLisM">
-                    <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
-                        <div class="navSubListBody navSubListBodyM">Namibia</div>
+
+                <div class="subList subLisL">
+                    <div class="navListSub">
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Sport
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Bisotun
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Skimo
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Sky running
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Ice Climbing
+                            </a>
+                        </div>
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Local events
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Regions
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Saffron
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Kurdis music
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Rose water
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Street music
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Cherry
+                            </a>
+                        </div>
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Training
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Youth Camp
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Ski
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Grass ski
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="navLi posRel mobileHide">
                 <a href="#" class="navTabName">
-                    {{ __('Accomodation') }}
+                    {{ __('Accommodation') }}
                 </a>
             </div>
             <div class="navLi posRel mobileHide">
                 <a href="#" class="navTabName">
                     {{ __('Community') }}
                 </a>
+
+                <div class="subList subLisM">
+                    <div class="navSubListRow">
+                        <div class="navSubListBody navSubListBodyM">Topical discussion</div>
+                        <div class="navSubListBody navSubListBodyM">GO-Live</div>
+                        <div class="navSubListBody navSubListBodyM">Your shots</div>
+                        <div class="navSubListBody navSubListBodyM">Our shots</div>
+                    </div>
+                </div>
             </div>
+
             <div class="navLi posRel mobileHide">
                 <a href="#" class="navTabName">
                     {{ __('Nature friend') }}
