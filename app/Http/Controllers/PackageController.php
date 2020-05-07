@@ -10,11 +10,13 @@ use App\models\DestinationCategory;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackagePic;
+use App\models\PackageSideInfo;
 use App\models\PackageTag;
 use App\models\PackageTagRelation;
 use App\models\PackageThumbnailsPic;
 use App\models\Tags;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Element;
 
 class PackageController extends Controller
 {
@@ -73,6 +75,11 @@ class PackageController extends Controller
         $package->thumbnail = PackageThumbnailsPic::where('packageId', $package->id)->get();
         foreach ($package->thumbnail as $item)
             $item->pic = asset('uploaded/packages/' . $package->id . '/thumbnail_' . $item->pic);
+
+        $package->sideInfos = PackageSideInfo::where('packageId', $package->id)->get();
+        foreach ($package->sideInfos as $side)
+            $side->icon = asset('uploaded/packages/' . $package->id . '/' . $side->icon);
+
 
 
         $activity = Activity::all();
@@ -307,19 +314,20 @@ class PackageController extends Controller
             if($package != null){
                 PackageTagRelation::where('packageId', $package->id)->delete();
                 PackageActivityRelations::where('packageId', $package->id)->delete();
-                $pics = PackagePic::where('packageId', $package->id)->get();
-                foreach ($pics as $pic){
-                    \File::delete('uploaded/packages/' . $pic->packageId . '/slide_' . $pic->pic);
-                    \File::delete('uploaded/packages/' . $pic->packageId . '/min_' . $pic->pic);
-                    \File::delete('uploaded/packages/' . $pic->packageId . '/list_' . $pic->pic);
-                    \File::delete('uploaded/packages/' . $pic->packageId . '/' . $pic->pic);
-                    $pic->delete();
+                PackagePic::where('packageId', $package->id)->delete();
+                PackageThumbnailsPic::where('packageId', $package->id)->delete();
+
+                $loc = __DIR__ .'/../../../public/uploaded/packages/' . $package->id;
+                if(is_dir($loc)){
+                    $files = scandir($loc);
+                    foreach ($files as $file){
+                        if(is_file($loc . '/' . $file))
+                            unlink($loc . '/' . $file);
+                    }
+                    if(count(scandir($loc)) == 2)
+                        rmdir($loc);
                 }
 
-                \File::delete('uploaded/packages/' . $package->id . '/slide_' . $package->pic);
-                \File::delete('uploaded/packages/' . $package->id . '/min_' . $package->pic);
-                \File::delete('uploaded/packages/' . $package->id . '/list_' . $package->pic);
-                \File::delete('uploaded/packages/' . $package->id . '/' . $package->pic);
                 $package->delete();
                 echo json_encode(['status' => 'ok']);
             }
@@ -391,6 +399,76 @@ class PackageController extends Controller
         }
         else
             echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeSideInfo(Request $request)
+    {
+        if(isset($request->id) && isset($request->icon) && isset($request->text) && isset($request->packageId)){
+            if($request->id == 0)
+                $sideInfo = new PackageSideInfo();
+            else
+                $sideInfo = PackageSideInfo::find($request->id);
+
+            $sideInfo->packageId = $request->packageId;
+            $sideInfo->text = $request->text;
+
+            if(isset($_FILES['icon']) && $_FILES['icon']['error'] == 0){
+                $location = __DIR__ . '/../../../public/uploaded/packages';
+                if(!file_exists($location))
+                    mkdir($location);
+                $location .= '/' . $request->packageId;
+                if(!file_exists($location))
+                    mkdir($location);
+
+                $image = $request->file('icon');
+                $dirs = 'uploaded/packages/' . $request->packageId;
+                $size = [
+                    [
+                        'width' => 50,
+                        'height' => 50,
+                        'name' => '',
+                        'destination' => $dirs
+                    ]
+                ];
+                $fileName = resizeImage($image, $size);
+                if(isset($sideInfo->icon) && $sideInfo->icon != null)
+                    \File::delete('uploaded/packages/' . $request->packageId . '/' . $sideInfo->icon);
+
+                $sideInfo->icon = $fileName;
+            }
+            $sideInfo->save();
+
+            $iconUrl = asset('uploaded/packages/' . $request->packageId . '/' . $sideInfo->icon);
+
+            echo json_encode(['status' => 'ok', 'result' => [
+                    'id' => $sideInfo->id,
+                    'icon' => $iconUrl,
+                    'text' => $sideInfo->text
+                ]
+            ]);
+        }
+        else
+            echo json_encode(['stutus' => 'nok']);
+
+        return;
+    }
+
+    public function deleteSideInfo(Request $request)
+    {
+        if(isset($request->id)){
+            $sideInfo = PackageSideInfo::find($request->id);
+            if($sideInfo != null){
+                \File::delete('uploaded/packages/' . $sideInfo->packageId . '/' . $sideInfo->icon);
+                $sideInfo->delete();
+                echo  json_encode(['status' => 'ok']);
+            }
+            else
+                echo  json_encode(['status' => 'nok1']);
+        }
+        else
+            echo  json_encode(['status' => 'nok']);
 
         return;
     }

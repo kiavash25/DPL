@@ -77,24 +77,44 @@
 
 <div class="mapAndActivityDiv" >
     <div class="row">
-        <div class="col-lg-6">
-            <div class="activitiesDiv">
+        <?php
+            if(count($content->sideInfos) > 0)
+                $mapNum = 6;
+            else
+                $mapNum = 12;
+        ?>
+
+        <div class="col-lg-{{12 - $mapNum}}">
+{{--            <div class="activitiesDiv">--}}
+{{--                <div class="aboutHeader">--}}
+{{--                    Activities In Package:--}}
+{{--                </div>--}}
+{{--                <div class="activityRow">--}}
+{{--                    <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">--}}
+{{--                    {{$content->mainActivity->name}}--}}
+{{--                </div>--}}
+{{--                @foreach($content->activities as $item)--}}
+{{--                    <div class="activityRow">--}}
+{{--                        <img src="{{$item->icon}}" alt="{{$item->name}}" style="width: 50px; height: 50px;">--}}
+{{--                        {{$item->name}}--}}
+{{--                    </div>--}}
+{{--                @endforeach--}}
+{{--            </div>--}}
+
+            <div class="activitiesDiv" style="display: {{count($content->sideInfos) > 0 ? 'block' : 'none'}}">
                 <div class="aboutHeader">
-                    Activities In Package:
+                    Infos:
                 </div>
-                <div class="activityRow">
-                    <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">
-                    {{$content->mainActivity->name}}
-                </div>
-                @foreach($content->activities as $item)
-                    <div class="activityRow">
-                        <img src="{{$item->icon}}" alt="{{$item->name}}" style="width: 50px; height: 50px;">
-                        {{$item->name}}
+                @foreach($content->sideInfos as $sideInfo)
+                    <div class="activityRow" style="display: flex">
+                        <img src="{{$sideInfo->icon}}" style="width: 50px; height: 50px;">
+                        <div style="margin-left: 10px">{{$sideInfo->text}}</div>
                     </div>
                 @endforeach
             </div>
+
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-{{$mapNum}}">
             <div id="map" class="map"></div>
         </div>
     </div>

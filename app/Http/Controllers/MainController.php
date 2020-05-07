@@ -17,6 +17,7 @@ use App\models\MainPageSlider;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackagePic;
+use App\models\PackageSideInfo;
 use App\models\PackageTagRelation;
 use App\models\PackageThumbnailsPic;
 use App\models\Tags;
@@ -194,6 +195,10 @@ class MainController extends Controller
         $content->activities = Activity::whereIn('id', $activities)->get();
         foreach ($content->activities as $item)
             $item->icon = asset('uploaded/activityIcons/' . $item->icon);
+
+        $content->sideInfos = PackageSideInfo::where('packageId', $content->id)->get();
+        foreach ($content->sideInfos as $sideInfo)
+            $sideInfo->icon = asset('uploaded/packages/' . $content->id . '/' . $sideInfo->icon);
 
         $tags = PackageTagRelation::where('packageId', $content->id)->pluck('tagId')->toArray();
         if(count($tags) != 0)

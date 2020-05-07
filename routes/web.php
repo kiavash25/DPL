@@ -86,10 +86,12 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/admin/package/edit/{id}', 'PackageController@editPackage')->name('admin.package.edit');
     Route::post('/admin/package/store', 'PackageController@storePackage')->name('admin.package.store');
     Route::post('/admin/package/storeImg', 'PackageController@storeImgPackage')->name('admin.package.storeImg');
+    Route::post('/admin/package/storeSideInfo', 'PackageController@storeSideInfo')->name('admin.package.storeSideInfo');
     Route::post('/admin/package/storeVideoAudio', 'PackageController@storeVideoAudioPackage')->name('admin.package.storeVideoAudio');
+    Route::post('/admin/package/findTag', 'PackageController@findTagPackage')->name('admin.package.findTag');
+    Route::post('/admin/package/deleteSideInfo', 'PackageController@deleteSideInfo')->name('admin.package.deleteSideInfo');
     Route::post('/admin/package/deleteImg', 'PackageController@deleteImgPackage')->name('admin.package.deleteImg');
     Route::post('/admin/package/delete', 'PackageController@deletePackage')->name('admin.package.delete');
-    Route::post('/admin/package/findTag', 'PackageController@findTagPackage')->name('admin.package.findTag');
 
     Route::get('/admin/activity/list', 'ActivityController@listActivity')->name('admin.activity.list');
     Route::post('/admin/activity/store', 'ActivityController@storeActivity')->name('admin.activity.store');

@@ -288,6 +288,53 @@
             color: white;
             margin-top: 40px;
         }
+        .sideInfoInput{
+            margin: 0px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 80%;
+        }
+        .closeSideInfoIcon{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10px;
+            cursor: pointer;
+            background: red;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            color: white;
+        }
+        .sideInfoRow{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            border: solid gray 1px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .iconSideInfoDiv{
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            color: green;
+            cursor: pointer;
+        }
+        .addNewSideInfo{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            cursor: pointer;
+            color: green;
+        }
     </style>
 
     <link rel="stylesheet" type="text/css" href="{{asset('semanticUi/semantic.css')}}">
@@ -409,16 +456,16 @@
 
                         </div>
                     </div>
-                    <div class="row marg30">
-                        <div class="form-group">
-                            <label for="sideActivity" class="inputLabel">Side Activity</label>
-                            <select id="sideActivity" class="ui fluid search dropdown" multiple="">
-                                @foreach($activity as $item)
-                                    <option value="{{$item->id}}" {{isset($package->activities) && in_array($item->id, $package->activities) ? 'selected' : ''}}>{{$item->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+{{--                    <div class="row marg30">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="sideActivity" class="inputLabel">Side Activity</label>--}}
+{{--                            <select id="sideActivity" class="ui fluid search dropdown" multiple="">--}}
+{{--                                @foreach($activity as $item)--}}
+{{--                                    <option value="{{$item->id}}" {{isset($package->activities) && in_array($item->id, $package->activities) ? 'selected' : ''}}>{{$item->name}}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
                 <div class="col-xl-9">
                     <div id="map" style="background-color: red; height: 400px; display: flex; justify-content: center; align-items: center; border-radius: 10px"></div>
@@ -545,6 +592,24 @@
             </div>
 
             <div class="row marg30" id="pictureSection" style="display: {{$kind == 'new'? 'none': 'flex'}}">
+
+                <hr>
+                <div class="col-md-12">
+                    <h2>
+                        Side Info
+                    </h2>
+
+                </div>
+                <div class="col-md-12">
+                    <div id="sideInfoDiv" class="row">
+
+                    </div>
+                    <div class="addNewSideInfo" onclick="addNewSideInfo()">
+                        <i class="fas fa-plus-circle" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+                <hr>
+
                 <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
                     <label class="inputLabel">
                         Main Picture
@@ -571,6 +636,7 @@
                         @endif
                     </div>
                 </div>
+
                 <div class="col-12" style="display: flex; justify-content: center">
                     <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Main Picture</button>
                 </div>
@@ -580,14 +646,16 @@
                         Thumbnail Picture
                     </h2>
                     <div id="thumbnailRow" class="row">
-                        @foreach($package->thumbnail as $item)
-                            <div id="thumbnail_{{$item->id}}" class="thumbnailPicDiv">
-                                <img src="{{$item->pic}}" class="resizeImageClass thumbnailPic">
-                                <div class="uploadedPicHover">
-                                    <button class="btn btn-danger" onclick="deleteThumbnailPic({{$item->id}}, this)">delete</button>
+                        @if(isset($package->thumbnail))
+                            @foreach($package->thumbnail as $item)
+                                <div id="thumbnail_{{$item->id}}" class="thumbnailPicDiv">
+                                    <img src="{{$item->pic}}" class="resizeImageClass thumbnailPic">
+                                    <div class="uploadedPicHover">
+                                        <button class="btn btn-danger" onclick="deleteThumbnailPic({{$item->id}}, this)">delete</button>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @endif
                     </div>
                     <div class="row">
                         <div class="col-12" style="display: flex; justify-content: center">
@@ -637,7 +705,44 @@
             </div>
         </div>
 
+        <div class="modal" id="sideInfoModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="sideInfoModalHeader"></h4>
+                        <button type="button" class="close" data-dismiss="modal"  onclick="closeSideInfoModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="justify-content: center">
+                            <input type="hidden" id="sideInfoId">
+                            <input type="file" id="fileInputSideInfo" style="display: none" onchange="showMoreInfoIcon(this)">
+                            <label for="fileInputSideInfo" class="iconSideInfoDiv">
+                                <img id="iconSideInfo" src="http://localhost/DPL/public/uploaded/activityIcons/1586521332rockClimbing.png" style="width: 100%; height: 100%; display: none">
+                                <i id="newIconSideInfo" class="fas fa-plus-circle" style="cursor: pointer;  display: block;"></i>
+                            </label>
+                            <div class="form-group sideInfoInput">
+                                <textarea type="text" class="form-control" id="sideInfoTextInput" style="margin-left: 10px" maxlength="500"></textarea>
+                            </div>
+                        </div>
+                        <div class="row" style="display: flex; justify-content: center; align-items: center">
+                            <button class="btn btn-success" onclick="storeSideInfo()">
+                                Store
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeSideInfoModal()">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
+
 @endsection
 
 
@@ -694,7 +799,6 @@
             $('#addNewTag').append(text);
         }
     </script>
-
 
     <script>
         let lat = 32.427908;
@@ -1128,5 +1232,145 @@
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>
+
+    <script !src="">
+        let sideInfoIcon = null;
+        let sideInfos = [];
+        @if(isset($package->sideInfos))
+            sideInfos = {!! $package->sideInfos !!}
+        @endif
+
+        function addNewSideInfo(){
+            sideInfoIcon = null;
+            $('#fileInputSideInfo').val('');
+            $('#sideInfoId').val(0);
+            $('#sideInfoTextInput').val('');
+            $('#sideInfoModalHeader').text('new Side Info');
+            $('#newIconSideInfo').show();
+            $('#iconSideInfo').hide();
+            $('#sideInfoModal').modal('show');
+            $('#sideInfoModal').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function closeSideInfoModal(){
+            $('#sideInfoModal').modal('hide');
+        }
+
+        function showMoreInfoIcon(_input){
+            if(_input.files && _input.files[0]){
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let mainPic = e.target.result;
+                    $('#iconSideInfo').attr('src', mainPic);
+
+                    $('#iconSideInfo').css('display', 'block');
+                    $('#iconSideInfo').next().css('display', 'none');
+
+                    sideInfoIcon = _input.files[0];
+                };
+                reader.readAsDataURL(_input.files[0]);
+            }
+        }
+
+        function storeSideInfo(){
+            let id = $('#sideInfoId').val();
+            let text = $('#sideInfoTextInput').val();
+
+            if(id == 0 && (text.trim().length == 0 || sideInfoIcon == null)){
+                alert('You must fill text and icon');
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('id', id);
+            formData.append('text', text);
+            formData.append('icon', sideInfoIcon);
+            formData.append('packageId', packageId);
+            formData.append('_token', '{{csrf_token()}}');
+
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.package.storeSideInfo")}}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    response = JSON.parse(response);
+                    if(response['status'] == 'ok') {
+                        if(id == 0) {
+                            sideInfos.push(response['result']);
+                            createNewSideInfoRow(response['result']);
+                        }
+                        else{
+                            $('#textSideInfo_' + id).text(response['result']['text']);
+                            $('#iconSideInfo_' + id).attr('src', response['result']['icon']);
+                        }
+
+                        $('#sideInfoModal').modal('hide');
+                    }
+                    else
+                        alert('Error storing information')
+                }
+            })
+        }
+
+        function createNewSideInfoRow(_value){
+            let text = '<div id="sideInfoRow_' + _value['id'] + '" class="row sideInfoRow">\n' +
+                '<label class="iconSideInfoDiv">\n' +
+                '<img id="iconSideInfo_' + _value["id"] + '" src="' + _value["icon"] + '" style="width: 100%; height: 100%;">\n' +
+                '</label>\n' +
+                '<div id="textSideInfo_' + _value["id"] + '" class="sideInfoInput">' + _value["text"] + '</div>\n' +
+                '<button class="btn btn-primary" onclick="editSideInfo(' + _value["id"] + ')"> Edit</button>\n' +
+                '<div class="closeSideInfoIcon" onclick="deleteSideInfo(' + _value["id"] + ')">\n' +
+                '<i class="fas fa-times"></i>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#sideInfoDiv').append(text);
+        }
+
+        function deleteSideInfo(_id){
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.package.deleteSideInfo")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    id: _id
+                },
+                success: function(response){
+                    response = JSON.parse(response);
+                    if(response['status'] == 'ok')
+                        $('#sideInfoRow_' + _id).remove();
+                }
+            })
+        }
+
+        function editSideInfo(_id){
+            let side = null;
+            for(let i = 0; i < sideInfos.length; i++){
+                if(_id == sideInfos[i].id){
+                    side = sideInfos[i];
+                    break;
+                }
+            }
+            if(side != null){
+                sideInfoIcon = null;
+                $('#fileInputSideInfo').val('');
+                $('#sideInfoId').val(side.id);
+                $('#sideInfoTextInput').val(side.text);
+                $('#sideInfoModalHeader').text('Edit Side Info');
+                $('#newIconSideInfo').hide();
+                $('#iconSideInfo').show();
+                $('#iconSideInfo').attr('src', side.icon);
+                $('#sideInfoModal').modal('show');
+                $('#sideInfoModal').modal({backdrop: 'static', keyboard: false});
+            }
+        }
+
+        for(let i = 0; i < sideInfos.length; i++)
+            createNewSideInfoRow(sideInfos[i]);
+
+
+    </script>
 @endsection
 

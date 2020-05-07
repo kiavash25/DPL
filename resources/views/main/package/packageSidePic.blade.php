@@ -137,14 +137,18 @@
         @endforeach
     </div>
     <div class="sideInfo">
-        <div class="infoDiv">
-            <div class="infoName">start Date:</div>
-            <div class="infoValue">{{$content->sDate}}</div>
-        </div>
-        <div class="infoDiv">
-            <div class="infoName">End Date:</div>
-            <div class="infoValue">{{$content->eDate}}</div>
-        </div>
+        @if($content->sDate != null)
+            <div class="infoDiv">
+                <div class="infoName">start Date:</div>
+                <div class="infoValue">{{$content->sDate}}</div>
+            </div>
+        @endif
+        @if($content->eDate != null)
+            <div class="infoDiv">
+                <div class="infoName">End Date:</div>
+                <div class="infoValue">{{$content->eDate}}</div>
+            </div>
+        @endif
         <div class="infoDiv">
             <div class="infoName">Season:</div>
             <div class="infoValue">{{$content->season}}</div>
