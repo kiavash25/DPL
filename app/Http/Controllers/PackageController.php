@@ -478,7 +478,7 @@ class PackageController extends Controller
     public function storeMoreInfoTitlePackage(Request $request)
     {
         if(isset($request->id) && isset($request->name)){
-            $check = PackageMoreInfo::where('name', $request->name)->where('category', $request->category)->where('id', $request->id)->first();
+            $check = PackageMoreInfo::where('name', $request->name)->where('category', $request->category)->first();
             if($check != null){
                 echo json_encode(['status' => 'nok1']);
                 return;

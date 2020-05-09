@@ -221,7 +221,7 @@
             <div class="swiper-button-prev swiper-button-white"></div>
         </div>
         <div class="swiper-container gallery-thumbs">
-            <div id="thumbAlbum" class="swiper-wrapper" style="justify-content: center;"></div>
+            <div id="thumbAlbum" class="swiper-wrapper"></div>
         </div>
     </div>
 @endsection
@@ -270,7 +270,6 @@
                 },
             });
 
-            $('#thumbAlbum').css('justify-content', 'center');
         }
 
         function closeAlbum(){

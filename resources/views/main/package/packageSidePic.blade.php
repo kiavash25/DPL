@@ -160,7 +160,7 @@
             Activity:
         </div>
         <div class="activityInfoValue">
-            <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">
+{{--            <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">--}}
             {{$content->mainActivity->name}}
         </div>
     </div>
@@ -175,7 +175,7 @@
             </div>
         </div>
         <div class="orderDiv">
-            <div class="orderButton" style="width: {{isset($content->brochure) && $content->brochure != null ? '50%' : ''}}">
+            <div class="orderButton" style="width: {{isset($content->brochure) && $content->brochure != null ? '50%' : '100%'}}">
                 Book Now
             </div>
             <a class="orderButton orderButtonRevers" href="{{$content->brochure}}"  style="display: {{isset($content->brochure) && $content->brochure != null ? 'flex' : 'none'}}; width: 50%;">

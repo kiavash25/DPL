@@ -333,7 +333,8 @@ class MainController extends Controller
 
         $content->packages = $pac;
 
-        $content->brochure = asset('uploaded/packages/' . $content->id . '/' . $content->brochure);
+        if($content->brochure != null)
+            $content->brochure = asset('uploaded/packages/' . $content->id . '/' . $content->brochure);
 
         $content->money = commaMoney($content->money);
 

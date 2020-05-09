@@ -66,7 +66,7 @@
                             <select name="parentId" id="parentId" class="form-control">
                                 <option value="0">Main</option>
                                 @foreach($parent as $item)
-                                    <option value="{{$item->id}}" {{$item->id == $activity->category ? 'selected' : ''}}>{{$item->name}}</option>
+                                    <option value="{{$item->id}}" {{isset($activity->category) && $item->id == $activity->category ? 'selected' : ''}}>{{$item->name}}</option>
                                 @endforeach
                             </select>
                         </div>
