@@ -3,49 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\models\Activity;
+use App\models\ActivityPic;
+use App\models\ActivityTitle;
+use App\models\City;
+use App\models\Destination;
 use App\models\Package;
 use App\models\PackageActivityRelations;
+use App\models\PackageMoreInfo;
 use Illuminate\Http\Request;
+use test\Mockery\CallableSpyTest;
 
 class ActivityController extends Controller
 {
     public function listActivity()
     {
-
-        $activity = Activity::all();
-
+        $activity = Activity::where('parent', 0)->get();
         foreach ($activity as $item)
-            $item->icon = asset('uploaded/activityIcons/' . $item->icon);
+            $item->sub = Activity::where('parent', $item->id)->get();
 
         return view('admin.activity.listActivity', compact(['activity']));
     }
 
+    public function newActivity()
+    {
+        $parent = Activity::where('parent', 0)->get();
+        return view('admin.activity.newActivity', compact(['parent']));
+    }
+
+    public function editActivity($id)
+    {
+        $activity = Activity::find($id);
+        if($activity == null)
+            return redirect(route('admin.activity.list'));
+
+        if($activity->icon != null)
+            $activity->icon = asset('uploaded/activity/' . $activity->id . '/' . $activity->icon);
+
+        if($activity->parent != 0)
+            $activity->category = Activity::find($activity->parent)->id;
+        else
+            $activity->category = 0;
+
+        $activity->sidePic = ActivityPic::where('activityId', $activity->id)->get();
+        foreach ($activity->sidePic as $pic)
+            $pic->pic = asset('uploaded/activity/' . $activity->id . '/' . $pic->pic);
+
+        if($activity->video != null)
+            $activity->video = asset('uploaded/activity/' . $activity->id . '/' . $activity->video);
+        if($activity->podcast != null)
+            $activity->podcast = asset('uploaded/activity/' . $activity->id . '/' . $activity->podcast);
+
+        $activity->titles = ActivityTitle::where('activityId', $activity->id)->get();
+
+        $parent = Activity::where('parent', 0)->get();
+        return view('admin.activity.newActivity', compact(['parent', 'activity']));
+    }
+
     public function storeActivity(Request $request)
     {
-        if(isset($request->name)){
-            $sameName = Activity::where('name', $request->name)->first();
+        if(isset($request->id) && isset($request->parentId) && isset($request->name)){
+            $sameName = Activity::where('name', $request->name)->where('id', '!=', $request->id)->first();
             if($sameName == null){
 
-                $iconName = null;
-                if(isset($_FILES['icon']) && $_FILES['icon']['error'] == 0){
-                    $location = __DIR__ . '/../../../public/uploaded/activityIcons';
-                    if(!file_exists($location))
-                        mkdir($location);
+                if($request->id == 0)
+                    $activity = new Activity();
+                else
+                    $activity = Activity::find($request->id);
 
-                    $iconName = time().$_FILES['icon']['name'];
-                    $location .= '/'.$iconName;
+                $activity->name = $request->name;
+                $activity->description = $request->description;
+                $activity->slug = makeSlug($request->name);
+                $activity->parent = $request->parentId;
+                $activity->save();
 
-                    $picResult = storeImage($_FILES['icon']['tmp_name'], $location);
-                    if(!$picResult)
-                        $iconName = null;
-                }
-
-                $newActivity = new Activity();
-                $newActivity->name = $request->name;
-                $newActivity->icon = $iconName;
-                $newActivity->save();
-
-                echo json_encode(['status' => 'ok', 'id' => $newActivity->id]);
+                echo json_encode(['status' => 'ok', 'id' => $activity->id]);
             }
             else
                 echo json_encode(['status' => 'nok1']);
@@ -56,56 +87,76 @@ class ActivityController extends Controller
         return;
     }
 
-    public function doEditActivity(Request $request)
+    public function storeImgActivity(Request $request)
     {
-        if(isset($request->id)) {
-            $act = Activity::find($request->id);
-            if($act == null){
-                echo json_encode(['status' => 'nok2']);
-                return;
-            }
+        if(isset($request->kind) && isset($request->id)){
+            $activity = Activity::find($request->id);
+            if($activity != null){
+                $location = __DIR__ . '/../../../public/uploaded/activity/' . $activity->id;
+                if(!file_exists($location))
+                    mkdir($location);
 
-            if ($request->kind == 'deleteIcon') {
-                \File::delete('uploaded/activityIcons/' . $act->icon);
-                $act->icon = null;
-                $act->save();
-
-                echo json_encode(['status' => 'ok']);
-            }
-            else if ($request->kind == 'editIcon'){
-                $iconName = null;
-                if(isset($_FILES['icon']) && $_FILES['icon']['error'] == 0){
-                    $location = __DIR__ . '/../../../public/uploaded/activityIcons';
-                    if(!file_exists($location))
-                        mkdir($location);
-
-                    $iconName = time().$_FILES['icon']['name'];
-                    $location .= '/'.$iconName;
-
-                    $picResult = storeImage($_FILES['icon']['tmp_name'], $location);
-                    if($picResult){
-                        \File::delete('uploaded/activityIcons/' . $act->icon);
-                        $act->icon = $iconName;
-                        $act->save();
-
-                        echo json_encode(['status' => 'ok']);
-                    }
-                    else
-                        echo json_encode(['status' => 'nok4']);
+                $image = $request->file('pic');
+                $dirs = 'uploaded/activity/' . $activity->id ;
+                if($request->kind == 'icon') {
+                    $size = [
+                        [
+                            'width' => 50,
+                            'height' => 50,
+                            'name' => '',
+                            'destination' => $dirs
+                        ]
+                    ];
                 }
-                else
-                    echo json_encode(['status' => 'nok3']);
+                else{
+                    $size = [
+                        [
+                            'width' => null,
+                            'height' => 250,
+                            'name' => 'min_',
+                            'destination' => $dirs
+                        ],
+                        [
+                            'width' => null,
+                            'height' => 400,
+                            'name' => 'list_',
+                            'destination' => $dirs
+                        ],
+                        [
+                            'width' => null,
+                            'height' => 500,
+                            'name' => 'slide_',
+                            'destination' => $dirs
+                        ],
+                        [
+                            'width' => 1200,
+                            'height' => null,
+                            'name' => '',
+                            'destination' => $dirs
+                        ]
+                    ];
+                }
 
-            }
-            else if ($request->kind == 'editName' && isset($request->name)){
-                $checkName = Activity::where('name', $request->name)->first();
-                if($checkName == null) {
-                    $act->name = $request->name;
-                    $act->save();
+                $fileName = resizeImage($image, $size);
+                if($fileName != 'error') {
+                    if ($request->kind == 'icon') {
+                        if($activity->icon != null) {
+                            if (is_file($location . '/' . $activity->icon))
+                                unlink($location . '/' . $activity->icon);
+                        }
+                        $activity->icon = $fileName;
+                        $activity->save();
+                    }
+                    else {
+                        $newPic = new ActivityPic();
+                        $newPic->activityId = $activity->id;
+                        $newPic->pic = $fileName;
+                        $newPic->save();
+                    }
                     echo json_encode(['status' => 'ok']);
                 }
                 else
-                    echo json_encode(['status' => 'repeated']);
+                    echo json_encode(['status' => 'nok2']);
             }
             else
                 echo json_encode(['status' => 'nok1']);
@@ -115,6 +166,211 @@ class ActivityController extends Controller
 
         return;
     }
+
+    public function deleteImgActivity(Request $request)
+    {
+        if(isset($request->id)){
+            $pic = ActivityPic::find($request->id);
+            if($pic != null){
+                $location = __DIR__.'/../../../public/uploaded/activity/' . $pic->activityId;
+                if(is_file($location .'/'.$pic->pic))
+                    unlink($location.'/'.$pic->pic);
+                if(is_file($location .'/min_'.$pic->pic))
+                    unlink($location.'/min_'.$pic->pic);
+                if(is_file($location .'/slide_'.$pic->pic))
+                    unlink($location.'/slide_'.$pic->pic);
+                if(is_file($location .'/list_'.$pic->pic))
+                    unlink($location.'/list_'.$pic->pic);
+
+                $pic->delete();
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeVideoAudioActivity(Request $request)
+    {
+        if(isset($request->id) && $_FILES['file'] && $_FILES['file']['error'] == 0){
+            $activity = Activity::find($request->id);
+            if($activity != null){
+                $fileName = time() . $_FILES['file']['name'];
+                $location = __DIR__ . '/../../../public/uploaded/activity';
+                if(!file_exists($location))
+                    mkdir($location);
+                $location .= '/' . $request->id;
+                if(!file_exists($location))
+                    mkdir($location);
+                $location .= '/' . $fileName;
+
+                if(move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                    if($request->kind == 'audio'){
+                        if($activity->podcast != null)
+                            \File::delete('uploaded/activity/'. $activity->id . '/' . $activity->podcast);
+
+                        $activity->podcast = $fileName;
+                        $activity->save();
+
+                        $videoUrl = asset('uploaded/activity/' . $activity->id . '/' . $activity->podcast);
+                        echo json_encode(['status' => 'ok', 'result' => $videoUrl]);
+                    }
+                    else if($request->kind == 'video'){
+                        if($activity->video != null)
+                            \File::delete('uploaded/activity/'. $activity->id . '/' . $activity->video);
+
+                        $activity->video = $fileName;
+                        $activity->save();
+
+                        $videoUrl = asset('uploaded/activity/' . $activity->id . '/' . $activity->video);
+                        echo json_encode(['status' => 'ok', 'result' => $videoUrl]);
+                    }
+
+                }
+                else
+                    echo json_encode(['status' => 'nok2']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeTitleActivity(Request $request){
+        if(isset($request->id) && isset($request->name) && isset($request->activityId)){
+            $check = ActivityTitle::where('name', $request->name)->where('activityId', $request->activityId)->first();
+            if($check == null) {
+                if ($request->id == 0)
+                    $title = new ActivityTitle();
+                else
+                    $title = ActivityTitle::find($request->id);
+
+                $title->name = $request->name;
+                $title->activityId = $request->activityId;
+                $title->save();
+
+                echo json_encode(['status' => 'ok', 'id' => $title->id, 'name' => $title->name]);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function deleteTitleActivity(Request $request)
+    {
+        if(isset($request->id)){
+            $title = ActivityTitle::find($request->id);
+            if($title != null){
+                $location = __DIR__ .'/../../../public/uploaded/activity/' . $title->activityId . '/title_' . $title->id;
+                emptyFolder($location);
+                $title->delete();
+
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function descriptionActivity($id)
+    {
+        $activity = Activity::find($id);
+        if($activity != null){
+            $activity->titles = ActivityTitle::where('activityId', $activity->id)->get();
+            return view('admin.activity.descriptionActivity', compact(['activity']));
+        }
+
+        return redirect(route('admin.activity.list'));
+    }
+
+    public function storeTitleTextActivity(Request $request)
+    {
+        if(isset($request->id)){
+            $title = ActivityTitle::find($request->id);
+            if($title != null){
+                $title->text = $request->text;
+                $title->save();
+
+                $location = __DIR__ . '/../../../public/uploaded/activity/' . $title->activityId . '/title_' . $title->id . '/';
+                if (file_exists($location)) {
+                    $files = scandir($location);
+                    foreach ($files as $item) {
+                        if (is_file($location . '/' . $item)) {
+                            if (strpos($request->text, $item) === false) {
+                                unlink($location . '/' . $item);
+                            }
+                        }
+                    }
+                }
+
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeTitleTextImgActivity(Request $request)
+    {
+        $data = json_decode($request->data);
+        $titleId = $data;
+
+        if( $_FILES['file'] && $_FILES['file']['error'] == 0){
+            $title = ActivityTitle::find($titleId);
+            if($title != null){
+                $location = __DIR__ . '/../../../public/uploaded/activity/' . $title->activityId;
+                if(!file_exists($location))
+                    mkdir($location);
+
+                $location .= '/title_' . $title->id;
+                if(!file_exists($location))
+                    mkdir($location);
+
+                $image = $request->file('file');
+                $dirs = 'uploaded/activity/' . $title->activityId . '/title_' . $title->id;
+                $size = [
+                    [
+                        'width' => 1200,
+                        'height' => null,
+                        'name' => '',
+                        'destination' => $dirs
+                    ]
+                ];
+                $fileName = resizeImage($image, $size);
+
+                if($fileName != 'error')
+                    echo json_encode(['url' => asset('uploaded/activity/' . $title->activityId . '/title_' . $title->id . '/' . $fileName)]);
+                else
+                    echo false;
+            }
+            else
+                echo false;
+        }
+        else
+            echo json_encode(['error' => true]);
+
+        return;
+    }
+
 
     public function checkActivity(Request $request)
     {
@@ -125,7 +381,8 @@ class ActivityController extends Controller
                 $mainPackageError = [];
                 $sidePackageError = [];
                 $mainPackage = Package::where('mainActivityId', $act->id)->get();
-                $sidePackage = PackageActivityRelations::where('activityId', $act->id)->get();
+//                $sidePackage = PackageActivityRelations::where('activityId', $act->id)->get();
+                $sidePackage = [];
 
                 if(count($mainPackage) != 0){
                     $error = true;
@@ -173,7 +430,12 @@ class ActivityController extends Controller
                 $mainPackage = Package::where('mainActivityId', $act->id)->get();
                 if(count($mainPackage) == 0){
                     PackageActivityRelations::where('activityId', $act->id)->delete();
-                    \File::delete('uploaded/activityIcons/' . $act->icon);
+                    ActivityPic::where('activityId', $act->id)->delete();
+                    ActivityTitle::where('activityId', $act->id)->delete();
+
+                    $location = __DIR__ .'/../../../public/uploaded/activity/' . $act->id;
+                    emptyFolder($location);
+
                     $act->delete();
                     echo json_encode(['status' => 'ok']);
                 }

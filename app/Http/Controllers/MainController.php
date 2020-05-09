@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\models\Activity;
+use App\models\ActivityPic;
+use App\models\ActivityTitle;
 use App\models\City;
 use App\models\Continents;
 use App\models\Countries;
@@ -16,6 +18,8 @@ use App\models\DestinationTagRelation;
 use App\models\MainPageSlider;
 use App\models\Package;
 use App\models\PackageActivityRelations;
+use App\models\PackageMoreInfo;
+use App\models\PackageMoreInfoRelation;
 use App\models\PackagePic;
 use App\models\PackageSideInfo;
 use App\models\PackageTagRelation;
@@ -41,22 +45,9 @@ class MainController extends Controller
         }
 
         $today = Carbon::now()->format('Y-m-d');
-        $activitiesList = Activity::all();
-        foreach($activitiesList as $item){
-            $item->packages = Package::where('mainActivityId', $item->id)
-                                        ->where('showPack', 1)
-                                        ->where(function ($query) {
-                                            $today = Carbon::now()->format('Y-m-d');
-                                            $query->where('sDate', '>', $today)
-                                                ->orWhereNull('sDate');
-                                        })
-                                        ->orderBy('sDate')->get();
-
-            foreach ($item->packages as $pack){
-                $desti = Destination::find($pack->destId);
-                $pack->url = route('show.package', ['destination' => $desti->slug, 'slug' => $pack->slug]);
-            }
-        }
+        $activitiesList = Activity::where('parent', 0)->get();
+        foreach ($activitiesList as $item)
+            $item->subAct = Activity::where('parent', $item->id)->get();
 
         View::share(['destCategory' => $destCategory, 'activitiesList' => $activitiesList]);
     }
@@ -109,6 +100,87 @@ class MainController extends Controller
     public function aboutUs()
     {
         return \view('main.aboutUs');
+    }
+
+    public function showActivity($slug)
+    {
+        $kind = 'activity';
+        $content = Activity::where('slug', $slug)->first();
+        if($content == null)
+            return redirect(url('/'));
+
+        $content->titles = ActivityTitle::where('activityId', $content->id)->get();
+
+        $loc = 'uploaded/activity/' . $content->id;
+        $slip = [];
+        $sliderPics =  ActivityPic::where('activityId', $content->id)->get();
+        foreach ($sliderPics as $item){
+            array_push($slip, (object)[
+                'pic' => getKindPic($loc, $item->pic, ''),
+                'slide' =>  getKindPic($loc, $item->pic, 'slide'),
+                'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'id' => $item->id
+            ]);
+        }
+        $content->slidePic = $slip;
+
+        $content->mapPackages = Package::where('showPack', 1)
+            ->where('mainActivityId', $content->id)
+            ->where(function ($query) {
+                $today = Carbon::now()->format('Y-m-d');
+                $query->where('sDate', '>', $today)
+                    ->orWhereNull('sDate');
+            })->get();
+        $content->latCenter = 0;
+        $content->lngCenter = 0;
+        $content->mapCount = 0;
+        foreach ($content->mapPackages as $item){
+            $content->latCenter += (float)$item->lat;
+            $content->lngCenter += (float)$item->lng;
+            $content->mapCount++;
+
+            $dest = Destination::find($item->destId);
+            $item->url = route('show.package', ['destination' => $dest->slug, 'slug' => $item->slug]);
+        }
+        if($content->mapCount > 0) {
+            $content->latCenter /= $content->mapCount;
+            $content->lngCenter /= $content->mapCount;
+        }
+        else{
+            $content->latCenter = 32.427908;
+            $content->lngCenter = 53.688046;
+        }
+
+        $today = Carbon::now()->format('Y-m-d');
+        $packages = Package::where('showPack', 1)
+            ->where('mainActivityId', $content->id)
+            ->where(function ($query) {
+                $today = Carbon::now()->format('Y-m-d');
+                $query->where('sDate', '>', $today)
+                    ->orWhereNull('sDate');
+            })
+            ->orderBy('sDate')->take(5)->get();
+        foreach ($packages as $item)
+            $item = getMinPackage($item);
+        $content->packages = $packages;
+
+//        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $content->slug]);
+        $content->packageListUrl = '#';
+
+        if($content->video != null)
+            $content->video = asset('uploaded/activity/'. $content->id . '/' . $content->video);
+        if($content->podcast != null)
+            $content->podcast = asset('uploaded/activity/'. $content->id . '/' . $content->podcast);
+
+        if($content->parent == 0)
+            $guidance = ['value1' => $content->name, 'value1Url' => '#'];
+        else {
+            $parent = Activity::find($content->parent);
+            $guidance = ['value1' => $parent->name, 'value1Url' => route('show.activity', ['slug' => $parent->slug]),
+                        'value2' => $content->name, 'value2Url' => '#'];
+        }
+
+        return view('main.content', compact(['content', 'kind', 'guidance']));
     }
 
     public function showDestination($categoryId, $slug)
@@ -265,13 +337,31 @@ class MainController extends Controller
 
         $content->money = commaMoney($content->money);
 
+        $hasMoreInfo = 0;
+        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->get();
+        $moreInfoNeutral = PackageMoreInfo::where('category', 'neutralDetail')->get();
+        foreach ($moreInfoCallVenture as $item){
+            $text = PackageMoreInfoRelation::where('moreInfoId', $item->id)->where('packageId', $content->id)->first();
+            if($text != null) {
+                $item->text = $text->text;
+                $hasMoreInfo++;
+            }
+        }
+            foreach ($moreInfoNeutral as $item){
+            $text = PackageMoreInfoRelation::where('moreInfoId', $item->id)->where('packageId', $content->id)->first();
+            if($text != null) {
+                $item->text = $text->text;
+                $hasMoreInfo++;
+            }
+        }
+
         $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $destination->slug]);
 
         $guidance = ['value1' => $destination->category->name, 'value1Url' => route('show.category', ['categoryName' => $destination->category->name]),
             'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug]),
             'value3' => $content->name, 'value3Url' => $content->id];
 
-        return view('main.content', compact(['content', 'kind', 'guidance']));
+        return view('main.content', compact(['content', 'kind', 'guidance', 'moreInfoCallVenture', 'moreInfoNeutral', 'hasMoreInfo']));
     }
 
     public function showCategory($categoryName)
@@ -358,8 +448,8 @@ class MainController extends Controller
 
 //                average lat and lng for map center
                 if($item->lat != 0 && $item->lng != 0){
-                    $lat += (integer)$item->lat;
-                    $lng += (integer)$item->lng;
+                    $lat += (float)$item->lat;
+                    $lng += (float)$item->lng;
                     $count++;
                 }
             }

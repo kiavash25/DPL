@@ -46,12 +46,20 @@ function resizeImage($pic, $size){
         $image = $pic;
         $randNum = random_int(100,999);
         $fileName = time() . $randNum. '.' . $image->getClientOriginalExtension();
-
         foreach ($size as $item){
             $input['imagename'] = $item['name'] .  $fileName ;
             $destinationPath = public_path($item['destination']);
             $img = \Image::make($image->getRealPath());
-            $img->resize($item['width'], $item['height'], function ($constraint) {
+            $width = $img->width();
+            $height = $img->height();
+
+            if($item['width'] == null || $width > $item['width'])
+                $width = $item['width'];
+
+            if($item['height'] == null || $height > $item['height'])
+                $height = $item['height'];
+
+            $img->resize($width, $height, function ($constraint) {
                 $constraint->aspectRatio();
             })->save($destinationPath.'/'.$input['imagename']);
         }
@@ -125,4 +133,31 @@ function getMinPackage($pack){
         $pack->url = route('show.package', ['destination' => $destPack->slug, 'slug' => $pack->slug]);
 
     return $pack;
+}
+
+function emptyFolder($dir){
+    try {
+        if (is_dir($dir)) {
+            $files = scandir($dir);
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..') {
+                    if (is_dir($dir . '/' . $file))
+                        emptyFolder($dir . '/' . $file);
+                    else
+                        unlink($dir . '/' . $file);
+                }
+            }
+
+
+            $files = scandir($dir);
+            if (count($files) == 2)
+                rmdir($dir);
+            else
+                return false;
+
+            return true;
+        } else
+            return false;
+    }
+    catch(\Exception $exception){return false;}
 }

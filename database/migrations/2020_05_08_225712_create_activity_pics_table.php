@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePackageMoreInfosTable extends Migration
+class CreateActivityPicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePackageMoreInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('packageMoreInfos', function (Blueprint $table) {
+        Schema::create('activityPics', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('category');
+            $table->unsignedInteger('activityId');
+            $table->string('pic');
         });
     }
 
@@ -27,6 +27,6 @@ class CreatePackageMoreInfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packageMoreInfos');
+        Schema::dropIfExists('activityPics');
     }
 }

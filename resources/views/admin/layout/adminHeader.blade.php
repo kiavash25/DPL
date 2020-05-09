@@ -42,13 +42,28 @@
         </div>
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Package
+                Activity
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
-                        Package Activity
+                        Activity List
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="sideNavTabs">
+            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                Package
+                <div class="arrow rightArrow"></div>
+            </a>
+            <div class="subSideNavMenu">
+
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.package.moreInfoTitle')}}">
+                        Package More Info Titles
                     </a>
                 </div>
                 <div class="sideNavTabs">
@@ -63,6 +78,7 @@
                 </div>
             </div>
         </div>
+
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                 Journal

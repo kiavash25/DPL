@@ -146,7 +146,7 @@
     <div class="container">
         <div class="row" style="margin-bottom: 30px">
             <?php
-                if($kind == 'destination' || $kind == 'category'){
+                if($kind == 'destination' || $kind == 'category' || $kind == 'activity'){
                     $picNum = 8;
                     $sideNum = 4;
                 }
@@ -186,6 +186,8 @@
                     @include('main.destination.destinationSidePic')
                 @elseif($kind == 'category')
                     @include('main.destination.category.categorySidePic')
+                @elseif($kind == 'activity')
+                    @include('main.activity.activitySidePic')
                 @else
                     @include('main.package.packageSidePic')
                 @endif
@@ -198,6 +200,8 @@
                     @include('main.destination.destinationMainContent')
                 @elseif($kind == 'category')
                     @include('main.destination.category.categoryMainContent')
+                @elseif($kind == 'activity')
+                    @include('main.activity.activityMainContent')
                 @else
                     @include('main.package.packageMainContent')
                 @endif
@@ -265,6 +269,8 @@
                     swiper: galleryThumbs,
                 },
             });
+
+            $('#thumbAlbum').css('justify-content', 'center');
         }
 
         function closeAlbum(){

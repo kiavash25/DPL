@@ -24,7 +24,7 @@
                     <th>name</th>
                     <th>Draft/Show</th>
                     <th>Destination</th>
-                    <th>Season</th>
+                    <th>Code</th>
                     <th>Start Date</th>
                     <th>Activity</th>
                     <th></th>
@@ -36,10 +36,13 @@
                         <td>{{$item->name}}</td>
                         <td>{{$item->showPack == 1 ? 'Show' : 'Draft'}}</td>
                         <td>{{$item->destination->name}}</td>
-                        <td>{{$item->season}}</td>
+                        <td>{{$item->Code}}</td>
                         <td>{{$item->sDate}}</td>
                         <td>{{$item->activity->name}}</td>
                         <td>
+                            <a href="{{route('admin.package.moreInfoText', ['id' => $item->id])}}">
+                                <button class="btn btn-warning">More Info</button>
+                            </a>
                             <a href="{{route('admin.package.edit', ['id' => $item->id])}}">
                                 <button class="btn btn-primary">Edit</button>
                             </a>

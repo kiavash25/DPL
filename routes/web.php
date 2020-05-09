@@ -31,6 +31,8 @@ Route::middleware(['web'])->group(function () {
 
     Route::post('getListElems', 'MainController@getListElems')->name('getListElems');
 
+    Route::get('activity/{slug}', 'MainController@showActivity')->name('show.activity');
+
     Route::get('destination/{categoryId}/{slug}', 'MainController@showDestination')->name('show.destination');
 
     Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
@@ -82,8 +84,14 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/admin/destination/check', 'DestinationController@checkDestination')->name('admin.destination.check');
 
     Route::get('/admin/package/list', 'PackageController@listPackage')->name('admin.package.list');
+    Route::get('/admin/package/moreInfoTitle', 'PackageController@moreInfoTitlePackage')->name('admin.package.moreInfoTitle');
     Route::get('/admin/package/new', 'PackageController@newPackage')->name('admin.package.new');
     Route::get('/admin/package/edit/{id}', 'PackageController@editPackage')->name('admin.package.edit');
+    Route::get('/admin/package/moreInfo/text/{id}', 'PackageController@moreInfoText')->name('admin.package.moreInfoText');
+    Route::post('/admin/package/moreInfoText/store', 'PackageController@storeMoreInfoTextPackage')->name('admin.package.moreInfoText.store');
+    Route::post('/admin/package/moreInfoText/storeImg', 'PackageController@storeImgMoreInfoTextPackage')->name('admin.package.moreInfoText.storeImg');
+    Route::post('/admin/package/moreInfoTitle/store', 'PackageController@storeMoreInfoTitlePackage')->name('admin.package.moreInfoTitle.store');
+    Route::post('/admin/package/moreInfoTitle/delete', 'PackageController@deleteMoreInfoTitlePackage')->name('admin.package.moreInfoTitle.delete');
     Route::post('/admin/package/store', 'PackageController@storePackage')->name('admin.package.store');
     Route::post('/admin/package/storeImg', 'PackageController@storeImgPackage')->name('admin.package.storeImg');
     Route::post('/admin/package/storeSideInfo', 'PackageController@storeSideInfo')->name('admin.package.storeSideInfo');
@@ -94,8 +102,17 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/admin/package/delete', 'PackageController@deletePackage')->name('admin.package.delete');
 
     Route::get('/admin/activity/list', 'ActivityController@listActivity')->name('admin.activity.list');
+    Route::get('/admin/activity/new', 'ActivityController@newActivity')->name('admin.activity.new');
+    Route::get('/admin/activity/edit/{id}', 'ActivityController@editActivity')->name('admin.activity.edit');
+    Route::get('/admin/activity/description/{id}', 'ActivityController@descriptionActivity')->name('admin.activity.description');
     Route::post('/admin/activity/store', 'ActivityController@storeActivity')->name('admin.activity.store');
-    Route::post('/admin/activity/doEdit', 'ActivityController@doEditActivity')->name('admin.activity.doEdit');
+    Route::post('/admin/activity/storeImg', 'ActivityController@storeImgActivity')->name('admin.activity.storeImg');
+    Route::post('/admin/activity/storeTitle', 'ActivityController@storeTitleActivity')->name('admin.activity.storeTitle');
+    Route::post('/admin/activity/storeTitleTextImg', 'ActivityController@storeTitleTextImgActivity')->name('admin.activity.storeTitleTextImg');
+    Route::post('/admin/activity/storeTitleText', 'ActivityController@storeTitleTextActivity')->name('admin.activity.storeTitleText');
+    Route::post('/admin/activity/storeVideoAudio', 'ActivityController@storeVideoAudioActivity')->name('admin.activity.storeVideoAudio');
+    Route::post('/admin/activity/deleteImg', 'ActivityController@deleteImgActivity')->name('admin.activity.deleteImg');
+    Route::post('/admin/activity/deleteTitle', 'ActivityController@deleteTitleActivity')->name('admin.activity.deleteTitle');
     Route::post('/admin/activity/delete', 'ActivityController@deleteActivity')->name('admin.activity.delete');
     Route::post('/admin/activity/check', 'ActivityController@checkActivity')->name('admin.activity.check');
 

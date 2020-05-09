@@ -4,7 +4,7 @@
 <div style="width: 100%; margin-top: 45px">
     <a href="{{$content->packageListUrl}}">
         <div class="aboutHeader">
-            @if(Request::is('destination/*'))
+            @if(Request::is('destination/*') || Request::is('activity/*'))
                 Packages
             @else
                 Other Packages In {{$content->destination->name}}

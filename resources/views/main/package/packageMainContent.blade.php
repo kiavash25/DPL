@@ -1,6 +1,7 @@
 <style>
-    .aboutPackageDiv{
-
+    .row{
+        width: 100%;
+        margin: 0;
     }
     .aboutHeader{
         font-size: 25px;
@@ -12,12 +13,6 @@
     }
     .mapAndActivityDiv{
         margin-top: 30px;
-    }
-    .activitiesDiv{
-
-    }
-    .activityHeaderRow{
-
     }
     .activityRow{
         border-bottom: solid 1px lightgray;
@@ -62,6 +57,93 @@
     .thumbnailPic{
         width: 100%;
         transition: .2s;
+    }
+    .MoreInfoBase{
+        width: 100%;
+        display: flex;
+        border: solid #1f75b9 5px;
+        border-radius: 0;
+        cursor: pointer;
+        flex-direction: column;
+    }
+    .moreInfoHeader{
+        width: 100%;
+        padding: 15px;
+        font-size: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: .2s;
+    }
+    .moreInfoHeaderOpen{
+        background: #1f75b9;
+        color: white;
+    }
+    .moreInfoContentDiv{
+        transition: .3s;
+        height: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+    .openMoreInfoContentDiv{
+        height: auto;
+    }
+    .moreInfoContentHeaderDiv{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    .moreInfoTitles{
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        border: solid 2px #1f75b9;
+        position: relative;
+        border-right: 0;
+    }
+    .moreInfoText{
+        display: none;
+        padding: 30px;
+    }
+    .moreInfoTextOpen{
+        display: block;
+    }
+    .moreInfoTitleTextNoneSelected{
+        padding: 12px;
+    }
+    .moreInfoTitleTextSelected{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        color: #1f75b9;
+        position: relative;
+        height: 105%;
+        width: 100%;
+    }
+
+
+    .image{
+        display: table;
+        clear: both;
+        text-align: center;
+        margin: 1em auto;
+    }
+    .image-style-align-right{
+        float: right;
+        margin-left: 15px;
+        max-width: 50%;
+    }
+    .image-style-align-left{
+        float: left;
+        margin-right: 15px;
+        max-width: 50%;
+    }
+    .image>img{
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        min-width: 50px;
     }
 </style>
 
@@ -118,6 +200,106 @@
             <div id="map" class="map"></div>
         </div>
     </div>
+
+    @if($hasMoreInfo > 0)
+        <div class="row" style="margin-top: 30px;">
+            <div class="aboutHeader" style="width: 100%">
+                More Info:
+            </div>
+            <div class="MoreInfoBase" style="border-bottom: 0; border-radius: 10px 10px 0px 0px">
+                <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
+                    <div class="arrow down"></div>
+                    Neutral Details
+                </div>
+                <div class="moreInfoContentDiv">
+                    <div class="row">
+                        <div class="moreInfoContentHeaderDiv">
+                            @foreach($moreInfoNeutral as $key => $item)
+                                @if(isset($item->text) && $item->text != null)
+                                    <div class="moreInfoTitles" onclick="showMoreInfoText(this, {{$item->id}})">
+                                        <div class="moreInfoTitleTextNoneSelected {{$key == 0 ? 'moreInfoTitleTextSelected firstMoreInfoTitle' : ''}}">
+                                            {{$item->name}}
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach($moreInfoNeutral as $key => $item)
+                            @if(isset($item->text) && $item->text != null)
+                                <div id="moreInfoText_{{$item->id}}" class="moreInfoText {{$key == 0 ? 'moreInfoTextOpen firstMoreInfoText' : ''}}">
+                                    {!! $item->text !!}
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="MoreInfoBase" style="border-radius: 0px 0px 10px 10px">
+                <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
+                    <div class="arrow down"></div>
+                    Callventure Details
+                </div>
+
+                <div class="moreInfoContentDiv">
+                    <div class="row">
+                        <div class="moreInfoContentHeaderDiv">
+                            @foreach($moreInfoCallVenture as $key => $item)
+                                @if(isset($item->text) && $item->text != null)
+                                    <div class="moreInfoTitles" onclick="showMoreInfoText(this, {{$item->id}})">
+                                        <div class="moreInfoTitleTextNoneSelected {{$key == 0 ? 'moreInfoTitleTextSelected firstMoreInfoTitle' : ''}}">
+                                            {{$item->name}}
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach($moreInfoCallVenture as $key => $item)
+                            @if(isset($item->text) && $item->text != null)
+                                <div id="moreInfoText_{{$item->id}}" class="moreInfoText {{$key == 0 ? 'moreInfoTextOpen firstMoreInfoText' : ''}}">
+                                    {!! $item->text !!}
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
+            </div>
+
+            <script !src="">
+                function openMoreInfoDiv(_element){
+                    $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
+                    $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
+                    $('.firstMoreInfoTitle').addClass('moreInfoTitleTextSelected');
+                    $('.firstMoreInfoText').addClass('moreInfoTextOpen');
+
+                    if($(_element).hasClass('moreInfoHeaderOpen')){
+                        $('.openMoreInfoContentDiv').removeClass('openMoreInfoContentDiv');
+                        $('.moreInfoHeaderOpen').removeClass('moreInfoHeaderOpen');
+                    }
+                    else {
+                        $('.openMoreInfoContentDiv').removeClass('openMoreInfoContentDiv');
+                        $('.moreInfoHeaderOpen').removeClass('moreInfoHeaderOpen');
+                        $(_element).addClass('moreInfoHeaderOpen');
+                        $(_element).next().addClass('openMoreInfoContentDiv');
+                    }
+                }
+
+
+                function showMoreInfoText(_element, _id){
+                    $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
+                    $($(_element).children()[0]).addClass('moreInfoTitleTextSelected');
+
+                    $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
+                    $('#moreInfoText_' + _id).addClass('moreInfoTextOpen');
+                }
+            </script>
+        </div>
+    @endif
 
     <div class="row">
         <div class="col-md-12 thumbnailSection">

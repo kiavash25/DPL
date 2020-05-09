@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePackageMoreInfosTable extends Migration
+class CreatePackageMoreInfoRelationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreatePackageMoreInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('packageMoreInfos', function (Blueprint $table) {
+        Schema::create('packageMoreInfoRelations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('category');
+            $table->unsignedInteger('packageId');
+            $table->unsignedInteger('moreInfoId');
+            $table->text('text');
         });
     }
 
@@ -27,6 +28,6 @@ class CreatePackageMoreInfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packageMoreInfos');
+        Schema::dropIfExists('packageMoreInfoRelations');
     }
 }

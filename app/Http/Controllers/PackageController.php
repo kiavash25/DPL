@@ -9,6 +9,8 @@ use App\models\Destination;
 use App\models\DestinationCategory;
 use App\models\Package;
 use App\models\PackageActivityRelations;
+use App\models\PackageMoreInfo;
+use App\models\PackageMoreInfoRelation;
 use App\models\PackagePic;
 use App\models\PackageSideInfo;
 use App\models\PackageTag;
@@ -318,15 +320,7 @@ class PackageController extends Controller
                 PackageThumbnailsPic::where('packageId', $package->id)->delete();
 
                 $loc = __DIR__ .'/../../../public/uploaded/packages/' . $package->id;
-                if(is_dir($loc)){
-                    $files = scandir($loc);
-                    foreach ($files as $file){
-                        if(is_file($loc . '/' . $file))
-                            unlink($loc . '/' . $file);
-                    }
-                    if(count(scandir($loc)) == 2)
-                        rmdir($loc);
-                }
+                emptyFolder($loc);
 
                 $package->delete();
                 echo json_encode(['status' => 'ok']);
@@ -469,6 +463,156 @@ class PackageController extends Controller
         }
         else
             echo  json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function moreInfoTitlePackage()
+    {
+        $moreInfo = PackageMoreInfo::all();
+        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->get();
+        $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->get();
+        return view('admin.package.moreInfoTitle', compact(['moreInfo', 'moreInfoCallVenture', 'moreInfoNature']));
+    }
+
+    public function storeMoreInfoTitlePackage(Request $request)
+    {
+        if(isset($request->id) && isset($request->name)){
+            $check = PackageMoreInfo::where('name', $request->name)->where('category', $request->category)->where('id', $request->id)->first();
+            if($check != null){
+                echo json_encode(['status' => 'nok1']);
+                return;
+            }
+            if($request->id == 0)
+                $moreInfo = new PackageMoreInfo();
+            else
+                $moreInfo = PackageMoreInfo::find($request->id);
+
+            $moreInfo->name = $request->name;
+            $moreInfo->category = $request->category;
+            $moreInfo->save();
+
+            echo json_encode(['status' => 'ok', 'id' => $moreInfo->id, 'name' => $moreInfo->name, 'category' => $moreInfo->category]);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function deleteMoreInfoTitlePackage(Request $request)
+    {
+        if(isset($request->id)){
+            $moreInfo = PackageMoreInfo::find($request->id);
+            if($moreInfo != null){
+                $text = PackageMoreInfoRelation::where('moreInfoId', $moreInfo->id)->get();
+                foreach ($text as $item){
+                    $location = __DIR__ .'/../../../public/uploaded/packages/' . $item->packageId . '/moreInfo_' . $item->moreInfoId;
+                    emptyFolder($location);
+
+                    $item->delete();
+                }
+
+                $moreInfo->delete();
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function moreInfoText($id)
+    {
+        $moreInfo = PackageMoreInfo::all();
+        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->get();
+        $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->get();
+
+        $package = Package::find($id);
+        if($package == null)
+            return redirect(route('admin.package.list'));
+
+        foreach ($moreInfo as $item)
+            $item->text = PackageMoreInfoRelation::where('packageId', $package->id)->where('moreInfoId', $item->id)->first();
+
+        return view('admin.package.moreInfoText', compact(['moreInfoCallVenture', 'moreInfoNature', 'moreInfo', 'package']));
+    }
+
+    public function storeMoreInfoTextPackage(Request $request)
+    {
+        if(isset($request->packageId) && isset($request->value) && isset($request->titleId)){
+            $desc = PackageMoreInfoRelation::where('packageId', $request->packageId)->where('moreInfoId', $request->titleId)->first();
+            if($desc == null)
+                $desc = new PackageMoreInfoRelation();
+
+            $desc->packageId = $request->packageId;
+            $desc->moreInfoId = $request->titleId;
+            $desc->text = $request->value;
+            $desc->save();
+
+            $location = __DIR__ . '/../../../public/uploaded/packages/' . $desc->packageId . '/moreInfo_' . $desc->moreInfoId . '/';
+            if (file_exists($location)) {
+                $files = scandir($location);
+                foreach ($files as $item) {
+                    if (is_file($location . '/' . $item)) {
+                        if (strpos($request->value, $item) === false) {
+                            unlink($location . '/' . $item);
+                        }
+                    }
+                }
+            }
+
+            echo json_encode(['status' => 'ok']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeImgMoreInfoTextPackage(Request $request)
+    {
+        $data = json_decode($request->data);
+        $packageId = $data[0];
+        $moreInfoId = $data[1];
+
+        if( $_FILES['file'] && $_FILES['file']['error'] == 0){
+            $package = Package::find($packageId);
+            $moreInfo = PackageMoreInfo::find($moreInfoId);
+            if($package != null && $moreInfo != null){
+                $location = __DIR__ . '/../../../public/uploaded/packages/' . $package->id;
+                if(!file_exists($location))
+                    mkdir($location);
+
+                $location .= '/moreInfo_' . $moreInfo->id;
+                if(!file_exists($location))
+                    mkdir($location);
+
+                $image = $request->file('file');
+                $dirs = 'uploaded/packages/' . $package->id . '/moreInfo_' . $moreInfo->id;
+                $size = [
+                    [
+                        'width' => 1200,
+                        'height' => null,
+                        'name' => '',
+                        'destination' => $dirs
+                    ]
+                ];
+                $fileName = resizeImage($image, $size);
+
+                if($fileName != 'error')
+                    echo json_encode(['url' => asset('uploaded/packages/' . $package->id . '/moreInfo_' . $moreInfo->id . '/' . $fileName)]);
+                else
+                    echo false;
+            }
+            else
+                echo false;
+        }
+        else
+            echo json_encode(['error' => true]);
 
         return;
     }

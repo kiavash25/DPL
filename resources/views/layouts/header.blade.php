@@ -96,9 +96,26 @@
                 <div class="subSideNavMenu">
                     @foreach($activitiesList as $item)
                         <div class="sideNavTabs">
-                            <a class="subSideNavTab" href="{{url('list/activity/'. $item->name)}}">
-                                {{$item->name}}
-                            </a>
+                            @if(count($item->subAct) > 0)
+                                <a href="#" onclick="showSubSideNavMenu(this)">
+                                    {{$item->name}}
+                                    <div class="arrow right"></div>
+                                </a>
+                                <div class="subSideNavMenu subSubSideNavMenu">
+                                    @for($i = 0; $i < count($item->subAct); $i++)
+                                        <div class="sideNavTabs">
+                                            <a class="subSideNavTab"
+                                               href="{{route('show.activity', ['slug' => $item->subAct[$i]->slug])}}">
+                                                {{$item->subAct[$i]->name}}
+                                            </a>
+                                        </div>
+                                    @endfor
+                                </div>
+                            @else
+                                <a href="{{url('activity/'. $item->slug)}}" class="subSideNavTab">
+                                    {{$item->name}}
+                                </a>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -374,20 +391,16 @@
                     <div class="navListSub">
                         @foreach($activitiesList as $item)
                             <div class="navSubListRow">
-                                <a href="{{url('list/activity/'. $item->name)}}"
-                                   class="navSubListHeader">{{$item->name}}</a>
-                                @for($i = 0; $i < count($item->packages) && $i < 6; $i++)
-                                    <a href="{{$item->packages[$i]->url}}" class="navSubListBody">
-                                        {{$item->packages[$i]->name}}
-{{--                                        <div class="destTitles">--}}
-{{--                                            <a href="{{$item->packages[$i]->url}}" class="destTitlesName">--}}
-{{--                                                See {{$item->packages[$i]->name}}--}}
-{{--                                            </a>--}}
-{{--                                        </div>--}}
+                                <a href="{{url('activity/'. $item->slug)}}" class="navSubListHeader">
+                                    {{$item->name}}
+                                </a>
+                                @for($i = 0; $i < count($item->subAct) && $i < 6; $i++)
+                                    <a href="{{url('activity/'. $item->subAct[$i]->slug) }}" class="navSubListBody">
+                                        {{$item->subAct[$i]->name}}
                                     </a>
                                 @endfor
 
-                                @if(count($item->packages) > 6)
+                                @if(count($item->subAct) > 6)
                                     <div class="navSubListFooter" onclick="openAllCountryHeader(this)">See all</div>
                                 @endif
                             </div>
@@ -396,10 +409,10 @@
                                     <div class="arrow down closeCountryArrow"></div>
                                 </div>
                                 <div class="navSubListAllCountriesList">
-                                    @foreach($item->packages as $packi)
-                                        <a href="{{$packi->url}}"
+                                    @foreach($item->subAct as $act)
+                                        <a href="{{url('activity/'. $act->slug) }}"
                                            class="navCountries">
-                                            {{$packi->name}}
+                                            {{$act->name}}
                                         </a>
                                     @endforeach
                                 </div>

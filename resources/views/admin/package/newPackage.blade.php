@@ -377,6 +377,7 @@
                     Edit {{$package->name}} Package
                 @endif
             </h2>
+
         </div>
         <hr>
 

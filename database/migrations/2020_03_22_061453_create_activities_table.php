@@ -16,7 +16,13 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('slug')->nullable();
+            $table->text('description')->nullable();
             $table->string('icon')->nullable();
+            $table->string('video', 255)->nullable();
+            $table->string('podcast', 255)->nullable();
+            $table->unsignedInteger('parent')->default(0);
+            $table->timestamps();
         });
     }
 
