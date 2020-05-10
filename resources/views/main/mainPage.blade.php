@@ -49,27 +49,34 @@
 
 @section('body')
     <div class="topSlider">
-
-        <div class="swiper-container picSliderSwiper">
-            <div class="swiper-wrapper">
-                @foreach($mainPageSlider as $item)
-                    <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
-                        <img class="resizeImage" src="{{$item->pic}}" alt="DPL" style="height: 450px">
-                    </div>
-                @endforeach
+        @if(count($mainPageSlider) > 1)
+            <div class="swiper-container picSliderSwiper">
+                <div class="swiper-wrapper">
+                    @foreach($mainPageSlider as $item)
+                        <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
+                            <img class="resizeImage" src="{{$item->pic}}" alt="DPL" style="height: 450px">
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @else
+            <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
+                <img class="resizeImage" src="{{$mainPageSlider[0]->pic}}" alt="DPL" style="height: 450px">
+            </div>
+        @endif
+
+
 
         <div class="textSlider" style=" flex-direction: column; text-align: center; z-index: 1; cursor: context-menu;">
             {{__('Culventure: metamorphosis of travel Experience')}}
-
-
-            <div id="nextMainSlider" class="sliderButton nextSlider">
-                <div class="slider arrow right"></div>
-            </div>
-            <div id="prevMainSlider" class="sliderButton prevSlider">
-                <div class="slider arrow left"></div>
-            </div>
+            @if(count($mainPageSlider) > 1)
+                <div id="nextMainSlider" class="sliderButton nextSlider">
+                    <div class="slider arrow right"></div>
+                </div>
+                <div id="prevMainSlider" class="sliderButton prevSlider">
+                    <div class="slider arrow left"></div>
+                </div>
+            @endif
         </div>
     </div>
 

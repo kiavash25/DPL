@@ -25,6 +25,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
         .picDiv:hover .picSetting{
             height: 100%;
@@ -53,6 +54,7 @@
                                     <option value="{{$i}}" {{$i == $item->showNumber ? 'selected' : ''}}>{{$i}}</option>
                                 @endfor
                             </select>
+                            <button class="btn btn-danger" onclick="deletePic({{$item->id}})">Delete</button>
                         </div>
                         <img src="{{$item->pic}}" id="pic_{{$item->id}}" style="height: 100%">
                     </div>
@@ -104,6 +106,37 @@
                 },
                 error: function(err){
                     console.log(err)
+                }
+            })
+        }
+
+        function deletePic(_id){
+            openLoading();
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.setting.mainPageSlider.delete")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    id: _id
+                },
+                success: function (response) {
+                    try{
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok') {
+                            $('#picDiv_' + _id).remove();
+                            resultLoading('Deleted', 'success');
+                        }
+                        else
+                            resultLoading('Error 1', 'danger');
+                    }
+                    catch (e) {
+                        console.error(e)
+                        resultLoading('Error 2', 'danger');
+                    }
+                },
+                error: function (e) {
+                    console.error(e)
+                    resultLoading('Error 3', 'danger');
                 }
             })
         }

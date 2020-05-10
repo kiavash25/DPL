@@ -38,7 +38,7 @@
                             <a href="{{route('admin.activity.edit', ['id' => $item->id])}}">
                                 <button class="btn btn-primary">Edit</button>
                             </a>
-                            <button class="btn btn-danger" onclick="deletePackageModal({{$item->id}}, '{{$item->name}}')">Delete</button>
+                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">Delete</button>
                         </td>
                     </tr>
                     @if(count($item->sub) != 0)
@@ -53,7 +53,7 @@
                                     <a href="{{route('admin.activity.edit', ['id' => $sub->id])}}">
                                         <button class="btn btn-primary">Edit</button>
                                     </a>
-                                    <button class="btn btn-danger" onclick="deletePackageModal({{$sub->id}}, '{{$sub->name}}')">Delete</button>
+                                    <button class="btn btn-danger" onclick="openDeletedModal({{$sub->id}}, '{{$sub->name}}')">Delete</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -68,18 +68,18 @@
         <div class="modal-dialog modal-lg" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Packages</h4>
+                    <h4 class="modal-title">Delete Activity</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        Are you sure you want to remove the <span id="deletedPackageName" style="font-weight: bold; color: red"></span>?
+                        Are you sure you want to remove the <span id="deletedActivityName" style="font-weight: bold; color: red"></span>?
                     </div>
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: center;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" onclick="deletePackage()" data-dismiss="modal">Yes Deleted</button>
-                    <input type="hidden" id="deletedPackageId">
+                    <button type="button" class="btn btn-danger" onclick="checkActivity()" data-dismiss="modal">Yes Deleted</button>
+                    <input type="hidden" id="deletedActivityId">
                 </div>
             </div>
         </div>
@@ -97,43 +97,93 @@
                 "paging":         false
             });
         } );
+
+        function openDeletedModal(_id, _name){
+            $('#deletedActivityId').val(_id);
+            $('#deletedActivityName').text(_name);
+            $('#deleteModal').modal('show');
+        }
+
+        function checkActivity(){
+            openLoading();
+            var _id = $('#deletedActivityId').val();
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.activity.check")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    id: _id,
+                },
+                success: function(response){
+                    try {
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok')
+                            deleteActivity();
+                        else if(response['status'] == 'nok2'){
+                            text = '<div style="display: flex; flex-direction: column; max-height: 65vh; overflow-y: auto">';
+
+                            if(response['main'].length == 0){
+                                text += '<div>This Activity use for Side Activity of These Packages And When you delete this activity, these activity are deleted:</div>';
+                                for(i = 0; i < response['side'].length; i++)
+                                    text += '<a href="' + response["side"][i]["url"] + '" target="_blank">' + response["side"][i]["name"] + '</a>';
+
+                                text += '</div>';
+                                resultLoading(text, 'warning', deleteActivity);
+                            }
+                            else{
+                                text += '<div style="">This Activity use for MainActivity of These Packages And You cant Delete this Activity:</div>';
+                                for(i = 0; i < response['main'].length; i++)
+                                    text += '<a href="' + response["main"][i]["url"] + '" target="_blank" style="width: 100%;">' + response["main"][i]["name"] + '</a>';
+                                text += '</div>';
+                                resultLoading(text, 'danger');
+                            }
+                        }
+                        else
+                            resultLoading('Error 1', 'danger');
+                    }
+                    catch (e) {
+                        console.log(e);
+                        resultLoading('Error 2', 'danger');
+                    }
+                },
+                error: function(){
+                    resultLoading('Error 3', 'danger');
+                }
+            })
+        }
+
+        function deleteActivity(){
+            var _id = $('#deletedActivityId').val();
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.activity.delete")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    id: _id
+                },
+                success: function(response){
+                    try{
+                        response = JSON.parse(response);
+                        if(response['status'] == 'ok'){
+                            resultLoading('Activity Deleted', 'success');
+                            $('#activity_' + _id).remove();
+                        }
+                        else if(response['status'] == 'mainError'){
+                            resultLoading('This Activity used in mainActivity of some Packages', 'danger');
+                        }
+                        else{
+                            resultLoading('Error 4', 'danger');
+                        }
+                    }
+                    catch (e) {
+                        resultLoading('Error 5', 'danger');
+                    }
+                },
+                error: function(){
+                    resultLoading('Error 6', 'danger');
+                }
+            })
+        }
     </script>
-{{--    <script>--}}
-
-
-{{--        function deletePackageModal(_id, _name){--}}
-{{--            $('#deletedPackageName').text(_name);--}}
-{{--            $('#deletedPackageId').val(_id);--}}
-{{--            $('#deleteModal').modal('show');--}}
-{{--        }--}}
-
-{{--        function deletePackage(){--}}
-{{--            id = $('#deletedPackageId').val();--}}
-{{--            openLoading();--}}
-{{--            $.ajax({--}}
-{{--                type: 'post',--}}
-{{--                url: '{{route("admin.package.delete")}}',--}}
-{{--                data: {--}}
-{{--                    _token: '{{csrf_token()}}',--}}
-{{--                    id: id--}}
-{{--                },--}}
-{{--                success: function(response){--}}
-{{--                    try{--}}
-{{--                        response = JSON.parse(response);--}}
-{{--                        if(response['status'] == 'ok'){--}}
-{{--                            $('#package' + id).remove();--}}
-{{--                            resultLoading('Package deleted', 'success');--}}
-{{--                        }--}}
-{{--                    }--}}
-{{--                    catch (e) {--}}
-{{--                        resultLoading('Error 1', 'danger');--}}
-{{--                    }--}}
-{{--                },--}}
-{{--                error: function(err){--}}
-{{--                    resultLoading('Error 2', 'danger');--}}
-{{--                }--}}
-{{--            })--}}
-{{--        }--}}
-{{--    </script>--}}
 
 @endsection

@@ -479,10 +479,17 @@
                 <div class="col-md-6">
                     <div class="row" style="padding: 10px; border: solid lightgray 1px; border-radius: 10px;">
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="code">Package Code</label>
                                 <input type="text" id="code" name="code" class="form-control" value="{{isset($package->code) ? $package->code : ''}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="inputLabel" for="day">Day</label>
+                                <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">
                             </div>
                         </div>
 
@@ -509,13 +516,6 @@
                             </div>
                         </div>
 
-{{--                        <div class="col-md-6">--}}
-{{--                            <div class="form-group">--}}
-{{--                                <label class="inputLabel" for="day">Day</label>--}}
-{{--                                <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="sDate">Start Date</label>
@@ -533,7 +533,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="inputLabel" for="cost">Cost (Euro)</label>
-                                <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : ''}}">
+                                <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : '0'}}">
                             </div>
                         </div>
 
@@ -984,8 +984,8 @@
             if(mainActivity == 0 )
                 error += '<li style="margin: 15px 0px"> Please Choose MainActivity.</li>';
 
-            if(day == 0 )
-                error += '<li style="margin: 15px 0px"> Please specify the number of days.</li>';
+            // if(day == 0 )
+            //     error += '<li style="margin: 15px 0px"> Please specify the number of days.</li>';
 
             // if(sDate.trim().length == 0 || eDate.trim().length == 0)
             //     error += '<li style="margin: 15px 0px"> Please specify the start and end dates.</li>';

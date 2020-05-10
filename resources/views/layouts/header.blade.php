@@ -134,12 +134,6 @@
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
-{{--                            <div class="sideNavTabs">--}}
-{{--                                <a class="subSideNavTab"--}}
-{{--                                   href="#">--}}
-{{--                                    See all--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
                                     Bisotun
@@ -170,12 +164,6 @@
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
-{{--                            <div class="sideNavTabs">--}}
-{{--                                <a class="subSideNavTab"--}}
-{{--                                   href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">--}}
-{{--                                    See all--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
                                     Regions
@@ -217,12 +205,6 @@
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
-{{--                            <div class="sideNavTabs">--}}
-{{--                                <a class="subSideNavTab"--}}
-{{--                                   href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">--}}
-{{--                                    See all--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
                                     Youth Camp
@@ -244,9 +226,161 @@
                 </div>
             </div>
             <div class="sideNavTabs">
-                <a href="#">
-                    {{__('Accommodation')}}
+                <a href="#" onclick="showSubSideNavMenu(this)">
+                    {{__('Pre-trips')}}
+                    <div class="arrow right"></div>
                 </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Accommodation
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Camps
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Huts
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Localhouses & eco-lodges
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Hostles
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Hotels
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Pre-trip checklist
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Travel extras
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Tutorals
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    General
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Good to know
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Destinations
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Activities
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    General
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="sideNavTabs">
+                        <a href="#" onclick="showSubSideNavMenu(this)">
+                            Book transfers
+                            <div class="arrow right"></div>
+                        </a>
+
+                        <div class="subSideNavMenu subSubSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Flights
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Train
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Bus
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="#">
+                                    Car rental
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="sideNavTabs">
+                        <a href="#">
+                            Guides and experts
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sideNavTabs">
+                <a href="#" onclick="showSubSideNavMenu(this)">
+                    {{ __('Nature friend') }}
+                    <div class="arrow right"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="#">
+                            Trekking Guide Course
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="#">
+                            Events
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="#">
+                            News
+                        </a>
+                    </div>
+
+                </div>
+
             </div>
 
             <div class="sideNavTabs">
@@ -275,21 +409,13 @@
                             Our shots
                         </a>
                     </div>
-
                 </div>
             </div>
-
-            <div class="sideNavTabs">
-                <a href="#">
-                    {{ __('Nature friend') }}
-                </a>
-            </div>
-
-            <div class="sideNavTabs">
-                <a href="{{route('aboutUs')}}">
-                    {{ __('About us') }}
-                </a>
-            </div>
+{{--            <div class="sideNavTabs">--}}
+{{--                <a href="{{route('aboutUs')}}">--}}
+{{--                    {{ __('About us') }}--}}
+{{--                </a>--}}
+{{--            </div>--}}
             <div class="sideNavTabs">
                 <a href="{{route('journal.index')}}">
                     {{ __('Journal') }}
@@ -487,11 +613,103 @@
                 </div>
             </div>
 
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
+                <div class="navTabName">
+                    {{ __('Pre-trips') }}
+                </div>
+
+                <div class="subList subLisL">
+                    <div class="navListSub">
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Accommodation
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Camps
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Huts
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Localhouses & eco-lodges
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Hostles
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Hotels
+                            </a>
+                        </div>
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Pre-trip checklist
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Travel extras
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Tutorals
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                General
+                            </a>
+                        </div>
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Good to know
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Destinations
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Activities
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                General
+                            </a>
+                        </div>
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Book transfers
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Flights
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Train
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Bus
+                            </a>
+                            <a href="#" class="navSubListBody">
+                                Car rental
+                            </a>
+                        </div>
+                        <div class="navSubListRow">
+                            <a href="#" class="navSubListHeader">
+                                Guides and experts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="navLi posRel mobileHide">
                 <a href="#" class="navTabName">
-                    {{ __('Accommodation') }}
+                    {{ __('Nature friend') }}
                 </a>
+
+                <div class="subList subLisM">
+                    <div class="navSubListRow">
+                        <div class="navSubListBody navSubListBodyM">Trekking Guide Course</div>
+                        <div class="navSubListBody navSubListBodyM">Events</div>
+                        <div class="navSubListBody navSubListBodyM">News</div>
+                    </div>
+                </div>
+
             </div>
+
             <div class="navLi posRel mobileHide">
                 <a href="#" class="navTabName">
                     {{ __('Community') }}
@@ -507,16 +725,11 @@
                 </div>
             </div>
 
-            <div class="navLi posRel mobileHide">
-                <a href="#" class="navTabName">
-                    {{ __('Nature friend') }}
-                </a>
-            </div>
-            <div class="navLi posRel mobileHide">
-                <a href="{{route('aboutUs')}}" class="navTabName">
-                    {{ __('About us') }}
-                </a>
-            </div>
+{{--            <div class="navLi posRel mobileHide">--}}
+{{--                <a href="{{route('aboutUs')}}" class="navTabName">--}}
+{{--                    {{ __('About us') }}--}}
+{{--                </a>--}}
+{{--            </div>--}}
             <div class="navLi posRel mobileHide">
                 <a href="{{route('journal.index')}}" class="navTabName">
                     {{ __('Journal') }}

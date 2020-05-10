@@ -1,0 +1,110 @@
+
+.aboutHeader{
+    font-size: 25px;
+    font-weight: bold;
+}
+.aboutText{
+    padding: 10px 25px;
+    text-align: justify;
+}
+.mapAndActivityDiv{
+    margin-top: 30px;
+}
+.activityRow{
+    border-bottom: solid 1px lightgray;
+    margin: 15px 25px;
+    padding-bottom: 15px;
+}
+.map{
+    width: 100%;
+    height: 50vh;
+}
+#stickyTitles {
+    overflow: auto;
+    white-space: nowrap;
+    display: flex;
+    background-color: #30759d;
+    margin-top: 25px;
+    width: 100%;
+}
+
+#stickyTitles a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#stickyTitles a:hover {
+    background-color: #b2d0f7;
+    color: white;
+}
+
+#stickyTitles a.activeTitle {
+    background-color: #fcb316;
+    color: white;
+}
+
+.content {
+    padding: 16px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    margin-top: 0px !important;
+    left: 0;
+    display: flex;
+}
+
+.sticky + .content {
+    padding-top: 60px;
+}
+
+.image{
+    display: table;
+    clear: both;
+    text-align: center;
+    margin: 1em auto;
+}
+.image-style-align-right{
+    float: right;
+    margin-left: 15px;
+    max-width: 50%;
+}
+.image-style-align-left{
+    float: left;
+    margin-right: 15px;
+    max-width: 50%;
+}
+.image>img{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    min-width: 50px;
+}
+.mainSliderDiv{
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    flex-wrap: nowrap;
+}
+.sliderContentDiv{
+    display: flex;
+    flex-direction: row;
+    transition: .3s;
+}
+
+@media (max-width: 500px){
+    .aboutText{
+        padding: 10px 0px;
+    }
+}

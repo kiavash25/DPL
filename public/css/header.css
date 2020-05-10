@@ -177,13 +177,15 @@ a:hover{
 }
 .navSubListRow > div{
     padding: 8px;
-    margin: 4px;
+    margin: 0px 4px;
+    margin-left: 0px;
 }
 .navSubListHeader{
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 15px;
     color: #2b393a !important;
+    padding-left: 8px;
 }
 .navSubListBody{
     position: relative;
@@ -441,7 +443,7 @@ a:hover{
     display: flex;
     align-items: center;
     flex-direction: column;
-
+    z-index: 1;
 }
 .navSubListAllCountriesClose{
     width: 100%;
@@ -478,6 +480,7 @@ a:hover{
 .navCountries:hover{
     background-color: #1f75b9;
     color: white !important;
+    border-radius: 10px;
 }
 .headerSearchAndMenuPc{
     display: flex;

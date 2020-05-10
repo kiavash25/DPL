@@ -318,7 +318,6 @@ class MainController extends Controller
             $item->pic = asset('uploaded/packages/' . $content->id . '/' . $item->pic);
         }
 
-        $today = Carbon::now()->format('Y-m-d');
         $pac = Package::where('id', '!=', $content->id)
                         ->where('showPack', 1)
                         ->where(function ($query) {
@@ -330,8 +329,20 @@ class MainController extends Controller
                         ->orderBy('sDate')->take(5)->get();
         foreach ($pac as $item)
             $item = getMinPackage($item);
-
         $content->packages = $pac;
+
+        $content->actPackage = Package::where('id', '!=', $content->id)
+                                ->where('showPack', 1)
+                                ->where(function ($query) {
+                                    $today = Carbon::now()->format('Y-m-d');
+                                    $query->where('sDate', '>', $today)
+                                        ->orWhereNull('sDate');
+                                })
+                                ->where('mainActivityId', $content->mainActivityId)
+                                ->orderBy('sDate')->take(5)->get();
+        foreach ($content->actPackage as $item)
+            $item = getMinPackage($item);
+
 
         if($content->brochure != null)
             $content->brochure = asset('uploaded/packages/' . $content->id . '/' . $content->brochure);

@@ -1,0 +1,12 @@
+.mainSliderDiv{
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    padding: 20px 0px;
+}
+.sliderContentDiv{
+    display: flex;
+    flex-direction: row;
+    transition: .3s;
+}

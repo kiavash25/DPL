@@ -120,9 +120,11 @@
 </style>
 
 <div class="sidePicContent">
-{{--    <div class="days">--}}
-{{--        {{$content->day}} Days--}}
-{{--    </div>--}}
+    @if($content->day)
+        <div class="days">
+            {{$content->day}} Days
+        </div>
+    @endif
     <h1 class="sidePicHeader">
         {{$content->name}}
     </h1>
@@ -152,6 +154,14 @@
         <div class="infoDiv">
             <div class="infoName">Season:</div>
             <div class="infoValue">{{$content->season}}</div>
+        </div>
+        <div class="infoDiv">
+            <div class="infoName">Level:</div>
+            <div class="infoValue">{{strtoupper($content->level)}}</div>
+        </div>
+        <div class="infoDiv">
+            <div class="infoName">Package Code:</div>
+            <div class="infoValue">{{$content->code}}</div>
         </div>
     </div>
 

@@ -1,152 +1,6 @@
-<style>
-    .row{
-        width: 100%;
-        margin: 0;
-    }
-    .aboutHeader{
-        font-size: 25px;
-        font-weight: bold;
-    }
-    .aboutText{
-        padding: 10px 25px;
-        text-align: justify;
-    }
-    .mapAndActivityDiv{
-        margin-top: 30px;
-    }
-    .activityRow{
-        border-bottom: solid 1px lightgray;
-        margin: 15px 25px;
-        padding-bottom: 15px;
-    }
-    .map{
-        width: 100%;
-        height: 50vh;
-    }
-    .thumbnailSection{
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 30px;
-    }
-    .thumbnailDiv{
-        width: 100px;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        cursor: pointer;
-        transition: .2s;
-        position: relative;
-    }
-    .thumbnailDiv:hover .thumbnailPic{
-        transform: scale(1.1);
-    }
-    .thumbnailDiv:hover .matteBack{
-        background: none;
-    }
-    .matteBack{
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 100%;
-        height: 100%;
-        background-color: #00000035;
-        transition: .2s;
-    }
-    .thumbnailPic{
-        width: 100%;
-        transition: .2s;
-    }
-    .MoreInfoBase{
-        width: 100%;
-        display: flex;
-        border: solid #1f75b9 5px;
-        border-radius: 0;
-        cursor: pointer;
-        flex-direction: column;
-    }
-    .moreInfoHeader{
-        width: 100%;
-        padding: 15px;
-        font-size: 22px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: .2s;
-    }
-    .moreInfoHeaderOpen{
-        background: #1f75b9;
-        color: white;
-    }
-    .moreInfoContentDiv{
-        transition: .3s;
-        height: 0;
-        width: 100%;
-        overflow: hidden;
-    }
-    .openMoreInfoContentDiv{
-        height: auto;
-    }
-    .moreInfoContentHeaderDiv{
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-    }
-    .moreInfoTitles{
-        width: 100%;
-        text-align: center;
-        font-size: 18px;
-        border: solid 2px #1f75b9;
-        position: relative;
-        border-right: 0;
-    }
-    .moreInfoText{
-        display: none;
-        padding: 30px;
-    }
-    .moreInfoTextOpen{
-        display: block;
-    }
-    .moreInfoTitleTextNoneSelected{
-        padding: 12px;
-    }
-    .moreInfoTitleTextSelected{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: white;
-        color: #1f75b9;
-        position: relative;
-        height: 105%;
-        width: 100%;
-    }
-
-
-    .image{
-        display: table;
-        clear: both;
-        text-align: center;
-        margin: 1em auto;
-    }
-    .image-style-align-right{
-        float: right;
-        margin-left: 15px;
-        max-width: 50%;
-    }
-    .image-style-align-left{
-        float: left;
-        margin-right: 15px;
-        max-width: 50%;
-    }
-    .image>img{
-        display: block;
-        margin: 0 auto;
-        max-width: 100%;
-        min-width: 50px;
-    }
-</style>
-
+<link rel="stylesheet" href="{{asset('css/common/sliderPacks.css')}}">
+<link rel="stylesheet" href="{{asset('css/common/ownSlider.css')}}">
+<link rel="stylesheet" href="{{asset('css/pages/packageMainContent.css')}}">
 
 <div class="aboutPackageDiv">
     <div class="aboutHeader">
@@ -270,34 +124,6 @@
 
             </div>
 
-            <script !src="">
-                function openMoreInfoDiv(_element){
-                    $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
-                    $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
-                    $('.firstMoreInfoTitle').addClass('moreInfoTitleTextSelected');
-                    $('.firstMoreInfoText').addClass('moreInfoTextOpen');
-
-                    if($(_element).hasClass('moreInfoHeaderOpen')){
-                        $('.openMoreInfoContentDiv').removeClass('openMoreInfoContentDiv');
-                        $('.moreInfoHeaderOpen').removeClass('moreInfoHeaderOpen');
-                    }
-                    else {
-                        $('.openMoreInfoContentDiv').removeClass('openMoreInfoContentDiv');
-                        $('.moreInfoHeaderOpen').removeClass('moreInfoHeaderOpen');
-                        $(_element).addClass('moreInfoHeaderOpen');
-                        $(_element).next().addClass('openMoreInfoContentDiv');
-                    }
-                }
-
-
-                function showMoreInfoText(_element, _id){
-                    $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
-                    $($(_element).children()[0]).addClass('moreInfoTitleTextSelected');
-
-                    $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
-                    $('#moreInfoText_' + _id).addClass('moreInfoTextOpen');
-                }
-            </script>
         </div>
     @endif
 
@@ -313,7 +139,220 @@
     </div>
 </div>
 
-@include('main.common.packageList')
+
+@if(count($content->packages) > 0)
+    <div style="width: 100%; margin-top: 45px">
+        <a href="{{$content->packageListUrl}}">
+            <div class="aboutHeader">
+                Other Packages In {{$content->destination->name}}
+            </div>
+        </a>
+        <div class="mainContentPackages">
+            <div class="swiper-container packageSwiper" >
+
+                <div class="swiper-wrapper" style="padding: 10px 0px; overflow-y: hidden">
+                    @foreach($content->packages as $item)
+                        <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
+                            <div class=" packages">
+                                <div class="packageImgDiv">
+                                    <img src="{{$item->pic}}" class="packageImg">
+                                </div>
+                                <div class="packageContentDiv">
+                                    <div class="packageName">
+                                        {{$item->name}}
+                                    </div>
+                                    <div class="packageDescription">
+                                        {{$item->description}}
+                                    </div>
+                                    <div class="packageButtonDiv">
+                                        <a href="{{$item->url}}" class="packageButton">
+                                            See Package
+                                        </a>
+                                    </div>
+
+                                    <div class="packageActivity">
+                                        {{$item->mainActivity->name}}
+                                    </div>
+                                </div>
+
+                                <div class="packageDate">
+                                    <div style="color: white">{{$item->sD}}</div>
+                                    <div style="color: white">{{$item->sM}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div id="nextPackage" class="sliderButton nextSlider" style="top: 33%; right: 10px; box-shadow: 0 0 10px 3px black">
+                    <div class="slider arrow right"></div>
+                </div>
+                <div id="prevPackage" class="sliderButton prevSlider" style="top: 33%; left: 10px; box-shadow: 0 0 10px 3px black">
+                    <div class="slider arrow left"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var packageCount = {{count($content->packages)}};
+
+        var packageSwiper = 0;
+
+        function resizePackageSwiper(){
+            var windowW = $(window).width();
+            if((windowW > 1400 && packageCount <= 5) || (windowW > 1100 && packageCount <= 4) ||
+                (windowW > 840 && packageCount <= 3) || (windowW > 585 && packageCount <= 2) ||
+                (windowW <= 585 && packageCount <= 1)){
+                $('#nextPackage').hide();
+                $('#prevPackage').hide();
+                $('.swiperSlidePackage').css('width', 'auto');
+                $('.swiperSlidePackage').css('height', 'auto');
+                $('.swiperSlidePackage').parent().css('overflow-x', 'auto');
+                $('.swiperSlidePackage').parent().css('height', '275px');
+                $('.packages').css('margin', '10px 20px');
+                if(packageSwiper != 0)
+                    packageSwiper.destroy(true, true);
+                packageSwiper = 0;
+            }
+            else{
+                packageSwiper = new Swiper('.packageSwiper', {
+                    loop: true,
+                    navigation: {
+                        nextEl: '#nextPackage',
+                        prevEl: '#prevPackage',
+                    },
+                    breakpoints:{
+                        585:{
+                            slidesPerView: 1,
+                        },
+                        840:{
+                            slidesPerView: 2,
+                        },
+                        1100:{
+                            slidesPerView: 3,
+                        },
+                        1400:{
+                            slidesPerView: 4,
+                        },
+                        14000:{
+                            slidesPerView: 5,
+                        }
+                    }
+                });
+            }
+        }
+
+        resizePackageSwiper();
+    </script>
+@endif
+
+@if(count($content->actPackage) > 0)
+
+    <div class="row" style="position: relative; padding: 0px 20px; flex-direction: column">
+        <div class="aboutHeader">
+            Other Packages In {{$content->mainActivity->name}} Activity
+        </div>
+        <div id="mainSliderDiv" class="mainSliderDiv">
+            <div id="sliderContentDiv" class="sliderContentDiv">
+                @foreach($content->actPackage as $item)
+                    <div class="destinationPackages packages">
+                        <div class="packageImgDiv">
+                            <img src="{{$item->pic}}" class="packageImg">
+                        </div>
+                        <div class="packageContentDiv">
+                            <div class="packageName">
+                                {{$item->name}}
+                            </div>
+                            <div class="packageDescription">
+                                {{$item->description}}
+                            </div>
+                            <div class="packageButtonDiv">
+                                <a href="{{$item->url}}" class="packageButton">
+                                    See Package
+                                </a>
+                            </div>
+
+                            <div class="packageActivity">
+                                {{$item->mainActivity->name}}
+                            </div>
+                        </div>
+
+                        <div class="packageDate">
+                            <div style="color: white">{{$item->sD}}</div>
+                            <div style="color: white">{{$item->sM}}</div>
+                        </div>
+
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="destinationSideButtonSlider packageSideButtonDiv" style="position: absolute; width: 100%; top: 50%">
+            <div id="nextDestinationSlider" class="sliderButton nextSlider" style="top: 43%; right: 35px; box-shadow: 0 0 10px 3px black" onclick="nextPackageSlider(-1)">
+                <div class="slider arrow right"></div>
+            </div>
+            <div id="prevDestinationSlider" class="sliderButton prevSlider" style="top: 43%; left: -10px; box-shadow: 0 0 10px 3px black" onclick="nextPackageSlider(1)">
+                <div class="slider arrow left"></div>
+            </div>
+        </div>
+    </div>
+
+    <script !src="">
+        let ownSwiper = {!! $content->actPackage !!};
+        let packagesMarg = 0;
+        let packagesMargLeft = 0;
+
+        function resizePackageSlide(){
+            let windowWidth = $('#mainSliderDiv').width();
+            let count = ownSwiper.length;
+            let countInWin = Math.floor(windowWidth / 250);
+
+            let marg = Math.floor((windowWidth % 250) / countInWin)/2;
+            packagesMarg = marg;
+            $('.destinationPackages').css('margin', '0px ' + marg + 'px');
+
+            let width = (marg * 2 * count) + (250 * count);
+
+            if(countInWin >= count)
+                $('.destinationSideButtonSlider').hide();
+            else
+                $('.destinationSideButtonSlider').show();
+
+            packagesMargLeft = 0;
+            nextPackageSlider(0);
+        }
+        resizePackageSlide();
+
+        function nextPackageSlider(_kind){
+            let mainSliderDiv = $('#mainSliderDiv').width();
+            let sliderContentDiv = $('#sliderContentDiv').width();
+
+            let left = (250 + (2 * packagesMarg)) * _kind;
+            packagesMargLeft += left;
+
+            $('#nextDestinationSlider').show();
+            $('#prevDestinationSlider').show();
+
+            if(packagesMargLeft >= 0)
+                $('#prevDestinationSlider').hide();
+            else if(Math.abs(packagesMargLeft) + mainSliderDiv +(250 + (2 * packagesMarg)) >= sliderContentDiv )
+                $('#nextDestinationSlider').hide();
+
+
+            if((Math.abs(packagesMargLeft) + mainSliderDiv <= sliderContentDiv + 50) && packagesMargLeft <= 0)
+                $('#sliderContentDiv').css('margin-left', packagesMargLeft);
+            else
+                packagesMargLeft -= left;
+        }
+
+        $(window).resize(resizePackageSlide);
+
+    </script>
+
+@endif
+
+{{--@include('main.common.packageList')--}}
 
 <script !src="">
     let thumbnails = {!! $content->thumbnails !!}
@@ -364,5 +403,32 @@
         })
     }
 
+
+    function openMoreInfoDiv(_element){
+        $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
+        $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
+        $('.firstMoreInfoTitle').addClass('moreInfoTitleTextSelected');
+        $('.firstMoreInfoText').addClass('moreInfoTextOpen');
+
+        if($(_element).hasClass('moreInfoHeaderOpen')){
+            $('.openMoreInfoContentDiv').removeClass('openMoreInfoContentDiv');
+            $('.moreInfoHeaderOpen').removeClass('moreInfoHeaderOpen');
+        }
+        else {
+            $('.openMoreInfoContentDiv').removeClass('openMoreInfoContentDiv');
+            $('.moreInfoHeaderOpen').removeClass('moreInfoHeaderOpen');
+            $(_element).addClass('moreInfoHeaderOpen');
+            $(_element).next().addClass('openMoreInfoContentDiv');
+        }
+    }
+
+
+    function showMoreInfoText(_element, _id){
+        $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
+        $($(_element).children()[0]).addClass('moreInfoTitleTextSelected');
+
+        $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
+        $('#moreInfoText_' + _id).addClass('moreInfoTextOpen');
+    }
 </script>
 

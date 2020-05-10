@@ -29,7 +29,7 @@ class SettingController extends Controller
             $image = $request->file('pic');
             $size = [
                 [
-                    'width' => 100000,
+                    'width' => null,
                     'height' => 450,
                     'name' => '',
                     'destination' => 'images/MainSliderPics'
@@ -68,6 +68,22 @@ class SettingController extends Controller
             }
             else
                 echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function mainPageSliderDelete(Request $request)
+    {
+        if(isset($request->id)){
+            $pic = MainPageSlider::find($request->id);
+            $location = __DIR__ . '/../../../public/images/MainSliderPics/' . $pic->pic;
+            if(is_file($location))
+                unlink($location);
+            $pic->delete();
+            echo json_encode(['status' => 'ok']);
         }
         else
             echo json_encode(['status' => 'nok']);

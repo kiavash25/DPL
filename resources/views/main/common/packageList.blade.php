@@ -57,7 +57,6 @@
         </div>
     </div>
 </div>
-
 <script>
     var packageCount = {{count($content->packages)}};
 
@@ -110,3 +109,4 @@
     resizePackageSwiper();
 </script>
 @endif
+
