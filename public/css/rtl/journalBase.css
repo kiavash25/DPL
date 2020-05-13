@@ -73,6 +73,9 @@
 .readMorebutton{
     text-align: left;
 }
+.langDiv{
+    direction: rtl;
+}
 #sideContentDiv{
     direction: rtl;
     text-align: right;

@@ -40,13 +40,14 @@ class MainController extends Controller
 
         $destinationCategoryMain = DestinationCategory::where('lang', app()->getLocale())->get();
         foreach ($destinationCategoryMain as $categ) {
-            $categ->destination = Destination::where('categoryId', $categ->id)->where('lang', app()->getLocale())->orderBy('name')->get(['id', 'name', 'slug', 'categoryId', 'pic', 'description']);
+            $categ->destination = Destination::where('categoryId', $categ->id)->where('lang', app()->getLocale())->orderBy('name')->get(['id', 'name', 'slug', 'categoryId', 'pic', 'description', 'langSource']);
             foreach ($categ->destination as $dest){
                 if($dest->langSource == 0)
                     $dest->pic = asset('uploaded/destination/' . $dest->id . '/' . $dest->pic);
                 else
-                    $dest->pic = asset('uploaded/destination/' . $dest->langSource . '/' . $dest->pic);
+                    $dest->pic = asset('uploaded/destination/' . $dest->langSource . '/' . Destination::find($dest->langSource)->pic);
                 $dest->url = route('show.destination', ['slug' => $dest->slug]);
+                $dest->description = strip_tags($dest->description);
             }
         }
 

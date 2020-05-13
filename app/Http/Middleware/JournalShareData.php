@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\models\Journal;
 use App\models\JournalCategory;
+use App\models\Language;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\Facades\View;
@@ -32,7 +33,9 @@ class JournalShareData
             if($item->category != null)
                 $item->category = $item->category->name;
         }
-        View::share(['allCategory' => $allCategory, 'recentlyJournal' => $recentlyJournal]);
+
+        $languages = Language::all();
+        View::share(['allCategory' => $allCategory, 'recentlyJournal' => $recentlyJournal, 'languages' => $languages]);
 
         return $next($request);
     }

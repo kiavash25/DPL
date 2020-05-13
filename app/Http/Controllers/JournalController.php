@@ -37,6 +37,9 @@ class JournalController extends Controller
                 $item->category = $item->category->name;
         }
 
+        if(count($mainSliderJournal) == 0)
+            return redirect(url('/'));
+
         return view('journal.mainPageJournal', compact(['journals', 'mainSliderJournal']));
     }
 

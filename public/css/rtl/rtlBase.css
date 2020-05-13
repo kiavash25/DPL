@@ -52,7 +52,9 @@
     margin-right:0 !important;
     margin-left:10% !important;
 }
-
+.selectLang{
+    direction: rtl;
+}
 @media (max-width: 1300px) {
     .searchCenter{
         margin-right: 11% !important;

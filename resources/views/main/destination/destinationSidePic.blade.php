@@ -98,8 +98,12 @@
                             </div>
 
                             <div class="packageDate">
-                                <div style="color: white">{{$item->sD}}</div>
-                                <div style="color: white">{{$item->sM}}</div>
+                                @if($item->sD == 'Call')
+                                    <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>
+                                @else
+                                    <div style="color: white">{{$item->sD}}</div>
+                                    <div style="color: white">{{$item->sM}}</div>
+                                @endif
                             </div>
                         </div>
                     </div>

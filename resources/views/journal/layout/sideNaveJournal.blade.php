@@ -37,6 +37,23 @@
     .openSideNav{
         left: 0px;
     }
+    .langDiv{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        flex-direction: column;
+        position: absolute;
+        bottom: 30px;
+    }
+    .selectLang{
+        width: 150px;
+        font-size: 20px;
+        border: none;
+        border: solid 1px #1f75b9;
+        border-radius: 10px;
+        color: #1f75b9;
+    }
 
     @media (max-width: 1200px) {
         nav{
@@ -67,6 +84,17 @@
             </a>
         @endforeach
     </div>
+
+    <div class="langDiv">
+        <label for="languages" style="color: #a2a2a2; font-size: 18px">{{__('Language')}}</label>
+        <select name="languages" id="languages" class="selectLang" onchange="location.href='{{url('admin/locale/')}}/' + this.value">
+            <option value="en" {{app()->getLocale() == 'en' ? 'selected' : ''}}>English</option>
+            @foreach($languages as $lang)
+                <option value="{{$lang->symbol}}" {{app()->getLocale() == $lang->symbol ? 'selected' : ''}}>{{$lang->name}}</option>
+            @endforeach
+        </select>
+    </div>
+
 </nav>
 
 <script>
