@@ -85,7 +85,7 @@
     overflow: hidden;
 }
 .openMoreInfoContentDiv{
-    height: auto;
+    height: 100%;
 }
 .moreInfoContentHeaderDiv{
     width: 100%;
