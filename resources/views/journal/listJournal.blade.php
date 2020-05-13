@@ -30,9 +30,11 @@
                             <div class="listElemsContentSummery">
                                 ##summery##
                             </div>
-                            <a href="##url##" class="listElemsContentButton">
-                                READ MORE
-                            </a>
+                            <div class="readMorebutton">
+                                <a href="##url##" class="listElemsContentButton">
+                                    {{__('READ MORE')}}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

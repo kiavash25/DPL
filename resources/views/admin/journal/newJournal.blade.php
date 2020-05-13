@@ -31,9 +31,9 @@
         <div class="col-md-12">
             <h2>
                 @if($kind == 'new')
-                    Create New Journal
+                    {{__('Create New Journal')}}
                 @else
-                    Edit {{$journal->name}} Journal
+                    {{__('Edit')}} {{$journal->name}}
                 @endif
             </h2>
         </div>
@@ -46,22 +46,22 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="name" class="inputLabel">Journal Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Journal Name" value="{{isset($journal->name) ? $journal->name : ''}}">
+                        <label for="name" class="inputLabel">{{__('Journal Title')}}</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="{{__('Journal Title')}}" value="{{isset($journal->name) ? $journal->name : ''}}">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="releaseDateType" class="inputLabel">Release Type</label>
+                        <label for="releaseDateType" class="inputLabel">{{__('Release Type')}}</label>
                         <select name="releaseDateType" id="releaseDateType" class="form-control" onchange="changeRelease(this.value)">
-                            <option value="draft" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'draft' ? 'selected': ''}}>draft</option>
-                            <option value="now" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'now' ? 'selected': ''}}>now</option>
-                            <option value="future" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'future' ? 'selected': ''}}>select date</option>
+                            <option value="draft" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'draft' ? 'selected': ''}}>{{__("Draft")}}</option>
+                            <option value="now" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'now' ? 'selected': ''}}>{{__('Now')}}</option>
+                            <option value="future" {{isset($journal->releaseDateType) && $journal->releaseDateType == 'future' ? 'selected': ''}}>{{__('select date')}}</option>
                         </select>
                     </div>
                 </div>
                 <div id="selectReleaseDate" class="col-md-3" style="display: {{isset($journal->releaseDateType) && $journal->releaseDateType == 'future' ? 'block': 'none'}};">
-                    <label for="releaseDate" class="inputLabel">Release Date</label>
+                    <label for="releaseDate" class="inputLabel">{{__('Release Date')}}</label>
                     <input type="text" id="releaseDate"  class="form-control" name="releaseDate" readonly>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                 <div class="col-xl-3">
                     <div class="row">
                         <div class="form-group">
-                            <label for="categoryId" class="inputLabel">Journal Category</label>
+                            <label for="categoryId" class="inputLabel">{{__('Journal Category')}}</label>
                             <select name="categoryId" id="categoryId" class="form-control">
                                 <option value="0" >....</option>
                                 @foreach($category as $item)
@@ -82,8 +82,8 @@
                 </div>
                 <div class="col-xl-9">
                     <div class="form-group">
-                        <label for="summery" class="inputLabel">Journal Summery</label>
-                        <input type="text" id="summery" name="summery" class="form-control" placeholder="Journal Summery" maxlength="100" value="{{isset($journal->summery) ? $journal->summery : ''}}">
+                        <label for="summery" class="inputLabel">{{__('Journal Summery')}}</label>
+                        <input type="text" id="summery" name="summery" class="form-control" placeholder="{{__('Journal Summery')}}" maxlength="100" value="{{isset($journal->summery) ? $journal->summery : ''}}">
                     </div>
                 </div>
             </div>
@@ -98,33 +98,33 @@
             <div class="row marg30">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="seoTitle" class="inputLabel">Seo Title:</label>
+                        <label for="seoTitle" class="inputLabel">{{__('Seo Title')}}:</label>
                         <input type="text" name="seoTitle" id="seoTitle" class="form-control" value="{{isset($journal->seoTitle) ? $journal->seoTitle : ''}}">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="slug" class="inputLabel">Slug:</label>
+                        <label for="slug" class="inputLabel">{{__('Slug')}}:</label>
                         <input type="text" name="slug" id="slug" class="form-control" value="{{isset($journal->slug) ? $journal->slug : ''}}">
                     </div>
                 </div>
 
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <label for="keyword" class="inputLabel">Keyword:</label>
+                        <label for="keyword" class="inputLabel">{{__('Keyword')}}:</label>
                         <input type="text" name="keyword" id="keyword" class="form-control" value="{{isset($journal->keyword) ? $journal->keyword : ''}}">
                     </div>
                 </div>
 
                 <div class="col-lg-9">
                     <div class="form-group">
-                        <label for="meta" class="inputLabel">Meta:</label>
+                        <label for="meta" class="inputLabel">{{__('Meta')}}:</label>
                         <textarea name="meta" id="meta" class="form-control">{!! isset($journal->meta) ? $journal->meta : '' !!}</textarea>
                     </div>
                 </div>
 
                 <div class="col-lg-12" style="display: flex; justify-content: center">
-                    <button class="btn btn-primary" onclick="checkSeo()">Check Seo</button>
+                    <button class="btn btn-primary" onclick="checkSeo()">{{__('Check Seo')}}</button>
                 </div>
                 <div id="seoResult" class="col-lg-12" style="background: #f7f7f7; padding: 15px; border-radius: 10px"></div>
             </div>
@@ -133,7 +133,7 @@
             <div class="row marg30">
                 <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
                     <label class="inputLabel">
-                        Main Picture
+                        {{__('Main Picture')}}
                     </label>
                     <label for="mainPic" class="mainPicSection">
                         <img id="mainPicImg" src="{{isset($journal->pic) && $journal->pic != null ? $journal->pic : '#'}}" style="width: 100%; display: {{isset($journal->pic) && $journal->pic != null ? 'block' : 'none'}};" >
@@ -145,13 +145,13 @@
                 </div>
                 <div class="col-md-9">
                     <div class="form-group">
-                        <label class="inputLabel"> Journal Tags</label>
+                        <label class="inputLabel">{{__('Journal Tags')}}</label>
                         <div class="row" style="width: 100%">
                             @if(isset($journal->tags) && count($journal->tags) != 0)
                                 @for($i = 0; $i < count($journal->tags); $i++)
                                     <div class="col-lg-3 col-md-4">
                                         <div class="form-group" style="position: relative">
-                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$journal->tags[$i]}}">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="{{__('Tag')}}" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$journal->tags[$i]}}">
                                             <div class="closeTagIcon" onclick="deleteTag(this)">
                                                 <i class="fas fa-times"></i>
                                             </div>
@@ -164,7 +164,7 @@
                                 @for($i = 0; $i < 5; $i++)
                                     <div class="col-lg-3 col-md-4">
                                         <div class="form-group" style="position: relative">
-                                            <input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="{{__('Tag')}}" onkeyup="findTag(this)"onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
                                             <div class="closeTagIcon" onclick="deleteTag(this)">
                                                 <i class="fas fa-times"></i>
                                             </div>
@@ -187,7 +187,7 @@
             <div class="row"></div>
 
             <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="storeData()">Submit</button>
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="storeData()">{{__('Submit')}}</button>
             </div>
 
         </div>
@@ -219,7 +219,7 @@
         function addTag() {
             text = '<div class="col-md-3">\n' +
                 '<div class="form-group" style="position: relative">\n' +
-                '<input type="text" name="tags[]" class="form-control" placeholder="Tag" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)"> \n' +
+                '<input type="text" name="tags[]" class="form-control" placeholder="{{__("Tag")}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)"> \n' +
                 '<div class="closeTagIcon" onclick="deleteTag(this)">\n' +
                 '<i class="fas fa-times"></i>\n' +
                 '</div>\n' +
@@ -501,7 +501,9 @@
             }
         }
 
-        DecoupledEditor.create( document.querySelector( '#titleDesc'))
+        DecoupledEditor.create( document.querySelector( '#titleDesc'), {
+            language: '{{app()->getLocale()}}'
+        })
             .then( editor => {
                 const toolbarContainer = document.querySelector( 'main .toolbar-container');
                 toolbarContainer.prepend( editor.ui.view.toolbar.element );

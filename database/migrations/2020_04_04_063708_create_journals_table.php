@@ -26,6 +26,7 @@ class CreateJournalsTable extends Migration
             $table->string('seoTitle', 255);
             $table->string('keyword', 200);
             $table->unsignedBigInteger('userId');
+            $table->string('lang', 5)->default('en');
             $table->timestamps();
         });
     }

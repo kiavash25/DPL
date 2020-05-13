@@ -16,37 +16,10 @@ use Illuminate\Support\Facades\View;
 
 class JournalController extends Controller
 {
-    public function __construct()
-    {
-        $allCategory = JournalCategory::all();
-
-        $today = Carbon::now()->format('Y-m-d');
-
-        $recentlyJournal = Journal::where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'categoryId', 'pic', 'releaseDate'])->orderByDesc('releaseDate')->take(3)->get();
-        foreach ($recentlyJournal as $item){
-            $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
-            $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
-            $item->category = JournalCategory::find($item->categoryId);
-            $item->date = Carbon::createFromFormat('Y-m-d', $item->releaseDate)->format('d F Y');
-            if($item->category != null)
-                $item->category = $item->category->name;
-        }
-//
-//        $destCategory = DestinationCategory::all();
-//        foreach ($destCategory as $item)
-//            $item->destination = Destination::where('categoryId', $item->id)->get();
-//
-//        $activitiesList = Activity::all();
-
-//        , 'destCategory' => $destCategory, 'activitiesList' => $activitiesList
-
-        View::share(['allCategory' => $allCategory, 'recentlyJournal' => $recentlyJournal]);
-    }
-
     public function mainPageJournal()
     {
         $today = Carbon::now()->format('Y-m-d');
-        $mainSliderJournal = Journal::where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(3)->get();
+        $mainSliderJournal = Journal::where('releaseDate' , '!=', 'draft')->where('lang', app()->getLocale())->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(3)->get();
         foreach ($mainSliderJournal as $item) {
             $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
             $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
@@ -55,7 +28,7 @@ class JournalController extends Controller
                 $item->category = $item->category->name;
         }
 
-        $journals = Journal::where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(3)->get();
+        $journals = Journal::where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->where('lang', app()->getLocale())->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(3)->get();
         foreach ($journals as $item) {
             $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
             $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
@@ -77,7 +50,7 @@ class JournalController extends Controller
 
             if(isset($request->kind) && isset($request->value) && $request->kind == 'category') {
                 $value = $request->value;
-                $cateFit = JournalCategory::where('name', $value)->first();
+                $cateFit = JournalCategory::where('name', $value)->where('lang', app()->getLocale())->first();
                 if($cateFit != null)
                     $query = ' categoryId = ' . $cateFit->id;
             }
@@ -86,7 +59,7 @@ class JournalController extends Controller
                 $tags = Tags::where('tag', 'LIKE', '%' . $value . '%')->pluck('id')->toArray();
                 $journalId = JournalTag::whereIn('tagId', $tags)->pluck('journalId')->toArray();
 
-                $nameJournal = Journal::whereNotIn('id', $journalId)->where('name', 'LIKE', '%' . $value . '%')->pluck('id')->toArray();
+                $nameJournal = Journal::whereNotIn('id', $journalId)->where('lang', app()->getLocale())->where('name', 'LIKE', '%' . $value . '%')->pluck('id')->toArray();
                 $journalId = array_merge($journalId, $nameJournal);
 
                 $query = 'id IN (' . implode(",", $journalId) . ')';
@@ -96,7 +69,7 @@ class JournalController extends Controller
             if($query == '')
                 $query = '1';
 
-            $journals = Journal::whereRaw($query)->where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'releaseDate', 'pic', 'userId'])->orderByDesc('releaseDate')->skip($skip)->take($take)->get();
+            $journals = Journal::whereRaw($query)->where('releaseDate' , '!=', 'draft')->where('lang', app()->getLocale())->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'releaseDate', 'pic', 'userId'])->orderByDesc('releaseDate')->skip($skip)->take($take)->get();
 
             foreach ($journals as $item) {
                 $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
@@ -128,7 +101,7 @@ class JournalController extends Controller
     {
         $today = Carbon::now()->format('Y-m-d');
 
-        $journal = Journal::find($id);
+        $journal = Journal::where('id', $id)->where('lang', app()->getLocale())->first();
         if($journal == null || $journal->releaseDate > $today)
             return redirect(route('journal.index'));
 

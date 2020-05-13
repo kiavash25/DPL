@@ -100,10 +100,10 @@
     <div class="row" style="justify-content: center">
         <div class="searchContent">
             <div class="searchInputDiv">
-                <input type="text" class="searchInput" id="sideSearchInput" placeholder="Enter to search...">
+                <input type="text" class="searchInput" id="sideSearchInput" placeholder="{{__('Enter to search...')}}">
             </div>
             <div class="searchButton" onclick="sideSearch()">
-                <i class="fas fa-search" style="color: white"></i>
+                <i class="fas fa-search" style="color: white; font-family: 'Font Awesome 5 Free' !important;"></i>
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
         <div class="row" style="justify-content: center; margin-top: 30px">
             <div style="width: 80%">
                 <div class="sideCateHeader">
-                    Tags
+                    {{__('Tags')}}
                 </div>
                 <div class="sideCateDiv">
                     @foreach($journal->tag as $item)
@@ -143,7 +143,7 @@
     <div class="row" style="justify-content: center; margin-top: 30px">
         <div style="width: 80%">
             <div class="sideCateHeader">
-                Recently Journal
+                {{__('Recently Journal')}}
             </div>
             <div class="sideRecentlyDiv">
                 @foreach($recentlyJournal as $item)

@@ -83,3 +83,7 @@ a:hover{
     background: #17588c;
     color: white;
 }
+
+.readMorebutton{
+    text-align: right;
+}

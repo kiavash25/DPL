@@ -20,6 +20,8 @@ Route::get('locale/{locale}', function ($locale){
     return redirect()->back();
 });
 
+Auth::routes();
+
 Route::middleware(['web'])->group(function () {
     Route::get('/', 'MainController@mainPage');
 
@@ -44,8 +46,6 @@ Route::middleware(['web'])->group(function () {
     Route::post('findDestination', 'AjaxController@findDestination')->name('findDestination');
 
     Route::post('search', 'AjaxController@search')->name('search');
-
-    Auth::routes();
 
     Route::get('journal', 'JournalController@mainPageJournal')->name('journal.index');
     Route::get('journal/show/{id}/{slug?}', 'JournalController@showJournalContent')->name('journal.show');

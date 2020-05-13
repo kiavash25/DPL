@@ -19,17 +19,18 @@ class JournalAdminController extends Controller
 {
     public function indexCategory()
     {
-        $category = JournalCategory::all();
+        $category = JournalCategory::where('lang', app()->getLocale())->get();
         return view('admin.journal.categoryIndex', compact(['category']));
     }
 
     public function storeCategory(Request $request)
     {
         if(isset($request->name)){
-            $check = JournalCategory::where('name', $request->name)->first();
+            $check = JournalCategory::where('name', $request->name)->where('lang', app()->getLocale())->first();
             if($check == null){
                 $category = new JournalCategory();
                 $category->name = $request->name;
+                $category->lang = app()->getLocale();
                 $category->save();
 
                 echo json_encode(['status' => 'ok', 'result' => $category->id]);
@@ -45,7 +46,7 @@ class JournalAdminController extends Controller
 
     public function editCategory(Request $request){
         if(isset($request->id) && isset($request->name) && $request->name != ''){
-            $check = JournalCategory::where('name', $request->name)->where('id', '!=', $request->id)->first();
+            $check = JournalCategory::where('name', $request->name)->where('lang', app()->getLocale())->where('id', '!=', $request->id)->first();
             if($check == null){
                 $category = JournalCategory::find($request->id);
                 if($category != null){
@@ -71,7 +72,7 @@ class JournalAdminController extends Controller
     {
         $this->deleteLimboPic();
 
-        $journal = Journal::all();
+        $journal = Journal::where('lang', app()->getLocale())->get();
         foreach ($journal as $item){
             $item->category = JournalCategory::find($item->categoryId);
             if($item->releaseDate == null)
@@ -85,7 +86,7 @@ class JournalAdminController extends Controller
     public function newJournal()
     {
         $kind = 'new';
-        $category = JournalCategory::all();
+        $category = JournalCategory::where('lang', app()->getLocale())->get();
         $code = random_int(10000, 999999);
 
         return view('admin.journal.newJournal', compact(['kind', 'category', 'code']));
@@ -113,7 +114,7 @@ class JournalAdminController extends Controller
         else
             $journal->tags = [];
 
-        $category = JournalCategory::all();
+        $category = JournalCategory::where('lang', app()->getLocale())->get();
         $code = 0;
 
         return view('admin.journal.newJournal', compact(['journal', 'kind', 'code', 'category']));
@@ -182,6 +183,7 @@ class JournalAdminController extends Controller
                 $kind = 'new';
                 $journal = new Journal();
                 $journal->userId = Auth::user()->id;
+                $journal->lang = JournalCategory::find($request->categoryId)->lang;
                 if(!isset($_FILES['pic']) || $_FILES['pic']['error'] != 0){
                     echo json_encode(['status' => 'nok3']);
                     return;
@@ -290,7 +292,6 @@ class JournalAdminController extends Controller
         }
 
     }
-
 
     public function checkSeo(Request $request)
     {

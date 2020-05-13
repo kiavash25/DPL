@@ -34,7 +34,7 @@
 
 @section('body')
     <article style="margin-top: 30px">
-        <div class="row">
+        <div class="row" style="direction: ltr;">
             <div id="mainContentDiv" class="col-lg-9" style="visibility: hidden; margin-bottom: 100px">
                 <div class="row" style="padding: 0px; margin: 0px">
                     <div class="mainPic">

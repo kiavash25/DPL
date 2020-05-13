@@ -39,7 +39,7 @@
     <table class="table">
         <thead class="thead-dark">
         <tr>
-            <th>Category Name</th>
+            <th>{{__('Category Name')}}</th>
             <th></th>
         </tr>
         </thead>
@@ -56,12 +56,12 @@
                     </td>
                     <td>
                         <div id="editButton{{$item->id}}" style="display: none;">
-                            <button class="btn btn-success" onclick="doEdit(this, {{$item->id}})">submit</button>
-                            <button class="btn btn-secondary" onclick="cancelEdit(this, {{$item->id}})">cancel</button>
+                            <button class="btn btn-success" onclick="doEdit(this, {{$item->id}})">{{__('Submit')}}</button>
+                            <button class="btn btn-secondary" onclick="cancelEdit(this, {{$item->id}})">{{__('Cancel')}}</button>
                         </div>
                         <div style="display: flex">
-                            <button class="btn btn-primary" onclick="editCategory(this, {{$item->id}})">edit</button>
-                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">delete</button>
+                            <button class="btn btn-primary" onclick="editCategory(this, {{$item->id}})">{{__('Edit')}}</button>
+                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">{{__('Delete')}}</button>
                         </div>
                     </td>
                 </tr>
@@ -113,8 +113,8 @@
                 '                    </td>\n' +
                 '                    <td>\n' +
                 '                        <div style="display: flex;">\n' +
-                '                            <button class="btn btn-success" onclick="submitNew(' + newActivity + ')">submit</button>\n' +
-                '                            <button class="btn btn-secondary" onclick="cancelNew(' + newActivity + ')">cancel</button>\n' +
+                '                            <button class="btn btn-success" onclick="submitNew(' + newActivity + ')">{{__("Submit")}}</button>\n' +
+                '                            <button class="btn btn-secondary" onclick="cancelNew(' + newActivity + ')">{{__("Cancel")}}</button>\n' +
                 '                        </div>\n' +
                 '                    </td>\n' +
                 '                </tr>';
@@ -164,12 +164,12 @@
                 '                    </td>\n' +
                 '                    <td>\n' +
                 '                        <div id="editButton' + _id + '" style="display: none;">\n' +
-                '                            <button class="btn btn-success" onclick="doEdit(this, ' + _id + ')">submit</button>\n' +
-                '                            <button class="btn btn-secondary" onclick="cancelEdit(this, ' + _id + ')">cancel</button>\n' +
+                '                            <button class="btn btn-success" onclick="doEdit(this, ' + _id + ')">{{__("Submit")}}</button>\n' +
+                '                            <button class="btn btn-secondary" onclick="cancelEdit(this, ' + _id + ')">{{__("Cancel")}}</button>\n' +
                 '                        </div>\n' +
                 '                        <div style="display: flex">\n' +
-                '                            <button class="btn btn-primary" onclick="editCategory(this, ' + _id + ')">edit</button>\n' +
-                '                            <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + _name + '\')">delete</button>\n' +
+                '                            <button class="btn btn-primary" onclick="editCategory(this, ' + _id + ')">{{__("Edit")}}</button>\n' +
+                '                            <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + _name + '\')">{{__("Delete")}}</button>\n' +
                 '                        </div>\n' +
                 '                    </td>\n' +
                 '                </tr>';

@@ -16,6 +16,7 @@ class CreateJournalCategoriesTable extends Migration
         Schema::create('journalCategories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('lang', 5)->default('en');
         });
     }
 

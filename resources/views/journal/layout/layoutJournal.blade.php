@@ -95,10 +95,19 @@
 <body style="overflow-x: hidden;">
 <div>
 
+
+    <?php
+        $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+    ?>
+
+    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
+        <link rel="stylesheet" href="{{asset('css/rtl/journalBase.css')}}">
+    @endif
+
     @include('journal.layout.sideNaveJournal')
 
     <main>
-        <div class="mainBase">
+        <div class="mainBase" style="direction: ltr">
             <div class="sideNavButton threeLineDiv" onclick="toggleSideNav(this)">
                 <div class="navThreeLine1"></div>
                 <div class="navThreeLine2"></div>

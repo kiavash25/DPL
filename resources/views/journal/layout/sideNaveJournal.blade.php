@@ -17,6 +17,7 @@
         display: flex;
         flex-direction: column;
         text-align: right;
+        margin-right: auto;
     }
     .sideNavLink{
         margin: 9px 0px;
@@ -53,12 +54,12 @@
 
 <nav>
     <a href="{{url('/')}}" class="sideNavHeaderIcon">
-        <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="dpl" style="width: 80%; margin-left: 10%;">
+        <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="dpl" style="width: 80%; margin-left: 10%; margin-right: 10%;">
     </a>
 
     <div class="sideNavMenuDiv">
         <a href="{{route('journal.index')}}" class="sideNavLink {{!isset($sideNavChoose) ? 'sideNavLinkChoose' : ''}}">
-            Home
+            {{__('Home')}}
         </a>
         @foreach($allCategory as $item)
             <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="sideNavLink {{isset($sideNavChoose) && $sideNavChoose == $item->name ? 'sideNavLinkChoose' : ''}}">
