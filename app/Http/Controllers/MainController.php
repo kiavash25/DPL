@@ -31,46 +31,27 @@ use Illuminate\Support\Facades\View;
 
 class MainController extends Controller
 {
-    public function __construct()
-    {
-        $destCategory = DestinationCategory::all();
-        foreach ($destCategory as $item) {
-            $item->destination = Destination::where('categoryId', $item->id)->orderBy('name')->get();
-            foreach ($item->destination as $dest){
-                $titleId = DestinationCategoryTitleText::where('destId', $dest->id)->pluck('titleId')->toArray();
-                $dest->titles = DestinationCategoryTitle::whereIn('id', $titleId)->pluck('name')->toArray();
-
-                $dest->url = route('show.destination', ['categoryId' => $dest->categoryId, 'slug' => $dest->slug]);
-            }
-        }
-
-        $today = Carbon::now()->format('Y-m-d');
-        $activitiesList = Activity::where('parent', 0)->get();
-        foreach ($activitiesList as $item)
-            $item->subAct = Activity::where('parent', $item->id)->get();
-
-        View::share(['destCategory' => $destCategory, 'activitiesList' => $activitiesList]);
-    }
 
     public function mainPage()
     {
-
         $mainPageSlider = MainPageSlider::orderByDesc('showNumber')->get();
         foreach ($mainPageSlider as $item)
             $item->pic = asset('images/MainSliderPics/' . $item->pic);
 
-        $destinationCategoryMain = DestinationCategory::get();
+        $destinationCategoryMain = DestinationCategory::where('lang', app()->getLocale())->get();
         foreach ($destinationCategoryMain as $categ) {
-            $categ->destination = Destination::where('categoryId', $categ->id)->orderBy('name')->get(['id', 'name', 'slug', 'categoryId', 'pic', 'description']);
+            $categ->destination = Destination::where('categoryId', $categ->id)->where('lang', app()->getLocale())->orderBy('name')->get(['id', 'name', 'slug', 'categoryId', 'pic', 'description']);
             foreach ($categ->destination as $dest){
-                $dest->pic = asset('uploaded/destination/' . $dest->id . '/' . $dest->pic);
-                $dest->url = route('show.destination', ['slug' => $dest->slug, 'categoryId' => $dest->categoryId]);
+                if($dest->langSource == 0)
+                    $dest->pic = asset('uploaded/destination/' . $dest->id . '/' . $dest->pic);
+                else
+                    $dest->pic = asset('uploaded/destination/' . $dest->langSource . '/' . $dest->pic);
+                $dest->url = route('show.destination', ['slug' => $dest->slug]);
             }
         }
 
-
         $today = Carbon::now()->format('Y-m-d');
-        $recentlyPackage = Package::where('showPack', 1)
+        $recentlyPackage = Package::where('showPack', 1)->where('lang', app()->getLocale())
                                     ->where(function ($query) {
                                         $today = Carbon::now()->format('Y-m-d');
                                         $query->where('sDate', '>', $today)
@@ -105,15 +86,20 @@ class MainController extends Controller
     public function showActivity($slug)
     {
         $kind = 'activity';
-        $content = Activity::where('slug', $slug)->first();
+        $content = Activity::where('slug', $slug)->where('lang', app()->getLocale())->first();
         if($content == null)
             return redirect(url('/'));
 
         $content->titles = ActivityTitle::where('activityId', $content->id)->get();
 
-        $loc = 'uploaded/activity/' . $content->id;
         $slip = [];
-        $sliderPics =  ActivityPic::where('activityId', $content->id)->get();
+        if($content->langSource == 0)
+            $picId =  $content->id;
+        else
+            $picId = $content->langSource;
+
+        $loc = 'uploaded/activity/' . $picId;
+        $sliderPics = ActivityPic::where('activityId', $picId)->get();
         foreach ($sliderPics as $item){
             array_push($slip, (object)[
                 'pic' => getKindPic($loc, $item->pic, ''),
@@ -126,6 +112,7 @@ class MainController extends Controller
 
         $content->mapPackages = Package::where('showPack', 1)
             ->where('mainActivityId', $content->id)
+            ->where('lang', app()->getLocale())
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
                 $query->where('sDate', '>', $today)
@@ -139,8 +126,7 @@ class MainController extends Controller
             $content->lngCenter += (float)$item->lng;
             $content->mapCount++;
 
-            $dest = Destination::find($item->destId);
-            $item->url = route('show.package', ['destination' => $dest->slug, 'slug' => $item->slug]);
+            $item->url = route('show.package', ['slug' => $item->slug]);
         }
         if($content->mapCount > 0) {
             $content->latCenter /= $content->mapCount;
@@ -154,6 +140,7 @@ class MainController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $packages = Package::where('showPack', 1)
             ->where('mainActivityId', $content->id)
+            ->where('lang', app()->getLocale())
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
                 $query->where('sDate', '>', $today)
@@ -183,15 +170,17 @@ class MainController extends Controller
         return view('main.content', compact(['content', 'kind', 'guidance']));
     }
 
-    public function showDestination($categoryId, $slug)
+    public function showDestination($slug)
     {
         $kind = 'destination';
-        $category = DestinationCategory::find($categoryId);
-        if($category == null)
+
+        $content = Destination::where('slug', $slug)->where('lang', app()->getLocale())->first();
+        if($content == null)
             return redirect(url('/'));
 
-        $content = Destination::where('slug', $slug)->where('categoryId', $category->id)->first();
-        if($content == null)
+
+        $category = DestinationCategory::find($content->categoryId);
+        if($category == null)
             return redirect(url('/'));
 
         $content->category = $category;
@@ -208,9 +197,14 @@ class MainController extends Controller
         else
             $content->tags = [];
 
-        $loc = 'uploaded/destination/' . $content->id;
+        if($content->langSource == 0)
+            $picFolder = $content->id;
+        else
+            $picFolder = $content->langSource;
+
         $slip = [];
-        $sliderPics =  DestinationPic::where('destId', $content->id)->get();
+        $loc = 'uploaded/destination/' . $picFolder;
+        $sliderPics =  DestinationPic::where('destId', $picFolder)->get();
         foreach ($sliderPics as $item){
             array_push($slip, (object)[
                 'pic' => getKindPic($loc, $item->pic, ''),
@@ -219,18 +213,24 @@ class MainController extends Controller
                 'id' => $item->id
             ]);
         }
-        if($content->pic != null) {
+        if($content->langSource == 0)
+            $mainPic = $content->pic;
+        else
+            $mainPic = Destination::find($content->langSource)->pic;
+
+        if ($mainPic != null) {
             array_unshift($slip, (object)[
-                'pic' => getKindPic($loc, $content->pic, ''),
-                'slide' =>  getKindPic($loc, $content->pic, 'slide'),
-                'thumbnail' =>  getKindPic($loc, $content->pic, 'min'),
+                'pic' => getKindPic($loc, $mainPic, ''),
+                'slide' => getKindPic($loc, $mainPic, 'slide'),
+                'thumbnail' => getKindPic($loc, $mainPic, 'min'),
                 'id' => 0
             ]);
         }
+
         $content->slidePic = $slip;
 
         $today = Carbon::now()->format('Y-m-d');
-        $packages = Package::where('showPack', 1)
+        $content->packages = Package::where('showPack', 1)
                             ->where('destId', $content->id)
                             ->where(function ($query) {
                                 $today = Carbon::now()->format('Y-m-d');
@@ -238,11 +238,11 @@ class MainController extends Controller
                                     ->orWhereNull('sDate');
                             })
                             ->orderBy('sDate')->take(5)->get();
-        foreach ($packages as $item)
+        foreach ($content->packages as $item)
             $item = getMinPackage($item);
-        $content->packages = $packages;
 
-        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $content->slug]);
+//        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $content->slug]);
+        $content->packageListUrl = '#';
 
         if($content->video != null)
             $content->video = asset('uploaded/destination/'. $content->id . '/' . $content->video);
@@ -250,22 +250,22 @@ class MainController extends Controller
             $content->podcast = asset('uploaded/destination/'. $content->id . '/' . $content->podcast);
 
 
-        $guidance = ['value1' => $content->category->name, 'value1Url' => route('show.category', ['categoryName' => $content->category->name]),
-                    'value2' => $content->name, 'value2Url' => route('show.destination', ['city' => $content->categoryId, 'slug' => $content->slug])];
+        $guidance = ['value1' => $content->category->name, 'value1Url' => route('show.category', ['slug' => $content->category->slug]),
+                    'value2' => $content->name, 'value2Url' => route('show.destination', ['slug' => $content->slug])];
 
         return view('main.content', compact(['content', 'kind', 'guidance']));
     }
 
-    public function showPackage($destination, $slug)
+    public function showPackage($slug)
     {
         $kind = 'package';
-        $destination = Destination::where('slug', $destination)->first();
-        if($destination == null)
+
+        $content = Package::where('slug', $slug)->where('lang', app()->getLocale())->first();
+        if($content == null)
             return redirect(url('/'));
 
-
-        $content = Package::where('destId', $destination->id)->where('slug', $slug)->first();
-        if($content == null)
+        $destination = Destination::find($content->destId);
+        if($destination == null)
             return redirect(url('/'));
 
         $destination->city = City::find($destination->cityId);
@@ -274,7 +274,7 @@ class MainController extends Controller
         $content->destination = $destination;
 
         $content->mainActivity = Activity::find($content->mainActivityId);
-        $content->mainActivity->icon = asset('uploaded/activityIcons/' . $content->mainActivity->icon);
+//        $content->mainActivity->icon = asset('uploaded/activityIcons/' . $content->mainActivity->icon);
 
         $activities = PackageActivityRelations::where('packageId', $content->id)->pluck('activityId')->toArray();
         $content->activities = Activity::whereIn('id', $activities)->get();
@@ -291,9 +291,17 @@ class MainController extends Controller
         else
             $content->tags = [];
 
-        $loc = 'uploaded/packages/' . $content->id ;
+        if($content->langSource == 0) {
+            $picId = $content->id;
+            $picName = $content->pic;
+        }
+        else {
+            $picId = $content->langSource;
+            $picName = Package::find($content->langSource)->pic;
+        }
         $slip = [];
-        $sliderPics =  PackagePic::where('packageId', $content->id)->get();
+        $loc = 'uploaded/packages/' . $picId ;
+        $sliderPics =  PackagePic::where('packageId', $picId)->get();
         foreach ($sliderPics as $item){
             array_push($slip, (object)[
                 'pic' => getKindPic($loc, $item->pic, ''),
@@ -302,24 +310,25 @@ class MainController extends Controller
                 'id' => $item->id
             ]);
         }
-        if($content->pic != null) {
+        if($picName != null) {
             array_unshift($slip, (object)[
-                'pic' => getKindPic($loc, $content->pic, ''),
-                'slide' =>  getKindPic($loc, $content->pic, 'slide'),
-                'thumbnail' =>  getKindPic($loc, $content->pic, 'min'),
+                'pic' => getKindPic($loc, $picName, ''),
+                'slide' =>  getKindPic($loc, $picName, 'slide'),
+                'thumbnail' =>  getKindPic($loc, $picName, 'min'),
                 'id' => 0
             ]);
         }
         $content->slidePic = $slip;
 
-        $content->thumbnails = PackageThumbnailsPic::where('packageId', $content->id)->get();
+        $content->thumbnails = PackageThumbnailsPic::where('packageId', $picId)->get();
         foreach ($content->thumbnails as $item){
-            $item->thumbnail = asset('uploaded/packages/' . $content->id . '/thumbnail_' . $item->pic);
-            $item->pic = asset('uploaded/packages/' . $content->id . '/' . $item->pic);
+            $item->thumbnail = asset('uploaded/packages/' . $picId . '/thumbnail_' . $item->pic);
+            $item->pic = asset('uploaded/packages/' . $picId . '/' . $item->pic);
         }
 
-        $pac = Package::where('id', '!=', $content->id)
+        $content->packages = Package::where('id', '!=', $content->id)
                         ->where('showPack', 1)
+                        ->where('lang', app()->getLocale())
                         ->where(function ($query) {
                             $today = Carbon::now()->format('Y-m-d');
                             $query->where('sDate', '>', $today)
@@ -327,12 +336,12 @@ class MainController extends Controller
                         })
                         ->where('destId', $content->destination->id)
                         ->orderBy('sDate')->take(5)->get();
-        foreach ($pac as $item)
+        foreach ($content->packages as $item)
             $item = getMinPackage($item);
-        $content->packages = $pac;
 
         $content->actPackage = Package::where('id', '!=', $content->id)
                                 ->where('showPack', 1)
+                                ->where('lang', app()->getLocale())
                                 ->where(function ($query) {
                                     $today = Carbon::now()->format('Y-m-d');
                                     $query->where('sDate', '>', $today)
@@ -342,7 +351,6 @@ class MainController extends Controller
                                 ->orderBy('sDate')->take(5)->get();
         foreach ($content->actPackage as $item)
             $item = getMinPackage($item);
-
 
         if($content->brochure != null)
             $content->brochure = asset('uploaded/packages/' . $content->id . '/' . $content->brochure);
@@ -367,27 +375,41 @@ class MainController extends Controller
             }
         }
 
-        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $destination->slug]);
+//        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $destination->slug]);
+        $content->packageListUrl = '#';
 
-        $guidance = ['value1' => $destination->category->name, 'value1Url' => route('show.category', ['categoryName' => $destination->category->name]),
-            'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug]),
-            'value3' => $content->name, 'value3Url' => $content->id];
+        $guidance = ['value1' => $destination->category->name, 'value1Url' => route('show.category', ['slug' => $destination->category->slug]),
+            'value2' => $destination->name, 'value2Url' => route('show.destination', ['slug' => $destination->slug]),
+            'value3' => $content->name, 'value3Url' => '#'];
 
         return view('main.content', compact(['content', 'kind', 'guidance', 'moreInfoCallVenture', 'moreInfoNeutral', 'hasMoreInfo']));
     }
 
-    public function showCategory($categoryName)
+    public function showCategory($slug)
     {
         $kind = 'category';
-        $content = DestinationCategory::where('name', $categoryName)->first();
+        $content = DestinationCategory::where('slug', $slug)->where('lang', app()->getLocale())->first();
         if($content == null)
-            return redirect()->back();
+            return redirect(url('/'));
         else{
-            $mainLoc = __DIR__  . '/../../../public/uploaded/destination/category/' . $content->id;
-
-            $loc = 'uploaded/destination/category/' . $content->id;
             $slip = [];
-            $sliderPics =  DestinationCategoryPic::where('categoryId', $content->id)->get();
+            if($content->langSource == 0) {
+                $picId = $content->id;
+                $picName = $content->pic;
+            }
+            else {
+                $picId = $content->langSource;
+                $picName = DestinationCategory::find($content->langSource)->pic;
+            }
+            $mainLoc = __DIR__  . '/../../../public/uploaded/destination/category/' . $picId;
+            $loc = 'uploaded/destination/category/' . $picId;
+            $sliderPics =  DestinationCategoryPic::where('categoryId', $picId)->get();
+
+            if(is_file($mainLoc . '/' .$content->icon))
+                $content->icon = asset($loc . '/' . $content->icon);
+            else
+                $content->icon = null;
+
             foreach ($sliderPics as $item){
                 array_push($slip, (object)[
                     'pic' => getKindPic($loc, $item->pic, ''),
@@ -396,11 +418,11 @@ class MainController extends Controller
                     'id' => $item->id
                 ]);
             }
-            if($content->pic != null) {
+            if($picName != null) {
                 array_unshift($slip, (object)[
-                    'pic' => getKindPic($loc, $content->pic, ''),
-                    'slide' =>  getKindPic($loc, $content->pic, 'slide'),
-                    'thumbnail' =>  getKindPic($loc, $content->pic, 'min'),
+                    'pic' => getKindPic($loc, $picName, ''),
+                    'slide' =>  getKindPic($loc, $picName, 'slide'),
+                    'thumbnail' =>  getKindPic($loc, $picName, 'min'),
                     'id' => 0
                 ]);
             }
@@ -418,14 +440,10 @@ class MainController extends Controller
                         'id' => $de->id
                     ]);
                 }
+                $content->slidePic = $slidePic;
             }
-            $content->slidePic = $slidePic;
 
             $content->titles = DestinationCategoryTitle::where('categoryId', $content->id)->get();
-            if(is_file($mainLoc . '/' .$content->icon))
-                $content->icon = asset('uploaded/destination/category/' . $content->id . '/' . $content->icon);
-            else
-                $content->icon = null;
 
             if($content->video != null)
                 $content->video = asset('uploaded/destination/category/' . $content->id . '/' . $content->video);
@@ -441,10 +459,18 @@ class MainController extends Controller
             $lng = 0;
             $count = 0;
             foreach ($destinations as $item){
-                $l = 'uploaded/destination/' . $item->id;
-                $item->minPic = getKindPic($l, $item->pic, 'min');
+                if($item->langSource == 0){
+                    $picId = $item->id;
+                    $picName = $item->pic;
+                }
+                else{
+                    $picId = $item->langSource;
+                    $picName = Destination::find($item->langSource)->pic;
+                }
+                $l = 'uploaded/destination/' . $picId;
+                $item->minPic = getKindPic($l, $picName, 'min');
                 $item->description = strip_tags($item->description);
-                $item->url = route('show.destination', ['categoryId' => $content->id, 'slug' => $item->slug]);
+                $item->url = route('show.destination', ['slug' => $item->slug]);
 
                 $p = Package::where('destId', $item->id)
                             ->where('showPack', 1)
@@ -467,13 +493,16 @@ class MainController extends Controller
             }
             $content->destinations = $destinations;
             $content->packages = $packages;
-
-            $lat /= $count;
-            $lng /= $count;
-            $content->mapCenter = ['lat' => $lat, 'lng' => $lng];
+            if($count > 0){
+                $lat /= $count;
+                $lng /= $count;
+                $content->mapCenter = ['lat' => $lat, 'lng' => $lng];
+            }
+            else
+                $content->mapCenter = ['lat' => 0, 'lng' => 0];
 
             $kind = 'category';
-            $guidance = ['value1' => $content->name, 'value1Url' => route('show.category', ['categoryName' => $content->name])];
+            $guidance = ['value1' => $content->name, 'value1Url' => route('show.category', ['slug' => $content->slug])];
 
             return \view('main.content', compact(['content', 'kind', 'guidance']));
         }
@@ -501,12 +530,12 @@ class MainController extends Controller
     public function list($kind, $value1)
     {
         if($kind == 'destination'){
-            $category = DestinationCategory::where('name', $value1)->first();
+            $category = DestinationCategory::where('name', $value1)->where('lang', app()->getLocale())->first();
             if($category == null)
                 return redirect(url('/'));
 
             $today = Carbon::now()->format('Y-m-d');
-            $destinations = Destination::where('categoryId', $category->id)->get();
+            $destinations = Destination::where('categoryId', $category->id)->where('lang', app()->getLocale())->get();
             foreach ($destinations as $item) {
                 $item->pic = asset('uploaded/destination/' . $item->id . '/' . $item->pic);
                 $item->package = Package::where('destId', $item->id)
@@ -531,7 +560,7 @@ class MainController extends Controller
             $activity = 'all';
             switch ($kind){
                 case 'activity':
-                    $activity = Activity::where('name', $value1)->first();
+                    $activity = Activity::where('name', $value1)->where('lang', app()->getLocale())->first();
                     if ($activity != null) {
                         $guidance = ['value1' => 'Activity', 'value1Url' => '#',
                             'value2' => $activity->name, 'value2Url' => '#'];
@@ -544,11 +573,11 @@ class MainController extends Controller
                     }
                     break;
                 case 'destinationPackage':
-                    $destination = Destination::where('slug', $value1)->first();
+                    $destination = Destination::where('slug', $value1)->where('lang', app()->getLocale())->first();
                     if ($destination != null) {
                         $ci = City::find($destination->cityId);
                         $guidance = ['value1' => 'Destination', 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => 'All']),
-                            'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug])];
+                            'value2' => $destination->name, 'value2Url' => route('show.destination', ['slug' => $destination->slug])];
                         $title = $destination->name . ' Package List';
                         $destination = $destination->id;
                     }
@@ -571,7 +600,7 @@ class MainController extends Controller
                         if ($destination != null) {
                             $ci = City::find($destination->cityId);
                             $guidance = ['value1' => 'Destination', 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => 'All']),
-                                'value2' => $destination->name, 'value2Url' => route('show.destination', ['categoryId' => $destination->categoryId, 'slug' => $destination->slug])];
+                                'value2' => $destination->name, 'value2Url' => route('show.destination', ['slug' => $destination->slug])];
                             $title = $destination->name . ' Package List';
                             $destination = $destination->id;
                         }
@@ -728,9 +757,9 @@ class MainController extends Controller
             if($destination == null)
                 $item->bad = true;
             else {
-                $item->url = route('show.package', ['destination' => $destination->slug, 'slug' => $item->slug]);
+                $item->url = route('show.package', ['slug' => $item->slug]);
                 $item->destinationName = $destination->name;
-                $item->destinationUrl = route('show.destination', ['categoryId' => $destination->categoryId, 'slug'=>$destination->slug]);
+                $item->destinationUrl = route('show.destination', ['slug'=>$destination->slug]);
             }
 
             if($item->sDate != null)

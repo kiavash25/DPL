@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="packageButtonDiv">
                                     <a href="{{$item->url}}" class="packageButton">
-                                        See Package
+                                        {{__('See Package')}}
                                     </a>
                                 </div>
 

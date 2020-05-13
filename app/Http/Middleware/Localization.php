@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\models\Language;
 use Closure;
 
 class Localization
@@ -17,7 +18,11 @@ class Localization
     {
         if(\Session::has('locale'))
         {
-            \App::setlocale(\Session::get('locale'));
+            $state = Language::where('symbol', \Session::get('locale'))->first();
+            if((isset($state->state) && $state->state == 1) || \Session::get('locale') == 'en')
+                \App::setlocale(\Session::get('locale'));
+            else
+                \App::setlocale('en');
         }
         return $next($request);
     }

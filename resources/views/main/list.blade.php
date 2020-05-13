@@ -232,7 +232,7 @@
                                                 Packages: {{$item->package}}
                                             </div>
 
-                                            <a href="{{route('show.destination', ['categoryId' => $item->categoryId, 'slug' => $item->slug])}}" class="showButton">
+                                            <a href="{{route('show.destination', ['slug' => $item->slug])}}" class="showButton">
                                                 View Destination
                                             </a>
                                         </div>

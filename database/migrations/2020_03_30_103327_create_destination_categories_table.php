@@ -16,10 +16,13 @@ class CreateDestinationCategoriesTable extends Migration
         Schema::create('destinationCategories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->string('video', 255)->nullable();
             $table->string('podcast', 255)->nullable();
             $table->string('icon')->nullable();
+            $table->string('lang', 5)->default('en');
+            $table->unsignedInteger('langSource')->default(0);
         });
     }
 

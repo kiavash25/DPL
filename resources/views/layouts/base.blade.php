@@ -49,8 +49,11 @@
 
     @yield('head')
 
+    <?php
+    $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+    ?>
 
-    @if(app()->getLocale() == 'fa')
+    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
         <link rel="stylesheet" href="{{asset('css/rtl/rtlBase.css')}}">
     @endif
 

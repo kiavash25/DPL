@@ -13,6 +13,8 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+//ALTER TABLE `destinations` ADD `lang` VARCHAR(5) NOT NULL DEFAULT 'en' AFTER `podcast`, ADD `langSource` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `lang`;
+
 Route::get('locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
@@ -33,11 +35,11 @@ Route::middleware(['web'])->group(function () {
 
     Route::get('activity/{slug}', 'MainController@showActivity')->name('show.activity');
 
-    Route::get('destination/{categoryId}/{slug}', 'MainController@showDestination')->name('show.destination');
+    Route::get('destination/{slug}', 'MainController@showDestination')->name('show.destination');
 
-    Route::get('package/{destination}/{slug}', 'MainController@showPackage')->name('show.package');
+    Route::get('package/{slug}', 'MainController@showPackage')->name('show.package');
 
-    Route::get('category/{categoryName}', 'MainController@showCategory')->name('show.category');
+    Route::get('category/{slug}', 'MainController@showCategory')->name('show.category');
 
     Route::post('findDestination', 'AjaxController@findDestination')->name('findDestination');
 
@@ -53,22 +55,39 @@ Route::middleware(['web'])->group(function () {
 
 //admin panel
 Route::middleware(['auth', 'web'])->group(function () {
+    Route::get('admin/locale/{locale}', function ($locale){
+        Session::put('locale', $locale);
+        return redirect()->back();
+    });
+
     Route::get('/admin', 'AdminController@adminIndex')->name('admin.index');
 
-    Route::get('/admin/destination/category/list', 'DestinationController@listCategory')->name('admin.destination.category.index');
-    Route::get('/admin/destination/category/new', 'DestinationController@newCategory')->name('admin.destination.category.new');
-    Route::get('/admin/destination/category/edit/{id}', 'DestinationController@editCategory')->name('admin.destination.category.edit');
+    Route::get('/admin/activity/list', 'ActivityController@listActivity')->name('admin.activity.list');
+    Route::get('/admin/activity/new', 'ActivityController@newActivity')->name('admin.activity.new');
+    Route::get('/admin/activity/edit/{id}', 'ActivityController@editActivity')->name('admin.activity.edit');
+    Route::get('/admin/activity/description/{id}', 'ActivityController@descriptionActivity')->name('admin.activity.description');
+    Route::post('/admin/activity/store', 'ActivityController@storeActivity')->name('admin.activity.store');
+    Route::post('/admin/activity/storeImg', 'ActivityController@storeImgActivity')->name('admin.activity.storeImg');
+    Route::post('/admin/activity/storeTitle', 'ActivityController@storeTitleActivity')->name('admin.activity.storeTitle');
+    Route::post('/admin/activity/storeTitleTextImg', 'ActivityController@storeTitleTextImgActivity')->name('admin.activity.storeTitleTextImg');
+    Route::post('/admin/activity/storeTitleText', 'ActivityController@storeTitleTextActivity')->name('admin.activity.storeTitleText');
+    Route::post('/admin/activity/storeVideoAudio', 'ActivityController@storeVideoAudioActivity')->name('admin.activity.storeVideoAudio');
+    Route::post('/admin/activity/deleteImg', 'ActivityController@deleteImgActivity')->name('admin.activity.deleteImg');
+    Route::post('/admin/activity/deleteTitle', 'ActivityController@deleteTitleActivity')->name('admin.activity.deleteTitle');
+    Route::post('/admin/activity/delete', 'ActivityController@deleteActivity')->name('admin.activity.delete');
+    Route::post('/admin/activity/check', 'ActivityController@checkActivity')->name('admin.activity.check');
 
-    Route::post('/admin/destination/category/store', 'DestinationController@storeCategory')->name('admin.destination.category.store');
-    Route::post('/admin/destination/category/storeImg', 'DestinationController@storeImgCategory')->name('admin.destination.category.storeImg');
-    Route::post('/admin/destination/category/deleteImg', 'DestinationController@deleteImgCategory')->name('admin.destination.category.deleteImg');
-    Route::post('/admin/destination/category/storeVideoAudio', 'DestinationController@storeVideoAudioCategory')->name('admin.destination.category.storeVideoAudio');
-
-    Route::post('/admin/destination/category/delete', 'DestinationController@deleteCategory')->name('admin.destination.category.delete');
-    Route::post('/admin/destination/category/check', 'DestinationController@checkCategoryDestination')->name('admin.destination.category.check');
-
-    Route::post('/admin/category/title/store', 'DestinationController@storeCategoryTitle')->name('admin.destination.category.title.store');
-    Route::post('/admin/category/title/delete', 'DestinationController@deleteCategoryTitle')->name('admin.destination.category.title.delete');
+    Route::get('/admin/destination/category/list', 'DestCategoryController@listCategory')->name('admin.destination.category.index');
+    Route::get('/admin/destination/category/new', 'DestCategoryController@newCategory')->name('admin.destination.category.new');
+    Route::get('/admin/destination/category/edit/{id}', 'DestCategoryController@editCategory')->name('admin.destination.category.edit');
+    Route::post('/admin/destination/category/store', 'DestCategoryController@storeCategory')->name('admin.destination.category.store');
+    Route::post('/admin/destination/category/storeImg', 'DestCategoryController@storeImgCategory')->name('admin.destination.category.storeImg');
+    Route::post('/admin/destination/category/deleteImg', 'DestCategoryController@deleteImgCategory')->name('admin.destination.category.deleteImg');
+    Route::post('/admin/destination/category/storeVideoAudio', 'DestCategoryController@storeVideoAudioCategory')->name('admin.destination.category.storeVideoAudio');
+    Route::post('/admin/destination/category/delete', 'DestCategoryController@deleteCategory')->name('admin.destination.category.delete');
+    Route::post('/admin/destination/category/check', 'DestCategoryController@checkCategoryDestination')->name('admin.destination.category.check');
+    Route::post('/admin/category/title/store', 'DestCategoryController@storeCategoryTitle')->name('admin.destination.category.title.store');
+    Route::post('/admin/category/title/delete', 'DestCategoryController@deleteCategoryTitle')->name('admin.destination.category.title.delete');
 
     Route::get('/admin/destination/list', 'DestinationController@listDestination')->name('admin.destination.list');
     Route::get('/admin/destination/new', 'DestinationController@newDestination')->name('admin.destination.new');
@@ -101,21 +120,6 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/admin/package/deleteImg', 'PackageController@deleteImgPackage')->name('admin.package.deleteImg');
     Route::post('/admin/package/delete', 'PackageController@deletePackage')->name('admin.package.delete');
 
-    Route::get('/admin/activity/list', 'ActivityController@listActivity')->name('admin.activity.list');
-    Route::get('/admin/activity/new', 'ActivityController@newActivity')->name('admin.activity.new');
-    Route::get('/admin/activity/edit/{id}', 'ActivityController@editActivity')->name('admin.activity.edit');
-    Route::get('/admin/activity/description/{id}', 'ActivityController@descriptionActivity')->name('admin.activity.description');
-    Route::post('/admin/activity/store', 'ActivityController@storeActivity')->name('admin.activity.store');
-    Route::post('/admin/activity/storeImg', 'ActivityController@storeImgActivity')->name('admin.activity.storeImg');
-    Route::post('/admin/activity/storeTitle', 'ActivityController@storeTitleActivity')->name('admin.activity.storeTitle');
-    Route::post('/admin/activity/storeTitleTextImg', 'ActivityController@storeTitleTextImgActivity')->name('admin.activity.storeTitleTextImg');
-    Route::post('/admin/activity/storeTitleText', 'ActivityController@storeTitleTextActivity')->name('admin.activity.storeTitleText');
-    Route::post('/admin/activity/storeVideoAudio', 'ActivityController@storeVideoAudioActivity')->name('admin.activity.storeVideoAudio');
-    Route::post('/admin/activity/deleteImg', 'ActivityController@deleteImgActivity')->name('admin.activity.deleteImg');
-    Route::post('/admin/activity/deleteTitle', 'ActivityController@deleteTitleActivity')->name('admin.activity.deleteTitle');
-    Route::post('/admin/activity/delete', 'ActivityController@deleteActivity')->name('admin.activity.delete');
-    Route::post('/admin/activity/check', 'ActivityController@checkActivity')->name('admin.activity.check');
-
     Route::get('/admin/journal/category/list', 'JournalAdminController@indexCategory')->name('admin.journal.category.index');
     Route::post('/admin/journal/category/store', 'JournalAdminController@storeCategory')->name('admin.journal.category.store');
     Route::post('/admin/journal/category/edit', 'JournalAdminController@editCategory')->name('admin.journal.category.edit');
@@ -132,6 +136,10 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/admin/setting/mainPageSliderStore', 'SettingController@mainPageSliderStore')->name('admin.setting.mainPageSliderStore');
     Route::post('/admin/setting/mainPageSliderChangeNumber', 'SettingController@mainPageSliderChangeNumber')->name('admin.setting.mainPageSliderChangeNumber');
     Route::post('/admin/setting/mainPageSlider/delete', 'SettingController@mainPageSliderDelete')->name('admin.setting.mainPageSlider.delete');
+
+    Route::get('/admin/setting/lang/index', 'SettingController@languagePage')->name('admin.setting.lang');
+    Route::post('/admin/setting/lang/store', 'SettingController@storeLanguage')->name('admin.setting.lang.store');
+    Route::post('/admin/setting/lang/delete', 'SettingController@deleteLanguage')->name('admin.setting.lang.delete');
 
     Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');
 });

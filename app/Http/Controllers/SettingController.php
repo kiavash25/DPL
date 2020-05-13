@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Language;
 use App\models\MainPageSlider;
+use Couchbase\TermRangeSearchQuery;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class SettingController extends Controller
 {
@@ -89,5 +92,48 @@ class SettingController extends Controller
             echo json_encode(['status' => 'nok']);
 
         return;
+    }
+
+    public function languagePage()
+    {
+        $lang = Language::all();
+        return view('admin.setting.language', compact(['lang']));
+    }
+
+    public function storeLanguage(Request $request)
+    {
+        if(isset($request->name) && isset($request->id) && isset($request->symbol)){
+            $check = Language::where('name', $request->name)->where('id', '!=', $request->id)->first();
+            if($check == null){
+                if($request->id == 0)
+                    $lang = new Language();
+                else {
+                    $lang = Language::find($request->id);
+                    if($lang == null){
+                        echo json_encode(['status' => 'nok1']);
+                        return;
+                    }
+                }
+
+                $lang->name = $request->name;
+                $lang->symbol = $request->symbol;
+                $lang->direction = $request->dir;
+                $lang->state = $request->state;
+                $lang->save();
+
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+
+    }
+
+    public function deleteLanguage(Request $request){
+
     }
 }

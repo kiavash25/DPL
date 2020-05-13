@@ -9,7 +9,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2 style="display: flex; ">
-                Package List
+                {{__('Package List')}}
                 <a href="{{route('admin.package.new')}}" class="addTagIcon" style="margin-left: 30px; color: green">
                     <i class="fas fa-plus-circle" style="cursor: pointer"></i>
                 </a>
@@ -21,12 +21,12 @@
             <table id="table_id" class="display" style="width:100%">
                 <thead>
                 <tr>
-                    <th>name</th>
-                    <th>Draft/Show</th>
-                    <th>Destination</th>
-                    <th>Code</th>
-                    <th>Start Date</th>
-                    <th>Activity</th>
+                    <th>{{__('Name')}}</th>
+                    <th>{{__('Draft/Show')}}</th>
+                    <th>{{__('Destination')}}</th>
+                    <th>{{__('Code')}}</th>
+                    <th>{{__('Start Date')}}</th>
+                    <th>{{__('Activity')}}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -34,19 +34,19 @@
                 @foreach($packages as $item)
                     <tr id="package{{$item->id}}"  style="background: {{$item->showPack == 1 ? '' : '#ffe6e6'}}">
                         <td>{{$item->name}}</td>
-                        <td>{{$item->showPack == 1 ? 'Show' : 'Draft'}}</td>
+                        <td>{{$item->showPack == 1 ? __('Show') : __('Draft')}}</td>
                         <td>{{$item->destination->name}}</td>
-                        <td>{{$item->Code}}</td>
+                        <td>{{$item->code}}</td>
                         <td>{{$item->sDate}}</td>
                         <td>{{$item->activity->name}}</td>
                         <td>
                             <a href="{{route('admin.package.moreInfoText', ['id' => $item->id])}}">
-                                <button class="btn btn-warning">More Info</button>
+                                <button class="btn btn-warning">{{__('More Info')}}</button>
                             </a>
                             <a href="{{route('admin.package.edit', ['id' => $item->id])}}">
-                                <button class="btn btn-primary">Edit</button>
+                                <button class="btn btn-primary">{{__('Edit')}}</button>
                             </a>
-                            <button class="btn btn-danger" onclick="deletePackageModal({{$item->id}}, '{{$item->name}}')">Delete</button>
+                            <button class="btn btn-danger" onclick="deletePackageModal({{$item->id}}, '{{$item->name}}')">{{__('Delete')}}</button>
                         </td>
                     </tr>
                 @endforeach

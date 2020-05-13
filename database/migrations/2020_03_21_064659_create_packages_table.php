@@ -32,6 +32,8 @@ class CreatePackagesTable extends Migration
             $table->string('brochure')->nullable();
             $table->unsignedInteger('mainActivityId')->nullable();
             $table->tinyInteger('showPack')->default(0);
+            $table->string('lang', 5)->default('en');
+            $table->unsignedInteger('langSource')->default(0);
             $table->timestamps();
         });
     }

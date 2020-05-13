@@ -137,7 +137,9 @@
         }
 
         for(let i = 0; i < titles.length; i++){
-            DecoupledEditor.create( document.querySelector( '#titleDesc' + i))
+            DecoupledEditor.create( document.querySelector( '#titleDesc' + i),{
+                language: '{{app()->getLocale()}}'
+            })
                 .then( editor => {
                     const toolbarContainer = document.querySelector( 'main .toolbar-container' + i );
                     toolbarContainer.prepend( editor.ui.view.toolbar.element );

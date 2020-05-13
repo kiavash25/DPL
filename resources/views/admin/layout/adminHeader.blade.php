@@ -19,36 +19,36 @@
 
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Destinations
+                {{__('Destinations')}}
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.destination.category.index')}}">
-                        Destination Category
+                        {{__('Destination Category')}}
                     </a>
                 </div>
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.destination.list')}}">
-                        All Destination
+                        {{__('Destination List')}}
                     </a>
                 </div>
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.destination.new')}}">
-                        Create New Destination
+                        {{__('Create New Destination')}}
                     </a>
                 </div>
             </div>
         </div>
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Activity
+                {{__('Activity')}}
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
-                        Activity List
+                        {{__('Activity List')}}
                     </a>
                 </div>
             </div>
@@ -56,24 +56,24 @@
 
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Package
+                {{__('Package')}}
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
 
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.package.moreInfoTitle')}}">
-                        Package More Info Titles
+                        {{__('Package More Info Titles')}}
                     </a>
                 </div>
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.package.list')}}">
-                        All Package
+                        {{__('Package List')}}
                     </a>
                 </div>
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.package.new')}}">
-                        Create New Package
+                        {{__('Create New Package')}}
                     </a>
                 </div>
             </div>
@@ -81,23 +81,23 @@
 
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Journal
+                {{__('Journal')}}
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.journal.list')}}">
-                        Journal List
+                        {{__('Journal List')}}
                     </a>
                 </div>
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.journal.category.index')}}">
-                        Journal Category List
+                        {{__('Journal Category List')}}
                     </a>
                 </div>
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.journal.new')}}">
-                        Create New Journal
+                        {{__("Create New Journal")}}
                     </a>
                 </div>
             </div>
@@ -105,26 +105,31 @@
 
         <div class="sideNavTabs">
             <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                Setting
+                {{__('Setting')}}
                 <div class="arrow rightArrow"></div>
             </a>
             <div class="subSideNavMenu">
                 <div class="sideNavTabs">
                     <a class="subSideNavTab" href="{{route('admin.setting.mainPageSlider')}}">
-                        Main Page Slider
+                        {{__('Main Page Slider')}}
+                    </a>
+                </div>
+                <div class="sideNavTabs">
+                    <a class="subSideNavTab" href="{{route('admin.setting.lang')}}">
+                        {{__('Language')}}
                     </a>
                 </div>
             </div>
         </div>
         <div class="sideNavTabs">
             <a class="subSideNavTab"href="{{ route('register') }}">
-                Register New Admin
+                {{__('Register New Admin')}}
             </a>
         </div>
         <div class="sideNavTabs">
             <a class="subSideNavTab"href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                Log out
+                {{__('Log out')}}
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -132,6 +137,17 @@
             </form>
         </div>
     </div>
+
+
+    <?php
+        $selectLang = \App\models\Language::all();
+    ?>
+    <select name="selectLanguage" id="selectLanguage" class="form-control" style="position: absolute; bottom: 0px;" onchange="location.href='{{url('admin/locale/')}}/' + this.value">
+        <option value="en" {{app()->getLocale() == 'en' ? 'selected' : ''}}>English</option>
+        @foreach( $selectLang as $item)
+            <option value="{{$item->symbol}}" {{app()->getLocale() == $item->symbol ? 'selected' : ''}}>{{$item->name}}</option>
+        @endforeach
+    </select>
 </div>
 
 <nav id="mainNav" class="goRight">

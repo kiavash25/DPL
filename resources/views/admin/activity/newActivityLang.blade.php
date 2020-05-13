@@ -35,28 +35,29 @@
 
 @section('body')
     <div class="row whiteBase" style="margin-bottom: 100px">
-        <div class="col-md-12" style="display: flex; align-items: center;">
+        <div class="col-md-12">
             <h2>
                 @if(isset($activity))
-                    @if(app()->getLocale() == 'fa')
+                    @if(isset($showLang->symbol) && $showLang->symbol == 'fa')
                         {{__('Edit')}} {{__('Activity')}} {{$activity->name}}
                     @else
                         {{__('Edit')}} {{$activity->name}} {{__('Activity')}}
                     @endif
+
+                    <div class="btn-group">
+                        <a href="{{route("admin.activity.edit", ['id' => $activity->id])}}">
+                            <button type="button" class="btn btn-{{$showLang == null ? 'success': 'primary'}}">English</button>
+                        </a>
+                        @foreach($langs as $lang)
+                            <a href="{{route("admin.activity.edit", ['id' => $activity->id, 'lang' => $lang->symbol])}}">
+                                <button type="button" class="btn btn-{{$showLang != null && $showLang->id == $lang->id ? 'success' : 'primary'}}">{{$lang->name}}</button>
+                            </a>
+                        @endforeach
+                    </div>
                 @else
-                    {{__('Create New Activity')}}
+                    {{__('submit new language')}} {{$mainActivity->name}} {{$showLang->symbol}}
                 @endif
             </h2>
-
-            <div class="form-group" style="width: auto; margin-right: 30px; display: {{app()->getLocale() != 'en' ? 'block': 'none'}}">
-                <label for="source">{{__('Source')}}</label>
-                <select name="source" id="source" class="form-control" onchange="changeSource(this.value)">
-                    <option value="0" {{isset($activity->langSource) && $activity->langSource == 0 ? 'selected' : ''}}>{{__('New')}}</option>
-                    @foreach($sourceParent as $s)
-                        <option value="{{$s->id}}" {{isset($activity->langSource) && $activity->langSource == $s->id ? 'selected' : ''}}>{{$s->name}}</option>
-                    @endforeach
-                </select>
-            </div>
         </div>
         <hr>
 
@@ -68,7 +69,7 @@
                     <div class="row">
                         <div class="form-group">
                             <label for="name" class="inputLabel">{{__('Activity Name')}}</label>
-                            <input type="text" id="name" name="name" class="form-control" placeholder="Activity Name" value="{{isset($activity->name) ? $activity->name : ''}}">
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Activity Name" value="{{isset($activity->name) ? $activity->name : $mainActivity->name}}">
                         </div>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
                         <div class="form-group">
                             <label for="parentId" class="inputLabel">{{__('Activity Category')}}</label>
                             <select name="parentId" id="parentId" class="form-control">
-                                <option value="0">Main</option>
+                                <option value="0">{{__('Main')}}</option>
                                 @foreach($parent as $item)
                                     <option value="{{$item->id}}" {{isset($activity->category) && $item->id == $activity->category ? 'selected' : ''}}>{{$item->name}}</option>
                                 @endforeach
@@ -95,13 +96,12 @@
 
                     <div class="toolbar-container"></div>
                     <div id="description" class="textEditor" >
-                        {!! isset($activity->description) ? $activity->description : '' !!}
+                        {!! isset($activity->description) ? $activity->description : $mainActivity->description !!}
                     </div>
 
                 </div>
             </div>
 
-            <div class="row"></div>
 
             <div class="row marg30" id="pictureSection" style="display: {{isset($activity->id) ? 'flex': 'none'}}">
 
@@ -135,40 +135,9 @@
                     </div>
                 </div>
 
-                {{--                <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">--}}
-{{--                    <label class="inputLabel">--}}
-{{--                        Activity Icon--}}
-{{--                    </label>--}}
-{{--                    <label for="mainPic" class="mainPicSection">--}}
-{{--                        <img id="mainPicImg" src="{{isset($activity->icon) && $activity->icon != null ? $activity->icon : '#'}}" style="width: 100%; display: {{isset($activity->icon) && $activity->icon != null ? 'block' : 'none'}};" >--}}
-{{--                        <img src="{{asset('images/mainImage/loading.gif')}}" style="width: 100%; display: none;" >--}}
-{{--                        <i class="fas fa-plus-circle" style="cursor: pointer;  display: {{isset($activity->icon) && $activity->icon != null ? 'none' : 'block'}};"></i>--}}
-{{--                    </label>--}}
-
-{{--                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPicImg', showMainPic)">--}}
-{{--                </div>--}}
-
-                <div class="col-md-12">
-                    <div id="uploadedPic" class="row">
-                        @if(isset($activity->sidePic) && count($activity->sidePic) > 0)
-                            @foreach($activity->sidePic as $item)
-                                <div class="col-md-3 uploadedPic">
-                                    <img src="{{$item->pic}}" class="uploadedPicImg">
-                                    <div class="uploadedPicHover">
-                                        <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">{{__('Delete')}}</button>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
-                <div class="col-12" style="display: flex; justify-content: center">
-                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px; display: {{isset($activity->langSource) ? ($activity->langSource == 0 ? 'block' : 'none') : 'block'}}" onclick="uploadPicModal()">{{__('Upload Picture')}}</button>
-                </div>
-
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
-                        {{__('Video')}}
+                        Video
                         <label for="video" class="videoButton">
                             {{isset($activity->video) ? 'change' : 'add'}} video
                         </label>
@@ -182,9 +151,10 @@
 
                     <input type="file" name="video" id="video" accept="video/*" style="display: none" onchange="uploadVideo(this)">
                 </div>
+
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
-                        {{__('podcast')}}
+                        podcast
                         <label for="audio" class="videoButton">
                             {{isset($activity->podcast) ? 'change' : 'add'}} podcast
                         </label>
@@ -198,56 +168,40 @@
 
                     <input type="file" name="audio" id="audio" accept="audio/*" style="display: none" onchange="uploadAudio(this)">
                 </div>
+
             </div>
 
             <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
                 <a id="descriptionButton" href="{{isset($activity->id) ? route('admin.activity.description', ['id' => $activity->id]) : ''}}" style="display: {{isset($activity->id) ? 'block' : 'none'}}">
-                    <button class="btn btn-warning" style="font-size: 30px; border-radius: 20px;">{{__('Descriptions Page')}}</button>
+                    <button class="btn btn-warning" style="font-size: 30px; border-radius: 20px;">Descriptions Page</button>
                 </a>
 
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">{{__('Submit')}}</button>
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">Submit</button>
 
             </div>
 
-        </div>
-
-        <div class="modal" id="uploadPic">
-            <div class="modal-dialog modal-xl" style="max-width: 1500px">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{__('Upload Picture')}}</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="dropzone" class="dropzone"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="modal" id="titleModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">{{__('New Title')}}</h4>
+                        <h4 class="modal-title">New Title</h4>
                         <button type="button" class="close" data-dismiss="modal" onclick="$('#titleModal').modal('hide')">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="row" style="margin: 0px;">
                             <div class="form-group">
-                                <label for="newTitle">{{__('New Title')}}</label>
+                                <label for="newTitle">New title</label>
                                 <input type="text" id="newTitle" class="form-control">
                             </div>
                         </div>
                         <div class="row" style="justify-content: center">
-                            <button class="btn btn-success" onclick="storeTitle(0)">{{__('Submit')}}</button>
+                            <button class="btn btn-success" onclick="storeTitle(0)">Submit</button>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#titleModal').modal('hide')">{{__('Close')}}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#titleModal').modal('hide')">Close</button>
                     </div>
                 </div>
             </div>
@@ -263,7 +217,7 @@
 
         DecoupledEditor.create( document.querySelector('#description'), {
             toolbar: [ 'bold', 'italic', 'link' ],
-            language: '{{app()->getLocale()}}'
+            language: '{{$showLang->symbol}}'
         }).then( editor => {
             const toolbarContainer = document.querySelector( 'main .toolbar-container');
             toolbarContainer.prepend( editor.ui.view.toolbar.element );
@@ -279,44 +233,16 @@
 
 
     <script>
+        let mainActivityId = {{$mainActivity->id}};
         var activityId = {{isset($activity->id) ? $activity->id : 0}};
-
-        var myDropzone = new Dropzone("div#dropzone", {
-            url: "{{route('admin.activity.storeImg')}}",
-            paramName: "pic",
-            headers: {
-                'X-CSRF-TOKEN': '{{csrf_token()}}'
-            },
-            parallelUploads: 1,
-            acceptedFiles: 'image/*',
-            init: function() {
-                this.on("sending", function(file, xhr, formData){
-                    formData.append("kind", 'side');
-                    formData.append("id", activityId);
-                });
-            },
-
-        }).on('success', function(file, response){
-            response = JSON.parse(response);
-            if(response['status'] == 'ok'){
-                var text =  '<div class="col-md-3 uploadedPic">\n' +
-                    '<img src="' + file['dataURL'] + '" class="uploadedPicImg">\n' +
-                    '<div class="uploadedPicHover">\n' +
-                    '<button class="btn btn-danger" onclick="deletePic(' + response['id'] + ', this)">delete</button>\n' +
-                    '</div>\n' +
-                    '</div>';
-                $('#uploadedPic').append(text);
-            }
-        });
-
+        let lang = '{{$showLang->symbol}}';
         function submitForm(){
             openLoading();
 
-            var name = $('#name').val();
-            var description = window.editor.getData();
-            var parentId = $('#parentId').val();
-            var source = $('#source').val();
-            var error = '<ul>';
+            let name = $('#name').val();
+            let parentId = $('#parentId').val();
+            let description = window.editor.getData();
+            let error = '<ul>';
 
             if(name.trim().length == 0)
                 error += '<li> Please Choose Name.</li>';
@@ -328,14 +254,15 @@
             else{
                 $.ajax({
                     type: 'post',
-                    url: '{{route("admin.activity.store")}}',
+                    url: '{{route("admin.activity.storeLang")}}',
                     data:{
                         _token: '{{csrf_token()}}',
                         name: name,
                         description: description,
-                        parentId: parentId,
-                        source: source,
-                        id: activityId
+                        mainId: mainActivityId,
+                        lang: lang,
+                        id: activityId,
+                        parentId: parentId
                     },
                     success: function(response){
                         try{
@@ -363,66 +290,11 @@
 
         }
 
-        function uploadPicModal(){
-            $('#uploadPic').modal('show');
-        }
-
         function goToImagePage(){
+            $('#uploadPicButton').css('display', 'block');
             $('#pictureSection').css('display', 'flex');
 
             $('#descriptionButton').css('display', 'block');
-        }
-
-        function showMainPic(_pic){
-            var mainPic = _pic;
-
-            $('#mainPicImg').css('display', 'none');
-            $('#mainPicImg').next().css('display', 'block');
-            $('#mainPicImg').next().next().css('display', 'none');
-
-            var data = new FormData();
-
-            data.append('pic', mainPic);
-            data.append('id', activityId);
-            data.append('kind', 'icon');
-            data.append('_token', '{{csrf_token()}}');
-
-            $.ajax({
-                type: 'post',
-                url: '{{route("admin.activity.storeImg")}}',
-                data: data,
-                processData: false,
-                contentType: false,
-                success: function(response){
-                    response = JSON.parse(response);
-                    if(response[0] == 'ok'){
-                        $('#mainPicImg').css('display', 'block');
-                        $('#mainPicImg').next().css('display', 'none');
-                        $('#mainPicImg').next().next().css('display', 'none');
-                    }
-                    else{
-                        $('#mainPicImg').css('display', 'none');
-                        $('#mainPicImg').next().css('display', 'none');
-                        $('#mainPicImg').next().next().css('display', 'block');
-                    }
-                }
-            })
-        }
-
-        function deletePic(_id, _element){
-            $.ajax({
-                type: 'post',
-                url: '{{route("admin.activity.deleteImg")}}',
-                data:{
-                    _token: '{{csrf_token()}}',
-                    id: _id
-                },
-                success: function (response) {
-                    response = JSON.parse(response);
-                    if(response['status'] == 'ok')
-                        $(_element).parent().parent().remove();
-                }
-            })
         }
 
         function uploadVideo(_element){
@@ -652,12 +524,6 @@
             $('#addNewTag').append(text);
         }
 
-        function changeSource(_value){
-            if(_value == 0)
-                $('#uploadPicButton').show();
-            else
-                $('#uploadPicButton').hide();
-        }
     </script>
 
 @endsection

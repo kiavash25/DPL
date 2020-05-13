@@ -15,22 +15,22 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2>
-                Package More Info Titles
+                {{__('Package More Info Titles')}}
             </h2>
         </div>
         <hr>
 
         <div class="col-md-12">
             <div class="row">
-                <h3>CallVenture Category</h3>
+                <h3>{{__('CallVenture Category')}}</h3>
                 <table id="tableCall" class="table table-striped  table-bordered">
                     @foreach($moreInfoCallVenture as $more)
                         <tr id="moreInfoRow_{{$more->id}}">
                             <td id="moreInfoTitle_{{$more->id}}">{{$more->name}}</td>
                             <td id="moreInfoCategory_{{$more->id}}">{{$more->category}}</td>
                             <td>
-                                <button class="btn btn-primary" onclick="editMoreInfo({{$more->id}}, 'callVenture')">Edit</button>
-                                <button class="btn btn-danger" onclick="deleteMoreInfo({{$more->id}})">Delete</button>
+                                <button class="btn btn-primary" onclick="editMoreInfo({{$more->id}}, 'callVenture')">{{__('Edit')}}</button>
+                                <button class="btn btn-danger" onclick="deleteMoreInfo({{$more->id}})">{{__('Delete')}}</button>
                             </td>
                         </tr>
                     @endforeach
@@ -39,15 +39,15 @@
             <hr>
             <div class="row">
 
-                <h3>Neutral Category</h3>
+                <h3>{{__('Neutral Category')}}</h3>
                 <table id="tableNat" class="table table-striped  table-bordered">
                     @foreach($moreInfoNature as $more)
                         <tr id="moreInfoRow_{{$more->id}}">
                             <td id="moreInfoTitle_{{$more->id}}">{{$more->name}}</td>
                             <td id="moreInfoCategory_{{$more->id}}">{{$more->category}}</td>
                             <td>
-                                <button class="btn btn-primary" onclick="editMoreInfo({{$more->id}}, 'neutralDetail')">Edit</button>
-                                <button class="btn btn-danger" onclick="deleteMoreInfo({{$more->id}})">Delete</button>
+                                <button class="btn btn-primary" onclick="editMoreInfo({{$more->id}}, 'neutralDetail')">{{__('Edit')}}</button>
+                                <button class="btn btn-danger" onclick="deleteMoreInfo({{$more->id}})">{{__('Delete')}}</button>
                             </td>
                         </tr>
                     @endforeach
@@ -76,7 +76,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <label for="selectCategory">Select Category:</label>
+                                <label for="selectCategory">{{__('Select Category')}}:</label>
                                 <select id="selectCategory" class="form-control">
                                     <option value="neutralDetail">neutral Detail</option>
                                     <option value="callventureDetail">callventure Detail</option>
@@ -85,14 +85,14 @@
                         </div>
                         <div class="row" style="display: flex; justify-content: center; align-items: center">
                             <button class="btn btn-success" onclick="storeMoreInfo()">
-                                Store
+                                {{__('Store')}}
                             </button>
                         </div>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
 
                 </div>
@@ -114,7 +114,7 @@
                 $('#selectCategory').val('callventureDetail');
 
             $('#moreInfoInputId').val(_id);
-            $('#moreInfoModalHeader').text('Edit Title');
+            $('#moreInfoModalHeader').text('{{__('Edit Title')}}');
             $('#moreInfoModal').modal({backdrop: 'static', keyboard: false});
         }
         function deleteMoreInfo(_id){
@@ -136,7 +136,7 @@
         function newMoreInfo(){
             $('#moreInfoName').val('');
             $('#moreInfoInputId').val(0);
-            $('#moreInfoModalHeader').text('New Title');
+            $('#moreInfoModalHeader').text('{{__('New Title')}}');
             $('#moreInfoModal').modal({backdrop: 'static', keyboard: false});
         }
 
@@ -195,8 +195,8 @@
                 ' <td id="moreInfoTitle_' + _id + '">' + _name + '</td>\n' +
                 ' <td id="moreInfoCategory_' + _id + '">' + _category + '</td>\n' +
                 ' <td>\n' +
-                ' <button class="btn btn-primary" onclick="editMoreInfo(' + _id + ', \'' + _category + '\')">Edit</button>\n' +
-                ' <button class="btn btn-danger" onclick="deleteMoreInfo(' + _id + ')">Delete</button>\n' +
+                ' <button class="btn btn-primary" onclick="editMoreInfo(' + _id + ', \'' + _category + '\')">{{__("Edit")}}</button>\n' +
+                ' <button class="btn btn-danger" onclick="deleteMoreInfo(' + _id + ')">{{__("Delete")}}</button>\n' +
                 '</td>\n' +
                 '</tr>';
 

@@ -77,8 +77,8 @@
         <div class="col-md-12">
 
             <div class="tab">
-                @foreach($category->titles as $item)
-                    <button class="tablinks" onclick="openCity(event, 'titleTab{{$item->id}}')">{{$item->name}}</button>
+                @foreach($category->titles as $key => $item)
+                    <button class="tablinks {{$key == 0 ? 'active' : ''}}" onclick="openCity(event, 'titleTab{{$item->id}}')">{{$item->name}}</button>
                 @endforeach
             </div>
 
@@ -96,7 +96,7 @@
 
                     <div style="display: flex; justify-content: center;">
                         <button class="btn btn-success" style="font-size: 23px" onclick="storeDescription({{$item->id}})">
-                            Submit This Description
+                            {{__('Submit This Description')}}
                         </button>
                     </div>
                 </div>
@@ -131,7 +131,9 @@
         }
 
         for(let i = 0; i < titles.length; i++){
-            DecoupledEditor.create( document.querySelector( '#titleDesc' + i))
+            DecoupledEditor.create( document.querySelector( '#titleDesc' + i),{
+                language: '{{app()->getLocale()}}'
+            })
                 .then( editor => {
                     const toolbarContainer = document.querySelector( 'main .toolbar-container' + i );
                     toolbarContainer.prepend( editor.ui.view.toolbar.element );

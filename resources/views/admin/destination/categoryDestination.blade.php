@@ -9,7 +9,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2 style="display: flex; ">
-                Category Destination List
+                {{__('Category Destination List')}}
                 <a href="{{route('admin.destination.category.new')}}" class="addTagIcon" style="margin-left: 30px; color: green">
                     <i class="fas fa-plus-circle" style="cursor: pointer"></i>
                 </a>
@@ -21,9 +21,9 @@
             <table id="table_id" class="display" style="width:100%">
                 <thead>
                 <tr>
-                    <th>name</th>
+                    <th>{{__('Name')}}</th>
                     <th>icon</th>
-                    <th>Destination Num</th>
+                    <th>{{__('Destination Num')}}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -39,9 +39,9 @@
                         </td>
                         <td>
                             <a href="{{route('admin.destination.category.edit', ['id' => $item->id])}}">
-                                <button class="btn btn-primary">Edit</button>
+                                <button class="btn btn-primary">{{__('Edit')}}</button>
                             </a>
-                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">Delete</button>
+                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">{{__('Delete')}}</button>
                         </td>
                     </tr>
                 @endforeach
@@ -54,7 +54,7 @@
         <div class="modal-dialog modal-lg" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Destination</h4>
+                    <h4 class="modal-title">{{__('Delete Category Destination')}}</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -63,8 +63,8 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: center;">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" onclick="checkDestination()" data-dismiss="modal">Yes Deleted</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('No')}}</button>
+                    <button type="button" class="btn btn-danger" onclick="checkDestination()" data-dismiss="modal">{{__('Yes Deleted')}}</button>
                     <input type="hidden" id="deletedDestinationId">
                 </div>
             </div>

@@ -16,7 +16,7 @@
 
     <div class="col-md-{{$descNum}}">
         <div class="aboutHeader">
-            About {{$content->name}}
+            {{__('About')}} {{$content->name}}
         </div>
         <div class="aboutText">
             {!! $content->description !!}
@@ -25,7 +25,7 @@
     <div class="col-md-{{$vidNum}}">
         @if($content->video)
             <div class="aboutHeader" style="margin-top: 10px">
-                Video
+                {{__('Video')}}
             </div>
             <video poster="placeholder.png" controls style="width: 100%;">
                 <source src="{{$content->video}}#t=1">
@@ -60,7 +60,7 @@
 <hr>
 @if(isset($content->destinations) && count($content->destinations) > 0)
     <div class="row" style="position: relative; padding: 0px 20px">
-        <h2>Destinations</h2>
+        <h2>{{__('Destinations')}}</h2>
         <div id="mainSliderDiv" class="mainSliderDiv">
             <div id="sliderContentDiv" class="sliderContentDiv">
                 @foreach($content->destinations as $item)
@@ -77,7 +77,7 @@
                             </div>
                             <div class="packageButtonDiv">
                                 <a href="{{$item->url}}" class="packageButton">
-                                    See Destination
+                                    {{__('See Destination')}}
                                 </a>
                             </div>
 

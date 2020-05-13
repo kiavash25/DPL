@@ -7,39 +7,57 @@ use App\models\ActivityPic;
 use App\models\ActivityTitle;
 use App\models\City;
 use App\models\Destination;
+use App\models\Language;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackageMoreInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use test\Mockery\CallableSpyTest;
 
 class ActivityController extends Controller
 {
+    public function __construct()
+    {
+        $langs = Language::all();
+        \View::share(['langs' => $langs]);
+    }
+
     public function listActivity()
     {
-        $activity = Activity::where('parent', 0)->get();
-        foreach ($activity as $item)
-            $item->sub = Activity::where('parent', $item->id)->get();
+        $lng = app()->getLocale();
+        $activity = Activity::where('lang', $lng)->get();
+        foreach ($activity as $item){
+            if($item->parent != 0)
+                $item->parent = Activity::find($item->parent)->name;
+            else
+                $item->parent = '';
+        }
 
         return view('admin.activity.listActivity', compact(['activity']));
     }
 
     public function newActivity()
     {
-        $parent = Activity::where('parent', 0)->get();
-        return view('admin.activity.newActivity', compact(['parent']));
+        $lng = app()->getLocale();
+        $parent = Activity::where('parent', 0)->where('lang', $lng)->get();
+        $sourceParent = Activity::where('lang', 'en')->get();
+
+        return view('admin.activity.newActivity', compact(['parent', 'sourceParent']));
     }
 
     public function editActivity($id)
     {
-        $activity = Activity::find($id);
-        if($activity == null)
+        $lang = app()->getLocale();
+
+        $activity = Activity::where('id', $id)->where('lang', $lang)->first();
+        if ($activity == null)
             return redirect(route('admin.activity.list'));
 
-        if($activity->icon != null)
+        if ($activity->icon != null)
             $activity->icon = asset('uploaded/activity/' . $activity->id . '/' . $activity->icon);
 
-        if($activity->parent != 0)
+        if ($activity->parent != 0)
             $activity->category = Activity::find($activity->parent)->id;
         else
             $activity->category = 0;
@@ -48,16 +66,23 @@ class ActivityController extends Controller
         foreach ($activity->sidePic as $pic)
             $pic->pic = asset('uploaded/activity/' . $activity->id . '/' . $pic->pic);
 
-        if($activity->video != null)
+        if ($activity->video != null)
             $activity->video = asset('uploaded/activity/' . $activity->id . '/' . $activity->video);
-        if($activity->podcast != null)
+        if ($activity->podcast != null)
             $activity->podcast = asset('uploaded/activity/' . $activity->id . '/' . $activity->podcast);
 
         $activity->titles = ActivityTitle::where('activityId', $activity->id)->get();
 
-        $parent = Activity::where('parent', 0)->get();
-        return view('admin.activity.newActivity', compact(['parent', 'activity']));
+        if($activity->parent != 0)
+            $parent = Activity::where('parent', 0)->where('lang', $lang)->get();
+        else
+            $parent = Activity::where('parent', 0)->where('lang', $lang)->where('id', '!=', $activity->id)->get();
+
+        $sourceParent = Activity::where('lang', 'en')->get();
+
+        return view('admin.activity.newActivity', compact(['parent', 'activity', 'sourceParent']));
     }
+
 
     public function storeActivity(Request $request)
     {
@@ -70,11 +95,27 @@ class ActivityController extends Controller
                 else
                     $activity = Activity::find($request->id);
 
+                if($request->source != 0) {
+                    $source = Activity::find($request->source);
+                    $activity->slug = $source->slug;
+                    $activity->langSource = $source->id;
+                }
+                else{
+                    $activity->slug = makeSlug($request->name);
+                    $activity->langSource = 0;
+                }
+
                 $activity->name = $request->name;
                 $activity->description = $request->description;
-                $activity->slug = makeSlug($request->name);
                 $activity->parent = $request->parentId;
+                $activity->lang = app()->getLocale();
                 $activity->save();
+
+                $childs = Activity::where('langSource', $activity->id)->get();
+                foreach ($childs as $item){
+                    $item->slug = $activity->slug;
+                    $item->save();
+                }
 
                 echo json_encode(['status' => 'ok', 'id' => $activity->id]);
             }
@@ -289,10 +330,11 @@ class ActivityController extends Controller
 
     public function descriptionActivity($id)
     {
-        $activity = Activity::find($id);
+        $activity = Activity::where('id', $id)->where('lang', app()->getLocale())->first();
+
         if($activity != null){
             $activity->titles = ActivityTitle::where('activityId', $activity->id)->get();
-            return view('admin.activity.descriptionActivity', compact(['activity']));
+            return view('admin.activity.descriptionActivity', compact(['activity', 'showLang']));
         }
 
         return redirect(route('admin.activity.list'));
@@ -380,6 +422,7 @@ class ActivityController extends Controller
                 $error = false;
                 $mainPackageError = [];
                 $sidePackageError = [];
+//                $langId = Activity::where('langSource', $act->id)->orWhere('id', $act->id)->pluck('id')->toArray();
                 $mainPackage = Package::where('mainActivityId', $act->id)->get();
 //                $sidePackage = PackageActivityRelations::where('activityId', $act->id)->get();
                 $sidePackage = [];
@@ -432,8 +475,12 @@ class ActivityController extends Controller
                     PackageActivityRelations::where('activityId', $act->id)->delete();
                     ActivityPic::where('activityId', $act->id)->delete();
                     ActivityTitle::where('activityId', $act->id)->delete();
+                    if($act->parent == 0)
+                        Activity::where('parent', $act->id)->update(['parent' => 0]);
 
-                    $location = __DIR__ .'/../../../public/uploaded/activity/' . $act->id;
+                    Activity::where('langSource', $act->id)->update(['langSource' => 0]);
+
+                    $location = __DIR__ . '/../../../public/uploaded/activity/' . $act->id;
                     emptyFolder($location);
 
                     $act->delete();

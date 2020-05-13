@@ -4,7 +4,7 @@
 
 <div class="aboutPackageDiv">
     <div class="aboutHeader">
-        About {{$content->name}}
+        {{__('About')}} {{$content->name}}
     </div>
     <div class="aboutText">
         {!! $content->description !!}
@@ -39,7 +39,7 @@
 
             <div class="activitiesDiv" style="display: {{count($content->sideInfos) > 0 ? 'block' : 'none'}}">
                 <div class="aboutHeader">
-                    Infos:
+                    {{__('Infos')}}:
                 </div>
                 @foreach($content->sideInfos as $sideInfo)
                     <div class="activityRow" style="display: flex">
@@ -58,12 +58,12 @@
     @if($hasMoreInfo > 0)
         <div class="row" style="margin-top: 30px;">
             <div class="aboutHeader" style="width: 100%">
-                More Info:
+                {{__('More Info')}}:
             </div>
             <div class="MoreInfoBase" style="border-bottom: 0; border-radius: 10px 10px 0px 0px">
                 <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
                     <div class="arrow down"></div>
-                    Neutral Details
+                    {{__('Neutral Details')}}
                 </div>
                 <div class="moreInfoContentDiv">
                     <div class="row">
@@ -94,7 +94,7 @@
             <div class="MoreInfoBase" style="border-radius: 0px 0px 10px 10px">
                 <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
                     <div class="arrow down"></div>
-                    Callventure Details
+                    {{__('Callventure Details')}}
                 </div>
 
                 <div class="moreInfoContentDiv">
@@ -144,7 +144,7 @@
     <div style="width: 100%; margin-top: 45px">
         <a href="{{$content->packageListUrl}}">
             <div class="aboutHeader">
-                Other Packages In {{$content->destination->name}}
+                {{__('Other Packages In')}} {{$content->destination->name}}
             </div>
         </a>
         <div class="mainContentPackages">
@@ -166,7 +166,7 @@
                                     </div>
                                     <div class="packageButtonDiv">
                                         <a href="{{$item->url}}" class="packageButton">
-                                            See Package
+                                            {{__('See Package')}}
                                         </a>
                                     </div>
 
@@ -269,7 +269,7 @@
                             </div>
                             <div class="packageButtonDiv">
                                 <a href="{{$item->url}}" class="packageButton">
-                                    See Package
+                                    {{__('See Package')}}
                                 </a>
                             </div>
 

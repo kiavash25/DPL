@@ -24,7 +24,7 @@ class PackageController extends Controller
 {
     public function listPackage()
     {
-        $packages = Package::all();
+        $packages = Package::where('lang', app()->getLocale())->get();
         foreach ($packages as $item){
             $item->destination = Destination::find($item->destId);
             $item->activity = Activity::find($item->mainActivityId);
@@ -35,21 +35,23 @@ class PackageController extends Controller
 
     public function newPackage()
     {
+        $sourceParent = Package::where('lang', 'en')->get();
         $kind = 'new';
-        $destinations = Destination::all()->groupBy('categoryId');
+        $destinations = Destination::where('lang', app()->getLocale())->get()->groupBy('categoryId');
         foreach ($destinations as $key => $item)
             $item->category = DestinationCategory::find($key);
 
-        $activity = Activity::all();
+        $activity = Activity::where('lang', app()->getLocale())->get();
+        $allDestination = Destination::where('lang', app()->getLocale())->get();
 
-        $allDestination = Destination::all();
-
-        return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity']));
+        return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'sourceParent']));
     }
 
     public function editPackage($id)
     {
-        $package = Package::find($id);
+        $sourceParent = Package::where('lang', 'en')->get();
+
+        $package = Package::where('id', $id)->where('lang', app()->getLocale())->first();
         if($package == null)
             return redirect(route('admin.package.list'));
 
@@ -70,7 +72,7 @@ class PackageController extends Controller
         $package->sidePic = $sideImage;
 
         $kind = 'edit';
-        $destinations = Destination::all()->groupBy('categoryId');
+        $destinations = Destination::where('lang', app()->getLocale())->groupBy('categoryId');
         foreach ($destinations as $key => $item)
             $item->category = DestinationCategory::find($key);
 
@@ -82,67 +84,80 @@ class PackageController extends Controller
         foreach ($package->sideInfos as $side)
             $side->icon = asset('uploaded/packages/' . $package->id . '/' . $side->icon);
 
+        $activity = Activity::where('lang', app()->getLocale())->get();
 
-
-        $activity = Activity::all();
-
-        $allDestination = Destination::all();
-        return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'package']) );
+        $allDestination = Destination::where('lang', app()->getLocale())->get();
+        return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'package', 'sourceParent']) );
     }
 
     public function storePackage(Request $request)
     {
         if(isset($request->name) && isset($request->id) && isset($request->lat) && isset($request->lng) && isset($request->destinationId) && isset($request->code) && isset($request->mainActivity)){
+            $check = Package::where('name', $request->name)->where('id', '!=', $request->id)->where('destId', $request->destinationId)->first();
+            if($check != null) {
+                echo json_encode(['status' => 'nok1']);
+                return;
+            }
 
-            if($request->id == 0){
-                $pack = Package::where('name', $request->name)->where('destId', $request->destinationId)->first();
-                if($pack != null) {
-                    echo json_encode(['status' => 'nok2']);
-                    return;
-                }
+            $codePack = Package::where('code', $request->code)->where('id' , '!=', $request->id)->where('lang', app()->getLocale())->first();
+            if($codePack != null) {
+                echo json_encode(['status' => 'nok9']);
+                return;
+            }
 
-                $codePack = Package::where('code', $request->code)->first();
-                if($codePack != null) {
-                    echo json_encode(['status' => 'nok9']);
-                    return;
-                }
-
+            if($request->id == 0) {
                 $pack = new Package();
+                $pack->lang = app()->getLocale();
+            }
+            else
+                $pack = Package::find($request->id);
+
+            if($request->source == 0){
+                $pack->slug = makeSlug($request->name);
+                $pack->lat = $request->lat;
+                $pack->lng = $request->lng;
+                $pack->day = $request->day;
+                $pack->code = $request->code;
+                $pack->season = $request->season;
+                $pack->sDate = $request->sDate;
+                $pack->eDate = $request->eDate;
+                $pack->money = $request->cost;
+                $pack->level = $request->level;
+                $pack->showPack = $request->showPack;
+                $pack->langSource = 0;
+                Package::where('langSource', $pack->id)->update([
+                        'slug' => $pack->slug,
+                        'lat' => $pack->lat,
+                        'lng' => $pack->lng,
+                        'day' => $pack->day,
+                        'code' => $pack->code,
+                        'season' => $pack->season,
+                        'sDate' => $pack->sDate,
+                        'eDate' => $pack->eDate,
+                        'money' => $pack->money,
+                        'level' => $pack->level,
+                        'showPack' => $pack->showPack,
+                    ]);
             }
             else{
-                $pack = Package::where('name', $request->name)->where('destId', $request->destinationId)->where('id' , '!=', $request->id)->first();
-                if($pack != null) {
-                    echo json_encode(['status' => 'nok2']);
-                    return;
-                }
-
-                $codePack = Package::where('code', $request->code)->where('id' , '!=', $request->id)->first();
-                if($codePack != null) {
-                    echo json_encode(['status' => 'nok9']);
-                    return;
-                }
-
-                $pack = Package::find($request->id);
-                if($pack == null){
-                    echo json_encode(['status' => 'nok3']);
-                    return;
-                }
+                $s = Package::find($request->source);
+                $pack->slug = $s->slug;
+                $pack->lat = $s->lat;
+                $pack->lng = $s->lng;
+                $pack->day = $s->day;
+                $pack->code = $s->code;
+                $pack->season = $s->season;
+                $pack->sDate = $s->sDate;
+                $pack->eDate = $s->eDate;
+                $pack->money = $s->money;
+                $pack->level = $s->level;
+                $pack->showPack = $s->showPack;
+                $pack->langSource = $s->id;
             }
 
             $pack->name = $request->name;
-            $pack->slug = makeSlug($request->name);
             $pack->description = $request->description;
             $pack->destId = $request->destinationId;
-            $pack->lat = $request->lat;
-            $pack->lng = $request->lng;
-            $pack->day = $request->day;
-            $pack->code = $request->code;
-            $pack->season = $request->season;
-            $pack->sDate = $request->sDate;
-            $pack->eDate = $request->eDate;
-            $pack->money = $request->cost;
-            $pack->level = $request->level;
-            $pack->showPack = $request->showPack;
             $pack->mainActivityId = $request->mainActivity;
             $pack->save();
 
@@ -176,6 +191,7 @@ class PackageController extends Controller
             PackageTagRelation::where('packageId', $pack->id)->delete();
             if($query != '')
                 \DB::select('INSERT INTO packageTagRelations (id, packageId, tagId) VALUES ' . $query);
+
             echo json_encode(['status' => 'ok', 'id' => $pack->id]);
         }
         else
@@ -321,6 +337,8 @@ class PackageController extends Controller
 
                 $loc = __DIR__ .'/../../../public/uploaded/packages/' . $package->id;
                 emptyFolder($loc);
+
+                Package::where('langSource', $package->id)->update(['langSource' => 0]);
 
                 $package->delete();
                 echo json_encode(['status' => 'ok']);
@@ -469,9 +487,9 @@ class PackageController extends Controller
 
     public function moreInfoTitlePackage()
     {
-        $moreInfo = PackageMoreInfo::all();
-        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->get();
-        $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->get();
+        $moreInfo = PackageMoreInfo::where('lang', app()->getLocale())->get();
+        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->where('lang', app()->getLocale())->get();
+        $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->where('lang', app()->getLocale())->get();
         return view('admin.package.moreInfoTitle', compact(['moreInfo', 'moreInfoCallVenture', 'moreInfoNature']));
     }
 
@@ -483,8 +501,10 @@ class PackageController extends Controller
                 echo json_encode(['status' => 'nok1']);
                 return;
             }
-            if($request->id == 0)
+            if($request->id == 0) {
                 $moreInfo = new PackageMoreInfo();
+                $moreInfo->lang = app()->getLocale();
+            }
             else
                 $moreInfo = PackageMoreInfo::find($request->id);
 
@@ -527,9 +547,9 @@ class PackageController extends Controller
 
     public function moreInfoText($id)
     {
-        $moreInfo = PackageMoreInfo::all();
-        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->get();
-        $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->get();
+        $moreInfo = PackageMoreInfo::where('lang', app()->getLocale())->get();
+        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->where('lang', app()->getLocale())->get();
+        $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->where('lang', app()->getLocale())->get();
 
         $package = Package::find($id);
         if($package == null)

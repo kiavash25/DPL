@@ -26,6 +26,8 @@ class CreateDestinationsTable extends Migration
             $table->string('pic', 255)->nullable();
             $table->string('video', 255)->nullable();
             $table->string('podcast', 255)->nullable();
+            $table->string('lang', 5)->default('en');
+            $table->unsignedInteger('langSource')->default(0);
             $table->timestamps();
         });
     }

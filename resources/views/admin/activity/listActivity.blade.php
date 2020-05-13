@@ -9,7 +9,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2 style="display: flex; ">
-                Activity List
+                {{__('Activity List')}}
                 <a href="{{route('admin.activity.new')}}" class="addTagIcon" style="margin-left: 30px; color: green">
                     <i class="fas fa-plus-circle" style="cursor: pointer"></i>
                 </a>
@@ -21,8 +21,8 @@
             <table id="table_id" class="display" style="width:100%">
                 <thead>
                     <tr>
-                        <th>name</th>
-                        <th>Parent</th>
+                        <th>{{__('name')}}</th>
+                        <th>{{__('head')}}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -30,34 +30,17 @@
                     @foreach($activity as $item)
                     <tr id="activity_{{$item->id}}">
                         <td>{{$item->name}}</td>
-                        <td></td>
+                        <td>{{$item->parent}}</td>
                         <td>
                             <a href="{{route('admin.activity.description', ['id' => $item->id])}}">
-                                <button class="btn btn-warning">Description</button>
+                                <button class="btn btn-warning">{{__('Descriptions')}}</button>
                             </a>
                             <a href="{{route('admin.activity.edit', ['id' => $item->id])}}">
-                                <button class="btn btn-primary">Edit</button>
+                                <button class="btn btn-primary">{{__('Edit')}}</button>
                             </a>
-                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">Delete</button>
+                            <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">{{__('Delete')}}</button>
                         </td>
                     </tr>
-                    @if(count($item->sub) != 0)
-                        @foreach($item->sub as $sub)
-                            <tr id="activity_{{$sub->id}}">
-                                <td>{{$sub->name}}</td>
-                                <td>{{$item->name}}</td>
-                                <td>
-                                    <a href="{{route('admin.activity.description', ['id' => $sub->id])}}">
-                                        <button class="btn btn-warning">Description</button>
-                                    </a>
-                                    <a href="{{route('admin.activity.edit', ['id' => $sub->id])}}">
-                                        <button class="btn btn-primary">Edit</button>
-                                    </a>
-                                    <button class="btn btn-danger" onclick="openDeletedModal({{$sub->id}}, '{{$sub->name}}')">Delete</button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
                 @endforeach
                 </tbody>
             </table>

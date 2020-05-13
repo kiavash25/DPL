@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html translate="no">
 <head>
     <meta charset="utf-8">
+    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>PanelAdmin DPL</title>
@@ -14,17 +15,33 @@
     <link rel="stylesheet" href="{{asset('css/admin/adminAllPages.css')}}">
 
     <script src="{{ asset('js/jquery-3.4.1.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js')}}"></script>
 
+
+    <style>
+        .haveNotLang{
+            background: #ffa7a7;
+        }
+    </style>
     @yield('head')
 
 </head>
 <body style="overflow-x: hidden">
 <div>
 
+
     @include('common.alerts')
 
     @include('admin.layout.adminHeader')
+
+    <?php
+        $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+    ?>
+
+    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
+        <link rel="stylesheet" href="{{asset('css/rtl/adminRtl.css')}}">
+    @endif
 
     <main id="mainBody" class="goRight">
         <div class="container-fluid">

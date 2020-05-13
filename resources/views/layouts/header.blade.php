@@ -77,7 +77,7 @@
                                 @for($i = 0; $i < count($item->destination); $i++)
                                     <div class="sideNavTabs">
                                         <a class="subSideNavTab"
-                                           href="{{route('show.destination', ['categoryId' => $item->destination[$i]->categoryId, 'slug' => $item->destination[$i]->slug])}}">
+                                           href="{{route('show.destination', ['slug' => $item->destination[$i]->slug])}}">
                                             {{$item->destination[$i]->name}}
                                         </a>
                                     </div>
@@ -96,7 +96,7 @@
                 <div class="subSideNavMenu">
                     @foreach($activitiesList as $item)
                         <div class="sideNavTabs">
-                            @if(count($item->subAct) > 0)
+                            @if(isset($item->subAct) && count($item->subAct) > 0)
                                 <a href="#" onclick="showSubSideNavMenu(this)">
                                     {{$item->name}}
                                     <div class="arrow right"></div>
@@ -468,7 +468,7 @@
                     <div class="navListSub">
                         @foreach($destCategory as $item)
                             <div class="navSubListRow">
-                                <a href="{{route('show.category', ['categoryName' => $item->name ])}}"
+                                <a href="{{route('show.category', ['slug' => $item->slug])}}"
                                    class="navSubListHeader">{{$item->name}}</a>
                                 @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
                                     <div href="{{$item->destination[$i]->url}}" class="navSubListBody">
@@ -496,7 +496,7 @@
                                 </div>
                                 <div class="navSubListAllCountriesList">
                                     @foreach($item->destination as $desti)
-                                        <a href="{{route('show.destination', ['categoryId' => $desti->categoryId, 'slug' => $desti->slug])}}"
+                                        <a href="{{route('show.destination', ['slug' => $desti->slug])}}"
                                            class="navCountries">
                                             {{$desti->name}}
                                         </a>
@@ -759,8 +759,9 @@
                 <div class="subList subLisM">
                     <div class="navSubListRow">
                         <a href="{{ url('locale/en') }}" class="navSubListBody navSubListBodyM">English</a>
-                        <a href="{{ url('locale/fa') }}" class="navSubListBody navSubListBodyM">فارسی</a>
-                        {{--                        <a href="{{ url('locale/en') }}" class="navSubListBody navSubListBodyM">Germany</a>--}}
+                        @foreach($languages as $lang)
+                            <a href="{{ url('locale/'. $lang->symbol) }}" class="navSubListBody navSubListBodyM">{{$lang->name}}</a>
+                        @endforeach
                     </div>
                 </div>
             </div>

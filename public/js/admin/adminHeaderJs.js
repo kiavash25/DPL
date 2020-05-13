@@ -55,4 +55,4 @@ $(document).ready(function(){
     if(windowWidth < 1000) {
         $('#mainBody').removeClass('goRight');
     }
-})
+});

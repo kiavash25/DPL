@@ -41,6 +41,17 @@
     margin-left: auto !important;
     margin-right: 0 !important;
 }
+.destTitles{
+    right: 90%;
+    left: auto;
+}
+.navSubListRow > div{
+
+}
+.infoDiv{
+    margin-right:0 !important;
+    margin-left:10% !important;
+}
 
 @media (max-width: 1300px) {
     .searchCenter{

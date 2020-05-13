@@ -39,14 +39,25 @@
 
 @section('body')
     <div class="row whiteBase" style="margin-bottom: 100px">
-        <div class="col-md-12">
+        <div class="col-md-12" style="display: flex; align-items: center;">
             <h2>
                 @if(isset($category) == 'new')
                     Edit {{$category->name}} Category Destination
                 @else
-                    Create New Category Destination
+                    {{__('Create New Category Destination')}}
                 @endif
             </h2>
+
+
+            <div class="form-group" style="width: auto; margin-right: 30px; display: {{app()->getLocale() != 'en' ? 'block': 'none'}}">
+                <label for="source">{{__('Source')}}</label>
+                <select name="source" id="source" class="form-control" onchange="showPicSection(this.value)">
+                    <option value="0" {{isset($category->langSource) && $category->langSource == 0 ? 'selected' : ''}}>{{__('New')}}</option>
+                    @foreach($sourceParent as $s)
+                        <option value="{{$s->id}}" {{isset($category->langSource) && $category->langSource == $s->id ? 'selected' : ''}}>{{$s->name}}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <hr>
 
@@ -54,14 +65,14 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="name" class="inputLabel">Category Name</label>
+                    <label for="name" class="inputLabel">{{__('Category Name')}}</label>
                     <input type="text" id="name" name="name" class="form-control" placeholder="Destination Name" value="{{isset($category->name) ? $category->name : ''}}">
                 </div>
             </div>
 
             <div class="row marg30">
                 <div class="form-group">
-                    <label for="description" class="inputLabel">Category Description</label>
+                    <label for="description" class="inputLabel">{{__('Category Description')}}</label>
 
                     <div class="toolbar-container"></div>
                     <div id="description" class="textEditor" >
@@ -77,7 +88,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="form-group">
-                            <label class="inputLabel"> Category Titiles</label>
+                            <label class="inputLabel"> {{__('Category Titles')}}</label>
                         </div>
                     </div>
                     <div class="row" style="width: 100%">
@@ -114,39 +125,41 @@
                 </div>
                 <hr>
 
-                <div class="col-md-3 centerContent marg30" style="flex-direction: column; justify-content: end">
-                    <label class="inputLabel">
-                        Icon For Map
-                    </label>
-                    <label for="mainPic" class="mainPicSection">
-                        <img id="mainPicImg" src="{{isset($category->icon) && $category->icon != null ? $category->icon : '#'}}" style="max-width: 100%; max-height: 100%; display: {{isset($category->icon) && $category->icon != null ? 'block' : 'none'}};" >
-                        <img src="{{asset('images/mainImage/loading.gif')}}" style="width: 100%; display: none;" >
-                        <i class="fas fa-plus-circle" style="cursor: pointer;  display: {{isset($category->icon) && $category->icon != null ? 'none' : 'block'}};"></i>
-                    </label>
+                <div class="row commonPicSection" style="width: 100%;">
+                    <div class="col-md-3 centerContent marg30" style="flex-direction: column; justify-content: end">
+                        <label class="inputLabel">
+                            {{__('Icon For Map')}}
+                        </label>
+                        <label for="mainPic" class="mainPicSection">
+                            <img id="mainPicImg" src="{{isset($category->icon) && $category->icon != null ? $category->icon : '#'}}" style="max-width: 100%; max-height: 100%; display: {{isset($category->icon) && $category->icon != null ? 'block' : 'none'}};" >
+                            <img src="{{asset('images/mainImage/loading.gif')}}" style="width: 100%; display: none;" >
+                            <i class="fas fa-plus-circle" style="cursor: pointer;  display: {{isset($category->icon) && $category->icon != null ? 'none' : 'block'}};"></i>
+                        </label>
 
-                    <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPicImg', showMainPic)">
-                </div>
-                <div class="col-md-9 marg30">
-                    <div id="uploadedPic" class="row">
-                        @if(isset($category->pic) && count($category->pic) > 0)
-                            @foreach($category->pic as $item)
-                                <div class="col-md-3 uploadedPic">
-                                    <img src="{{$item->pic}}" class="uploadedPicImg">
-                                    <div class="uploadedPicHover">
-                                        <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">delete</button>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
+                        <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPics(this, 'mainPicImg', showMainPic)">
                     </div>
-                </div>
-                <div class="col-12" style="display: flex; justify-content: center">
-                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Picture</button>
+                    <div class="col-md-9 marg30">
+                        <div id="uploadedPic" class="row">
+                            @if(isset($category->pic) && count($category->pic) > 0)
+                                @foreach($category->pic as $item)
+                                    <div class="col-md-3 uploadedPic">
+                                        <img src="{{$item->pic}}" class="uploadedPicImg">
+                                        <div class="uploadedPicHover">
+                                            <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">{{__('Delete')}}</button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-12" style="display: flex; justify-content: center">
+                        <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">{{__('Upload Picture')}}</button>
+                    </div>
                 </div>
 
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
-                        Video
+                        {{__('Video')}}
                         <label for="video" class="videoButton">
                             {{isset($category->video) ? 'change' : 'add'}} video
                         </label>
@@ -162,7 +175,7 @@
                 </div>
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
-                        podcast
+                        {{__('podcast')}}
                         <label for="audio" class="videoButton">
                             {{isset($category->podcast) ? 'change' : 'add'}} podcast
                         </label>
@@ -179,7 +192,7 @@
             </div>
 
             <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">Submit</button>
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">{{__('Submit')}}</button>
             </div>
 
         </div>
@@ -188,14 +201,14 @@
             <div class="modal-dialog modal-xl" style="max-width: 1500px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Upload Pictures</h4>
+                        <h4 class="modal-title">{{__('Upload Picture')}}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div id="dropzone" class="dropzone"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
                 </div>
             </div>
@@ -205,7 +218,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">
-                            Delete Title
+                            {{__('Delete Title')}}
                         </h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
@@ -214,8 +227,8 @@
                         Do you want to delete the <span id="deleteTitleName" style="color: red"></span>? Note that all relevant text will be deleted if deleted.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" onclick="deleteTitleSend()">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Cancel')}}</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteTitleSend()">{{__('Delete')}}</button>
                     </div>
                 </div>
             </div>
@@ -231,7 +244,8 @@
         let categoryId = {{isset($category->id) ? $category->id : 0}};
 
         DecoupledEditor.create( document.querySelector('#description'), {
-            toolbar: [ 'bold', 'italic', 'link' ]
+            toolbar: [ 'bold', 'italic', 'link' ],
+            language: '{{app()->getLocale()}}'
         }).then( editor => {
                 const toolbarContainer = document.querySelector( 'main .toolbar-container');
                 toolbarContainer.prepend( editor.ui.view.toolbar.element );
@@ -245,6 +259,7 @@
             openLoading();
 
             let name = $('#name').val();
+            let source = $('#source').val();
             let descriptionVal =  window.editor.getData();
             var titleElement = $("input[name*='titles']");
             var titles = [];
@@ -270,13 +285,14 @@
                         _token: '{{csrf_token()}}',
                         name: name,
                         description: descriptionVal,
+                        source: source,
                         id: categoryId
                     },
                     success: function(response){
                        try{
                            response = JSON.parse(response);
                             if(response['status'] == 'ok'){
-                                categoryId = response[1];
+                                categoryId = response['id'];
                                 resultLoading('Your Category Destination Stored', 'success', goToImagePage);
                                 $('#pictureSection').css('display', 'flex');
                             }
@@ -626,6 +642,19 @@
                 }
             })
         }
+
+        function showPicSection(_value) {
+            if (_value == 0)
+                $('.commonPicSection').css('display', 'block');
+            else
+                $('.commonPicSection').css('display', 'none');
+        }
+
+        @if(!isset($category))
+            showPicSection(0);
+        @else
+            showPicSection({{$category->langSource}});
+        @endif
     </script>
 
 @endsection

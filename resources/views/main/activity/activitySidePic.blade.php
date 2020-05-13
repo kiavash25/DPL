@@ -56,7 +56,7 @@
 
 <div class="sidePicContent">
     <h1 class="sidePicHeader">
-        {{$content->name}} Activity
+        {{$content->name}} {{__('Activity')}}
     </h1>
 
     @if(isset($content->packages) && count($content->packages) > 0)
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="packageButtonDiv">
                                     <a href="{{$item->url}}" class="packageButton">
-                                        See Package
+                                        {{__('See Package')}}
                                     </a>
                                 </div>
 
@@ -109,8 +109,7 @@
 
     @if(isset($content->podcast) && $content->podcast)
         <div class="aboutHeader podcastDiv">
-            Podcast
-
+            {{__('Podcast')}}
             <audio id="audioTag" preload="none" controls style="width: 100%; ">
                 <source id="audioSource" src="{{$content->podcast}}">
             </audio>

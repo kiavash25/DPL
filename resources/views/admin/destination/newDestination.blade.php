@@ -35,14 +35,24 @@
 
 @section('body')
     <div class="row whiteBase" style="margin-bottom: 100px">
-        <div class="col-md-12">
+        <div class="col-md-12" style="display: flex; align-items: center;">
             <h2>
                 @if($kind == 'new')
-                    Create New Destination
+                    {{__('Create New Destination')}}
                 @else
-                    Edit {{$destination->name}} Destination
+                    {{__('Edit')}} {{$destination->name}} Destination
                 @endif
             </h2>
+
+            <div class="form-group" style="width: auto; margin-right: 30px; display: {{app()->getLocale() != 'en' ? 'block': 'none'}}">
+                <label for="source">{{__('Source')}}</label>
+                <select name="source" id="source" class="form-control" onchange="showPicSection(this.value)">
+                    <option value="0" {{isset($destination->langSource) && $destination->langSource == 0 ? 'selected' : ''}}>{{__('New')}}</option>
+                    @foreach($sourceParent as $s)
+                        <option value="{{$s->id}}" {{isset($destination->langSource) && $destination->langSource == $s->id ? 'selected' : ''}}>{{$s->name}}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <hr>
 
@@ -50,14 +60,14 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="name" class="inputLabel">Destination Name</label>
+                    <label for="name" class="inputLabel">{{__('Destination Name')}}</label>
                     <input type="text" id="name" name="name" class="form-control" placeholder="Destination Name" value="{{isset($destination->name) ? $destination->name : ''}}">
                 </div>
             </div>
 
             <div class="row marg30">
                 <div class="form-group">
-                    <label for="description" class="inputLabel">Destination Description</label>
+                    <label for="description" class="inputLabel">{{__('Destination Description')}}</label>
 
                     <div class="toolbar-container"></div>
                     <div id="description" class="textEditor" >
@@ -72,10 +82,10 @@
 
                     <div class="row">
                         <div class="form-group">
-                            <label for="category" class="inputLabel">Destination Category</label>
+                            <label for="category" class="inputLabel">{{__('Destination Category')}}</label>
                             <div id="category" class="ui fluid search selection dropdown">
                                 <input type="hidden" name="categoryId" id="categoryId" value="{{isset($destination->categoryId) ? $destination->categoryId : 0}}">
-                                <div class="default text">Select Category</div>
+                                <div class="default text">{{__('Select Category')}}</div>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
                                     @foreach($category as $item)
@@ -86,14 +96,14 @@
                         </div>
                     </div>
 
-                    <div class="row marg30" style="position: relative">
-                        <div class="form-group">
-                            <label for="city" class="inputLabel">Destination City (Optional)</label>
-                            <input type="text" id="city" name="city" class="form-control" placeholder="Destination City" onkeyup="findCity(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{isset($destination->city) ? $destination->city : ''}}">
+{{--                    <div class="row marg30" style="position: relative">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="city" class="inputLabel">Destination City (Optional)</label>--}}
+{{--                            <input type="text" id="city" name="city" class="form-control" placeholder="Destination City" onkeyup="findCity(this)"onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{isset($destination->city) ? $destination->city : ''}}">--}}
                             <input type="hidden" id="cityId" name="cityId" value="{{isset($destination->cityId) ? $destination->cityId : 0}}">
-                        </div>
-                        <div class="tagSearchResult" style="width: 100%; top: 65px"></div>
-                    </div>
+{{--                        </div>--}}
+{{--                        <div class="tagSearchResult" style="width: 100%; top: 65px"></div>--}}
+{{--                    </div>--}}
                 </div>
                 <div class="col-xl-9">
                     <div id="map" style="background-color: red; height: 400px; display: flex; justify-content: center; align-items: center; border-radius: 10px"></div>
@@ -106,7 +116,7 @@
             <div class="row marg30">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="inputLabel"> Destination Tags</label>
+                        <label class="inputLabel"> {{__('Destination Tags')}}</label>
                     </div>
                 </div>
                 <div class="row" style="width: 100%">
@@ -147,10 +157,10 @@
 
             <div class="row"></div>
 
-            <div class="row marg30" id="pictureSection" style="display: {{$kind == 'new'? 'none': 'flex'}}">
+            <div class="row marg30" id="pictureSection">
                 <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
                     <label class="inputLabel">
-                        Main Picture
+                        {{__('Main Picture')}}
                     </label>
                     <label for="mainPic" class="mainPicSection">
                         <img id="mainPicImg" src="{{isset($destination->pic) && $destination->pic != null ? $destination->pic : '#'}}" style="width: 100%; display: {{isset($destination->pic) && $destination->pic != null ? 'block' : 'none'}};" >
@@ -167,7 +177,7 @@
                                 <div class="col-md-3 uploadedPic">
                                     <img src="{{$item->pic}}" class="uploadedPicImg">
                                     <div class="uploadedPicHover">
-                                        <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">delete</button>
+                                        <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">{{__('Delete')}}</button>
                                     </div>
                                 </div>
                             @endforeach
@@ -175,12 +185,14 @@
                     </div>
                 </div>
                 <div class="col-12" style="display: flex; justify-content: center">
-                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Picture</button>
+                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">{{__('Upload Picture')}}</button>
                 </div>
+            </div>
 
+            <div class="row marg30" id="videoSection" style="display: {{$kind == 'new'? 'none': 'flex'}}">
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
-                        Video
+                        {{__('Video')}}
                         <label for="video" class="videoButton">
                             {{isset($destination->video) ? 'change' : 'add'}} video
                         </label>
@@ -196,7 +208,7 @@
                 </div>
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
-                        podcast
+                        {{__('podcast')}}
                         <label for="audio" class="videoButton">
                             {{isset($destination->podcast) ? 'change' : 'add'}} podcast
                         </label>
@@ -214,10 +226,10 @@
 
             <div class="row marg30" style="display: flex; justify-content: center; flex-direction: column; align-items: center">
                 <a id="descriptionButton" href="{{isset($destination->id) ? route('admin.destination.description', ['id' => $destination->id]) : ''}}" style="display: {{isset($destination->id) ? 'block' : 'none'}}">
-                    <button class="btn btn-warning" style="font-size: 30px; border-radius: 20px;">Descriptions Page</button>
+                    <button class="btn btn-warning" style="font-size: 30px; border-radius: 20px;">{{__('Descriptions Page')}}</button>
                 </a>
 
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">Submit</button>
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px; width: 100%;; margin-top: 20px" onclick="submitForm()">{{__('Submit')}}</button>
 
             </div>
 
@@ -227,14 +239,14 @@
             <div class="modal-dialog modal-xl" style="max-width: 1500px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Upload Pictures</h4>
+                        <h4 class="modal-title">{{__('Upload Picture')}}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div id="dropzone" class="dropzone"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
                 </div>
             </div>
@@ -249,7 +261,8 @@
     <script>
 
         DecoupledEditor.create( document.querySelector('#description'), {
-            toolbar: [ 'bold', 'italic', 'link' ]
+            toolbar: [ 'bold', 'italic', 'link' ],
+            language: '{{app()->getLocale()}}'
         }).then( editor => {
             const toolbarContainer = document.querySelector( 'main .toolbar-container');
             toolbarContainer.prepend( editor.ui.view.toolbar.element );
@@ -503,6 +516,7 @@
              openLoading();
 
             var name = $('#name').val();
+            var source = $('#source').val();
             var description = window.editor.getData();
             var lat = $('#lat').val();
             var lng = $('#lng').val();
@@ -543,6 +557,7 @@
                         cityId: cityId,
                         lat: lat,
                         lng: lng,
+                        source: source,
                         tags: JSON.stringify(tags),
                         id: destId
                     },
@@ -551,12 +566,13 @@
                         if(response[0] == 'ok'){
                             destId = response[1];
                             resultLoading('Your Destination Stored', 'success', goToImagePage);
-                            $('#pictureSection').css('display', 'flex');
+                            showPicSection(source);
+                            $('#videoSection').css('display', 'flex');
 
                             $('#descriptionButton').attr('href', descriptionButtonUrl +'/'+ response[1]);
                             $('#descriptionButton').css('display', 'block');
                         }
-                        else if(response[0] == 'nok2')
+                        else if(response[0] == 'nok1')
                             resultLoading('Your destination name is duplicate', 'danger');
                         else
                             resultLoading('Please Try Again', 'danger');
@@ -793,8 +809,20 @@
             }
         }
 
-        // // Get the element with id="defaultOpen" and click on it
-        // document.getElementById("defaultOpen").click();
+        function showPicSection(_value) {
+
+            if (_value == 0)
+                $('#pictureSection').css('display', 'flex');
+            else
+                $('#pictureSection').css('display', 'none');
+        }
+
+        @if(!isset($destination))
+            showPicSection(1);
+        @else
+            showPicSection({{$destination->langSource}});
+        @endif
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>
 

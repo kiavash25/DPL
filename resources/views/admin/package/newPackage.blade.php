@@ -1,7 +1,6 @@
 @extends('admin.layout.adminLayout')
 
 @section('head')
-
     <style>
         .row{
             width: 100%;
@@ -335,6 +334,7 @@
             cursor: pointer;
             color: green;
         }
+
     </style>
 
     <link rel="stylesheet" type="text/css" href="{{asset('semanticUi/semantic.css')}}">
@@ -369,14 +369,24 @@
 
 @section('body')
     <div class="row whiteBase" style="margin-bottom: 100px">
-        <div class="col-md-12">
+        <div class="col-md-12" style="display: flex; align-items: center;">
             <h2>
                 @if($kind == 'new')
-                    Create New Package
+                    {{__('Create New Package')}}
                 @else
                     Edit {{$package->name}} Package
                 @endif
             </h2>
+
+            <div class="form-group" style="width: auto; margin-right: 30px; display: {{app()->getLocale() != 'en' ? 'block': 'none'}}">
+                <label for="source">{{__('Source')}}</label>
+                <select name="source" id="source" class="form-control" onchange="showPicSection(this.value)">
+                    <option value="0" {{isset($package->langSource) && $package->langSource == 0 ? 'selected' : ''}}>{{__('New')}}</option>
+                    @foreach($sourceParent as $s)
+                        <option value="{{$s->id}}" {{isset($package->langSource) && $package->langSource == $s->id ? 'selected' : ''}}>{{$s->name}}</option>
+                    @endforeach
+                </select>
+            </div>
 
         </div>
         <hr>
@@ -386,22 +396,22 @@
             <div class="row">
                 <div class="col-md-10">
                     <div class="form-group">
-                        <label for="name" class="inputLabel">Package Name</label>
+                        <label for="name" class="inputLabel">{{__('Package Name')}}</label>
                         <input type="text" id="name" name="name" class="form-control" placeholder="Package Name" value="{{isset($package->name) ? $package->name : ''}}">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 relatedSection">
                     <div class="form-group">
                         <label class="rocker">
                             <input id="showPack" type="checkbox" {{isset($package->showPack) && $package->showPack == 1 ? 'checked' : ''}}>
                             <span class="switch-left">
                                 <div style="font-size: 12px">
-                                    Show
+                                    {{__('Show')}}
                                 </div>
                             </span>
                             <span class="switch-right">
                                 <div style="font-size: 12px">
-                                    Draft
+                                    {{__('Draft')}}
                                 </div>
                             </span>
                         </label>
@@ -411,7 +421,7 @@
 
             <div class="row marg30">
                 <div class="form-group">
-                    <label for="description" class="inputLabel">Package Description</label>
+                    <label for="description" class="inputLabel">{{__('Package Description')}}</label>
                     <div class="toolbar-container"></div>
                     <div id="description" class="textEditor" >
                         {!! isset($package->description) ? $package->description : '' !!}
@@ -423,10 +433,10 @@
                 <div class="col-xl-3">
                     <div class="row">
                         <div class="form-group">
-                            <label for="destination" class="inputLabel">Destination</label>
+                            <label for="destination" class="inputLabel">{{__('Destination')}}</label>
                             <div id="destination" class="ui fluid search selection dropdown">
                                 <input type="hidden" name="destination" id="DestinationId" onchange="changeDestination(this.value)" value="{{isset($package->destId) ? $package->destId : 0}}">
-                                <div class="default text">Select Destination</div>
+                                <div class="default text">{{__('Select Destination')}}</div>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
                                     @foreach($destinations as $destination)
@@ -447,7 +457,7 @@
                     </div>
                     <div class="row marg30">
                         <div class="form-group">
-                            <label for="activity" class="inputLabel">Main Activity</label>
+                            <label for="activity" class="inputLabel">{{__('Main Activity')}}</label>
                             <select id="activity" class="ui fluid search dropdown">
                                 <option value="0"></option>
                                 @foreach($activity as $item)
@@ -479,66 +489,66 @@
                 <div class="col-md-6">
                     <div class="row" style="padding: 10px; border: solid lightgray 1px; border-radius: 10px;">
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="code">Package Code</label>
+                                <label class="inputLabel" for="code">{{__('Package Code')}}</label>
                                 <input type="text" id="code" name="code" class="form-control" value="{{isset($package->code) ? $package->code : ''}}">
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="day">Day</label>
+                                <label class="inputLabel" for="day">{{__('Day')}}</label>
                                 <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="season">Season</label>
+                                <label class="inputLabel" for="season">{{__('Season')}}</label>
                                 <select name="season" id="season" class="form-control">
-                                    <option value="spring" {{isset($package->season) && $package->season == 'spring' ? 'selected' : ''}}>Spring</option>
-                                    <option value="summer" {{isset($package->season) && $package->season == 'summer' ? 'selected' : ''}}>Summer</option>
-                                    <option value="fall" {{isset($package->season) && $package->season == 'fall' ? 'selected' : ''}}>Fall</option>
-                                    <option value="winter" {{isset($package->season) && $package->season == 'winter' ? 'selected' : ''}}>winter</option>
+                                    <option value="spring" {{isset($package->season) && $package->season == 'spring' ? 'selected' : ''}}>{{__('Spring')}}</option>
+                                    <option value="summer" {{isset($package->season) && $package->season == 'summer' ? 'selected' : ''}}>{{__('Summer')}}</option>
+                                    <option value="fall" {{isset($package->season) && $package->season == 'fall' ? 'selected' : ''}}>{{__('Fall')}}</option>
+                                    <option value="winter" {{isset($package->season) && $package->season == 'winter' ? 'selected' : ''}}>{{__('Winter')}}</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="level">Level</label>
+                                <label class="inputLabel" for="level">{{__('Level')}}</label>
                                 <select name="level" id="level" class="form-control">
-                                    <option value="easy" {{isset($package->level) && $package->level == 'easy' ? 'selected' : ''}}>Easy</option>
-                                    <option value="medium" {{isset($package->level) && $package->level == 'medium' ? 'selected' : ''}}>Medium</option>
-                                    <option value="hard" {{isset($package->level) && $package->level == 'hard' ? 'selected' : ''}}>Hard</option>
+                                    <option value="easy" {{isset($package->level) && $package->level == 'easy' ? 'selected' : ''}}>{{__('Easy')}}</option>
+                                    <option value="medium" {{isset($package->level) && $package->level == 'medium' ? 'selected' : ''}}>{{__('Medium')}}</option>
+                                    <option value="hard" {{isset($package->level) && $package->level == 'hard' ? 'selected' : ''}}>{{__('Hard')}}</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="sDate">Start Date</label>
+                                <label class="inputLabel" for="sDate">{{_('Start Date')}}</label>
                                 <input type="text" id="sDate" name="sDate" class="form-control" value="{{isset($package->sDate) ? $package->sDate : ''}}" readonly>
-                                <button class="btn btn-danger" onclick="$('#sDate').val('')">clear Start Date</button>
+                                <button class="btn btn-danger" onclick="$('#sDate').val('')">{{__('clear Start Date')}}</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="eDate">End Date</label>
+                                <label class="inputLabel" for="eDate">{{__('End Date')}}</label>
                                 <input type="text" id="eDate" name="eDate" class="form-control" value="{{isset($package->eDate) ? $package->eDate : ''}}" readonly>
-                                <button class="btn btn-danger" onclick="$('#eDate').val('')">clear End Date</button>
+                                <button class="btn btn-danger" onclick="$('#eDate').val('')">{{__('clear End Date')}}</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="cost">Cost (Euro)</label>
+                                <label class="inputLabel" for="cost">{{__('Cost (Euro)')}}</label>
                                 <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : '0'}}">
                             </div>
                         </div>
 
                         <div id="brochureDiv" class="col-md-6" style="display: {{isset($package->id) ? 'block' : 'none'}}">
-                            <label class="inputLabel" for="brochure">Brochure</label>
+                            <label class="inputLabel" for="brochure">{{__('Brochure')}}</label>
                             <input type="file" name="brochure" id="brochure" onchange="uploadBrochure(this)">
                             <a href="{{isset($package->brochureUrl) ? $package->brochureUrl : ''}}">
                                 <button id="brochureName" class="btn btn-success">{{isset($package->brochure) ? $package->brochure : ''}}</button>
@@ -552,7 +562,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="inputLabel" style="display: flex; align-items: center">
-                                    Package Tags
+                                    {{__('Package Tags')}}
                                     <div class="addTagIcon" style="margin-left: 10px">
                                         <i class="fas fa-plus-circle" style="cursor: pointer" onclick="addTag()"></i>
                                     </div>
@@ -597,7 +607,7 @@
                 <hr>
                 <div class="col-md-12">
                     <h2>
-                        Side Info
+                        {{__('Side Info')}}
                     </h2>
 
                 </div>
@@ -611,9 +621,9 @@
                 </div>
                 <hr>
 
-                <div class="col-md-3 centerContent" style="flex-direction: column; justify-content: end">
+                <div class="col-md-3 centerContent relatedSection" style="flex-direction: column; justify-content: end">
                     <label class="inputLabel">
-                        Main Picture
+                        {{__('Main Picture')}}
                     </label>
                     <label for="mainPic" class="mainPicSection">
                         <img id="mainPicImg" src="{{isset($package->pic) && $package->pic != null ? $package->pic : '#'}}" style="width: 100%; display: {{isset($package->pic) && $package->pic != null ? 'block' : 'none'}};" >
@@ -623,14 +633,14 @@
 
                     <input type="file" name="mainPic" id="mainPic" accept="image/*" style="display: none" onchange="showPic(this, 'mainPic')">
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9 relatedSection">
                     <div id="uploadedPic" class="row">
                         @if(isset($package->sidePic) && count($package->sidePic) > 0)
                             @foreach($package->sidePic as $item)
                                 <div class="col-md-3 uploadedPic">
                                     <img src="{{$item->pic}}" class="uploadedPicImg">
                                     <div class="uploadedPicHover">
-                                        <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">delete</button>
+                                        <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">{{__('Delete')}}</button>
                                     </div>
                                 </div>
                             @endforeach
@@ -638,13 +648,13 @@
                     </div>
                 </div>
 
-                <div class="col-12" style="display: flex; justify-content: center">
-                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">Upload Main Picture</button>
+                <div class="col-12 relatedSection" style="display: flex; justify-content: center">
+                    <button id="uploadPicButton" class="btn btn-primary" style="font-size: 30px; border-radius: 20px;" onclick="uploadPicModal()">{{__('Upload Picture')}}</button>
                 </div>
                 <hr>
-                <div class="col-md-12">
+                <div class="col-md-12 relatedSection" style="flex-direction: column">
                     <h2>
-                        Thumbnail Picture
+                        {{__('Thumbnail Picture')}}
                     </h2>
                     <div id="thumbnailRow" class="row">
                         @if(isset($package->thumbnail))
@@ -660,14 +670,14 @@
                     </div>
                     <div class="row">
                         <div class="col-12" style="display: flex; justify-content: center">
-                            <button id="uploadPicButton" class="btn thumbnailUploadButton" onclick="uploadThumbnailPicModal()">Upload Thumbnail Picture</button>
+                            <button id="uploadPicButton" class="btn thumbnailUploadButton" onclick="uploadThumbnailPicModal()">{{__('Upload Thumbnail Picture')}}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row marg30" style="display: flex; justify-content: center;">
-                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px" onclick="submitForm()">Submit</button>
+                <button class="btn btn-success" style="font-size: 30px; border-radius: 20px" onclick="submitForm()">{{__('Submit')}}</button>
             </div>
 
         </div>
@@ -676,14 +686,14 @@
             <div class="modal-dialog modal-xl" style="max-width: 1500px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Upload Pictures</h4>
+                        <h4 class="modal-title">{{__('Upload Pictures')}}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div id="dropzone" class="dropzone"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
                 </div>
             </div>
@@ -693,14 +703,14 @@
             <div class="modal-dialog modal-xl" style="max-width: 1500px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Upload Thumbnail Pictures</h4>
+                        <h4 class="modal-title">{{__('Upload Thumbnail Picture')}}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div id="dropzoneThumbnail" class="dropzone"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
                 </div>
             </div>
@@ -719,7 +729,7 @@
                             <input type="hidden" id="sideInfoId">
                             <input type="file" id="fileInputSideInfo" style="display: none" onchange="showMoreInfoIcon(this)">
                             <label for="fileInputSideInfo" class="iconSideInfoDiv">
-                                <img id="iconSideInfo" src="http://localhost/DPL/public/uploaded/activityIcons/1586521332rockClimbing.png" style="width: 100%; height: 100%; display: none">
+                                <img id="iconSideInfo" src="#" style="width: 100%; height: 100%; display: none">
                                 <i id="newIconSideInfo" class="fas fa-plus-circle" style="cursor: pointer;  display: block;"></i>
                             </label>
                             <div class="form-group sideInfoInput">
@@ -728,14 +738,14 @@
                         </div>
                         <div class="row" style="display: flex; justify-content: center; align-items: center">
                             <button class="btn btn-success" onclick="storeSideInfo()">
-                                Store
+                                {{__('Store')}}
                             </button>
                         </div>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeSideInfoModal()">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeSideInfoModal()">{{__('Close')}}</button>
                     </div>
 
                 </div>
@@ -751,7 +761,8 @@
 
     <script>
         DecoupledEditor.create( document.querySelector('#description'), {
-            toolbar: [ 'bold', 'italic', 'link' ]
+            toolbar: [ 'bold', 'italic', 'link' ],
+            language: '{{app()->getLocale()}}'
         }).then( editor => {
             const toolbarContainer = document.querySelector( 'main .toolbar-container');
             toolbarContainer.prepend( editor.ui.view.toolbar.element );
@@ -940,6 +951,7 @@
             openLoading();
 
             let name = $('#name').val();
+            let source = $('#source').val();
             let showPack = $('#showPack:checked').val();
             if(showPack == undefined)
                 showPack = 0;
@@ -969,26 +981,21 @@
                     tags[tags.length] = $(tagsElement[i]).val();
             }
 
+            if(source == 0){
+                if(code.trim().length == 0)
+                    error += '<li style="margin: 15px 0px"> Please Choose Code.</li>';
+
+                if(lat == 0 && lng == 0)
+                    error += '<li style="margin: 15px 0px"> Please select a location from the map.</li>';
+            }
             if(name.trim().length == 0)
                 error += '<li style="margin: 15px 0px"> Please Choose Name.</li>';
-
-            if(code.trim().length == 0)
-                error += '<li style="margin: 15px 0px"> Please Choose Code.</li>';
 
             if(destinationId == 0)
                 error += '<li style="margin: 15px 0px"> Please Choose Destination.</li>';
 
-            if(lat == 0 && lng == 0)
-                error += '<li style="margin: 15px 0px"> Please select a location from the map.</li>';
-
             if(mainActivity == 0 )
                 error += '<li style="margin: 15px 0px"> Please Choose MainActivity.</li>';
-
-            // if(day == 0 )
-            //     error += '<li style="margin: 15px 0px"> Please specify the number of days.</li>';
-
-            // if(sDate.trim().length == 0 || eDate.trim().length == 0)
-            //     error += '<li style="margin: 15px 0px"> Please specify the start and end dates.</li>';
 
 
             if(error != checkError){
@@ -1017,6 +1024,7 @@
                         cost: cost,
                         season: season,
                         level: level,
+                        source: source,
                         showPack: showPack
                     },
                     success: function(response){
@@ -1028,7 +1036,7 @@
                                 $('#pictureSection').css('display', 'flex');
                                 $('#brochureDiv').css('display', 'block');
                             }
-                            else if(response['status'] == 'nok2')
+                            else if(response['status'] == 'nok1')
                                 resultLoading('The name of the pack at this destination is a duplicate', 'danger');
                             else if(response['status'] == 'nok9')
                                 resultLoading('The Code is duplicate', 'danger');
@@ -1371,6 +1379,19 @@
         for(let i = 0; i < sideInfos.length; i++)
             createNewSideInfoRow(sideInfos[i]);
 
+
+        function showPicSection(_value) {
+            if (_value == 0)
+                $('.relatedSection').css('display', 'flex');
+            else
+                $('.relatedSection').css('display', 'none');
+        }
+
+        @if(!isset($package))
+            showPicSection(0);
+        @else
+            showPicSection({{$package->langSource}});
+        @endif
 
     </script>
 @endsection

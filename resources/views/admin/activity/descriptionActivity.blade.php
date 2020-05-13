@@ -131,24 +131,25 @@
         }
 
         for(let i = 0; i < titles.length; i++){
-            DecoupledEditor.create( document.querySelector( '#titleDesc' + i))
-                .then( editor => {
-                    const toolbarContainer = document.querySelector( 'main .toolbar-container' + i );
-                    toolbarContainer.prepend( editor.ui.view.toolbar.element );
+            DecoupledEditor.create( document.querySelector( '#titleDesc' + i),{
+                    language: '{{app()->getLocale()}}'
+                    }).then( editor => {
+                        const toolbarContainer = document.querySelector( 'main .toolbar-container' + i );
+                        toolbarContainer.prepend( editor.ui.view.toolbar.element );
 
-                    window.editor = editor;
-                    texts[titles[i]['id']] = editor;
+                        window.editor = editor;
+                        texts[titles[i]['id']] = editor;
 
-                    editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
-                        let data = titles[i]['id'];
-                        data = JSON.stringify(data);
-                        return new MyUploadAdapter( loader, '{{route("admin.activity.storeTitleTextImg")}}', '{{csrf_token()}}', data);
-                    };
+                        editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                            let data = titles[i]['id'];
+                            data = JSON.stringify(data);
+                            return new MyUploadAdapter( loader, '{{route("admin.activity.storeTitleTextImg")}}', '{{csrf_token()}}', data);
+                        };
 
-                } )
-                .catch( err => {
-                    console.error( err.stack );
-                } );
+                    } )
+                    .catch( err => {
+                        console.error( err.stack );
+                    } );
         }
 
         function storeDescription(_id){

@@ -1,0 +1,15 @@
+@font-face {
+    font-face-name: IRANSans;
+    src: url(/../../fonts/IRANSansWeb.ttf),
+}
+*{
+    font-family: IRANSans;
+}
+#mainBody{
+    direction: rtl;
+    text-align: right;
+}
+.closeTagIcon{
+    left: 10px;
+    right: auto;
+}

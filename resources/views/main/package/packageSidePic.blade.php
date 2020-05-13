@@ -2,12 +2,6 @@
     .sidePicContent{
         color: #2c3e50;
     }
-    .sidePicHeader{
-
-    }
-    .sidePicCountry{
-
-    }
     .sidePicTagContent{
         margin-bottom: 10px;
     }
@@ -122,7 +116,7 @@
 <div class="sidePicContent">
     @if($content->day)
         <div class="days">
-            {{$content->day}} Days
+            {{$content->day}} {{__('Days')}}
         </div>
     @endif
     <h1 class="sidePicHeader">
@@ -141,33 +135,33 @@
     <div class="sideInfo">
         @if($content->sDate != null)
             <div class="infoDiv">
-                <div class="infoName">start Date:</div>
+                <div class="infoName">{{__('Start Date')}}:</div>
                 <div class="infoValue">{{$content->sDate}}</div>
             </div>
         @endif
         @if($content->eDate != null)
             <div class="infoDiv">
-                <div class="infoName">End Date:</div>
+                <div class="infoName">{{__('End Date')}}:</div>
                 <div class="infoValue">{{$content->eDate}}</div>
             </div>
         @endif
         <div class="infoDiv">
-            <div class="infoName">Season:</div>
+            <div class="infoName">{{__('Season')}}:</div>
             <div class="infoValue">{{$content->season}}</div>
         </div>
         <div class="infoDiv">
-            <div class="infoName">Level:</div>
+            <div class="infoName">{{__('Level')}}:</div>
             <div class="infoValue">{{strtoupper($content->level)}}</div>
         </div>
         <div class="infoDiv">
-            <div class="infoName">Package Code:</div>
+            <div class="infoName">{{__('Package Code')}}:</div>
             <div class="infoValue">{{$content->code}}</div>
         </div>
     </div>
 
     <div class="activityInfoDiv">
         <div class="activityInfoName">
-            Activity:
+            {{__('Activity')}}:
         </div>
         <div class="activityInfoValue">
 {{--            <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">--}}
@@ -178,7 +172,7 @@
     <div class="moneyAndOrderDiv">
         <div class="moneyDiv">
             <div class="moneyName">
-                Euro
+                {{__('Euro')}}
             </div>
             <div class="moneyValue">
                 €{{$content->money}}
@@ -186,10 +180,10 @@
         </div>
         <div class="orderDiv">
             <div class="orderButton" style="width: {{isset($content->brochure) && $content->brochure != null ? '50%' : '100%'}}">
-                Book Now
+                {{__('Book Now')}}
             </div>
             <a class="orderButton orderButtonRevers" href="{{$content->brochure}}"  style="display: {{isset($content->brochure) && $content->brochure != null ? 'flex' : 'none'}}; width: 50%;">
-                Brochure
+                {{__('Brochure')}}
             </a>
 
         </div>

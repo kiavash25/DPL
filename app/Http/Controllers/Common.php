@@ -118,8 +118,16 @@ function getKindPic($dir, $pic, $kind){
 function getMinPackage($pack){
     $destPack = Destination::select(['id', 'name', 'slug'])->find($pack->destId);
     $pack->mainActivity = Activity::find($pack->mainActivityId);
-    $loc = 'uploaded/packages/' . $pack->id;
-    $pack->pic = getKindPic($loc, $pack->pic, 'min');
+    if($pack->langSource == 0){
+        $picFolder = $pack->id;
+        $picName = $pack->pic;
+    }
+    else{
+        $picFolder = $pack->langSource;
+        $picName = \App\models\Package::find($pack->langSource)->pic;
+    }
+    $loc = 'uploaded/packages/' . $picFolder;
+    $pack->pic = getKindPic($loc, $picName, 'min');
     $pack->description = strip_tags($pack->description);
     if($pack->sDate != null) {
         $pack->sD = Carbon::createFromFormat('Y-m-d', $pack->sDate)->format('d');
@@ -130,7 +138,7 @@ function getMinPackage($pack){
         $pack->sM = 'Us';
     }
     if ($destPack != null)
-        $pack->url = route('show.package', ['destination' => $destPack->slug, 'slug' => $pack->slug]);
+        $pack->url = route('show.package', ['slug' => $pack->slug]);
 
     return $pack;
 }

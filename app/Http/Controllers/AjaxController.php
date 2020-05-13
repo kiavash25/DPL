@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\models\City;
 use App\models\Destination;
+use App\models\DestinationCategory;
 use App\models\Package;
 use App\models\Tags;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class AjaxController extends Controller
 
     function findDestination(Request $request){
         if(isset($request->name) && $request->name != ''){
-            $destination = Destination::where('name', 'LIKE', '%' . $request->name . '%')->get();
+            $destination = Destination::where('name', 'LIKE', '%' . $request->name . '%')->where('lang', app()->getLocale())->get();
             echo json_encode(['status' => 'ok', 'result' => $destination]);
         }
         else
@@ -50,16 +51,16 @@ class AjaxController extends Controller
         if(isset($request->value) && $request->value != ''){
             $value = $request->value;
 
-            $destiantion = Destination::where('name', 'LIKE', '%' . $value . '%')->get();
+            $destiantion = Destination::where('name', 'LIKE', '%' . $value . '%')->where('lang', app()->getLocale())->get();
             foreach ($destiantion as $item){
-                $item->url = route('show.destination', ['categoryId' => $item->categoryId, 'slug' => $item->slug]);
+                $item->url = route('show.destination', ['slug' => $item->slug]);
                 $item->kind = 'destination';
             }
 
-            $package = Package::where('name', 'LIKE', '%' . $value . '%')->get();
+            $package = Package::where('name', 'LIKE', '%' . $value . '%')->where('lang', app()->getLocale())->get();
             foreach ($package as $item){
                 $dest = Destination::find($item->destId);
-                $item->url = route('show.package', ['destination' => $dest->slug, 'slug' => $item->slug]);
+                $item->url = route('show.package', ['slug' => $item->slug]);
                 $item->kind = 'destination';
             }
 
@@ -75,4 +76,5 @@ class AjaxController extends Controller
 
         return;
     }
+
 }
