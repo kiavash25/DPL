@@ -147,11 +147,11 @@
         @endif
         <div class="infoDiv">
             <div class="infoName">{{__('Season')}}:</div>
-            <div class="infoValue">{{$content->season}}</div>
+            <div class="infoValue">{{__($content->season)}}</div>
         </div>
         <div class="infoDiv">
             <div class="infoName">{{__('Level')}}:</div>
-            <div class="infoValue">{{strtoupper($content->level)}}</div>
+            <div class="infoValue">{{__($content->level)}}</div>
         </div>
         <div class="infoDiv">
             <div class="infoName">{{__('Package Code')}}:</div>

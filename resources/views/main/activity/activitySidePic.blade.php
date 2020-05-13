@@ -56,7 +56,7 @@
 
 <div class="sidePicContent">
     <h1 class="sidePicHeader">
-        {{$content->name}} {{__('Activity')}}
+        {{$content->name}}
     </h1>
 
     @if(isset($content->packages) && count($content->packages) > 0)

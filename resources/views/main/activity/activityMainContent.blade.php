@@ -108,7 +108,7 @@
 
     <div class="col-md-{{$descNum}}">
         <div class="aboutHeader">
-            About {{$content->name}} Activity
+            {{__('About')}} {{$content->name}}
         </div>
         <div class="aboutText">
             {!! $content->description !!}
@@ -117,7 +117,7 @@
     <div class="col-md-{{$vidNum}}">
         @if($content->video)
             <div class="aboutHeader" style="margin-top: 10px">
-                Video
+                {{__('Video')}}
             </div>
             <video poster="placeholder.png" controls style="width: 100%;">
                 <source src="{{$content->video}}#t=1">
