@@ -24,7 +24,7 @@ class shareData
     public function handle($request, Closure $next)
     {
         $lang = app()->getLocale();
-        $destCategory = DestinationCategory::where('lang', $lang)->get();
+        $destCategory = DestinationCategory::where('lang', $lang)->orderByDESC('viewOrder')->get();
         foreach ($destCategory as $item) {
             $item->destination = Destination::where('categoryId', $item->id)->orderBy('name')->get();
             foreach ($item->destination as $dest){
@@ -35,7 +35,7 @@ class shareData
             }
         }
 
-        $activitiesList = Activity::where('parent', 0)->where('lang', $lang)->get();
+        $activitiesList = Activity::where('parent', 0)->where('lang', $lang)->orderByDESC('viewOrder')->get();
         foreach ($activitiesList as $item)
             $item->subAct = Activity::where('parent', $item->id)->where('lang', $lang)->get();
 

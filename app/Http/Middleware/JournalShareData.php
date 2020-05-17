@@ -20,7 +20,7 @@ class JournalShareData
      */
     public function handle($request, Closure $next)
     {
-        $allCategory = JournalCategory::where('lang', app()->getLocale())->get();
+        $allCategory = JournalCategory::where('lang', app()->getLocale())->orderByDESC('viewOrder')->get();
 
         $today = Carbon::now()->format('Y-m-d');
 

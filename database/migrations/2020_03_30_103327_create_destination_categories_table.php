@@ -23,6 +23,7 @@ class CreateDestinationCategoriesTable extends Migration
             $table->string('icon')->nullable();
             $table->string('lang', 5)->default('en');
             $table->unsignedInteger('langSource')->default(0);
+            $table->tinyInteger('viewOrder')->default(1);
         });
     }
 

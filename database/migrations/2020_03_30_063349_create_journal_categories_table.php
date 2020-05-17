@@ -17,6 +17,7 @@ class CreateJournalCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('lang', 5)->default('en');
+            $table->tinyInteger('viewOrder')->default(1);
         });
     }
 

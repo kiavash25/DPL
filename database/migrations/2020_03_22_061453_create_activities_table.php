@@ -24,6 +24,7 @@ class CreateActivitiesTable extends Migration
             $table->unsignedInteger('parent')->default(0);
             $table->string('lang', 5)->default('en');
             $table->unsignedInteger('langSource')->default(0);
+            $table->tinyInteger('viewOrder')->default(1);
             $table->timestamps();
         });
     }
