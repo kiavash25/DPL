@@ -122,7 +122,6 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/admin/journal/category/list', 'JournalAdminController@indexCategory')->name('admin.journal.category.index');
     Route::post('/admin/journal/category/store', 'JournalAdminController@storeCategory')->name('admin.journal.category.store');
-    Route::post('/admin/journal/category/edit', 'JournalAdminController@editCategory')->name('admin.journal.category.edit');
 
     Route::get('/admin/journal/list', 'JournalAdminController@indexJournal')->name('admin.journal.list');
     Route::get('/admin/journal/new', 'JournalAdminController@newJournal')->name('admin.journal.new');

@@ -40,27 +40,26 @@
         <thead class="thead-dark">
         <tr>
             <th>{{__('Category Name')}}</th>
+            <th>{{__('View Order')}}</th>
             <th></th>
         </tr>
         </thead>
-        <tbody id="addNewCategory">
+        <tbody id="table">
             @foreach($category as $item)
                 <tr id="activity{{$item->id}}">
                     <td>
                         <div id="activityName{{$item->id}}">
                             {{$item->name}}
                         </div>
-                        <div id="activityNameInput{{$item->id}}" style="display: none;">
-                            <input type="text" id="nameInput{{$item->id}}" class="form-control" value="{{$item->name}}">
+                    </td>
+                    <td>
+                        <div id="activityViewOrder{{$item->id}}">
+                            {{$item->viewOrder}}
                         </div>
                     </td>
                     <td>
-                        <div id="editButton{{$item->id}}" style="display: none;">
-                            <button class="btn btn-success" onclick="doEdit(this, {{$item->id}})">{{__('Submit')}}</button>
-                            <button class="btn btn-secondary" onclick="cancelEdit(this, {{$item->id}})">{{__('Cancel')}}</button>
-                        </div>
                         <div style="display: flex">
-                            <button class="btn btn-primary" onclick="editCategory(this, {{$item->id}})">{{__('Edit')}}</button>
+                            <button class="btn btn-primary" onclick="editCategory({{$item->id}})">{{__('Edit')}}</button>
                             <button class="btn btn-danger" onclick="openDeletedModal({{$item->id}}, '{{$item->name}}')">{{__('Delete')}}</button>
                         </div>
                     </td>
@@ -73,6 +72,40 @@
     <div class="row" style="justify-content: center">
         <div class="addIcon">
             <i class="fas fa-plus-circle" style="cursor: pointer" onclick="addNewCategory()"></i>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalHeader"></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="margin: 0px 30px">
+                    <div class="row" style="margin-bottom: 20px">
+                        <input type="hidden" id="categoryId">
+                        <label for="categoryName">{{__('Name')}}</label>
+                        <input type="text" class="form-control" id="categoryName">
+                    </div>
+                    <div class="row">
+                        <label for="categoryViewOrder">{{__('View Order')}}</label>
+                        <input type="number" class="form-control" id="categoryViewOrder">
+                    </div>
+                    <div class="row" style="display: flex; justify-content: center; align-items: center">
+                        <button class="btn btn-success" onclick="store()">
+                            {{__('Store')}}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -105,114 +138,67 @@
         var newActivity = 0;
 
         function addNewCategory(){
-            var text = '<tr id="newActivity' + newActivity + '">\n' +
+            $('#categoryName').val('');
+            $('#categoryViewOrder').val(1);
+            $('#categoryId').val(0);
+            $('#modalHeader').text('New Journal Category');
+            $('#modal').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function createNew(_id, _name, _viewOrder){
+            var text = '<tr id="activity' + _id + '">\n' +
                 '                    <td>\n' +
-                '                        <div id="newActivityNameInput' + newActivity + '" style="display: flex;">\n' +
-                '                            <input type="text" id="newNameInput' + newActivity + '" class="form-control">\n' +
-                '                        </div>\n' +
+                '                        <div id="activityName' + _id + '">' + _name + '</div>\n' +
                 '                    </td>\n' +
                 '                    <td>\n' +
-                '                        <div style="display: flex;">\n' +
-                '                            <button class="btn btn-success" onclick="submitNew(' + newActivity + ')">{{__("Submit")}}</button>\n' +
-                '                            <button class="btn btn-secondary" onclick="cancelNew(' + newActivity + ')">{{__("Cancel")}}</button>\n' +
+                '                        <div id="activityViewOrder' + _id + '">' + _viewOrder + '</div>\n' +
+                '                    </td>\n' +
+                '                    <td>\n' +
+                '                        <div style="display: flex">\n' +
+                '                            <button class="btn btn-primary" onclick="editCategory(' + _id + ')">{{__("Edit")}}</button>\n' +
+                '                            <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' +  _name + '\')">{{__("Delete")}}</button>\n' +
                 '                        </div>\n' +
                 '                    </td>\n' +
                 '                </tr>';
-
-            $('#addNewCategory').append(text);
-            newActivity++;
+            $('#table').append(text);
         }
 
-        function cancelNew(_id){
-            $('#newActivity' + _id).remove();
+        function editCategory(_id){
+            let orderView = parseInt($('#activityViewOrder' + _id).text());
+            let name = $('#activityName' + _id).text();
+
+            $('#categoryName').val(name);
+            $('#categoryViewOrder').val(orderView);
+            $('#categoryId').val(_id);
+            $('#modalHeader').text('Edit ' + name);
+            $('#modal').modal({backdrop: 'static', keyboard: false});
         }
 
-        function submitNew(_id){
-            var name = $('#newNameInput' + _id).val();
+        function store(){
+            let id = $('#categoryId').val();
+            let name = $('#categoryName').val().trim();
+            let viewOrder = $('#categoryViewOrder').val();
+
             if(name.trim().length > 1){
                 $.ajax({
                     type: 'post',
                     url: '{{route("admin.journal.category.store")}}',
                     data: {
                         _token: '{{csrf_token()}}',
-                        name: name
-                    },
-                    success: function(response){
-                        response = JSON.parse(response)
-                        if(response['status'] == 'ok'){
-                            id = response['result'];
-                            cancelNew(_id);
-                            createNew(id, name);
-                        }
-                        else if(response['status'] == 'nok1')
-                            alert("The category name is duplicate");
-                    },
-                    error: function(err){
-
-                    }
-                })
-            }
-        }
-
-        function createNew(_id, _name){
-            var text = '<tr id="activity' + _id + '">\n' +
-                '                    <td>\n' +
-                '                        <div id="activityName' + _id + '">' + _name + '</div>\n' +
-                '                        <div id="activityNameInput' + _id + '" style="display: none;">\n' +
-                '                            <input type="text" id="nameInput' + _id + '" class="form-control" value="' + _name + '">\n' +
-                '                        </div>\n' +
-                '                    </td>\n' +
-                '                    <td>\n' +
-                '                        <div id="editButton' + _id + '" style="display: none;">\n' +
-                '                            <button class="btn btn-success" onclick="doEdit(this, ' + _id + ')">{{__("Submit")}}</button>\n' +
-                '                            <button class="btn btn-secondary" onclick="cancelEdit(this, ' + _id + ')">{{__("Cancel")}}</button>\n' +
-                '                        </div>\n' +
-                '                        <div style="display: flex">\n' +
-                '                            <button class="btn btn-primary" onclick="editCategory(this, ' + _id + ')">{{__("Edit")}}</button>\n' +
-                '                            <button class="btn btn-danger" onclick="openDeletedModal(' + _id + ', \'' + _name + '\')">{{__("Delete")}}</button>\n' +
-                '                        </div>\n' +
-                '                    </td>\n' +
-                '                </tr>';
-
-            $('#addNewCategory').append(text);
-        }
-
-        function editCategory(_element, _id){
-            $(_element).parent().css('display', 'none');
-            $(_element).parent().prev().css('display', 'flex');
-
-            $('#activityName' + _id).css('display', 'none');
-            $('#activityNameInput' + _id).css('display', 'flex');
-        }
-
-        function cancelEdit(_element, _id){
-            $(_element).parent().css('display', 'none');
-            $(_element).parent().next().css('display', 'flex');
-
-            $('#activityName' + _id).css('display', 'flex');
-            $('#activityNameInput' + _id).css('display', 'none');
-        }
-
-        function doEdit(_element, _id){
-            var name = $('#nameInput' + _id).val();
-            if(name.trim().length > 1){
-                $.ajax({
-                    type: 'post',
-                    url: '{{route("admin.journal.category.edit")}}',
-                    data: {
-                        _token: '{{csrf_token()}}',
                         name: name,
-                        id: _id
+                        id: id,
+                        viewOrder: viewOrder,
                     },
                     success: function(response){
                         response = JSON.parse(response);
                         if(response['status'] == 'ok'){
-                            $('#editButton' + _id).css('display', 'none');
-                            $('#editButton' + _id).next().css('display', 'flex');
-
-                            $('#activityName' + _id).text(name);
-                            $('#activityName' + _id).css('display', 'flex');
-                            $('#activityNameInput' + _id).css('display', 'none');
+                            if(id == 0)
+                                createNew(response['id'], name, viewOrder);
+                            else {
+                                $('#activityViewOrder' + id).text(viewOrder);
+                                $('#activityName' + id).text(name);
+                            }
+                            $('#modal').modal('hide');
                         }
                         else if(response['status'] == 'nok1')
                             alert("The category name is duplicate");

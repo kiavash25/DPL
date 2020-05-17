@@ -115,6 +115,7 @@ class ActivityController extends Controller
                 }
 
                 $activity->name = $request->name;
+                $activity->viewOrder = $request->viewOrder;
                 $activity->description = $request->description;
                 $activity->parent = $request->parentId;
                 $activity->lang = app()->getLocale();

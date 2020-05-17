@@ -64,12 +64,18 @@
 
             <div class="row">
 
-                <div class="col-md-9">
+                <div class="col-md-7">
                     <div class="row">
                         <div class="form-group">
                             <label for="name" class="inputLabel">{{__('Activity Name')}}</label>
                             <input type="text" id="name" name="name" class="form-control" placeholder="Activity Name" value="{{isset($activity->name) ? $activity->name : ''}}">
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="viewOrder" class="inputLabel">{{__('View Order')}}</label>
+                        <input type="number" id="viewOrder" name="viewOrder" class="form-control" value="{{isset($activity->viewOrder) ? $activity->viewOrder : '1'}}">
                     </div>
                 </div>
 
@@ -315,6 +321,7 @@
             var name = $('#name').val();
             var description = window.editor.getData();
             var parentId = $('#parentId').val();
+            var viewOrder = $('#viewOrder').val();
             var source = $('#source').val();
             var error = '<ul>';
 
@@ -334,6 +341,7 @@
                         name: name,
                         description: description,
                         parentId: parentId,
+                        viewOrder: viewOrder,
                         source: source,
                         id: activityId
                     },

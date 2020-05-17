@@ -64,9 +64,17 @@
         <div class="col-md-12">
 
             <div class="row">
-                <div class="form-group">
-                    <label for="name" class="inputLabel">{{__('Category Name')}}</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Destination Name" value="{{isset($category->name) ? $category->name : ''}}">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="name" class="inputLabel">{{__('Category Name')}}</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Destination Name" value="{{isset($category->name) ? $category->name : ''}}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="viewOrder" class="inputLabel">{{__('View Order')}}</label>
+                        <input type="number" id="viewOrder" name="viewOrder" class="form-control" value="{{isset($category->viewOrder) ? $category->viewOrder : '1'}}">
+                    </div>
                 </div>
             </div>
 
@@ -260,6 +268,7 @@
 
             let name = $('#name').val();
             let source = $('#source').val();
+            let viewOrder = $('#viewOrder').val();
             let descriptionVal =  window.editor.getData();
             var titleElement = $("input[name*='titles']");
             var titles = [];
@@ -285,6 +294,7 @@
                         _token: '{{csrf_token()}}',
                         name: name,
                         description: descriptionVal,
+                        viewOrder: viewOrder,
                         source: source,
                         id: categoryId
                     },

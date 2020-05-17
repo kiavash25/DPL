@@ -25,17 +25,22 @@ class JournalAdminController extends Controller
 
     public function storeCategory(Request $request)
     {
-        if(isset($request->name)){
-            $check = JournalCategory::where('name', $request->name)->where('lang', app()->getLocale())->first();
-            if($check == null){
-                $category = new JournalCategory();
+        if(isset($request->id) && isset($request->name)) {
+            $check = JournalCategory::where('name', $request->name)->where('id', '!=', $request->id)->where('lang', app()->getLocale())->first();
+            if ($check == null) {
+                if($request->id == 0) {
+                    $category = new JournalCategory();
+                    $category->lang = app()->getLocale();
+                }
+                else
+                    $category = JournalCategory::find($request->id);
+
                 $category->name = $request->name;
-                $category->lang = app()->getLocale();
+                $category->viewOrder = $request->viewOrder;
                 $category->save();
 
-                echo json_encode(['status' => 'ok', 'result' => $category->id]);
-            }
-            else
+                echo json_encode(['status' => 'ok', 'id' => $category->id]);
+            } else
                 echo json_encode(['status' => 'nok1']);
         }
         else

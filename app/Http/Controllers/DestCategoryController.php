@@ -80,6 +80,7 @@ class DestCategoryController extends Controller
                 }
 
                 $category->name = $request->name;
+                $category->viewOrder = $request->viewOrder;
                 $category->lang = app()->getLocale();
                 $category->description = $request->description;
                 $category->save();
