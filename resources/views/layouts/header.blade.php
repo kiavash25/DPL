@@ -87,7 +87,7 @@
                                 <div class="sideNavTabs">
                                     <a class="subSideNavTab"
                                        href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">
-                                        See all
+                                        {{__('See all')}}
                                     </a>
                                 </div>
                                 @for($i = 0; $i < count($item->destination); $i++)
@@ -145,29 +145,29 @@
                 <div class="subSideNavMenu">
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Sport
+                            {{__('Sport')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Bisotun
+                                    {{__('Bisotun')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Skimo
+                                    {{__('Skimo')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Sky running
+                                    {{__('Sky running')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Ice climbing
+                                    {{__('Ice Climbing')}}
                                 </a>
                             </div>
                         </div>
@@ -175,39 +175,39 @@
 
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Local events
+                            {{__('Local events')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Regions
+                                    {{__('Regions')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Saffron
+                                    {{__('Saffron')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Kurdish music
+                                    {{__('Kurdish music')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Rose water
+                                    {{__('Rose water')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Street music
+                                    {{__('Street music')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Cherry
+                                    {{__('Cherry')}}
                                 </a>
                             </div>
 
@@ -216,24 +216,24 @@
 
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Training
+                            {{__('Training')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Youth Camp
+                                    {{__('Youth Camp')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Ski
+                                    {{__('Ski')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Grass Ski
+                                    {{__('Grass Ski')}}
                                 </a>
                             </div>
                         </div>
@@ -250,34 +250,34 @@
                 <div class="subSideNavMenu">
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Accommodation
+                            {{__('Accommodation')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Camps
+                                    {{__('Camps')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Huts
+                                    {{__('Huts')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Localhouses & eco-lodges
+                                    {{__('Localhouses & eco-lodges')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Hostles
+                                    {{__('Hostles')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Hotels
+                                    {{__('Hotels')}}
                                 </a>
                             </div>
                         </div>
@@ -285,24 +285,24 @@
 
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Pre-trip checklist
+                            {{__('Pre-trip checklist')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Travel extras
+                                    {{__('Travel extras')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Tutorals
+                                    {{__('Tutorals')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    General
+                                    {{__('General')}}
                                 </a>
                             </div>
                         </div>
@@ -310,24 +310,24 @@
 
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Good to know
+                            {{__('Good to know')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Destinations
+                                    {{__('Destinations')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Activities
+                                    {{__('Activities')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    General
+                                    {{__('General')}}
                                 </a>
                             </div>
                         </div>
@@ -336,29 +336,29 @@
 
                     <div class="sideNavTabs">
                         <a href="#" onclick="showSubSideNavMenu(this)">
-                            Book transfers
+                            {{__('Book transfers')}}
                             <div class="arrow right"></div>
                         </a>
 
                         <div class="subSideNavMenu subSubSideNavMenu">
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Flights
+                                    {{__('Flights')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Train
+                                    {{__('Train')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Bus
+                                    {{__('Bus')}}
                                 </a>
                             </div>
                             <div class="sideNavTabs">
                                 <a class="subSideNavTab" href="#">
-                                    Car rental
+                                    {{__('Car rental')}}
                                 </a>
                             </div>
                         </div>
@@ -367,7 +367,7 @@
 
                     <div class="sideNavTabs">
                         <a href="#">
-                            Guides and experts
+                            {{__('Guides and experts')}}
                         </a>
                     </div>
 
@@ -382,17 +382,17 @@
                 <div class="subSideNavMenu">
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="#">
-                            Trekking Guide Course
+                            {{__('Trekking Guide Course')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="#">
-                            Events
+                            {{__('Events')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="#">
-                            News
+                            {{__('News')}}
                         </a>
                     </div>
 
@@ -408,22 +408,22 @@
                 <div class="subSideNavMenu">
                     <div class="sideNavTabs">
                         <a href="#" class="subSideNavTab">
-                            Topical discussion
+                            {{__('Topical discussion')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
                         <a href="#" class="subSideNavTab">
-                            GO-Live
+                            {{__('GO-Live')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
                         <a href="#" class="subSideNavTab">
-                            Your shots
+                            {{__('Your shots')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
                         <a href="#" class="subSideNavTab">
-                            Our shots
+                            {{__('Our shots')}}
                         </a>
                     </div>
                 </div>
@@ -514,7 +514,7 @@
                                 @endfor
 
                                 @if(count($item->destination) > 6)
-                                    <div class="navSubListFooter" onclick="openAllCountryHeader(this)">See all</div>
+                                    <div class="navSubListFooter" onclick="openAllCountryHeader(this)">{{__('See all')}}</div>
                                 @endif
                             </div>
                             <div class="navSubListAllCountries">
@@ -554,7 +554,7 @@
                                 @endfor
 
                                 @if(count($item->subAct) > 6)
-                                    <div class="navSubListFooter" onclick="openAllCountryHeader(this)">See all</div>
+                                    <div class="navSubListFooter" onclick="openAllCountryHeader(this)">{{__('See all')}}</div>
                                 @endif
                             </div>
                             <div class="navSubListAllCountries">
@@ -584,56 +584,56 @@
                     <div class="navListSub">
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Sport
+                                {{__('Sport')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Bisotun
+                                {{__('Bisotun')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Skimo
+                                {{__('Skimo')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Sky running
+                                {{__('Sky running')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Ice Climbing
+                                {{__('Ice Climbing')}}
                             </a>
                         </div>
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Local events
+                                {{__('Local events')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Regions
+                                {{__('Regions')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Saffron
+                                {{__('Saffron')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Kurdis music
+                                {{__('Kurdish music')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Rose water
+                                {{__('Rose water')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Street music
+                                {{__('Street music')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Cherry
+                                {{__('Cherry')}}
                             </a>
                         </div>
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Training
+                                {{__('Training')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Youth Camp
+                                {{__('Youth Camp')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Ski
+                                {{__('Ski')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Grass ski
+                                {{__('Grass Ski')}}
                             </a>
                         </div>
                     </div>
@@ -649,72 +649,72 @@
                     <div class="navListSub">
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Accommodation
+                                {{__('Accommodation')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Camps
+                                {{__('Camps')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Huts
+                                {{__('Huts')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Localhouses & eco-lodges
+                                {{__('Localhouses & eco-lodges')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Hostles
+                                {{__('Hostles')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Hotels
+                                {{__('Hotels')}}
                             </a>
                         </div>
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Pre-trip checklist
+                                {{__('Pre-trip checklist')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Travel extras
+                                {{__('Travel extras')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Tutorals
+                                {{__('Tutorals')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                General
+                                {{__('General')}}
                             </a>
                         </div>
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Good to know
+                                {{__('Good to know')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Destinations
+                                {{__('Destinations')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Activities
+                                {{__('Activities')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                General
+                                {{__('General')}}
                             </a>
                         </div>
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Book transfers
+                                {{__('Book transfers')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Flights
+                                {{__('Flights')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Train
+                                {{__('Train')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Bus
+                                {{__('Bus')}}
                             </a>
                             <a href="#" class="navSubListBody">
-                                Car rental
+                                {{__('Car rental')}}
                             </a>
                         </div>
                         <div class="navSubListRow">
                             <a href="#" class="navSubListHeader">
-                                Guides and experts
+                                {{__('Guides and experts')}}
                             </a>
                         </div>
                     </div>
@@ -729,9 +729,9 @@
 
                 <div class="subList subLisM">
                     <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">Trekking Guide Course</div>
-                        <div class="navSubListBody navSubListBodyM">Events</div>
-                        <div class="navSubListBody navSubListBodyM">News</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('Trekking Guide Course')}}</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('Events')}}</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('News')}}</div>
                     </div>
                 </div>
 
@@ -744,10 +744,10 @@
 
                 <div class="subList subLisM">
                     <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">Topical discussion</div>
-                        <div class="navSubListBody navSubListBodyM">GO-Live</div>
-                        <div class="navSubListBody navSubListBodyM">Your shots</div>
-                        <div class="navSubListBody navSubListBodyM">Our shots</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('Topical discussion')}}</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('GO-Live')}}</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('Your shots')}}</div>
+                        <div class="navSubListBody navSubListBodyM">{{__('Our shots')}}</div>
                     </div>
                 </div>
             </div>

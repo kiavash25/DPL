@@ -28,8 +28,17 @@ class ActivityController extends Controller
         $lng = app()->getLocale();
         $activity = Activity::where('lang', $lng)->get();
         foreach ($activity as $item){
-            if($item->parent != 0)
-                $item->parent = Activity::find($item->parent)->name;
+            if($item->parent != 0) {
+                $parent = Activity::find($item->parent);
+                if($parent == null){
+                    $item->parent= 0;
+                    $item->save();
+
+                    $item->parent = '';
+                }
+                else
+                    $item->parent = $parent->name;
+            }
             else
                 $item->parent = '';
         }
@@ -475,8 +484,7 @@ class ActivityController extends Controller
                     PackageActivityRelations::where('activityId', $act->id)->delete();
                     ActivityPic::where('activityId', $act->id)->delete();
                     ActivityTitle::where('activityId', $act->id)->delete();
-                    if($act->parent == 0)
-                        Activity::where('parent', $act->id)->update(['parent' => 0]);
+                    Activity::where('parent', $act->id)->update(['parent' => 0]);
 
                     Activity::where('langSource', $act->id)->update(['langSource' => 0]);
 
