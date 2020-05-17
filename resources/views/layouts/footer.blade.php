@@ -2,33 +2,37 @@
 
 <footer>
     <div class="container footer">
-        <div class="footerContent pcFooter">
-            <div class="contentRow">
+        <div class="row footerContent pcFooter">
+            <div class="col-3 contentRow">
                 <div class="footerContentHeader">
                     {{__('Destinations')}}
                 </div>
                 @foreach($destCategory as $item)
-                    <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}" class="footerContentNormal">
+                    <a href="{{route('show.category', ['slug' => $item->slug ])}}" class="footerContentNormal">
                         {{$item->name}}
                     </a>
                 @endforeach
             </div>
-            <div class="contentRow">
-                <div class="footerContentHeader">
+            <div class="col-3 contentRow">
+                <div class="footerContentHeader" style="text-align: {{count($activitiesList) > 5 ? 'center' : ''}}">
                     {{__('Activities')}}
                 </div>
-                @foreach($activitiesList as $item)
-                    <a href="{{url('list/activity/'. $item->name)}}" class="footerContentNormal">
-                        {{$item->name}}
-                    </a>
-                @endforeach
+                <div class="row">
+                    @foreach($activitiesList as $item)
+                        <div class="col-md-{{count($activitiesList) > 5 ? '6' : 12}}" style="text-align: {{count($activitiesList) > 5 ? 'center' : ''}}">
+                            <a href="{{route('show.activity', ['slug' => $item->slug])}}" class="footerContentNormal">
+                                {{$item->name}}
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-            <div class="contentRow">
+            <div class="col-3 contentRow">
                 <div class="footerContentHeader">
                     {{__('Fest & Events')}}
                 </div>
             </div>
-            <div class="contentRow">
+            <div class="col-3 contentRow">
                 <a href="{{route('journal.index')}}" class="footerContentHeader">
                     {{__('Journal')}}
                 </a>
@@ -39,7 +43,6 @@
                     {{__('Contact us')}}
                 </a>
             </div>
-
         </div>
 
         <div class="mobileFooter">

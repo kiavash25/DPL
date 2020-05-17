@@ -181,7 +181,7 @@ a:hover{
     margin-left: 0px;
 }
 .navSubListHeader{
-    font-size: 20px;
+    font-size: 14px;
     font-weight: bold;
     margin-bottom: 15px;
     color: #2b393a !important;
@@ -195,6 +195,8 @@ a:hover{
     border-right: 5px;
     display: flex;
     align-items: center;
+    font-size: 11px;
+    /*margin-left: 20px;*/
 }
 .navSubListBody:hover{
     background-color: #1f75b9;
@@ -452,6 +454,8 @@ a:hover{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    padding-top: 25px;
 }
 .closeCountryArrow{
     border: solid #909090;
@@ -487,6 +491,56 @@ a:hover{
     align-items: center;
     width: 100%;
     direction: rtl;
+}
+
+.destTitles{
+    width: 0%;
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    color: white;
+    background: #1f75b9;
+    left: 90%;
+    top: 0px;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
+    border-radius: 10px;
+    z-index: 1;
+}
+.navSubListBody:hover{
+    border-radius: 10px;
+}
+/*.navSubListBody:hover .destTitles{*/
+/*    width: 100%;*/
+/*}*/
+.destTitlesName{
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    border-radius: 5px;
+}
+.destTitlesName:hover{
+    color: white;
+    background: #2b393a;
+}
+.langDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    position: absolute;
+    bottom: 30px;
+}
+.selectLang{
+    width: 150px;
+    font-size: 20px;
+    border: solid 1px #1f75b9;
+    border-radius: 10px;
+    color: #1f75b9;
 }
 
 @media (max-width: 1023px){

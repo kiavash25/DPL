@@ -7,52 +7,16 @@
         }
     @endif
 
-    .destTitles{
-        width: 0%;
-        overflow: hidden;
+    .tippy-content{
         display: flex;
-        position: absolute;
         flex-direction: column;
-        color: white;
-        background: #1f75b9;
-        left: 90%;
-        top: 0px;
-        align-items: center;
-        justify-content: center;
-        transition: .3s;
-        border-radius: 10px;
-        z-index: 1;
+        padding: 0px !important;
     }
-    .navSubListBody:hover{
-        border-radius: 10px;
+    .tippy-box{
+        padding: 0;
+        background: rgb(31, 117, 185);
     }
-    .navSubListBody:hover .destTitles{
-        width: 100%;
-    }
-    .destTitlesName{
-        color: white;
-        padding: 10px;
-        text-align: center;
-        width: 100%;
-    }
-    .destTitlesName:hover{
-        color: white;
-        background: #2b393a;
-    }
-    .langDiv{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        flex-direction: column;
-        position: absolute;
-        bottom: 30px;
-    }
-    .selectLang{
-        width: 150px;
-        font-size: 20px;
-        border: solid 1px #1f75b9;
-        border-radius: 10px;
+    .tippy-box[data-placement^=right]>.tippy-arrow{
         color: #1f75b9;
     }
 </style>
@@ -461,13 +425,12 @@
             <div class="navThreeLine"></div>
         </div>
         <div class="logoNavDiv">
-            <a href="#" class="mobileHide" style="background-color: #ff2727; padding: 4px 7px; border-radius: 50%; margin-right: 15px">
-                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
-            </a>
             <a href="{{url('/')}}">
                 <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="width: 100%">
             </a>
-
+            <a href="#" class="mobileHide" style="background-color: #ff2727; padding: 4px 7px; border-radius: 50%; margin:0px 15px">
+                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
+            </a>
         </div>
 
         @if( !Request::is('/'))
@@ -495,12 +458,11 @@
                     <div class="navListSub">
                         @foreach($destCategory as $item)
                             <div class="navSubListRow">
-                                <a href="{{route('show.category', ['slug' => $item->slug])}}"
-                                   class="navSubListHeader">{{$item->name}}</a>
+                                <a href="{{route('show.category', ['slug' => $item->slug])}}" class="navSubListHeader">{{$item->name}}</a>
                                 @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
-                                    <div href="{{$item->destination[$i]->url}}" class="navSubListBody">
+                                    <div id="tippy_{{$item->destination[$i]->id}}" href="{{$item->destination[$i]->url}}" class="navSubListBody tippyHeader">
                                         {{$item->destination[$i]->name}}
-                                        <div class="destTitles" style="z-index: 9">
+                                        <div id="tippyC_{{$item->destination[$i]->id}}" class="destTitles" style="z-index: 9; width: 100%; display: none">
                                             <a href="{{$item->destination[$i]->url}}" class="destTitlesName">
                                                 See {{$item->destination[$i]->name}}
                                             </a>
@@ -519,14 +481,26 @@
                             </div>
                             <div class="navSubListAllCountries">
                                 <div class="navSubListAllCountriesClose" onclick="closeAllCountry(this)">
-                                    <div class="arrow down closeCountryArrow"></div>
+                                    <div style="font-weight: bold; font-size: 25px; margin-bottom: 10px">
+                                        {{$item->name}}
+                                    </div>
+                                    <div class="arrow up closeCountryArrow"></div>
                                 </div>
                                 <div class="navSubListAllCountriesList">
                                     @foreach($item->destination as $desti)
-                                        <a href="{{route('show.destination', ['slug' => $desti->slug])}}"
-                                           class="navCountries">
+                                        <div id="tippyB_{{$desti->id}}" href="{{$desti->url}}" class="navSubListBody tippyHeader" style="justify-content: center">
                                             {{$desti->name}}
-                                        </a>
+                                            <div id="tippyCB_{{$desti->id}}" class="destTitles" style="z-index: 9; width: 100%; display: none">
+                                                <a href="{{$desti->url}}" class="destTitlesName">
+                                                    See {{$desti->name}}
+                                                </a>
+                                                @foreach($desti->titles as $titles)
+                                                    <a href="{{$desti->url . '#' . $titles}}" class="destTitlesName">
+                                                        {{$titles}}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -867,12 +841,32 @@
 @endif
 
 <script>
+    let desctCt = {!! $destCategory !!};
+    for(let i = 0; i < desctCt.length; i++){
+        for(let j = 0; j < desctCt[i].destination.length; j++){
+            tippy('#tippy_' + desctCt[i].destination[j].id, {
+                content: $('#tippyC_'+desctCt[i].destination[j].id).html(),
+                placement: 'right-end',
+                interactive: true,
+                allowHTML: true,
+            });
+            tippy('#tippyB_' + desctCt[i].destination[j].id, {
+                content: $('#tippyCB_'+desctCt[i].destination[j].id).html(),
+                placement: 'right-end',
+                interactive: true,
+                allowHTML: true,
+            });
+        }
+    }
+
     function openAllCountryHeader(_element) {
         $(_element).parent().next().css('height', '100%');
+        $(_element).parent().next().css('overflow', 'inherit');
     }
 
     function closeAllCountry(_element) {
-        $(_element).parent().css('height', '0')
+        $(_element).parent().css('height', '0');
+        $(_element).parent().css('overflow', 'hidden');
     }
 
     function gollobalSearch(_value) {
