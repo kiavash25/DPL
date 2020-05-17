@@ -111,7 +111,7 @@
             </div>
         </div>
 
-        <div class="packageSideButtonDiv mobileHide">
+        <div class="packageSideButtonDiv mobileHide" style="display: {{count($content->packages) > 1 ? 'block': 'none'}}">
             <div id="nextPackageSide" class="sliderButton nextSlider" style="top: 33%; right: 10px; box-shadow: 0 0 10px 3px black">
                 <div class="slider arrow right"></div>
             </div>
@@ -132,18 +132,22 @@
     @endif
 
     <script !src="">
-        sidePackageSwiper = new Swiper('#sidePackageSwiper', {
-            loop: true,
-            slidesPerView: 2,
-            navigation: {
-                nextEl: '#nextPackageSide',
-                prevEl: '#prevPackageSide',
-            },
-            breakpoints:{
-                1500:{
-                    slidesPerView: 1,
+        let contentPackages = {!! $content->packages !!};
+
+        if(contentPackages.length > 1) {
+            sidePackageSwiper = new Swiper('#sidePackageSwiper', {
+                loop: true,
+                slidesPerView: 2,
+                navigation: {
+                    nextEl: '#nextPackageSide',
+                    prevEl: '#prevPackageSide',
                 },
-            }
-        });
+                breakpoints:{
+                    1500:{
+                        slidesPerView: 1,
+                    },
+                }
+            });
+        }
     </script>
 </div>

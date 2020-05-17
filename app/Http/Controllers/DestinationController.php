@@ -80,7 +80,7 @@ class DestinationController extends Controller
         if($destination->podcast != null)
             $destination->podcast = asset('uploaded/destination/' . $destination->id . '/' . $destination->podcast);
 
-        $category = DestinationCategory::all();
+        $category = DestinationCategory::where('lang', app()->getLocale())->get();
         foreach($category as $item)
             $item->titles = DestinationCategoryTitle::where('categoryId', $item->id)->get();
 

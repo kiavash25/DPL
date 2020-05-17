@@ -44,6 +44,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
+    overflow: hidden;
 }
 .packageDate{
     display: flex;
@@ -68,6 +69,7 @@
     top: -20px;
     left: 0px;
     border-radius: 4px;
+    font-size: 11px;
 }
 .packageDescription{
     overflow: hidden;

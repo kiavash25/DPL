@@ -12,6 +12,9 @@
         flex-direction: column;
         padding: 0px !important;
     }
+    .tippy-content .tippyHeader{
+        padding: 0;
+    }
     .tippy-box{
         padding: 0;
         background: rgb(31, 117, 185);
@@ -460,7 +463,7 @@
                             <div class="navSubListRow">
                                 <a href="{{route('show.category', ['slug' => $item->slug])}}" class="navSubListHeader">{{$item->name}}</a>
                                 @for($i = 0; $i < count($item->destination) && $i < 6; $i++)
-                                    <div id="tippy_{{$item->destination[$i]->id}}" href="{{$item->destination[$i]->url}}" class="navSubListBody tippyHeader">
+                                    <a id="tippy_{{$item->destination[$i]->id}}" href="{{$item->destination[$i]->url}}" class="navSubListBody tippyHeader">
                                         {{$item->destination[$i]->name}}
                                         <div id="tippyC_{{$item->destination[$i]->id}}" class="destTitles" style="z-index: 9; width: 100%; display: none">
                                             <a href="{{$item->destination[$i]->url}}" class="destTitlesName">
@@ -472,7 +475,7 @@
                                                 </a>
                                             @endforeach
                                         </div>
-                                    </div>
+                                    </a>
                                 @endfor
 
                                 @if(count($item->destination) > 6)
@@ -488,7 +491,7 @@
                                 </div>
                                 <div class="navSubListAllCountriesList">
                                     @foreach($item->destination as $desti)
-                                        <div id="tippyB_{{$desti->id}}" href="{{$desti->url}}" class="navSubListBody tippyHeader" style="justify-content: center">
+                                        <a id="tippyB_{{$desti->id}}" href="{{$desti->url}}" class="navSubListBody tippyHeader" style="justify-content: center">
                                             {{$desti->name}}
                                             <div id="tippyCB_{{$desti->id}}" class="destTitles" style="z-index: 9; width: 100%; display: none">
                                                 <a href="{{$desti->url}}" class="destTitlesName">
@@ -500,7 +503,7 @@
                                                     </a>
                                                 @endforeach
                                             </div>
-                                        </div>
+                                        </a>
                                     @endforeach
                                 </div>
                             </div>
