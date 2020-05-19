@@ -1,0 +1,8 @@
+.navSubListBody{
+    direction: rtl !important;
+    text-align: right !important;
+}
+.navSubListHeader{
+    direction: rtl !important;
+    text-align: right !important;
+}

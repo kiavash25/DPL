@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="{{asset('css/header.css')}}">
+<?php
+$showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+?>
 
+@if(isset($showLang->direction) && $showLang->direction == 'rtl')
+    <link rel="stylesheet" href="{{asset('css/rtl/rtlHeader.css')}}">
+@endif
 <style>
     @if( Request::is('/'))
         .logoNavDiv {
@@ -743,7 +749,7 @@
             <div class="navLi posRel mobileHide rtlRight">
                 <div class="navTabName">
                     <div class="navPerson">
-                        <i class="far fa-user" aria-hidden="true"></i>
+                        <i class="far fa-user" aria-hidden="true" style="font-family: 'Font Awesome 5 Free' !important;"></i>
                     </div>
                 </div>
                 <div class="subList subLisM">

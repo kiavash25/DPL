@@ -8,7 +8,7 @@
 
 
 @section('body')
-    <div>
+    <div style="position: relative">
         <div class="mainSlider">
             <div class="swiper-container mainSS" style="height: 100%;">
                 <div class="swiper-wrapper">

@@ -1,5 +1,5 @@
 <style>
-    nav{
+    .mainNav{
         position: fixed;
         height: 100%;
         width: 20%;
@@ -56,20 +56,20 @@
     }
 
     @media (max-width: 1200px) {
-        nav{
+        .mainNav{
             width: 30%;
         }
     }
 
     @media (max-width: 767px){
-        nav{
+        .mainNav{
             width: 250px;
             left: -250px;
         }
     }
 </style>
 
-<nav>
+<nav class="mainNav">
     <a href="{{url('/')}}" class="sideNavHeaderIcon">
         <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="dpl" style="width: 80%; margin-left: 10%; margin-right: 10%;">
     </a>
@@ -85,15 +85,15 @@
         @endforeach
     </div>
 
-    <div class="langDiv">
-        <label for="languages" style="color: #a2a2a2; font-size: 18px">{{__('Language')}}</label>
-        <select name="languages" id="languages" class="selectLang" onchange="location.href='{{url('admin/locale/')}}/' + this.value">
-            <option value="en" {{app()->getLocale() == 'en' ? 'selected' : ''}}>English</option>
-            @foreach($languages as $lang)
-                <option value="{{$lang->symbol}}" {{app()->getLocale() == $lang->symbol ? 'selected' : ''}}>{{$lang->name}}</option>
-            @endforeach
-        </select>
-    </div>
+{{--    <div class="langDiv">--}}
+{{--        <label for="languages" style="color: #a2a2a2; font-size: 18px">{{__('Language')}}</label>--}}
+{{--        <select name="languages" id="languages" class="selectLang" onchange="location.href='{{url('admin/locale/')}}/' + this.value">--}}
+{{--            <option value="en" {{app()->getLocale() == 'en' ? 'selected' : ''}}>English</option>--}}
+{{--            @foreach($languages as $lang)--}}
+{{--                <option value="{{$lang->symbol}}" {{app()->getLocale() == $lang->symbol ? 'selected' : ''}}>{{$lang->name}}</option>--}}
+{{--            @endforeach--}}
+{{--        </select>--}}
+{{--    </div>--}}
 
 </nav>
 
@@ -101,7 +101,7 @@
     function toggleSideNav(x){
         x.classList.toggle("change");
 
-        $('nav').toggleClass('openSideNav');
+        $('.mainNav').toggleClass('openSideNav');
         $('.mainBase').toggleClass('openMain');
     }
 </script>

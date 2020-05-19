@@ -52,7 +52,7 @@
     @yield('head')
 
     <?php
-    $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+        $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
     ?>
 
     @if(isset($showLang->direction) && $showLang->direction == 'rtl')

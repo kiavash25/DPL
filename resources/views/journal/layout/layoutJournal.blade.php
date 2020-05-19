@@ -19,6 +19,9 @@
     <script src="{{ asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('semanticUi/semantic.min.js')}}"></script>
 
+    <script src="{{ asset('js/popper.min.js')}}"></script>
+    <script src="{{ asset('js/tippy-bundle.umd.min.js')}}"></script>
+
     <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400&display=swap" rel="stylesheet">
@@ -71,6 +74,20 @@
             transform: rotate(45deg) translate(-8px, -8px);
         }
 
+        .logoNavDiv{
+            display: none !important;
+        }
+        .navSearchBar{
+            display: none !important;
+        }
+        .navUl{
+            margin-left: auto !important;
+            width: auto !important;
+        }
+        .rtlRight{
+            margin-right: 0 !important;
+        }
+
         @media (max-width: 1200px) {
             .mainBase{
                 width: 70%;
@@ -113,6 +130,8 @@
                 <div class="navThreeLine2"></div>
                 <div class="navThreeLine3"></div>
             </div>
+            @include('layouts.header')
+
             @yield('body')
         </div>
     </main>
