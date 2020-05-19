@@ -30,7 +30,8 @@
 
 
 .navUl{
-    width: 100%;
+    width: 100% !important;
+    direction: rtl;
 }
 .rtlRight{
     margin-right: auto;
@@ -99,9 +100,5 @@
     }
     .navContainer{
         direction: ltr;
-    }
-    .navUl{
-        width: auto;
-        padding-right: 0px !important;
     }
 }

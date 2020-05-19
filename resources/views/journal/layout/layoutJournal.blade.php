@@ -84,9 +84,6 @@
             margin-left: auto !important;
             width: auto !important;
         }
-        .rtlRight{
-            margin-right: 0 !important;
-        }
 
         @media (max-width: 1200px) {
             .mainBase{

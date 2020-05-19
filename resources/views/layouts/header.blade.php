@@ -413,7 +413,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
             <div class="langDiv">
                 <label for="languages" style="color: #2c3e50; font-size: 18px">{{__('Language')}}</label>
-                <select name="languages" id="languages" class="selectLang" onchange="location.href='{{url('admin/locale/')}}/' + this.value">
+                <select name="languages" id="languages" class="selectLang" onchange="location.href='{{url('locale/')}}/' + this.value">
                     <option value="en" {{app()->getLocale() == 'en' ? 'selected' : ''}}>English</option>
                     @foreach($languages as $lang)
                         <option value="{{$lang->symbol}}" {{app()->getLocale() == $lang->symbol ? 'selected' : ''}}>{{$lang->name}}</option>
