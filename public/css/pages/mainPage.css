@@ -21,7 +21,7 @@
     left: 0px;
     background-color: #00000061;
     color: white;
-    font-size: 60px;
+    font-size: 45px;
 }
 .mainSearchCenter{
     width: 100%;
@@ -118,6 +118,7 @@
 
 .map{
     width: 100%;
+    min-height: 380px;
     height: 50vh;
 }
 .destinationMainSearch{
@@ -140,6 +141,179 @@
     color: white;
     border-radius: 7px;
 }
+.mainContentSection{
+    width: 100%;
+    margin-top: 50px;
+}
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+.mainRecentlyPackageTopDiv{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.recentlyPackageDiv{
+    width: 330px;
+    height: 200px;
+    margin: 14px 10px;
+}
+.recentlyPackageImg{
+    width: 100%;
+    overflow: hidden;
+    height: 160px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.recentlyPackageImg > img{
+    transition: .5s;
+}
+.recentlyPackageImg:hover > img {
+    transform: scale(1.1);
+}
+.recentlyPackageText{
+    margin-top: 7px;
+}
+.recentlyPackageName{
+    font-size: 17px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+.recentlyPackageCost{
+    font-size: 12px;
+}
+.JournalDiv{
+    width: 22%;
+    height: 400px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.JournalDiv> img{
+    transition: .5s;
+}
+.JournalDiv:hover > img{
+    transform: scale(1.1);
+}
+.JournalContentDiv{
+    position: absolute;
+    color: white;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: linear-gradient(0deg, rgba(0,0,0,0.8547794117647058) 24%, rgba(0,0,0,0.5102415966386555) 79%, rgba(0,0,0,0) 100%);
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 15px;
+}
+.JournalCategory{
+    color: white;
+    font-size: 14px;
+    font-weight: 100;
+}
+.JournalName{
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recentlyPackageSwiper{
+    display: none;
+}
+.mapSection{
+    width: 100%;
+    margin-top: 50px;
+    position: relative;
+}
+.mapOptionDiv{
+    position: absolute;
+    background: #2b393a;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    bottom: 10px;
+    left: 10px;
+    transition: .4s;
+}
+.openOptionDiv{
+    width: 150px;
+    border-radius: 0px 0px 50px 50px;
+}
+.insideOptiponMap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+}
+.insideOptiponMap .threeLineDiv{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+.mapOptionContentDiv{
+    background: #2b393a;
+    border-radius: 25px 25px 0px 0px;
+    position: absolute;
+    width: 100%;
+    bottom: 48px;
+    height: 0;
+    transition: .7s;
+    overflow: hidden;
+}
+.mapOptionContentDivOpen{
+    height: 350px;
+}
+.mapOptionContent{
+    color: white;
+    text-align: center;
+    margin: 5px 10px;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: .4s;
+}
+.mapOptionContentActive{
+    color: #2c3e50;
+    background: white;
+}
+
+.navThreeLine1, .navThreeLine2, .navThreeLine3{
+    border-radius: 100px;
+    width: 25px;
+    height: 4px;
+    margin-top: 5px;
+    background-color: white;
+    transition: 0.4s;
+}
+.navThreeLine1{
+    margin-top: 0px;
+}
+.change .navThreeLine1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+}
+
+.change .navThreeLine2 {opacity: 0;}
+
+.change .navThreeLine3 {
+    -webkit-transform: rotate(45deg) translate(-7px, -4px);
+    transform: rotate(45deg) translate(-7px, -4px);
+}
+
 @media (max-width:  1300px){
     .searchCenter{
         width: 75%;
@@ -147,6 +321,21 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .JournalDiv{
+        width: 35%;
+    }
+}
+
+@media (max-width: 1080px) {
+    .recentlyPackageSwiper{
+        display: block;
+        position: relative;
+    }
+    .recentlyPackageNonSwiper{
+        display: none;
+    }
+}
 @media (max-width:  1023px){
     .topSlider{
         height: 300px;
@@ -174,6 +363,16 @@
     }
 }
 
+@media (max-width: 810px) {
+    .JournalDiv{
+        width: 100%;
+        height: 200px;
+    }
+    .JournalContentDiv{
+        height: 50%;
+    }
+}
+
 @media (max-width:  767px){
     .whereToSearch{
         border-radius: 0px;
@@ -184,5 +383,8 @@
     }
     .seasons{
         margin: 1%;
+    }
+    .textSlider{
+        font-size: 30px;
     }
 }

@@ -15,6 +15,8 @@ use App\models\DestinationCategoryTitle;
 use App\models\DestinationCategoryTitleText;
 use App\models\DestinationPic;
 use App\models\DestinationTagRelation;
+use App\models\Journal;
+use App\models\JournalCategory;
 use App\models\MainPageSlider;
 use App\models\Package;
 use App\models\PackageActivityRelations;
@@ -34,6 +36,8 @@ class MainController extends Controller
 
     public function mainPage()
     {
+        $today = Carbon::now()->format('Y-m-d');
+
         $mainPageSlider = MainPageSlider::orderByDesc('showNumber')->get();
         foreach ($mainPageSlider as $item)
             $item->pic = asset('images/MainSliderPics/' . $item->pic);
@@ -51,32 +55,39 @@ class MainController extends Controller
             }
         }
 
-        $today = Carbon::now()->format('Y-m-d');
         $recentlyPackage = Package::where('showPack', 1)->where('lang', app()->getLocale())
                                     ->where(function ($query) {
                                         $today = Carbon::now()->format('Y-m-d');
                                         $query->where('sDate', '>', $today)
                                             ->orWhereNull('sDate');
                                     })
-                                    ->orderBy('sDate')->take(5)->get();
+                                    ->orderBy('sDate')->take(8)->get();
         foreach ($recentlyPackage as $item)
-            $item = getMinPackage($item);
+            $item = getMinPackage($item, 'list');
 
-//        $mapDestination = Destination::select(['id', 'slug', 'name', 'lat', 'lng', 'categoryId'])->get()->groupBy('categoryId');
-//        foreach ($mapDestination as $key => $item) {
-//            $categ = DestinationCategory::find($key);
-//            if($categ->icon != null)
-//                $mapIcon = asset('uploaded/MapIcon/' . $categ->icon);
-//            else
-//                $mapIcon = null;
-//            foreach ($item as $it)
-//                $it->mapIcon = $mapIcon;
-//        }
-//
-//        $catId = DestinationCategory::get()->pluck('id')->toArray();
-//        $catId = json_encode($catId);
-//        return \view('main.mainPage', compact(['activities', 'mapDestination', 'catId', 'destinationCategoryMain']));
-        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage', 'mainPageSlider']));
+        $mainSliderJournal = Journal::where('releaseDate' , '!=', 'draft')->where('lang', app()->getLocale())->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(4)->get();
+        foreach ($mainSliderJournal as $item) {
+            $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
+            $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
+            $item->category = JournalCategory::find($item->categoryId);
+            if($item->category != null)
+                $item->category = $item->category->name;
+        }
+
+        $mapDestination = DestinationCategory::where('lang', app()->getLocale())->get();
+        foreach ($mapDestination as $cate){
+            if($cate->icon != null)
+                $cate->icon = asset('uploaded/destination/category/' . $cate->id . '/' . $cate->icon);
+            else
+                $cate->icon = null;
+
+            $cate->destinations = Destination::where('lang', app()->getLocale())->where('categoryId', $cate->id)->select(['id', 'name', 'slug', 'lat', 'lng'])->get();
+            foreach ($cate->destinations as $item){
+                $item->url = route('show.destination', ['slug' => $item->slug]);
+            }
+        }
+
+        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage', 'mainPageSlider', 'mapDestination', 'mainSliderJournal']));
     }
 
     public function aboutUs()

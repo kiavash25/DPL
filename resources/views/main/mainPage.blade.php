@@ -21,16 +21,6 @@
     <link rel="stylesheet" href="{{asset('css/common/sliderPacks.css')}}">
 
 
-    <style>
-        .textSlider{
-            font-size: 45px;
-        }
-        .swiper-container {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-
     @if(app()->getLocale() == 'fa')
         <link rel="stylesheet" href="{{asset('css/rtl/rtlMainPage.css')}}">
     @else
@@ -144,128 +134,102 @@
         </div>
     </div>
 
-
-
-
     <div class="container" style="margin-bottom: 50px;">
-
-        <div style="width: 100%; margin-top: 45px">
-            <a href="#">
-                <div class="aboutHeader">
-                    {{__('main.Recently Package')}}
-                </div>
-            </a>
-            <div class="mainContentPackages">
-                <div class="swiper-container packageSwiper">
-
-                    <div class="swiper-wrapper swiperResize" style="padding: 10px 0px">
+        <div class="mainContentSection">
+            <div class="aboutHeader" style="text-align: center">
+                {{__('Most Popular')}}
+            </div>
+            <div class="mainRecentlyPackageTopDiv recentlyPackageNonSwiper ">
+                @foreach($recentlyPackage as $item)
+                        <div class="recentlyPackageDiv">
+                            <a href="{{$item->url}}">
+                                <div class="recentlyPackageImg">
+                                    <img src="{{$item->pic}}" class="resizeImage" style="width: 100%;">
+                                </div>
+                            </a>
+                            <div class="recentlyPackageText">
+                                <a href="{{$item->url}}" class="recentlyPackageName">
+                                    {{$item->name}}
+                                </a>
+                                <div class="recentlyPackageCost">
+                                    15 Day <span style="font-weight: bold">{{$item->money}}$</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+            </div>
+            <div class="recentlyPackageSwiper">
+                <div id="recentSwiper" class="swiper-container">
+                    <div class="swiper-wrapper">
                         @foreach($recentlyPackage as $item)
-                            <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
-                                <div class=" packages">
-                                    <div class="packageImgDiv">
-                                        <img src="{{$item->pic}}" class="packageImg">
+                            <div class="swiper-slide recentlyPackageDiv">
+                                <a href="{{$item->url}}">
+                                    <div class="recentlyPackageImg">
+                                        <img src="{{$item->pic}}" class="resizeImage" style="width: 100%;">
                                     </div>
-                                    <div class="packageContentDiv">
-                                        <div class="packageName">
-                                            {{$item->name}}
-                                        </div>
-                                        <div class="packageDescription">
-                                            {{$item->description}}
-                                        </div>
-                                        <div class="packageButtonDiv">
-                                            <a href="{{$item->url}}" class="packageButton">
-                                                {{__('main.See Destination')}}
-                                            </a>
-                                        </div>
-                                        <div class="packageActivity">
-                                            {{$item->mainActivity->name}}
-                                        </div>
-                                    </div>
-                                    <div class="packageDate">
-                                        @if($item->sD == 'Call')
-                                            <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>
-                                        @else
-                                            <div style="color: white">{{$item->sD}}</div>
-                                            <div style="color: white">{{$item->sM}}</div>
-                                        @endif
+                                </a>
+                                <div class="recentlyPackageText">
+                                    <a href="{{$item->url}}" class="recentlyPackageName">
+                                        {{$item->name}}
+                                    </a>
+                                    <div class="recentlyPackageCost">
+                                        15 Day <span style="font-weight: bold">{{$item->money}}$</span>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
+                </div>
 
-                    <div id="nextPackage" class="sliderButton nextSlider"
-                         style="top: 33%; right: 10px; box-shadow: 0 0 10px 3px black">
+                <div class="packageSideButtonDiv">
+                    <div id="nextPackageSide" class="sliderButton nextSlider" style="top: 33%; right: 10px; box-shadow: 0 0 10px 3px black">
                         <div class="slider arrow right"></div>
                     </div>
-                    <div id="prevPackage" class="sliderButton prevSlider"
-                         style="top: 33%; left: 10px; box-shadow: 0 0 10px 3px black">
+                    <div id="prevPackageSide" class="sliderButton prevSlider" style="top: 33%; left: 10px; box-shadow: 0 0 10px 3px black">
                         <div class="slider arrow left"></div>
                     </div>
                 </div>
+
             </div>
         </div>
 
-    @foreach($destinationCategoryMain as $categ)
-            @if(count($categ->destination) > 0)
-                <div style="width: 100%; margin-top: 45px">
-                    <a href="#">
-                        <div class="aboutHeader">
-                            {{$categ->name}} {{__('Destination')}}
-                        </div>
-                    </a>
-                    <div class="mainContentPackages">
-                        <div class="swiper-container packageSwiper">
+        @if(isset($mainSliderJournal) && count($mainSliderJournal) > 0)
+            <div class="mainContentSection">
+                <div class="aboutHeader" style="text-align: center">
+                    {{__('Recent News')}}
+                </div>
 
-                            <div class="swiper-wrapper swiperResize" style="padding: 10px 0px">
-                                @foreach($categ->destination as $item)
-                                    <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
-                                        <div class=" packages">
-                                            <div class="packageImgDiv">
-                                                <img src="{{$item->pic}}" class="packageImg">
-                                            </div>
-                                            <div class="packageContentDiv">
-                                                <div class="packageName">
-                                                    {{$item->name}}
-                                                </div>
-                                                <div class="packageDescription">
-                                                    {{$item->description}}
-                                                </div>
-                                                <div class="packageButtonDiv">
-                                                    <a href="{{$item->url}}" class="packageButton">
-                                                        {{__('main.See Destination')}}
-                                                    </a>
-                                                </div>
-                                                {{--                                        <div class="packageActivity">--}}
-                                                {{--                                            {{$item->mainActivity->name}}--}}
-                                                {{--                                        </div>--}}
-                                            </div>
-
-                                            {{--                                            <div class="packageDate">--}}
-                                            {{--                                                <div style="color: white">{{$item->sD}}</div>--}}
-                                            {{--                                                <div style="color: white">{{$item->sM}}</div>--}}
-                                            {{--                                            </div>--}}
-
-                                        </div>
-                                    </div>
-                                @endforeach
+                <div class="mainRecentlyPackageTopDiv">
+                    @foreach($mainSliderJournal as $item)
+                        <a href="{{$item->url}}" target="_blank" class="JournalDiv">
+                            <img src="{{$item->pic}}" class="resizeImage" style="width: 100%">
+                            <div class="JournalContentDiv">
+                                <div class="JournalName">{{$item->name}}</div>
+                                <div class="JournalCategory">{{$item->category}}</div>
                             </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
-                            <div id="nextPackage" class="sliderButton nextSlider"
-                                 style="top: 33%; right: 10px; box-shadow: 0 0 10px 3px black">
-                                <div class="slider arrow right"></div>
-                            </div>
-                            <div id="prevPackage" class="sliderButton prevSlider"
-                                 style="top: 33%; left: 10px; box-shadow: 0 0 10px 3px black">
-                                <div class="slider arrow left"></div>
-                            </div>
-                        </div>
+        <div class="mapSection">
+            <div id="map" class="map" style="min-height: 400px"></div>
+            <div class="mapOptionDiv">
+                <div class="insideOptiponMap" onclick="toggleMapOption(this)">
+                    <div class="threeLineDiv">
+                        <div class="navThreeLine1"></div>
+                        <div class="navThreeLine2"></div>
+                        <div class="navThreeLine3"></div>
                     </div>
                 </div>
-            @endif
-        @endforeach
-
-        {{--        <div id="map" class="map"></div>--}}
+                <div class="mapOptionContentDiv">
+                    @foreach($destCategory as $item)
+                        <div class="mapOptionContent mapOptionContentActive" onclick="toggleMapMarker({{$item->id}}, this)">{{$item->name}}</div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -274,85 +238,14 @@
         let packageSwiper = [];
         let rowsNum = 0;
 
-        function resizePackageSwiper() {
-            rowsNum = 0;
-            let windowW = $(window).width();
-            let rows = $('.swiperResize');
-            for (item of rows) {
-                packageCount = $(item).children().length;
-
-                if (!packageSwiper[rowsNum])
-                    packageSwiper[rowsNum] = 0;
-
-
-                if ((windowW > 1400 && packageCount <= 5) || (windowW > 1100 && packageCount <= 4) ||
-                    (windowW > 840 && packageCount <= 3) || (windowW > 585 && packageCount <= 2) ||
-                    (windowW <= 585)) {
-                    $(item).css('overflow-y', 'hidden');
-                    $(item).next().hide();
-                    $(item).next().next().hide();
-
-                    let childs = $(item).children();
-                    for (child of childs) {
-                        $(child).css('width', 'auto');
-                        $(child).css('height', 'auto');
-                        $(child).parent().css('overflow-x', 'auto');
-                        $(child).parent().css('height', '275px');
-                        $(child).find('.packages').css('margin', '10px 20px');
-                    }
-
-                    if (packageSwiper[rowsNum] != 0)
-                        packageSwiper[rowsNum].destroy(true, true);
-                    packageSwiper[rowsNum] = 0;
-                } else {
-                    packageSwiper[rowsNum] = new Swiper($(item).parent(), {
-                        loop: false,
-                        on: {
-                            init: function(){
-                                $(item).next().next().hide();
-                            },
-                            slideChange: function (){
-                                $(item).next().show();
-                                $(item).next().next().show();
-                            },
-                            reachEnd: function () {
-                                setTimeout(() =>{
-                                    $(item).next().hide();
-                                }, 200);
-                            },
-                            reachBeginning: function () {
-                                setTimeout(() => {
-                                    $(item).next().next().hide();
-                                }, 200);
-                            },
-                        },
-                        navigation: {
-                            nextEl: $(item).next(),
-                            prevEl: $(item).next().next()
-                        },
-                        breakpoints: {
-                            585: {
-                                slidesPerView: 1,
-                            },
-                            840: {
-                                slidesPerView: 2,
-                            },
-                            1100: {
-                                slidesPerView: 3,
-                            },
-                            1400: {
-                                slidesPerView: 4,
-                            },
-                            14000: {
-                                slidesPerView: 5,
-                            }
-                        }
-                    });
-                }
-
-                rowsNum++;
-            }
-        }
+        new Swiper('#recentSwiper', {
+            loop: true,
+            slidesPerView: 'auto',
+            navigation: {
+                nextEl: '#nextPackageSide',
+                prevEl: '#prevPackageSide',
+            },
+        });
 
         var swiper = new Swiper('.picSliderSwiper', {
             loop: true,
@@ -367,9 +260,7 @@
             },
         });
 
-        resizePackageSwiper();
     </script>
-
 
     <script>
         let season = 0;
@@ -516,41 +407,64 @@
     </script>
 
 
-    {{--    map Section--}}
+    <script>
+        let mapDestinations = {!! $mapDestination !!};
+        let mapMarker = [];
+        console.log(mapDestinations);
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 32.427908, lng: 53.688046},
+                zoom: 5
+            });
 
-    {{--    <script>--}}
-    {{--let mapMarker = {!! $mapDestination !!};--}}
-    {{--let catIds = {!! $catId !!};--}}
-    {{--function initMap() {--}}
-    {{--    map = new google.maps.Map(document.getElementById('map'), {--}}
-    {{--        center: {lat: 32.427908, lng: 53.688046},--}}
-    {{--        zoom: 5--}}
-    {{--    });--}}
+            mapDestinations.forEach((category) => {
+                mapMarker[category.id] = [];
+               category.destinations.forEach((dest) => {
+                   let _icon;
+                   if(category.icon !=  null)
+                       _icon = {
+                           url: category.icon, // url
+                           scaledSize: new google.maps.Size(30, 30), // scaled size
+                           origin: new google.maps.Point(0,0), // origin
+                           anchor: new google.maps.Point(15, 30) // anchor
+                       };
+                   else
+                       _icon = null;
 
-    {{--    for(let i = 0; i < catIds.length; i++){--}}
-    {{--        if(mapMarker[catIds[i]]) {--}}
-    {{--            for (let j = 0; j < mapMarker[catIds[i]].length; j++) {--}}
-    {{--                mapMarker[catIds[i]][j]['marker'] = new google.maps.Marker({--}}
-    {{--                    position: new google.maps.LatLng(mapMarker[catIds[i]][j]['lat'], mapMarker[catIds[i]][j]['lng']),--}}
-{{--                        title: mapMarker[catIds[i]][j]['name'],--}}
-{{--                        icon: {--}}
-{{--                            url: mapMarker[catIds[i]][j]['mapIcon'], // url--}}
-{{--                            scaledSize: new google.maps.Size(30, 30), // scaled size--}}
-{{--                            origin: new google.maps.Point(0,0), // origin--}}
-{{--                            anchor: new google.maps.Point(15, 30) // anchor--}}
-{{--                        },--}}
-    {{--                    map: map,--}}
-    {{--                });--}}
+                  let m = new google.maps.Marker({
+                      position: new google.maps.LatLng(dest.lat, dest.lng),
+                      title: dest.name,
+                      icon: _icon,
+                      map: map,
+                  });
 
-{{--                    mapMarker[catIds[i]][j]['marker'].addListener('click', function () {--}}
-{{--                        window.open('{{url('destination')}}/' + mapMarker[catIds[i]][j]['categoryId'] + '/' + mapMarker[catIds[i]][j]['slug']);--}}
-{{--                    })--}}
-    {{--            }--}}
-    {{--        }--}}
-    {{--    }--}}
-    {{--}--}}
-    {{--    </script>--}}
-    {{--    <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>--}}
+                  m.addListener('click', function () {
+                      window.open(dest.url);
+                  });
+                   mapMarker[category.id].push(m);
+               });
+            });
+        }
+
+        function toggleMapOption(x) {
+            x.classList.toggle("change");
+            $('.mapOptionDiv').toggleClass('openOptionDiv', function(){
+                alert('end');
+            });
+            $('.mapOptionContentDiv').toggleClass('mapOptionContentDivOpen');
+        }
+
+        function toggleMapMarker(_id, _element){
+            $(_element).toggleClass('mapOptionContentActive');
+            mapMarker[_id].forEach((item) => {
+                if(item.getVisible())
+                    item.setVisible(false);
+                else
+                    item.setVisible(true);
+            })
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>
 
 @endsection
 

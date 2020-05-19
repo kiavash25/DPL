@@ -32,9 +32,8 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
 <div id="backBlackSideNav" class="backBlack" style="display: none">
     <div id="mySidenav" class="sidenav">
-        <div class="sideHeader">
+        <div class="sideHeader"></div>
 
-        </div>
         <div class="sideBody">
             <div id="backSideNavMenuDiv" class="sideNavTabs" style="margin-bottom: 20px; display: none">
                 <a href="#" onclick="backSideNavMenu()" style="justify-content: center">
