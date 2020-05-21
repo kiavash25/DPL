@@ -20,6 +20,9 @@ class JournalAdminController extends Controller
     public function indexCategory()
     {
         $category = JournalCategory::where('lang', app()->getLocale())->get();
+        foreach ($category as $item)
+            $item->journalCount = Journal::where('categoryId', $item->id)->count();
+
         return view('admin.journal.categoryIndex', compact(['category']));
     }
 
@@ -72,6 +75,24 @@ class JournalAdminController extends Controller
         return;
     }
 
+    public function deleteCategory(Request $request)
+    {;
+        if(isset($request->id)){
+            $category = JournalCategory::find($request->id);
+            $count = Journal::where('categoryId', $category->id)->count();
+            if($count == 0){
+                $category->delete();
+
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
 
     public function indexJournal()
     {

@@ -22,7 +22,7 @@
                 <thead>
                 <tr>
                     <th>{{__('Name')}}</th>
-                    <th>icon</th>
+                    <th>{{__('Map icon')}}</th>
                     <th>{{__('Destination Num')}}</th>
                     <th></th>
                 </tr>

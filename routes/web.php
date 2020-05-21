@@ -125,11 +125,14 @@ Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
         Route::post('/admin/package/deleteSideInfo', 'PackageController@deleteSideInfo')->name('admin.package.deleteSideInfo');
         Route::post('/admin/package/deleteImg', 'PackageController@deleteImgPackage')->name('admin.package.deleteImg');
         Route::post('/admin/package/delete', 'PackageController@deletePackage')->name('admin.package.delete');
+
+        Route::post('/admin/package/popular/store', 'PackageController@popularPackageStore')->name('admin.package.popularStore');
     });
 
     Route::middleware(['auth', 'web', 'acl:journal'])->group(function () {
         Route::get('/admin/journal/category/list', 'JournalAdminController@indexCategory')->name('admin.journal.category.index');
         Route::post('/admin/journal/category/store', 'JournalAdminController@storeCategory')->name('admin.journal.category.store');
+        Route::post('/admin/journal/category/delete', 'JournalAdminController@deleteCategory')->name('admin.journal.category.delete');
         Route::get('/admin/journal/list', 'JournalAdminController@indexJournal')->name('admin.journal.list');
         Route::get('/admin/journal/new', 'JournalAdminController@newJournal')->name('admin.journal.new');
         Route::get('/admin/journal/edit/{id}', 'JournalAdminController@editJournal')->name('admin.journal.edit');
@@ -140,6 +143,10 @@ Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
     });
 
     Route::middleware(['auth', 'web', 'acl:setting'])->group(function () {
+        Route::get('/admin/setting/mainPage', 'SettingController@mainPage')->name('admin.setting.mainPage');
+        Route::post('/admin/setting/mainPage/storePic', 'SettingController@storeHeaderPicMainPage')->name('admin.setting.storeHeaderPicMainPage');
+        Route::post('/admin/setting/mainPage/storeText', 'SettingController@storeHeaderTextMainPage')->name('admin.setting.storeHeaderTextMainPage');
+
         Route::get('/admin/setting/mainPageSlider', 'SettingController@mainPageSlider')->name('admin.setting.mainPageSlider');
         Route::post('/admin/setting/mainPageSliderStore', 'SettingController@mainPageSliderStore')->name('admin.setting.mainPageSliderStore');
         Route::post('/admin/setting/mainPageSliderChangeNumber', 'SettingController@mainPageSliderChangeNumber')->name('admin.setting.mainPageSliderChangeNumber');

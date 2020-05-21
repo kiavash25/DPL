@@ -17,6 +17,7 @@ use App\models\DestinationPic;
 use App\models\DestinationTagRelation;
 use App\models\Journal;
 use App\models\JournalCategory;
+use App\models\MainPageSetting;
 use App\models\MainPageSlider;
 use App\models\Package;
 use App\models\PackageActivityRelations;
@@ -55,13 +56,13 @@ class MainController extends Controller
             }
         }
 
-        $recentlyPackage = Package::where('showPack', 1)->where('lang', app()->getLocale())
+        $recentlyPackage = Package::where('showPack', 1)->where('lang', app()->getLocale())->where('popularNum', '>', 0)
                                     ->where(function ($query) {
                                         $today = Carbon::now()->format('Y-m-d');
                                         $query->where('sDate', '>', $today)
                                             ->orWhereNull('sDate');
                                     })
-                                    ->orderBy('sDate')->take(8)->get();
+                                    ->orderByDesc('popularNum')->take(8)->get();
         foreach ($recentlyPackage as $item)
             $item = getMinPackage($item, 'list');
 
@@ -87,7 +88,11 @@ class MainController extends Controller
             }
         }
 
-        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage', 'mainPageSlider', 'mapDestination', 'mainSliderJournal']));
+        $aboutUs = MainPageSetting::where('header', 'aboutus')->where('lang', app()->getLocale())->first();
+        if($aboutUs != null)
+            $aboutUs->pic = asset('uploaded/mainPage/' . $aboutUs->pic);
+
+        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage', 'mainPageSlider', 'mapDestination', 'mainSliderJournal', 'aboutUs']));
     }
 
     public function aboutUs()
@@ -122,14 +127,20 @@ class MainController extends Controller
         }
         $content->slidePic = $slip;
 
+        if($content->parent != 0)
+            $mainActivityId = [$content->id];
+        else
+            $mainActivityId = Activity::where('parent', $content->id)->pluck('id')->toArray();
+
         $content->mapPackages = Package::where('showPack', 1)
-            ->where('mainActivityId', $content->id)
+            ->whereIn('mainActivityId', $mainActivityId)
             ->where('lang', app()->getLocale())
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
                 $query->where('sDate', '>', $today)
                     ->orWhereNull('sDate');
             })->get();
+
         $content->latCenter = 0;
         $content->lngCenter = 0;
         $content->mapCount = 0;
@@ -151,7 +162,7 @@ class MainController extends Controller
 
         $today = Carbon::now()->format('Y-m-d');
         $packages = Package::where('showPack', 1)
-            ->where('mainActivityId', $content->id)
+            ->whereIn('mainActivityId', $mainActivityId)
             ->where('lang', app()->getLocale())
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
@@ -667,6 +678,7 @@ class MainController extends Controller
                     array_push($activityIds, $item);
                 }
             }
+
             if ($isSearchInActivityId) {
                 $sqlQuery = 'mainActivityId In (' . implode(",", $activityIds) . ')';
             }

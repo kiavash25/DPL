@@ -69,7 +69,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2>
-                {{$dest->name}} Destination Descriptions
+                {{$dest->name}} {{__('Descriptions')}}
             </h2>
         </div>
         <hr>
@@ -84,9 +84,9 @@
 
             @foreach($category->titles as $key => $item)
                 <div id="titleTab{{$item->id}}" class="tabcontent" style="display: {{$key == 0 ? 'block' : 'none'}}">
-                    <h3>{{$item->name}} Description
+                    <h3>{{$item->name}} {{__('title')}}
                         <button class="btn btn-success" style="font-size: 13px" onclick="storeDescription({{$item->id}})">
-                            Submit This Description
+                            {{__('Submit This Description')}}
                         </button>
                     </h3>
                     <div class="toolbar-container{{$key}}"></div>

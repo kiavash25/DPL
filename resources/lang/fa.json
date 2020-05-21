@@ -51,7 +51,7 @@
     "Create New Package": "ایجاد پکیج جدید",
     "Draft/Show": "نمایش/پیش نویس",
     "Code": "کد",
-    "Start Date": "تاریخ شروع",
+    "Start date": "تاریخ شروع",
     "Show": "نمایش",
     "Draft": "پیش نویس",
     "More Info": "اطلاعات بیشتر",
@@ -167,13 +167,24 @@
 
     "Setting": "تنظیمات",
     "Main Page Slider": "عکس های صفحه ی اول",
+    "Main Page": "صفحه ی اول",
     "Users": "کاربران",
     "Admin List": "لیست مدیران",
     "Add new admin": "افزودن مدیر جدید",
 
     "Log out": "خروج",
+    "Language Duplicate!": "زبان تکراری است!",
+    "Popular order view change": "ترتیب مشهور به روز رسانی شد",
 
     "Packages": "پکیج",
+
+    "Main page setting": "تنظیمات صفحه ی اول",
+    "about us text": "متن درباره ی ما",
+    "about us image": "عکس درباره ی ما",
+    "Store about us text": "ذخیره متن درباره ی ما",
+    "Change about us image": "تغییر عکس درباره ی ما",
+    "Image Change": "عکس تغییر یابت",
+    "Text updated": "متن به روز رسانی شد",
 
     "Access levels": "سطوح دسترسی",
     "activity": "فعالیت",
@@ -183,6 +194,12 @@
     "setting": "تنظیمات",
     "userAccess": "کاربران",
 
+    "Delete Package": "حذف پکیج",
+    "Are you sure you want to remove the": "آیا می خواهید پکیج را پاک کنید؟",
+    "This package is not displayed due to lack of display or date of holding": "این پکیج به دلیل عدم نمایش و یا تاریخ برگزاری نمایش داده نمی شود",
+
+    "Popular": "مشهور",
+    "Popular (max first)": "مشهور (بزرگتر اول)",
     "Email": "ایمیل",
     "Disable access": "قطع دسترسی",
     "Disable admin access": "قطع دسترسی مدیریت",
@@ -232,15 +249,39 @@
     "Spring" : "بهار",
     "Summer" : "تابستان",
     "Fall" : "پاییز",
-    "Winter" : "زمسنان",
+    "Winter" : "زمستان",
     "spring" : "بهار",
     "summer" : "تابستان",
     "fall" : "پاییز",
-    "winter" : "زمسنان",
+    "winter" : "زمستان",
     "Search" : "جستجو",
     "See" : "دیدن",
     "Where do you want to go?" : "به کجا می خواهید سفر کنید؟",
     "Culventure: metamorphosis of travel Experience" : "کالونچر; تجربه‌ای بی همتا",
 
-    "24/7 Customer Support": "پشتیبانی مشتری 24/7"
+    "24/7 Customer Support": "پشتیبانی مشتری 24/7",
+
+    "CallVenture Category": "دسته بندی کالونچر",
+    "Neutral Category": "دسته بندی نتچرال",
+    "Edit Title": "ویرایش عنوان",
+    "Title Stored": "عنوان ذخیره شد",
+    "Title Duplicate!": "عنوان تکراری است!",
+
+    "Package More Info": "اطلاعات بیشتر پکیج",
+    "Callventure Titles": "عنوان های کالونچر",
+    "Neutral Titles": "عنوان های نتچرال",
+
+    "New Journal Category": "دسته بندی جدید مجله",
+    "Journal count": "تعداد مجله",
+    "Delete Category": "پاک کردن دسته بندی",
+    "category deleted": "دسته بندی حذف شد",
+    "Are you sure you want to remove the category": "آیا می خواهید دسته بندی را پاک کنید؟",
+    "This category have journal and cant delete. first delete journals": "دسته بندی را به علت داشتن مجله نمی توانید پاک کنید. ابتدا مجله ها را پاک کنید",
+
+    "Edit category destination": "ویرایش دسته بندی مقصد",
+    "Activity Descriptions": "توضیحات فعالیت",
+    "Map icon": "نشانه گر نقشه",
+    "Title": "عنوان",
+    "title": "عنوان",
+    "Submit This Description": "تایید توضیح"
 }

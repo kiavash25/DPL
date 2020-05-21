@@ -40,17 +40,21 @@
         <thead class="thead-dark">
         <tr>
             <th>{{__('Category Name')}}</th>
+            <th>{{__('Journal count')}}</th>
             <th>{{__('View Order')}}</th>
             <th></th>
         </tr>
         </thead>
         <tbody id="table">
             @foreach($category as $item)
-                <tr id="activity{{$item->id}}">
+                <tr id="category_{{$item->id}}">
                     <td>
                         <div id="activityName{{$item->id}}">
                             {{$item->name}}
                         </div>
+                    </td>
+                    <td>
+                        {{$item->journalCount}}
                     </td>
                     <td>
                         <div id="activityViewOrder{{$item->id}}">
@@ -108,48 +112,26 @@
             </div>
         </div>
     </div>
-
-    <div class="modal" id="deleteModal">
-        <div class="modal-dialog modal-lg" >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Activity</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        Are you sure you want to remove the <span id="deletedActivityName" style="font-weight: bold; color: red"></span>?
-                    </div>
-                </div>
-                <div class="modal-footer" style="display: flex; justify-content: center;">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" onclick="checkActivity()" data-dismiss="modal">Yes Deleted</button>
-                    <input type="hidden" id="deletedActivityId">
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 @endsection
 
 @section('script')
     <script>
-        var newActivity = 0;
+        let category = {!! $category !!};
 
         function addNewCategory(){
             $('#categoryName').val('');
             $('#categoryViewOrder').val(1);
             $('#categoryId').val(0);
-            $('#modalHeader').text('New Journal Category');
+            $('#modalHeader').text('{{__('New Journal Category')}}');
             $('#modal').modal({backdrop: 'static', keyboard: false});
         }
 
         function createNew(_id, _name, _viewOrder){
-            var text = '<tr id="activity' + _id + '">\n' +
+            var text = '<tr id="category_' + _id + '">\n' +
                 '                    <td>\n' +
                 '                        <div id="activityName' + _id + '">' + _name + '</div>\n' +
                 '                    </td>\n' +
+                '                    <td>0</td>' +
                 '                    <td>\n' +
                 '                        <div id="activityViewOrder' + _id + '">' + _viewOrder + '</div>\n' +
                 '                    </td>\n' +
@@ -170,7 +152,7 @@
             $('#categoryName').val(name);
             $('#categoryViewOrder').val(orderView);
             $('#categoryId').val(_id);
-            $('#modalHeader').text('Edit ' + name);
+            $('#modalHeader').text('{{__('Edit')}} ' + name);
             $('#modal').modal({backdrop: 'static', keyboard: false});
         }
 
@@ -208,6 +190,55 @@
                     }
                 })
             }
+        }
+
+        function openDeletedModal(_id, _name) {
+            let cat = null;
+            category.forEach(item => {
+                if(item.id == _id)
+                    cat = item;
+            });
+
+            if(cat != null){
+                openLoading();
+
+                if(cat.journalCount > 0)
+                    resultLoading('{{__('This category have journal and cant delete. first delete journals')}}');
+                else{
+                    $.ajax({
+                       type: 'post',
+                       url: '{{route('admin.journal.category.delete')}}',
+                       data: {
+                           _token: '{{csrf_token()}}',
+                           id: _id
+                       },
+                        success: function (response) {
+                            try{
+                                response = JSON.parse(response);
+                                if(response['status'] == 'ok'){
+                                    $('#category_' + _id).remove();
+                                    resultLoading("{{__('category deleted')}}", 'success');
+                                }
+                                else if(response['status'] == 'nok1')
+                                    resultLoading('{{__('This category have journal and cant delete. first delete journals')}}');
+                                else {
+                                    console.log(response['status']);
+                                    resultLoading("{{__('Error in store')}}", 'danger');
+                                }
+                            }
+                            catch (e) {
+                                console.log(e);
+                                resultLoading("{{__('Error in result')}}", 'danger');
+                            }
+                        },
+                        error: function(error){
+                            console.log(error);
+                            resultLoading("{{__('Error in Server connection')}}", 'danger');
+                        }
+                    });
+                }
+            }
+
         }
     </script>
 @endsection

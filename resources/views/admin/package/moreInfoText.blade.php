@@ -69,7 +69,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2>
-                {{$package->name}} Package More Info
+                {{__('Package More Info')}} : {{$package->name}}
             </h2>
         </div>
         <hr>
@@ -77,12 +77,12 @@
         <div class="col-md-12">
 
             <div class="tab">
-                <h3>Call Venture Titles</h3>
+                <h3>{{__('Callventure Titles')}}</h3>
                 @foreach($moreInfoCallVenture as $item)
                     <button class="tablinks" onclick="openCity(event, 'titleTab{{$item->id}}')">{{$item->name}}</button>
                 @endforeach
 
-                <h3>Neutral Titles</h3>
+                <h3>{{__('Neutral Titles')}}</h3>
                 @foreach($moreInfoNature as $item)
                     <button class="tablinks" onclick="openCity(event, 'titleTab{{$item->id}}')">{{$item->name}}</button>
                 @endforeach
@@ -90,9 +90,9 @@
 
             @foreach($moreInfo as $key => $item)
                 <div id="titleTab{{$item->id}}" class="tabcontent" style="display: {{$key == 0 ? 'block' : 'none'}}">
-                    <h3>{{$item->name}} Title ({{$item->category}})
+                    <h3> {{__('Title')}} : {{$item->name}}
                         <button class="btn btn-success" style="font-size: 13px" onclick="storeDescription({{$item->id}})">
-                            Submit This Description
+                            {{__('Submit This Description')}}
                         </button>
                     </h3>
                     <div class="toolbar-container{{$key}}"></div>
@@ -102,7 +102,7 @@
 
                     <div style="display: flex; justify-content: center;">
                         <button class="btn btn-success" style="font-size: 23px" onclick="storeDescription({{$item->id}})">
-                            Submit This Description
+                            {{__('Submit This Description')}}
                         </button>
                     </div>
                 </div>

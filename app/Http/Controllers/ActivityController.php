@@ -99,26 +99,26 @@ class ActivityController extends Controller
             $sameName = Activity::where('name', $request->name)->where('id', '!=', $request->id)->first();
             if($sameName == null){
 
-                if($request->id == 0)
+                if($request->id == 0) {
                     $activity = new Activity();
+                    $activity->lang = app()->getLocale();
+                }
                 else
                     $activity = Activity::find($request->id);
 
                 if($request->source != 0) {
                     $source = Activity::find($request->source);
                     $activity->slug = $source->slug;
-                    $activity->langSource = $source->id;
                 }
-                else{
+                else
                     $activity->slug = makeSlug($request->name);
-                    $activity->langSource = 0;
-                }
+
+                $activity->langSource = $request->source;
 
                 $activity->name = $request->name;
                 $activity->viewOrder = $request->viewOrder;
                 $activity->description = $request->description;
                 $activity->parent = $request->parentId;
-                $activity->lang = app()->getLocale();
                 $activity->save();
 
                 $childs = Activity::where('langSource', $activity->id)->get();

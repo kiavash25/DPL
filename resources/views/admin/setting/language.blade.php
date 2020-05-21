@@ -135,7 +135,7 @@
 
 
 @section('script')
-    <script !src="">
+    <script>
         function editLang(_id, _dir){
             $('#langName').val($('#langName_' + _id).text());
             $('#langSymbol').val($('#langSymbol_' + _id).text());
@@ -202,22 +202,20 @@
                     success: function(response){
                         try{
                             response = JSON.parse(response);
-                            if(response['status'] == 'ok'){
-                                // resultLoading('Language Stored', 'success');
+                            if(response['status'] == 'ok')
                                 location.reload();
-                            }
                             else if(response['status'] == 'nok1')
-                                resultLoading('Language Duplicate!', 'danger');
+                                resultLoading("{{__('Language Duplicate!')}}", 'danger');
                             else
-                                resultLoading('Error1', 'danger')
+                                resultLoading("{{__('Error in store')}}", 'danger');
                         }
                         catch(e){
                             console.log(e);
-                            resultLoading('Parsing Error', 'danger')
+                            resultLoading("{{__('Error in result')}}", 'danger');
                         }
                     },
                     error: function(err){
-                        resultLoading('Server Error', 'danger')
+                        resultLoading("{{__('Error in Server connection')}}", 'danger');
                     }
                 })
             }

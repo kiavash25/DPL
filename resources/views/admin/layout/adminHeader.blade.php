@@ -82,11 +82,6 @@
                             {{__('Create New Package')}}
                         </a>
                     </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
-                            {{__('Most Popular')}}
-                        </a>
-                    </div>
                 </div>
             </div>
         @endcan
@@ -127,6 +122,11 @@
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="{{route('admin.setting.mainPageSlider')}}">
                             {{__('Main Page Slider')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.setting.mainPage')}}">
+                            {{__('Main Page')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">

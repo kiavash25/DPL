@@ -568,6 +568,10 @@ a:hover{
     .logoNavDiv{
         margin-right: auto;
         margin-left: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 0px;
     }
     .navUl{
         min-width: 0px;

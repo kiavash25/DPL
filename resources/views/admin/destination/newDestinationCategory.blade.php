@@ -42,7 +42,8 @@
         <div class="col-md-12" style="display: flex; align-items: center;">
             <h2>
                 @if(isset($category) == 'new')
-                    Edit {{$category->name}} Category Destination
+
+                    {{__('Edit category destination')}} : {{$category->name}}
                 @else
                     {{__('Create New Category Destination')}}
                 @endif
@@ -116,7 +117,7 @@
                             @for($i = 0; $i < 5; $i++)
                                 <div class="col-lg-3 col-md-4">
                                     <div class="form-group" style="position: relative">
-                                        <input type="text" name="titles[]" class="form-control titleInput" placeholder="Titles" titleId="0" onchange="storeTitle(this)">
+                                        <input type="text" name="titles[]" class="form-control titleInput" placeholder="Title" titleId="0" onchange="storeTitle(this)">
                                         <div class="closeTagIcon" onclick="deleteTitle(this)" >
                                             <i class="fas fa-times"></i>
                                         </div>
@@ -561,7 +562,7 @@
         function addTitle(){
             text = '<div class="col-md-3">\n' +
                 '<div class="form-group" style="position: relative">\n' +
-                '<input type="text" name="titles[]" class="form-control titleInput" placeholder="Titles" titleId="0" onchange="storeTitle(this)"> \n' +
+                '<input type="text" name="titles[]" class="form-control titleInput" placeholder="{{__('Title')}}" titleId="0" onchange="storeTitle(this)"> \n' +
                 '<div class="closeTagIcon" onclick="deleteTitle(this)">\n' +
                 '<i class="fas fa-times"></i>\n' +
                 '</div>\n' +

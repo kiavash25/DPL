@@ -26,8 +26,8 @@
                 <table id="tableCall" class="table table-striped  table-bordered">
                     @foreach($moreInfoCallVenture as $more)
                         <tr id="moreInfoRow_{{$more->id}}">
+                            <input type="hidden" id="moreInfoCategory_{{$more->id}}" value="{{$more->category}}">
                             <td id="moreInfoTitle_{{$more->id}}">{{$more->name}}</td>
-                            <td id="moreInfoCategory_{{$more->id}}">{{$more->category}}</td>
                             <td>
                                 <button class="btn btn-primary" onclick="editMoreInfo({{$more->id}}, 'callVenture')">{{__('Edit')}}</button>
                                 <button class="btn btn-danger" onclick="deleteMoreInfo({{$more->id}})">{{__('Delete')}}</button>
@@ -43,8 +43,8 @@
                 <table id="tableNat" class="table table-striped  table-bordered">
                     @foreach($moreInfoNature as $more)
                         <tr id="moreInfoRow_{{$more->id}}">
+                            <input type="hidden" id="moreInfoCategory_{{$more->id}}" value="{{$more->category}}">
                             <td id="moreInfoTitle_{{$more->id}}">{{$more->name}}</td>
-                            <td id="moreInfoCategory_{{$more->id}}">{{$more->category}}</td>
                             <td>
                                 <button class="btn btn-primary" onclick="editMoreInfo({{$more->id}}, 'neutralDetail')">{{__('Edit')}}</button>
                                 <button class="btn btn-danger" onclick="deleteMoreInfo({{$more->id}})">{{__('Delete')}}</button>
@@ -78,8 +78,8 @@
                             <div class="form-group">
                                 <label for="selectCategory">{{__('Select Category')}}:</label>
                                 <select id="selectCategory" class="form-control">
-                                    <option value="neutralDetail">neutral Detail</option>
-                                    <option value="callventureDetail">callventure Detail</option>
+                                    <option value="neutralDetail">{{__('Neutral Category')}}</option>
+                                    <option value="callventureDetail">{{__('CallVenture Category')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -159,13 +159,13 @@
                         try{
                             response = JSON.parse(response);
                             if(response['status'] == 'ok'){
-                                resultLoading('Title Stored', 'success');
+                                resultLoading('{{__('Title Stored')}}', 'success');
                                 if(id == 0)
                                     createNewRow(response['id'], response['name'], response['category']);
                                 else {
-                                    if(response['category'] == $('#moreInfoCategory_' + id).text()) {
+                                    if(response['category'] == $('#moreInfoCategory_' + id).val()) {
                                         $('#moreInfoTitle_' + id).text(name);
-                                        $('#moreInfoCategory_' + id).text(response['category']);
+                                        $('#moreInfoCategory_' + id).val(response['category']);
                                     }
                                     else{
                                         $('#moreInfoRow_' + id).remove();
@@ -174,7 +174,7 @@
                                 }
                             }
                             else if(response['status'] == 'nok1')
-                                resultLoading('Title Duplicate!', 'danger');
+                                resultLoading('{{__('Title Duplicate!')}}', 'danger');
                             else
                                 resultLoading('Error1', 'danger')
                         }
@@ -193,7 +193,6 @@
         function createNewRow(_id, _name, _category){
             let text ='<tr id="moreInfoRow_' + _id + '">\n' +
                 ' <td id="moreInfoTitle_' + _id + '">' + _name + '</td>\n' +
-                ' <td id="moreInfoCategory_' + _id + '">' + _category + '</td>\n' +
                 ' <td>\n' +
                 ' <button class="btn btn-primary" onclick="editMoreInfo(' + _id + ', \'' + _category + '\')">{{__("Edit")}}</button>\n' +
                 ' <button class="btn btn-danger" onclick="deleteMoreInfo(' + _id + ')">{{__("Delete")}}</button>\n' +

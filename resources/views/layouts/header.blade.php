@@ -439,10 +439,10 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         </div>
         <div class="logoNavDiv">
             <a href="{{url('/')}}">
-                <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="width: 100%">
+                <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="max-width: 100%; max-height: 54px;">
             </a>
-            <a href="#" class="mobileHide" style="background-color: #ff2727; padding: 4px 7px; border-radius: 50%; margin:0px 30px">
-                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
+            <a href="#" class="mobileHide" style=" margin:0px 30px">
+                <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 40px">
             </a>
         </div>
 

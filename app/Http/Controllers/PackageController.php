@@ -17,6 +17,7 @@ use App\models\PackageTag;
 use App\models\PackageTagRelation;
 use App\models\PackageThumbnailsPic;
 use App\models\Tags;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Element;
 
@@ -41,7 +42,10 @@ class PackageController extends Controller
         foreach ($destinations as $key => $item)
             $item->category = DestinationCategory::find($key);
 
-        $activity = Activity::where('lang', app()->getLocale())->get();
+        $activity = Activity::where('lang', app()->getLocale())->where('parent', 0)->get();
+        foreach ($activity as $item)
+            $item->sub = Activity::where('lang', app()->getLocale())->where('parent', $item->id)->get();
+
         $allDestination = Destination::where('lang', app()->getLocale())->get();
 
         return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'sourceParent']));
@@ -72,7 +76,7 @@ class PackageController extends Controller
         $package->sidePic = $sideImage;
 
         $kind = 'edit';
-        $destinations = Destination::where('lang', app()->getLocale())->groupBy('categoryId');
+        $destinations = Destination::where('lang', app()->getLocale())->get()->groupBy('categoryId');
         foreach ($destinations as $key => $item)
             $item->category = DestinationCategory::find($key);
 
@@ -84,7 +88,9 @@ class PackageController extends Controller
         foreach ($package->sideInfos as $side)
             $side->icon = asset('uploaded/packages/' . $package->id . '/' . $side->icon);
 
-        $activity = Activity::where('lang', app()->getLocale())->get();
+        $activity = Activity::where('lang', app()->getLocale())->where('parent', 0)->get();
+        foreach ($activity as $item)
+            $item->sub = Activity::where('lang', app()->getLocale())->where('parent', $item->id)->get();
 
         $allDestination = Destination::where('lang', app()->getLocale())->get();
         return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'package', 'sourceParent']) );
@@ -635,4 +641,40 @@ class PackageController extends Controller
         return;
     }
 
+
+    public function popularPackageStore(Request $request)
+    {
+        if(isset($request->id) && isset($request->value)){
+            $today = Carbon::now()->format('Y-m-d');
+            $package = Package::find($request->id);
+            if(($package->sDate > $today || $package->sDate == null) && $package->showPack == 1) {
+                $lastValue = $package->popularNum;
+                $package->popularNum = $request->value;
+                $package->save();
+
+                $lastId = 0;
+
+                if ($request->value != null) {
+                    $lastNum = Package::where('popularNum', $request->value)->where('id', '!=', $package->id)->where('lang', app()->getLocale())->first();
+                    if ($lastNum != null) {
+                        $lastNum->popularNum = $lastValue;
+                        $lastNum->save();
+
+                        $lastId = $lastNum->id;
+                    }
+                }
+
+                echo json_encode(['status' => 'ok', 'lastId' => $lastId, 'lastValue' => $lastValue]);
+            }
+            else {
+                $package->popularNum = null;
+                $package->save();
+                echo json_encode(['status' => 'nok1']);
+            }
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
 }

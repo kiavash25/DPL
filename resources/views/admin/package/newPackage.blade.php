@@ -40,7 +40,7 @@
                 @if($kind == 'new')
                     {{__('Create New Package')}}
                 @else
-                    {{__('Edit')}} "{{$package->name}}" {{__('Package')}}
+                    {{__('Edit')}} {{__('Package')}} : {{$package->name}}
                 @endif
             </h2>
 
@@ -101,7 +101,7 @@
                         <div class="form-group">
                             <label for="destination" class="inputLabel">{{__('Destination')}}</label>
                             <div id="destination" class="ui fluid search selection dropdown">
-                                <input type="hidden" name="destination" id="DestinationId" onchange="changeDestination(this.value)" value="{{isset($package->destId) ? $package->destId : 0}}">
+                                <input type="hidden" name="destination" id="DestinationId" onchange="changeDestination(this.value)">
                                 <div class="default text">{{__('Select Destination')}}</div>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
@@ -124,12 +124,24 @@
                     <div class="row marg30">
                         <div class="form-group">
                             <label for="activity" class="inputLabel">{{__('Main Activity')}}</label>
-                            <select id="activity" class="ui fluid search dropdown">
-                                <option value="0"></option>
-                                @foreach($activity as $item)
-                                    <option value="{{$item->id}}" {{isset($package->mainActivityId) && $item->id == $package->mainActivityId ? 'selected' : ''}}>{{$item->name}}</option>
-                                @endforeach
-                            </select>
+                            <div id="activityDropDown"  class="ui fluid search selection dropdown">
+                                <input type="hidden" name="activityDropDown" id="activity">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">{{__('Main Activity')}}</div>
+                                <div class="menu">
+                                    @foreach($activity as $item)
+                                        <div class="header">
+                                            {{$item->name}}
+                                        </div>
+                                        @foreach($item->sub as $sub)
+                                            <div class="item" data-value="{{$sub->id}}">
+                                                {{$sub->name}}
+                                            </div>
+                                        @endforeach
+                                        <div class="divider"></div>
+                                    @endforeach
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -194,7 +206,7 @@
 
                         <div class="col-md-6 relatedSection">
                             <div class="form-group">
-                                <label class="inputLabel" for="sDate">{{_('Start Date')}}</label>
+                                <label class="inputLabel" for="sDate">{{__('Start date')}}</label>
                                 <input type="text" id="sDate" name="sDate" class="form-control" value="{{isset($package->sDate) ? $package->sDate : ''}}" readonly>
                                 <button class="btn btn-danger" onclick="$('#sDate').val('')">{{__('clear Start Date')}}</button>
                             </div>
@@ -453,19 +465,10 @@
             dateFormat: "yy-mm-dd"
         });
 
+        $('#destination').dropdown('set selected', {{isset($package->destId) ? $package->destId : 0}});
 
-        $('#destination')
-            .dropdown({
-                clearable: true,
-                placeholder: 'any'
-            });
-
-        $('#sideActivity')
-            .dropdown();
-        $('#activity')
-            .dropdown({
-                allowAdditions: true
-            });
+        $('#sideActivity').dropdown();
+        $('#activityDropDown').dropdown('set selected', {{isset($package->mainActivityId) ? $package->mainActivityId : 0}});
 
         function deleteTag(_element){
             $(_element).parent().parent().remove();

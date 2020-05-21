@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\models\Language;
+use App\models\MainPageSetting;
 use App\models\MainPageSlider;
 use Couchbase\TermRangeSearchQuery;
 use DemeterChain\Main;
@@ -135,7 +136,83 @@ class SettingController extends Controller
 
     }
 
-    public function deleteLanguage(Request $request){
+    public function mainPage()
+    {
+        $aboutUs = MainPageSetting::where('header', 'aboutus')->where('lang', app()->getLocale())->first();
+        if($aboutUs != null)
+            $aboutUs->pic = asset('uploaded/mainPage/' . $aboutUs->pic);
 
+        $pics = MainPageSetting::where('header', '!=', 'aboutus')->where('lang', app()->getLocale())->get();
+        foreach ($pics as $pic)
+            $pic->pic = asset('uploaded/mainPage/' . $pic->pic);
+
+        return view('admin.setting.mainPageSetting', compact(['aboutUs', 'pics']));
+    }
+
+    public function storeHeaderPicMainPage(Request $request)
+    {
+        if(isset($request->header)){
+            if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                $set = MainPageSetting::where('header', $request->header)->where('lang', app()->getLocale())->first();
+                if($request->header == 'aboutus' && $set == null){
+                    $set = new MainPageSetting();
+                    $set->header = 'aboutus';
+                    $set->text = '';
+                    $set->lang = app()->getLocale();
+                }
+
+                if($set != null) {
+                    $location = __DIR__ .'/../../../public/uploaded/mainPage';
+                    if(!is_dir($location))
+                        mkdir($location);
+
+                    $fileName = time().$_FILES['pic']['name'];
+                    move_uploaded_file($_FILES['pic']['tmp_name'], $location . '/' . $fileName);
+
+                    $set->pic = $fileName;
+                    $set->save();
+
+                    echo json_encode(['status' => 'ok', 'url' => asset('uploaded/mainPage/' . $fileName)]);
+                }
+                else
+                    echo json_encode(['status' => 'nok2']);
+            }
+            else
+                echo json_encode(['status' => 'nok1']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeHeaderTextMainPage(Request $request)
+    {
+        if(isset($request->id)){
+            if($request->id == 'aboutus'){
+                $set = MainPageSetting::where('header', $request->id)->where('lang', app()->getLocale())->first();
+                if($set == null){
+                    $set = new MainPageSetting();
+                    $set->header = 'aboutus';
+                    $set->pic = '';
+                    $set->lang = app()->getLocale();
+                }
+            }
+            else
+                $set = MainPageSetting::find($request->id);
+
+            if($set != null) {
+                $set->text = $request->text;
+                $set->save();
+
+                echo json_encode(['status' => 'ok']);
+            }
+            else
+                echo json_encode(['status' => 'nok2']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
     }
 }

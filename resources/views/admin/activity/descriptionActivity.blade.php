@@ -69,7 +69,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2>
-                {{$activity->name}} Activity Descriptions
+                {{__('Activity Descriptions')}} : {{$activity->name}}
             </h2>
         </div>
         <hr>
@@ -84,9 +84,10 @@
 
             @foreach($activity->titles as $key => $item)
                 <div id="titleTab{{$item->id}}" class="tabcontent" style="display: {{$key == 0 ? 'block' : 'none'}}">
-                    <h3>{{$item->name}} Activity
+                    <h3 style="display: flex; justify-content: space-between">
+                        {{__('Activity')}} : {{$item->name}}
                         <button class="btn btn-success" style="font-size: 13px" onclick="storeDescription({{$item->id}})">
-                            Submit This Description
+                            {{__('Submit This Description')}}
                         </button>
                     </h3>
                     <div class="toolbar-container{{$key}}"></div>
@@ -96,7 +97,7 @@
 
                     <div style="display: flex; justify-content: center;">
                         <button class="btn btn-success" style="font-size: 23px" onclick="storeDescription({{$item->id}})">
-                            Submit This Description
+                            {{__('Submit This Description')}}
                         </button>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 @extends('layouts.base')
 
 @section('head')
+    <link rel="stylesheet" href="{{asset('css/swiper/swiper.css')}}">
     <link rel="stylesheet" href="{{asset('css/pages/mainPage.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Archivo+Black|Caveat|Kaushan+Script|Lobster&display=swap"
           rel="stylesheet">
@@ -32,7 +33,7 @@
             min-height: 50vh;
         }
         .aboutUsBackground{
-            background-image: url("http://37.152.181.146/uploaded/journal/mainPics/1586513760iran6.jpg");
+
             background-size: cover, contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -47,6 +48,7 @@
             align-items: center;
             background-color: #00000042;
             font-size: 20px;
+            padding: 30px;
         }
         .contactUsButton{
             display: flex;
@@ -61,7 +63,6 @@
         }
     </style>
 
-    <link rel="stylesheet" href="{{asset('css/swiper/swiper.css')}}">
     <script src="{{asset('js/swiper/swiper.js')}}"></script>
 
     <link rel="stylesheet" href="{{asset('css/common/sliderPacks.css')}}">
@@ -223,7 +224,7 @@
                                         @if($item->day != null)
                                             {{$item->day}} {{__('Day')}}
                                         @endif
-                                        <span style="font-weight: bold">{{$item->money}} {{$currentLang->currencySymbol}}</span>
+                                        <span style="font-weight: bold">{{$item->money}} {{$currencySymbol}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -264,19 +265,18 @@
         @endif
     </div>
 
-    <div class="mainContentSection">
-        <div class="container aboutHeader" style="margin-bottom: 10px">
-            {{__('About us')}}
-        </div>
-        <div class="aboutUsDiv aboutUsBackground" >
-            <div class="aboutUsText">
-                <div class="container" style="color: white">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Erat imperdiet sed euismod nisi porta lorem mollis. Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Condimentum vitae sapien pellentesque habitant morbi tristique senectus et netus. Turpis in eu mi bibendum. In hac habitasse platea dictumst quisque sagittis. At consectetur lorem donec massa sapien. Sagittis id consectetur purus ut faucibus pulvinar elementum. Bibendum est ultricies integer quis auctor. Orci nulla pellentesque dignissim enim sit amet venenatis urna cursus. Duis at consectetur lorem donec massa sapien faucibus et. Posuere morbi leo urna molestie at elementum eu facilisis sed. Adipiscing vitae proin sagittis nisl rhoncus mattis.
-                    Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Eu non diam phasellus vestibulum. Ut porttitor leo a diam sollicitudin tempor id eu nisl. Auctor eu augue ut lectus arcu bibendum. Vitae tortor condimentum lacinia quis vel. Integer enim neque volutpat ac tincidunt vitae. In massa tempor nec feugiat nisl pretium fusce. Et molestie ac feugiat sed. Mauris pellentesque pulvinar pellentesque habitant morbi. Elit sed vulputate mi sit amet. Lorem ipsum dolor sit amet consectetur adipiscing elit duis. Ut ornare lectus sit amet. Et ligula ullamcorper malesuada proin libero nunc. Aliquet risus feugiat in ante. Consectetur purus ut faucibus pulvinar elementum integer enim.
+    @if($aboutUs != null)
+        <div class="mainContentSection">
+            <div class="container aboutHeader" style="margin-bottom: 10px">
+                {{__('About us')}}
+            </div>
+            <div class="aboutUsDiv aboutUsBackground" style="background-image: url({{$aboutUs->pic}});" >
+                <div class="aboutUsText">
+                    <div class="container" style="color: white">{!! $aboutUs->text !!}</div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <div class="mainContentSection">
         <div class="container aboutHeader" style="margin-bottom: 10px; text-align: center">
@@ -291,7 +291,7 @@
         <div class="contactUsTextsHeader">
             {{__('24/7 Customer Support')}}
         </div>
-        <div class="contactUsTexts">
+        <div class="contactUsTexts" style="padding: 0px 50px">
             Out team of experienced tour specialists have travelled to hundreds of countries around the global ana have decades of first-hand travel
             experience to share. Contact us now to have all of your tour-related questions answerd!
         </div>

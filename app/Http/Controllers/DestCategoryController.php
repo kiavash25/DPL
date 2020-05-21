@@ -63,8 +63,10 @@ class DestCategoryController extends Controller
         if(isset($request->name) && isset($request->id)){
             $check = DestinationCategory::where('name', $request->name)->where('id', '!=', $request->id)->first();
             if($check == null){
-                if($request->id == 0)
+                if($request->id == 0) {
                     $category = new DestinationCategory();
+                    $category->lang = app()->getLocale();
+                }
                 else
                     $category = DestinationCategory::find($request->id);
 
@@ -81,7 +83,6 @@ class DestCategoryController extends Controller
 
                 $category->name = $request->name;
                 $category->viewOrder = $request->viewOrder;
-                $category->lang = app()->getLocale();
                 $category->description = $request->description;
                 $category->save();
 
