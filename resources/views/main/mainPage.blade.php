@@ -13,6 +13,52 @@
             top: 0px;
             padding: 15px 10px;;
         }
+        .contactUsTexts, .aboutUsDiv{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+        }
+        .contactUsTextsHeader{
+            font-size: 35px ;
+            font-weight: bold;
+        }
+        .contactUsTexts{
+            font-size: 18px;
+            text-align: justify;
+        }
+        .aboutUsDiv{
+            min-height: 50vh;
+        }
+        .aboutUsBackground{
+            background-image: url("http://37.152.181.146/uploaded/journal/mainPics/1586513760iran6.jpg");
+            background-size: cover, contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .aboutUsText{
+            width: 100%;
+            color: white;
+            min-height: 50vh;
+            text-align: justify;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #00000042;
+            font-size: 20px;
+        }
+        .contactUsButton{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1f75b9;
+            color: white;
+            padding: 15px;
+            font-size: 19px;
+            border-radius: 3px;
+            width: 300px;
+        }
     </style>
 
     <link rel="stylesheet" href="{{asset('css/swiper/swiper.css')}}">
@@ -54,8 +100,6 @@
                 <img class="resizeImage" src="{{$mainPageSlider[0]->pic}}" alt="DPL" style="height: 450px">
             </div>
         @endif
-
-
 
         <div class="textSlider" style=" flex-direction: column; text-align: center; z-index: 1; cursor: context-menu;">
             {{__('Culventure: metamorphosis of travel Experience')}}
@@ -152,7 +196,10 @@
                                     {{$item->name}}
                                 </a>
                                 <div class="recentlyPackageCost">
-                                    15 Day <span style="font-weight: bold">{{$item->money}}$</span>
+                                    @if($item->day != null)
+                                        {{$item->day}} {{__('Day')}}
+                                    @endif
+                                    <span style="font-weight: bold">{{$item->money}} {{$currencySymbol}}</span>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +220,10 @@
                                         {{$item->name}}
                                     </a>
                                     <div class="recentlyPackageCost">
-                                        15 Day <span style="font-weight: bold">{{$item->money}}$</span>
+                                        @if($item->day != null)
+                                            {{$item->day}} {{__('Day')}}
+                                        @endif
+                                        <span style="font-weight: bold">{{$item->money}} {{$currentLang->currencySymbol}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -212,22 +262,61 @@
                 </div>
             </div>
         @endif
+    </div>
 
-        <div class="mapSection">
-            <div id="map" class="map" style="min-height: 400px"></div>
-            <div class="mapOptionDiv">
-                <div class="insideOptiponMap" onclick="toggleMapOption(this)">
-                    <div class="threeLineDiv">
-                        <div class="navThreeLine1"></div>
-                        <div class="navThreeLine2"></div>
-                        <div class="navThreeLine3"></div>
-                    </div>
+    <div class="mainContentSection">
+        <div class="container aboutHeader" style="margin-bottom: 10px">
+            {{__('About us')}}
+        </div>
+        <div class="aboutUsDiv aboutUsBackground" >
+            <div class="aboutUsText">
+                <div class="container" style="color: white">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Erat imperdiet sed euismod nisi porta lorem mollis. Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Condimentum vitae sapien pellentesque habitant morbi tristique senectus et netus. Turpis in eu mi bibendum. In hac habitasse platea dictumst quisque sagittis. At consectetur lorem donec massa sapien. Sagittis id consectetur purus ut faucibus pulvinar elementum. Bibendum est ultricies integer quis auctor. Orci nulla pellentesque dignissim enim sit amet venenatis urna cursus. Duis at consectetur lorem donec massa sapien faucibus et. Posuere morbi leo urna molestie at elementum eu facilisis sed. Adipiscing vitae proin sagittis nisl rhoncus mattis.
+                    Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Eu non diam phasellus vestibulum. Ut porttitor leo a diam sollicitudin tempor id eu nisl. Auctor eu augue ut lectus arcu bibendum. Vitae tortor condimentum lacinia quis vel. Integer enim neque volutpat ac tincidunt vitae. In massa tempor nec feugiat nisl pretium fusce. Et molestie ac feugiat sed. Mauris pellentesque pulvinar pellentesque habitant morbi. Elit sed vulputate mi sit amet. Lorem ipsum dolor sit amet consectetur adipiscing elit duis. Ut ornare lectus sit amet. Et ligula ullamcorper malesuada proin libero nunc. Aliquet risus feugiat in ante. Consectetur purus ut faucibus pulvinar elementum integer enim.
                 </div>
-                <div class="mapOptionContentDiv">
-                    @foreach($destCategory as $item)
-                        <div class="mapOptionContent mapOptionContentActive" onclick="toggleMapMarker({{$item->id}}, this)">{{$item->name}}</div>
-                    @endforeach
+            </div>
+        </div>
+    </div>
+
+    <div class="mainContentSection">
+        <div class="container aboutHeader" style="margin-bottom: 10px; text-align: center">
+            {{__('Iran 30 highest summits awards (Seemorgh award)')}}
+        </div>
+        <div class="aboutUsDiv">
+            <img src="{{asset('images/mount.png')}}" style="max-width: 100%; max-height: 100%">
+        </div>
+    </div>
+
+    <div class="container mainContentSection">
+        <div class="contactUsTextsHeader">
+            {{__('24/7 Customer Support')}}
+        </div>
+        <div class="contactUsTexts">
+            Out team of experienced tour specialists have travelled to hundreds of countries around the global ana have decades of first-hand travel
+            experience to share. Contact us now to have all of your tour-related questions answerd!
+        </div>
+        <div style="display: flex; margin-top: 25px">
+            <div class="contactUsButton">
+                {{__('Contact Us')}}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mapSection">
+        <div id="map" class="map" style="min-height: 400px"></div>
+        <div class="mapOptionDiv">
+            <div class="insideOptiponMap" onclick="toggleMapOption(this)">
+                <div class="threeLineDiv">
+                    <div class="navThreeLine1"></div>
+                    <div class="navThreeLine2"></div>
+                    <div class="navThreeLine3"></div>
                 </div>
+            </div>
+            <div class="mapOptionContentDiv">
+                @foreach($destCategory as $item)
+                    <div class="mapOptionContent mapOptionContentActive" onclick="toggleMapMarker({{$item->id}}, this)">{{$item->name}}</div>
+                @endforeach
             </div>
         </div>
     </div>

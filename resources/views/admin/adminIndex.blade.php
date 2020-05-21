@@ -24,7 +24,7 @@
                     <span class="contentNum" style="margin-right: 10px;">
                         {{$destinationCount}}
                     </span>
-                    Destination
+                    {{__('Destination')}}
                 </div>
             </a>
         </div>
@@ -36,7 +36,7 @@
                     <span class="contentNum" style="margin-right: 10px;">
                         {{$packageCount}}
                     </span>
-                    Packages
+                    {{__('Packages')}}
                 </div>
             </a>
         </div>
@@ -49,7 +49,7 @@
                     <span class="contentNum" style="margin-right: 10px;">
                         {{$journalCount}}
                     </span>
-                    Journal
+                    {{__('Journal')}}
                 </div>
             </a>
         </div>

@@ -54,19 +54,19 @@ class AjaxController extends Controller
             $destiantion = Destination::where('name', 'LIKE', '%' . $value . '%')->where('lang', app()->getLocale())->get();
             foreach ($destiantion as $item){
                 $item->url = route('show.destination', ['slug' => $item->slug]);
-                $item->kind = 'destination';
+                $item->kind = 'Destination';
             }
 
             $package = Package::where('name', 'LIKE', '%' . $value . '%')->where('lang', app()->getLocale())->get();
             foreach ($package as $item){
                 $dest = Destination::find($item->destId);
                 $item->url = route('show.package', ['slug' => $item->slug]);
-                $item->kind = 'destination';
+                $item->kind = 'Package';
             }
 
             $result = [
-                'Destination' => $destiantion,
-                'Package' => $package
+                __('Destination') => $destiantion,
+                __('Package') => $package
             ];
 
             echo json_encode(['status' => 'ok', 'result' => $result]);

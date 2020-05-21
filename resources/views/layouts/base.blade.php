@@ -24,6 +24,7 @@
 
         body{
             font-family: 'Varela Round', sans-serif;
+            /*font-family: 'Montserrat', sans-serif;*/
         }
         .loadingDiv{
             display: none;
@@ -131,5 +132,15 @@
 </script>
 
 @yield('script')
+
+
+@if(app()->getLocale() == 'fa')
+    <script src="{{asset('js/persianNumber.js')}}"></script>
+    <script>
+        $(document).ready(function(){
+            $('*').persiaNumber('ar');
+        });
+    </script>
+@endif
 
 </html>

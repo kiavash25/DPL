@@ -172,10 +172,10 @@
     <div class="moneyAndOrderDiv">
         <div class="moneyDiv">
             <div class="moneyName">
-                {{__('Euro')}}
+                {{$currencyName}}
             </div>
             <div class="moneyValue">
-                €{{$content->money}}
+                {{$currencySymbol}} {{$content->money}}
             </div>
         </div>
         <div class="orderDiv">

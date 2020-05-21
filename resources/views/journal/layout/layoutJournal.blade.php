@@ -26,9 +26,12 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400&display=swap" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
+
     <style>
         *{
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Varela Round', sans-serif;
+            /*font-family: 'Montserrat', sans-serif;*/
         }
         body{
             line-height: normal;
@@ -107,6 +110,8 @@
 
 </head>
 <body style="overflow-x: hidden;">
+@include('layouts.header')
+
 <div>
 
 
@@ -127,7 +132,6 @@
                 <div class="navThreeLine2"></div>
                 <div class="navThreeLine3"></div>
             </div>
-            @include('layouts.header')
 
             @yield('body')
         </div>

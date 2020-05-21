@@ -26,7 +26,17 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         background: rgb(31, 117, 185);
     }
     .tippy-box[data-placement^=right]>.tippy-arrow{
-        color: #1f75b9;
+        color: #1f75b9 !important;
+    }
+    .tippy-arrow{
+        color: #1f75b9 !important;
+    }
+    .navSearchBarInputDivPc{
+        display: none;
+        position: absolute;
+        z-index: 10;
+        width: 400px;
+        left: -20px;
     }
 </style>
 
@@ -400,11 +410,6 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                     </div>
                 </div>
             </div>
-{{--            <div class="sideNavTabs">--}}
-{{--                <a href="{{route('aboutUs')}}">--}}
-{{--                    {{ __('About us') }}--}}
-{{--                </a>--}}
-{{--            </div>--}}
             <div class="sideNavTabs">
                 <a href="{{route('journal.index')}}">
                     {{ __('Journal') }}
@@ -436,7 +441,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
             <a href="{{url('/')}}">
                 <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="width: 100%">
             </a>
-            <a href="#" class="mobileHide" style="background-color: #ff2727; padding: 4px 7px; border-radius: 50%; margin:0px 15px">
+            <a href="#" class="mobileHide" style="background-color: #ff2727; padding: 4px 7px; border-radius: 50%; margin:0px 30px">
                 <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" style="width: 20px">
             </a>
         </div>
@@ -446,11 +451,11 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 <i class="fas fa-search" style="color: #459ed1"></i>
 
 
-                <div id="pcSearchHeaderInput" class="navSearchBar mobileHide" style="display: none; position: absolute; z-index: 10; width: 400px; left: -20px">
+                <div id="pcSearchHeaderInput" class="navSearchBar navSearchBarInputDivPc mobileHide">
                     <div class="navSearchIcon">
                         <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
                     </div>
-                    <input type="text" class="searchNavInput" placeholder="{{__('Where do you want to go?')}}" onfocusout="$('.searchBackBlack').hide(); inSearch = false; clearResult(); $(this).val(''); $('#pcSearchHeaderInput').css('display', 'none')" onkeydown="gollobalSearch(this.value)">
+                    <input type="text" class="searchNavInput" placeholder="{{__('Where do you want to go?')}}" onfocusout="closePcSearchNav()" onkeydown="gollobalSearch(this.value)">
                     <div class="searchResult"></div>
                 </div>
             </div>
@@ -458,7 +463,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         @endif
 
         <div class="navUl">
-            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px'); $('.navSubListAllCountries').css('overflow', 'hidden');">
                 <div class="navTabName">
                     {{__('Destinations')}}
                 </div>
@@ -472,7 +477,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                                         {{$item->destination[$i]->name}}
                                         <div id="tippyC_{{$item->destination[$i]->id}}" class="destTitles" style="z-index: 9; width: 100%; display: none">
                                             <a href="{{$item->destination[$i]->url}}" class="destTitlesName">
-                                                See {{$item->destination[$i]->name}}
+                                                {{__('See')}} {{$item->destination[$i]->name}}
                                             </a>
                                             @foreach($item->destination[$i]->titles as $titles)
                                                 <a href="{{$item->destination[$i]->url . '#' . $titles}}" class="destTitlesName">
@@ -496,11 +501,11 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                                 </div>
                                 <div class="navSubListAllCountriesList">
                                     @foreach($item->destination as $desti)
-                                        <a id="tippyB_{{$desti->id}}" href="{{$desti->url}}" class="navSubListBody tippyHeader" style="justify-content: center">
+                                        <a id="tippyB_{{$desti->id}}" href="{{$desti->url}}" class="navSubListBody tippyHeader">
                                             {{$desti->name}}
                                             <div id="tippyCB_{{$desti->id}}" class="destTitles" style="z-index: 9; width: 100%; display: none">
                                                 <a href="{{$desti->url}}" class="destTitlesName">
-                                                    See {{$desti->name}}
+                                                    {{__('See')}} {{$desti->name}}
                                                 </a>
                                                 @foreach($desti->titles as $titles)
                                                     <a href="{{$desti->url . '#' . $titles}}" class="destTitlesName">
@@ -517,7 +522,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
             </div>
 
-            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px'); $('.navSubListAllCountries').css('overflow', 'hidden');">
                 <div class="navTabName">
                     {{__('Activities')}}
                 </div>
@@ -557,7 +562,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
 
             </div>
-            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px'); $('.navSubListAllCountries').css('overflow', 'hidden');">
                 <div class="navTabName">
                     {{__('Fest & Events')}}
                 </div>
@@ -622,7 +627,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
             </div>
 
-            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px')">
+            <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px'); $('.navSubListAllCountries').css('overflow', 'hidden');">
                 <div class="navTabName">
                     {{ __('Pre-trips') }}
                 </div>
@@ -850,17 +855,22 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
 <script>
     let desctCt = {!! $destCategory !!};
+    let tippyDir = 'right-end';
+    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
+        tippyDir = 'left-end';
+    @endif
+
     for(let i = 0; i < desctCt.length; i++){
         for(let j = 0; j < desctCt[i].destination.length; j++){
             tippy('#tippy_' + desctCt[i].destination[j].id, {
                 content: $('#tippyC_'+desctCt[i].destination[j].id).html(),
-                placement: 'right-end',
+                placement: tippyDir,
                 interactive: true,
                 allowHTML: true,
             });
             tippy('#tippyB_' + desctCt[i].destination[j].id, {
                 content: $('#tippyCB_'+desctCt[i].destination[j].id).html(),
-                placement: 'right-end',
+                placement: tippyDir,
                 interactive: true,
                 allowHTML: true,
             });
@@ -877,6 +887,16 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         $(_element).parent().css('overflow', 'hidden');
     }
 
+    function closePcSearchNav(){
+        setTimeout(function(){
+            $('.searchBackBlack').hide();
+            inSearch = false;
+            clearResult();
+            $(this).val('');
+            $('#pcSearchHeaderInput').css('display', 'none');
+        }, 500);
+    }
+
     function gollobalSearch(_value) {
 
         if (_value.trim().length > 1) {
@@ -890,9 +910,8 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 success: function (response) {
                     try {
                         response = JSON.parse(response);
-                        if (response['status'] == 'ok') {
+                        if (response['status'] == 'ok')
                             createSearchResult(response['result']);
-                        }
                     } catch (e) {
                         console.log(e)
                     }
@@ -910,12 +929,9 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         for (var x of fk) {
             if (_result[x].length > 0)
                 text += '<div class="headerSearch">' + x + '</div>';
-            for (var i = 0; i < _result[x].length; i++) {
-                console.log(_result[x][i]["url"]);
+            for (var i = 0; i < _result[x].length; i++)
                 text += '<a href="' + _result[x][i]["url"] + '"><div class="resultsOFSearch">' + _result[x][i]["name"] + '</div></a>';
-            }
         }
-
         $('.searchResult').show();
         $('.searchResult').html(text);
     }

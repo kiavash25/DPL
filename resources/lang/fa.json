@@ -33,6 +33,7 @@
     "Destination Num": "تعداد مقصدها",
     "Delete Category Destination": "پاک کردن دسته بندی مقصد",
     "Yes Deleted": "بله پاک شود",
+    "Yes": "بله",
     "No": "خیر",
     "Create New Category Destination": "ایجاد دسته بندی مقصد جدید",
     "Category Name": "نام دسته بندی",
@@ -44,7 +45,7 @@
     "Select Category": "دسته بندی را انتخاب کنید",
     "Destination Tags": "برچسپ های مقصد",
     "Main Picture": "عکس اصلی",
-    "Package": "پکیج ها",
+    "Package": "پکیج",
     "Package More Info Titles": "عنوان های اطلاعات بیشتر پکیج ها",
     "Package List": "لیست پکیج ها",
     "Create New Package": "ایجاد پکیج جدید",
@@ -72,6 +73,7 @@
     "clear Start Date": "پاک کردن تاریخ شروع",
     "clear End Date": "پاک کردن تاریخ پایان",
     "Cost (Euro)": "هزینه (یورو)",
+    "Cost": "هزینه",
     "Brochure": "بروشور",
     "Package Tags": "برچسپ های پکیج",
     "Side Info": "اطلاعات حاشیه",
@@ -110,6 +112,8 @@
     "Callventure Details": "اطلاعات کالونچر",
     "Neutral Details": "Neutral Details",
     "View Order": "ترتیب نمایش",
+    "Most Popular": "پیشنهادهای ویژه",
+    "Recent News": "تازه ها",
 
     "Fest & Events": "جشنواه ها",
     "Sport": "ورزشی",
@@ -161,6 +165,54 @@
     "Your shots": "عکس های شما",
     "Our shots": "عکس های ما",
 
+    "Setting": "تنظیمات",
+    "Main Page Slider": "عکس های صفحه ی اول",
+    "Users": "کاربران",
+    "Admin List": "لیست مدیران",
+    "Add new admin": "افزودن مدیر جدید",
+
+    "Log out": "خروج",
+
+    "Packages": "پکیج",
+
+    "Access levels": "سطوح دسترسی",
+    "activity": "فعالیت",
+    "destination": "مقصد",
+    "package": "پکیج",
+    "journal": "مجله",
+    "setting": "تنظیمات",
+    "userAccess": "کاربران",
+
+    "Email": "ایمیل",
+    "Disable access": "قطع دسترسی",
+    "Disable admin access": "قطع دسترسی مدیریت",
+    "Access Levels": "سطح دسترسی ها",
+    "Language Access": "سطح دسترسی های زبان",
+    "Access level list": "لیست سطح دسترسی ها",
+    "Language access list": "لیست سطح دسترسی های زبان",
+    "Do you want to disable admin access for the ": "ایا می خواهید دسترسی مدیریت را برای کاربر قطع کنید",
+
+    "Error in Server connection": "خطا در برقراری ارتباط با سرور",
+    "Error in result": "خطا در نتیحه",
+    "Error in store": "خطا در دخیره سازی",
+    "Access level update": "سطح دسترسی به روز برسانی شد",
+    "Admin language update": "سطح دسترسی زبان مدیر به روز رسانی شد",
+    "Admin access disabled": "سطح دسترسی مدیریت قطع شد",
+
+    "Block": "مسدود",
+    "Symbol": "نماد",
+    "Direction": "جهت",
+    "State": "وضعیت",
+    "Currency": "واحد پول",
+    "Currency Symbol": "نماد واحد پول",
+    "Left to Right": "چپ به راست",
+    "Right to Left": "راست به چپ",
+    "Edit Language": "ویرایش زبان",
+    "New Language": "زبان جدید",
+
+    "new Side Info": "اطلاعات حاشیه جدید",
+    "Edit side info": "ویرایش اطلاعات حاشیه",
+
     "Now": "حال",
     "select date": "انتخاب تاریخ",
     "Tag": "برچسپ",
@@ -169,6 +221,7 @@
     "login" : "ورود",
     "sign in" : "ثبت نام",
     "Contact us" : "ارتباط با ما",
+    "Contact Us" : "ارتباط با ما",
     "About us" : "درباره ی ما",
     "Destinations" : "مقصد ها",
     "Destination" : "مقصد",
@@ -185,6 +238,9 @@
     "fall" : "پاییز",
     "winter" : "زمسنان",
     "Search" : "جستجو",
+    "See" : "دیدن",
     "Where do you want to go?" : "به کجا می خواهید سفر کنید؟",
-    "Culventure: metamorphosis of travel Experience" : "کالونچر; تجربه‌ای بی همتا"
+    "Culventure: metamorphosis of travel Experience" : "کالونچر; تجربه‌ای بی همتا",
+
+    "24/7 Customer Support": "پشتیبانی مشتری 24/7"
 }

@@ -19,6 +19,8 @@ class CreateLanguagesTable extends Migration
             $table->string('symbol');
             $table->tinyInteger('state')->default(1);
             $table->string('direction', 5)->default('ltr');
+            $table->string('currencyName', 10)->default('Euro');
+            $table->string('currencySymbol', 5)->nullable();
         });
     }
 

@@ -121,7 +121,6 @@ class PackageController extends Controller
                 $pack->season = $request->season;
                 $pack->sDate = $request->sDate;
                 $pack->eDate = $request->eDate;
-                $pack->money = $request->cost;
                 $pack->level = $request->level;
                 $pack->showPack = $request->showPack;
                 $pack->langSource = 0;
@@ -134,7 +133,6 @@ class PackageController extends Controller
                         'season' => $pack->season,
                         'sDate' => $pack->sDate,
                         'eDate' => $pack->eDate,
-                        'money' => $pack->money,
                         'level' => $pack->level,
                         'showPack' => $pack->showPack,
                     ]);
@@ -149,7 +147,6 @@ class PackageController extends Controller
                 $pack->season = $s->season;
                 $pack->sDate = $s->sDate;
                 $pack->eDate = $s->eDate;
-                $pack->money = $s->money;
                 $pack->level = $s->level;
                 $pack->showPack = $s->showPack;
                 $pack->langSource = $s->id;
@@ -157,6 +154,7 @@ class PackageController extends Controller
 
             $pack->name = $request->name;
             $pack->description = $request->description;
+            $pack->money = $request->cost;
             $pack->destId = $request->destinationId;
             $pack->mainActivityId = $request->mainActivity;
             $pack->save();

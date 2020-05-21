@@ -8,7 +8,7 @@
         left: 0px;
     }
     .sideNavHeaderIcon{
-        margin-top: 75px;
+        margin-top: 0px;
         display: block;
     }
     .sideNavMenuDiv{

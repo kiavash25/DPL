@@ -17,115 +17,148 @@
             </a>
         </div>
 
-        <div class="sideNavTabs">
-            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                {{__('Destinations')}}
-                <div class="arrow rightArrow"></div>
-            </a>
-            <div class="subSideNavMenu">
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.destination.category.index')}}">
-                        {{__('Destination Category')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.destination.list')}}">
-                        {{__('Destination List')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.destination.new')}}">
-                        {{__('Create New Destination')}}
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="sideNavTabs">
-            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                {{__('Activity')}}
-                <div class="arrow rightArrow"></div>
-            </a>
-            <div class="subSideNavMenu">
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
-                        {{__('Activity List')}}
-                    </a>
+        @can('canSee', 'destination')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Destinations')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.destination.category.index')}}">
+                            {{__('Destination Category')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.destination.list')}}">
+                            {{__('Destination List')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.destination.new')}}">
+                            {{__('Create New Destination')}}
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
 
-        <div class="sideNavTabs">
-            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                {{__('Package')}}
-                <div class="arrow rightArrow"></div>
-            </a>
-            <div class="subSideNavMenu">
-
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.package.moreInfoTitle')}}">
-                        {{__('Package More Info Titles')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.package.list')}}">
-                        {{__('Package List')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.package.new')}}">
-                        {{__('Create New Package')}}
-                    </a>
+        @can('canSee', 'activity')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Activity')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.activity.list')}}">
+                            {{__('Activity List')}}
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
 
-        <div class="sideNavTabs">
-            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                {{__('Journal')}}
-                <div class="arrow rightArrow"></div>
-            </a>
-            <div class="subSideNavMenu">
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.journal.list')}}">
-                        {{__('Journal List')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.journal.category.index')}}">
-                        {{__('Journal Category List')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.journal.new')}}">
-                        {{__("Create New Journal")}}
-                    </a>
+        @can('canSee', 'package')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Package')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.package.moreInfoTitle')}}">
+                            {{__('Package More Info Titles')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.package.list')}}">
+                            {{__('Package List')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.package.new')}}">
+                            {{__('Create New Package')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="#">
+                            {{__('Most Popular')}}
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
 
-        <div class="sideNavTabs">
-            <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                {{__('Setting')}}
-                <div class="arrow rightArrow"></div>
-            </a>
-            <div class="subSideNavMenu">
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.setting.mainPageSlider')}}">
-                        {{__('Main Page Slider')}}
-                    </a>
-                </div>
-                <div class="sideNavTabs">
-                    <a class="subSideNavTab" href="{{route('admin.setting.lang')}}">
-                        {{__('Language')}}
-                    </a>
+        @can('canSee', 'journal')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Journal')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.journal.list')}}">
+                            {{__('Journal List')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.journal.category.index')}}">
+                            {{__('Journal Category List')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.journal.new')}}">
+                            {{__("Create New Journal")}}
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="sideNavTabs">
-            <a class="subSideNavTab"href="{{ route('register') }}">
-                {{__('Register New Admin')}}
-            </a>
-        </div>
+        @endcan
+
+        @can('canSee', 'setting')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Setting')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.setting.mainPageSlider')}}">
+                            {{__('Main Page Slider')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.setting.lang')}}">
+                            {{__('Language')}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endcan
+
+        @can('canSee', 'userAccess')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Users')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.userAccess.list')}}">
+                            {{__('Admin List')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('register')}}">
+                            {{__('Add new admin')}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endcan
+
         <div class="sideNavTabs">
             <a class="subSideNavTab"href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

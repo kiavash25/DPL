@@ -12,9 +12,9 @@ class AdminController extends Controller
 {
     public function adminIndex()
     {
-        $destinationCount = Destination::all()->count();
-        $packageCount = Package::all()->count();
-        $journalCount = Journal::all()->count();
+        $destinationCount = Destination::where('lang', app()->getLocale())->count();
+        $packageCount = Package::where('lang', app()->getLocale())->count();
+        $journalCount = Journal::where('lang', app()->getLocale())->count();
 
         return view('admin.adminIndex', compact(['destinationCount', 'packageCount', 'journalCount']));
     }

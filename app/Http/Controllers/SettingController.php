@@ -119,6 +119,8 @@ class SettingController extends Controller
                 $lang->symbol = $request->symbol;
                 $lang->direction = $request->dir;
                 $lang->state = $request->state;
+                $lang->currencyName = $request->currencyName;
+                $lang->currencySymbol = $request->currencySymbol;
                 $lang->save();
 
                 echo json_encode(['status' => 'ok']);

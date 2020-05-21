@@ -40,8 +40,17 @@ class shareData
             $item->subAct = Activity::where('parent', $item->id)->where('lang', $lang)->get();
 
         $languages = Language::where('state', 1)->get();
+        $currentLang = Language::where('symbol', app()->getLocale())->first();
+        if($currentLang != null){
+            $currencyName = $currentLang->currencyName;
+            $currencySymbol = $currentLang->currencySymbol;
+        }
+        else{
+            $currencyName = 'Euro';
+            $currencySymbol = '€';
+        }
 
-        View::share(['destCategory' => $destCategory, 'activitiesList' => $activitiesList, 'languages' => $languages]);
+        View::share(['destCategory' => $destCategory, 'activitiesList' => $activitiesList, 'languages' => $languages, 'currencyName' => $currencyName, 'currencySymbol' => $currencySymbol]);
 
         return $next($request);
     }

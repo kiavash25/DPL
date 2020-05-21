@@ -15,7 +15,7 @@
     <div class="row whiteBase" style="margin-bottom: 100px">
         <div class="col-md-12">
             <h2>
-                Language
+                {{__('Language')}}
             </h2>
         </div>
         <hr>
@@ -26,10 +26,12 @@
                 <table id="tableNat" class="table table-striped  table-bordered">
                     <thead>
                     <tr>
-                        <th>name</th>
-                        <th>symbol</th>
-                        <th>direction</th>
-                        <th>state</th>
+                        <th>{{__('Name')}}</th>
+                        <th>{{__('Symbol')}}</th>
+                        <th>{{__('Direction')}}</th>
+                        <th>{{__('State')}}</th>
+                        <th>{{__('Currency')}}</th>
+                        <th>{{__('Currency Symbol')}}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -39,9 +41,11 @@
                                 <td id="langName_{{$item->id}}">{{$item->name}}</td>
                                 <td id="langSymbol_{{$item->id}}">{{$item->symbol}}</td>
                                 <td id="langDir_{{$item->id}}">{{$item->direction}}</td>
-                                <td id="langState_{{$item->id}}">{{$item->state == 1 ? 'show' : 'block'}}</td>
+                                <td id="langState_{{$item->id}}" data-value="{{$item->state}}">{{$item->state == 1 ? __('Show') : __('Block')}}</td>
+                                <td id="currencyName_{{$item->id}}">{{$item->currencyName}}</td>
+                                <td id="currencySymbol_{{$item->id}}">{{$item->currencySymbol}}</td>
                                 <td>
-                                    <button class="btn btn-primary" onclick="editLang({{$item->id}}, '{{$item->direction}}')">Edit</button>
+                                    <button class="btn btn-primary" onclick="editLang({{$item->id}}, '{{$item->direction}}')">{{__('Edit')}}</button>
 {{--                                    <button class="btn btn-danger" onclick="deleteLang({{$item->id}})">Delete</button>--}}
                                 </td>
                             </tr>
@@ -68,43 +72,57 @@
                     <div class="modal-body">
                         <div class="row" style="justify-content: center">
                             <input type="hidden" id="langInputId">
-                            <label for="langName">Name:</label>
+                            <label for="langName">{{__('Name')}}:</label>
                             <input type="text" class="form-control" id="langName">
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <label for="langSymbol">Symbol:</label>
+                                <label for="langSymbol">{{__('Symbol')}}:</label>
                                 <input type="text" class="form-control" id="langSymbol">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <label for="langDir">Direction:</label>
+                                <label for="langDir">{{__('Direction')}}:</label>
                                 <select name="langDir" id="langDir" class="form-control">
-                                    <option value="ltr">Left to Right</option>
-                                    <option value="rtl">Right to Left</option>
+                                    <option value="ltr">{{__('Left to Right')}}</option>
+                                    <option value="rtl">{{__('Right to Left')}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <label for="langState">State:</label>
+                                <label for="langState">{{__('State')}}:</label>
                                 <select name="langState" id="langState" class="form-control">
-                                    <option value="1">Show</option>
-                                    <option value="0">Block</option>
+                                    <option value="1">{{__('Show')}}</option>
+                                    <option value="0">{{__('Block')}}</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="currencyName">{{__('Currency')}}:</label>
+                                <input type="text" class="form-control" id="currencyName">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="currencySymbol">{{__('Currency Symbol')}}:</label>
+                                <input type="text" class="form-control" id="currencySymbol">
                             </div>
                         </div>
                         <div class="row" style="display: flex; justify-content: center; align-items: center">
                             <button class="btn btn-success" onclick="storeLang()">
-                                Store
+                                {{__('Store')}}
                             </button>
                         </div>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
 
                 </div>
@@ -121,15 +139,13 @@
         function editLang(_id, _dir){
             $('#langName').val($('#langName_' + _id).text());
             $('#langSymbol').val($('#langSymbol_' + _id).text());
+            $('#currencyName').val($('#currencyName_' + _id).text());
+            $('#currencySymbol').val($('#currencySymbol_' + _id).text());
             $('#langDir').val(_dir);
-
-            if($('#langState_' + _id).text() == 'show')
-                $('#langState').val(1);
-            else
-                $('#langState').val(0);
+            $('#langState').val($('#langState_' + _id).attr('data-value'));
 
             $('#langInputId').val(_id);
-            $('#langModalHeader').text('Edit Title');
+            $('#langModalHeader').text("{{__('Edit Language')}}");
             $('#langModal').modal({backdrop: 'static', keyboard: false});
         }
 
@@ -152,9 +168,11 @@
         function newLang(){
             $('#langName').val('');
             $('#langSymbol').val('');
+            $('#currencyName').val('');
+            $('#currencySymbol').val('');
             $('#langInputId').val(0);
             $('#langState').val(1);
-            $('#langModalHeader').text('New Title');
+            $('#langModalHeader').text("{{__('New Language')}}");
             $('#langModal').modal({backdrop: 'static', keyboard: false});
         }
 
@@ -162,6 +180,8 @@
             let id = $('#langInputId').val();
             let name = $('#langName').val();
             let symbol = $('#langSymbol').val();
+            let currencyName = $('#currencyName').val();
+            let currencySymbol = $('#currencySymbol').val();
             let state = $('#langState').val();
             let dir = $('#langDir').val();
             if(name.trim().length > 0 && symbol.trim().length > 0){
@@ -175,6 +195,8 @@
                         name: name,
                         symbol: symbol,
                         state: state,
+                        currencyName: currencyName,
+                        currencySymbol: currencySymbol,
                         dir: dir
                     },
                     success: function(response){
