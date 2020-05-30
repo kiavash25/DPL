@@ -587,7 +587,7 @@ class MainController extends Controller
         else{
             $guidance = [];
             $destination = 'all';
-            $season = [];
+            $season = 'all';
             $tag = 'all';
             $activity = [];
 
