@@ -279,7 +279,7 @@
 
     <div class="row" style="position: relative; padding: 0px 20px; flex-direction: column">
         <div class="aboutHeader">
-            Other Packages In {{$content->mainActivity->name}} Activity
+            {{__('Other Packages In this activity')}}
         </div>
         <div id="mainSliderDiv" class="mainSliderDiv">
             <div id="sliderContentDiv" class="sliderContentDiv">

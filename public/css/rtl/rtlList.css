@@ -1,0 +1,26 @@
+.sideArrow{
+    float: left !important;
+    margin-left: 5px !important;
+}
+.dropdownFilter{
+    padding-right: 25px;
+}
+.clearAllButtonPc{
+    left: 10px;
+    right: auto;
+}
+.sortIcon{
+    right: 3%;
+    left: auto;
+}
+.filterSelect{
+    padding-right: 25px
+}
+.packageSDateCircle{
+    left: -20px;
+    right: auto;
+}
+.cancelFilter{
+    margin-left: 10px;
+    margin-right: 0px;
+}

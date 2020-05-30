@@ -194,9 +194,14 @@ a:hover{
     color: #2c3e50;
     min-width: 135px;
     border-right: 5px;
-    display: flex;
     align-items: center;
     font-size: 14px;
+    width: 100px;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
     /*margin-left: 20px;*/
 }
 .navSubListBody:hover{

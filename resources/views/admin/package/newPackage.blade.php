@@ -259,7 +259,7 @@
                                 @for($i = 0; $i < count($package->tags); $i++)
                                     <div class="col-lg-4">
                                         <div class="form-group" style="position: relative">
-                                            <input type="text" name="tags[]" class="form-control" placeholder="{{__('Package')}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$package->tags[$i]}}">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="{{__('Title')}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onchange="closeSearch(this)" value="{{$package->tags[$i]}}">
                                             <div class="closeTagIcon" onclick="deleteTag(this)">
                                                 <i class="fas fa-times"></i>
                                             </div>
@@ -272,7 +272,7 @@
                                 @for($i = 0; $i < 5; $i++)
                                     <div class="col-lg-4">
                                         <div class="form-group" style="position: relative">
-                                            <input type="text" name="tags[]" class="form-control" placeholder="{{__('Package')}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
+                                            <input type="text" name="tags[]" class="form-control" placeholder="{{__('Title')}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)">
                                             <div class="closeTagIcon" onclick="deleteTag(this)">
                                                 <i class="fas fa-times"></i>
                                             </div>
@@ -476,7 +476,7 @@
         function addTag() {
             text = '<div class="col-lg-4">\n' +
                 '<div class="form-group" style="position: relative">\n' +
-                '<input type="text" name="tags[]" class="form-control" placeholder="{{__('Package')}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)"> \n' +
+                '<input type="text" name="tags[]" class="form-control" placeholder="{{__('Title')}}" onkeyup="findTag(this)" onfocus="clearAllSearchResult()" onfocusout="closeSearch(this)" onchange="closeSearch(this)"> \n' +
                 '<div class="closeTagIcon" onclick="deleteTag(this)">\n' +
                 '<i class="fas fa-times"></i>\n' +
                 '</div>\n' +

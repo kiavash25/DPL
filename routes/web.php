@@ -29,7 +29,7 @@ Route::middleware(['web'])->group(function () {
 
     Route::post('beforeList', 'MainController@beforeList')->name('beforeList');
 
-    Route::get('list/{kind}/{value1}/{value2?}/{value3?}', 'MainController@list')->name('show.list');
+    Route::get('list/{kind}/{value1}', 'MainController@list')->name('show.list');
 
     Route::post('getListElems', 'MainController@getListElems')->name('getListElems');
 

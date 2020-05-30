@@ -26,12 +26,15 @@
             color: white;
         }
         .costFilter{
+            direction: ltr;
             display: flex;
             justify-content: space-between;
         }
         .maxCostName{
             font-size: 13px;
             font-weight: bold;
+            display: flex;
+            flex-direction: column;
         }
         .minCost{
             font-size: 18px;
@@ -45,8 +48,23 @@
             font-size: 21px;
             margin-bottom: 11px;
         }
+        .sideArrow{
+            float: right;
+            margin-right: 5px;
+            border-color: gray
+        }
+        .cancelFilter{
+            color: white;
+            font-size: 17px;
+            margin-right: 10px;
+        }
     </style>
-
+    <?php
+        $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+    ?>
+    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
+        <link rel="stylesheet" href="{{asset('css/rtl/rtlList.css')}}">
+    @endif
 @endsection
 
 @section('body')
@@ -65,13 +83,13 @@
 
                     <div class="row sortAndFilterButtonDiv">
                         <div class="sortAndFilterButton">
-                            <span style="color: white; width: 100%">Sort & filter</span>
+                            <span style="color: white; width: 100%">{{__('Sort & filter')}}</span>
                             <div class="clearAllButtonPc" onclick="deleteAllFilters()">
-                                Clear all
+                                {{__('Clear all')}}
                             </div>
                             <div class="filtersInRowPc">
                                 <div class="nmbFilterInPc">
-                                    <span class="numberOfFilters" style="color: white"></span> filter applied
+                                    <span class="numberOfFilters" style="color: white"></span> {{__('filter applied')}}
                                 </div>
                                 <div class="filtersShow"></div>
                             </div>
@@ -81,12 +99,12 @@
                     <div class="row filtersInPcSection">
                         <div class="filterSection">
                             <i class="fa fa-sort sortIcon" aria-hidden="true"></i>
-                            <select class="filterSelect" style="padding: 12px; padding-left: 25px" onchange="changeSortList(this.value)">
-                                <option value="nearestDate">Nearest date</option>
-                                <option value="minConst">Total Price: Lower First</option>
-                                <option value="maxConst">Total Price: Highest First</option>
-                                <option value="minDay">Duration: Shortest first</option>
-                                <option value="maxDay">Duration: Longest first</option>
+                            <select class="filterSelect" onchange="changeSortList(this.value)">
+                                <option value="nearestDate">{{__('Nearest date')}}</option>
+                                <option value="minConst">{{__('Total Price: Lower First')}}</option>
+                                <option value="maxConst">{{__('Total Price: Highest First')}}</option>
+                                <option value="minDay">{{__('Duration: Shortest first')}}</option>
+                                <option value="maxDay">{{{__('Duration: Longest first')}}}</option>
                             </select>
                         </div>
                     </div>
@@ -94,45 +112,49 @@
                     <div class="row filtersInPcSection">
                         <div class="filterSection dropdownFilter">
                             <div class="filterName" onclick="openFilterDropDown(this)">
-                                Activity
-                                <div class="arrow down" style="float: right; margin-right: 5px; border-color: gray"></div>
-                                <div class="arrow up" style="float: right; margin-right: 5px; border-color: gray; margin-top: 10px; display: none"></div>
+                                {{__('Activity')}}
+                                <div class="arrow down sideArrow"></div>
+                                <div class="arrow up sideArrow" style="margin-top: 10px; display: none"></div>
                             </div>
                             <div class="filterBody">
-                                @foreach($activitiesList as $item)
-                                    <label class="containerCheckBox activityFilter{{$item->id}}">{{$item->name}}
-                                        <input type="checkbox" data_id="{{$item->id}}" onchange="chaneActivityId(this)" {{$item->id == $activity ? 'checked' : ''}}>
-                                        <span class="checkmark"></span>
-                                    </label>
+                                @foreach($activitiesList as $mainActivity)
+                                    <hr>
+                                    <h6 style="font-weight: bold">{{$mainActivity->name}}</h6>
+                                    @foreach($mainActivity->subAct as $item)
+                                        <label class="containerCheckBox activityFilter{{$item->id}}">{{$item->name}}
+                                            <input type="checkbox" data_id="{{$item->id}}" onchange="chaneActivityId(this)" {{in_array($item->id, $activity) ? 'checked' : ''}}>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    @endforeach
                                 @endforeach
                             </div>
                         </div>
                         <div class="filterSection dropdownFilter">
                             <div class="filterName" onclick="openFilterDropDown(this)">
-                                Season
-                                <div class="arrow down" style="float: right; margin-right: 5px; border-color: gray"></div>
-                                <div class="arrow up" style="float: right; margin-right: 5px; border-color: gray; margin-top: 10px; display: none"></div>
+                                {{__('Season')}}
+                                <div class="arrow down sideArrow"></div>
+                                <div class="arrow up sideArrow" style="margin-top: 10px; display: none"></div>
                             </div>
                             <div class="filterBody">
-                                <div class="seasonFilter seasonFilterspring" onclick="seasonFilter(this)" data_value="spring">Spring</div>
-                                <div class="seasonFilter seasonFiltersummer" onclick="seasonFilter(this)" data_value="summer">Summer</div>
-                                <div class="seasonFilter seasonFilterfall" onclick="seasonFilter(this)" data_value="fall">Fall</div>
-                                <div class="seasonFilter seasonFilterwinter" onclick="seasonFilter(this)" data_value="winter">Winter</div>
+                                <div class="seasonFilter seasonFilterspring {{isset($season) && $season != null && $season == 'spring' ? 'choosenSeasonFilter' : ''}}" onclick="seasonFilter(this)" data_value="spring">{{__('Spring')}}</div>
+                                <div class="seasonFilter seasonFiltersummer {{isset($season) && $season != null && $season == 'summer' ? 'choosenSeasonFilter' : ''}}" onclick="seasonFilter(this)" data_value="summer">{{__('Summer')}}</div>
+                                <div class="seasonFilter seasonFilterfall {{isset($season) && $season != null && $season == 'fall' ? 'choosenSeasonFilter' : ''}}" onclick="seasonFilter(this)" data_value="fall">{{__('Fall')}}</div>
+                                <div class="seasonFilter seasonFilterwinter {{isset($season) && $season != null && $season == 'winter' ? 'choosenSeasonFilter' : ''}}" onclick="seasonFilter(this)" data_value="winter">{{__('Winter')}}</div>
                             </div>
                         </div>
                         <div class="filterSection dropdownFilter">
                             <div class="filterName" onclick="openFilterDropDown(this)">
-                                Cost
-                                <div class="arrow down" style="float: right; margin-right: 5px; border-color: gray"></div>
-                                <div class="arrow up" style="float: right; margin-right: 5px; border-color: gray; margin-top: 10px; display: none"></div>
+                                {{__('Cost')}}
+                                <div class="arrow down sideArrow"></div>
+                                <div class="arrow up sideArrow" style="margin-top: 10px; display: none"></div>
                             </div>
                             <div class="filterBody">
                                 <div class="costFilter">
-                                    <div class="maxCostName">min:
+                                    <div class="maxCostName">{{__('min')}}:
                                         <span class="minCost">0</span>
                                     </div>
-                                    <div class="maxCostName">max:
-                                        <span class="maxCost">5000</span>
+                                    <div class="maxCostName">{{__('max')}}:
+                                        <span class="maxCost">{{$maxCost}}</span>
                                     </div>
                                 </div>
                                 <div class="slider-range"></div>
@@ -149,13 +171,17 @@
                                     </div>
                                     <div class="col-md-5 col-sm-12 contentSection">
                                         <div class="headerContentSection">
-                                            <div style="color: #818d99; font-size: 12px" >
-                                                ##day##
-                                                Days
-                                                in
-                                                <a href="##destinationUrl##" style="color: #818d99; font-size: 12px" target="_blank">
+                                            <div style="color: #818d99; font-size: 12px; display: flex" >
+                                                <span style=" display: ##day_show##">
+                                                    ##day##
+                                                    {{__('Days')}}
+                                                    {{__('in')}}
+                                                </span>
+                                                <span>
+                                                    <a href="##destinationUrl##" style="color: #818d99; font-size: 12px" target="_blank">
                                                     ##destinationName##
                                                 </a>
+                                                </span>
                                             </div>
                                             <div style="line-height: 37px">
                                                 ##name##
@@ -169,22 +195,22 @@
                                     <div class="col-md-3 col-sm-12 infoSection infoSectionPackage">
                                         <div class="packageInfoDiv">
                                             <div class="packageInfoSec">
-                                                <div class="packageInfoName">Activity: </div>
+                                                <div class="packageInfoName">{{__('Activity')}}: </div>
                                                 <div class="packageInfoValue">##activity##</div>
                                             </div>
                                             <div class="packageInfoSec seDateInfo">
-                                                <div>
-                                                    <div class="packageInfoName seDateInfoName">Start: </div>
+                                                <div style=" display: ##sDate_show##">
+                                                    <div class="packageInfoName seDateInfoName">{{__('Start')}}: </div>
                                                     <div class="packageInfoValue seDateInfoValue">##sDate##</div>
                                                 </div>
-                                                <div>
-                                                    <div class="packageInfoName seDateInfoName">End: </div>
+                                                <div style=" display: ##eDate_show##">
+                                                    <div class="packageInfoName seDateInfoName">{{__('End')}}: </div>
                                                     <div class="packageInfoValue seDateInfoValue">##eDate##</div>
                                                 </div>
                                             </div>
                                             <div class="packageInfoSec seDateInfo">
                                                 <div>
-                                                    <div class="packageInfoName seDateInfoName">Season: </div>
+                                                    <div class="packageInfoName seDateInfoName">{{__('Season')}}: </div>
                                                     <div class="packageInfoValue seDateInfoValue">##season##</div>
                                                 </div>
                                             </div>
@@ -193,15 +219,20 @@
                                             {{--                                            <div class="packageInfoValue">##day##</div>--}}
                                             {{--                                        </div>--}}
                                             <div class="packageInfoSec costInfoDiv">
-                                                <div class="constName">us</div>
-                                                <div class="constValue">$##money##</div>
+                                                <div class="constName">
+                                                    {{isset($showLang->currencyName) && $showLang->currencyName != null ? $showLang->currencyName : 'Euro'}}
+                                                </div>
+                                                <div class="constValue">
+                                                    {{isset($showLang) ? $showLang->currencySymbol : '€'}}
+                                                    ##money##
+                                                </div>
                                             </div>
                                         </div>
                                         <a href="##url##" class="showButton">
-                                            View Package
+                                            {{__('View Package')}}
                                         </a>
                                         <div class="pacakgeMoreInfo" onclick="showMoreInfo(this)">
-                                            More Information
+                                            {{__('More Information')}}
                                         </div>
                                     </div>
 
@@ -229,11 +260,11 @@
                                         </div>
                                         <div class="col-md-3 col-sm-12 infoSection" style="flex-direction: column">
                                             <div class="numOfPackages">
-                                                Packages: {{$item->package}}
+                                                {{__('Packages')}}: {{$item->package}}
                                             </div>
 
                                             <a href="{{route('show.destination', ['slug' => $item->slug])}}" class="showButton">
-                                                View Destination
+                                                {{__('View Destination')}}
                                             </a>
                                         </div>
                                     </div>
@@ -251,17 +282,24 @@
 @section('script')
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        let currencySymbol = '{{isset($showLang) ? $showLang->currencySymbol : '€'}}';
+        let currencyName = '{{isset($showLang->currencyName) && $showLang->currencyName != null ? $showLang->currencyName : 'Euro'}}';
 
-        var maxCost = 5000;
+        var maxCost = {{$maxCost}};
+
         $( function() {
             $( ".slider-range" ).slider({
                 range: true,
                 min: 0,
-                max: 5000,
+                max: {{$maxCost}},
                 values: [ 0, maxCost ],
                 slide: function( event, ui ) {
-                    $('.minCost').text('$' + ui.values[0]);
-                    $('.maxCost').text('$' + ui.values[1]);
+                    $('.minCost').text(currencyName + ui.values[0]);
+                    $('.maxCost').text(currencyName + ui.values[1]);
+                    @if(app()->getLocale() == 'fa')
+                        $('.minCost').persiaNumber('fa');
+                        $('.maxCost').persiaNumber('fa');
+                    @endif
                 },
                 stop: function(event, ui){
                     cost = [ui.values[0], ui.values[1]];
@@ -300,7 +338,7 @@
             var perPage = 4;
             var kind = '{{$kind}}';
             var destinationId = '{{$destination}}';
-            var activityId = '{{$activity}}';
+            var activityId = JSON.parse('{{json_encode($activity)}}');
             var season = '{{$season}}';
             var sort = 'nearestDate';
             var isFinish = false;
@@ -308,10 +346,14 @@
             var listSample = 0;
             var cost = [0, maxCost];
             var tag = '{{$tag}}';
+            let seasonLang = {
+                'spring': "{{__('Spring')}}",
+                'summer': "{{__('Summer')}}",
+                'fall': "{{__('Fall')}}",
+                'winter': "{{__('Winter')}}",
+            }
 
-            if(activityId != 'all')
-                activityId = [activityId];
-            else
+            if(activityId == 'all')
                 activityId = [];
 
             if(season != 'all')
@@ -341,14 +383,13 @@
             }
 
             function chaneActivityId(_element){
-                id = $(_element).attr('data_id');
+                id = parseInt($(_element).attr('data_id'));
                 if($(_element).prop('checked')){
                     if(activityId.indexOf(id) < 0)
                         activityId[activityId.length] = id;
                 }
-                else{
+                else
                     activityId[activityId.indexOf(id)] = 0;
-                }
 
                 getNewElem();
             }
@@ -370,8 +411,8 @@
                         var name = $('.activityFilter' + activityId[i]).text();
                         hasFilter = true;
                         text += '<div class="filterInPc">\n' +
-                                '<i class="fas fa-times" style="color: white; font-size: 17px; margin-right: 10px;" onclick="deleteThisFilter(this)" data_type="activity" data_value="' + activityId[i] + '"></i>\n' +
-                            name + ' Activity\n' +
+                                '<i class="fas fa-times cancelFilter" onclick="deleteThisFilter(this)" data_type="activity" data_value="' + activityId[i] + '"></i>\n' +
+                                '{{__('Activity')}} : ' +  name +
                                 '</div>';
                         number++;
                     }
@@ -381,8 +422,8 @@
                     if(season[i] != 0){
                         hasFilter = true;
                         text += '<div class="filterInPc">\n' +
-                                '<i class="fas fa-times" style="color: white; font-size: 17px; margin-right: 10px;" onclick="deleteThisFilter(this)" data_type="season" data_value="' + season[i] + '"></i>\n' +
-                            season[i] + ' Season\n' +
+                                '<i class="fas fa-times cancelFilter" onclick="deleteThisFilter(this)" data_type="season" data_value="' + season[i] + '"></i>\n' +
+                            '{{__('Season')}} : ' +  seasonLang[season[i]] +
                                 '</div>';
                         number++;
                     }
@@ -391,15 +432,15 @@
                 if(cost[0] != 0 || cost[1] != maxCost){
                     hasFilter = true;
                     text += '<div class="filterInPc">\n' +
-                        '<i class="fas fa-times" style="color: white; font-size: 17px; margin-right: 10px;" onclick="deleteThisFilter(this)" data_type="cost" data_value="cost"></i>\n' +
-                        ' Cost is : $' + cost[0] + '- $' + cost[1] + ' \n' +
+                        '<i class="fas fa-times cancelFilter" onclick="deleteThisFilter(this)" data_type="cost" data_value="cost"></i>\n' +
+                        ' {{__('Cost in')}} : ' + currencyName + ' ' + cost[0] + '- ' + currencyName + ' ' + cost[1] + ' \n' +
                         '</div>';
                     number++;
                 }
 
-
                 $('.filtersShow').html(text);
                 $('.numberOfFilters').text(number);
+
 
                 if(hasFilter) {
                     $('.filtersInRowPc').show();
@@ -415,7 +456,9 @@
                 kind = $(_element).attr('data_type');
                 value = $(_element).attr('data_value');
                 if(kind == 'activity') {
-                    activityId[activityId.indexOf(value)] = 0;
+                    console.log(value)
+                    console.log(activityId)
+                    activityId[activityId.indexOf(parseInt(value))] = 0;
                     $($('.activityFilter' + value).children()[0]).prop('checked', false)
                 }
                 else if(kind == 'season'){
@@ -509,6 +552,17 @@
                             var t = '##' + x + '##';
                             var re = new RegExp(t, "g");
                             text = text.replace(re, elems[i][x]);
+
+                            if(elems[i][x] == null){
+                                var t = '##' + x + '_show##';
+                                var re = new RegExp(t, "g");
+                                text = text.replace(re, 'none');
+                            }
+                            else{
+                                var t = '##' + x + '_show##';
+                                var re = new RegExp(t, "g");
+                                text = text.replace(re, 'block');
+                            }
                         }
 
                         $('#listSample').append(text);

@@ -84,6 +84,7 @@
     "About": "درباره ی",
     "Infos": "اطلاعات",
     "Other Packages In": "دیگر پکیج ها در ",
+    "Other Packages In this activity": "پکیج های دیگر در همین فعالیت",
     "Days": "روز",
     "Euro": "یورو",
     "See Package": "مشاهده پکیج",
@@ -110,10 +111,12 @@
     "Language": "زبان",
     "Call Us": "تماس با ما",
     "Callventure Details": "اطلاعات کالونچر",
-    "Neutral Details": "Neutral Details",
+    "Neutral Details": "مشاهده جزئیات سفر",
     "View Order": "ترتیب نمایش",
     "Most Popular": "پیشنهادهای ویژه",
     "Recent News": "تازه ها",
+
+    "Book Now": "هم اکنون ثبت نام کن",
 
     "Fest & Events": "جشنواه ها",
     "Sport": "ورزشی",
@@ -283,5 +286,27 @@
     "Map icon": "نشانه گر نقشه",
     "Title": "عنوان",
     "title": "عنوان",
-    "Submit This Description": "تایید توضیح"
+    "Submit This Description": "تایید توضیح",
+
+
+    "": "",
+    "": "",
+    "": "",
+    "View Destination": "مشاهده مقصد",
+    "More Information": "اطلاعات بیشتر",
+    "View Package": "مشاهده پکیج",
+    "End": "پایان",
+    "Start": "آغاز",
+    "in": "در",
+    "Cost in": "بازه قیمتی",
+    "max": "بیشترین",
+    "min": "کمترین",
+    "Duration: Longest first": "مدت زمان: بلندترین به کوتاه ترین",
+    "Duration: Shortest first": "مدت زمان: کوتاه ترین به بلندترین",
+    "Total Price: Highest First": "هزینه: بیشترین به کمترین",
+    "Total Price: Lower First": "هزینه: کمترین به بیشترین",
+    "Nearest date": "نزدیکترین تاریخ",
+    "filter applied": "فیلتر اعمال شدها",
+    "Clear all": "پاک کردن همه",
+    "Sort & filter": "فیلتر و مربط سازی"
 }

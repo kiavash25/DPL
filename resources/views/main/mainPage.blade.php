@@ -135,21 +135,20 @@
 
                     <label for="centerSearchInputSeason" class="col-md-3 whereToSearch"
                            style="border-radius: 0px; cursor: pointer">
-                        <label class="centerSearchLabel fullLabel"
-                               onclick="changeLabelInputSeason(this)">{{__('What season?')}}</label>
-                        <input id="centerSearchInputSeason" class="centerSearchInput" name="season" type="text"
-                               onfocusout="closeAllMainSearchSuggestion()" style="width: 100%; cursor: pointer"
-                               readonly>
+                        <label class="centerSearchLabel fullLabel" onclick="changeLabelInputSeason(this)">{{__('What season?')}}</label>
+                        <input id="centerSearchInputSeason" class="centerSearchInput" type="text"
+                               onfocusout="closeAllMainSearchSuggestion()" style="width: 100%; cursor: pointer" readonly>
 
                         <div class="seasonSearch">
-                            <div class="seasons" onclick="selectSeason(this, 'Spring')">{{__('Spring')}}</div>
-                            <div class="seasons" onclick="selectSeason(this, 'Summer')">{{__('Summer')}}</div>
-                            <div class="seasons" onclick="selectSeason(this, 'Fall')">{{__('Fall')}}</div>
-                            <div class="seasons" onclick="selectSeason(this, 'Winter')">{{__('Winter')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'spring')">{{__('Spring')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'summer')">{{__('Summer')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'fall')">{{__('Fall')}}</div>
+                            <div class="seasons" onclick="selectSeason(this, 'winter')">{{__('Winter')}}</div>
                             <div class="seasons" onclick="selectSeason(this, 'none')" style="width: 100%">
                                 <i class="fas fa-times"></i>
                             </div>
                         </div>
+                        <input type="hidden" id="centerSearchInputSeasonHidden" name="season">
 
                     </label>
 
@@ -385,10 +384,12 @@
             if (_season == 'none') {
                 season = 0;
                 $(_element).parent().prev().val('');
+                $('#centerSearchInputSeasonHidden').val('');
             } else {
                 season = _season;
                 text = $(_element).text();
                 $(_element).parent().prev().val(text);
+                $('#centerSearchInputSeasonHidden').val(_season);
             }
             closeAllMainSearchSuggestion();
         }
@@ -477,7 +478,7 @@
 
         function mainSearch() {
             let destination = $('#centerSearchInputWhere').val();
-            let season = $('#centerSearchInputSeason').val();
+            let season = $('#centerSearchInputSeasonHidden').val();
             let activity = $('#centerSearchInputActivity').val();
 
             if (destination.trim().length == 0)

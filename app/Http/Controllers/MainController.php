@@ -533,25 +533,34 @@ class MainController extends Controller
 
     public function beforeList(Request $request)
     {
+        $getValue = '?';
+//        dd($request->all());
+
         if(isset($request->season)){
-            session(['season' => $request->season]);
+            $getValue .= 'season=' . $request->season;
         }
+
         if(isset($request->activity)){
             $activit = Activity::where('name', $request->activity)->first();
-            if($activit != null)
-                session(['activityId' => $activit->id]);
+            if($activit != null){
+                if($getValue != '?')
+                    $getValue .= '&';
+                $getValue .= 'activity=' . $activit->slug;
+            }
         }
+
         if(isset($request->destination)){
             $destId = Destination::where('name', $request->destination)->first();
             if($destId != null)
                 session(['destId' => $destId->id]);
         }
 
-        return redirect(route('show.list', ['kind' => 'mainSearch', 'value1' => 'all']));
+        return redirect(url('list/package/filter/' . $getValue));
     }
 
     public function list($kind, $value1)
     {
+//        dd($_GET);
         if($kind == 'destination'){
             $category = DestinationCategory::where('name', $value1)->where('lang', app()->getLocale())->first();
             if($category == null)
@@ -578,9 +587,19 @@ class MainController extends Controller
         else{
             $guidance = [];
             $destination = 'all';
-            $season = 'all';
+            $season = [];
             $tag = 'all';
-            $activity = 'all';
+            $activity = [];
+
+            if(isset($_GET['activity'])){
+                $activityId = Activity::where('slug', $_GET['activity'])->where('lang', app()->getLocale())->first();
+                if($activityId != null && $activityId->parent == 0)
+                    $activity = Activity::where('parent', $activityId->id)->where('lang', app()->getLocale())->pluck('id')->toArray();
+            }
+
+            if(isset($_GET['season']))
+                $season = $_GET['season'];
+
             switch ($kind){
                 case 'activity':
                     $activity = Activity::where('name', $value1)->where('lang', app()->getLocale())->first();
@@ -630,31 +649,20 @@ class MainController extends Controller
                         session()->forget('destId');
                     }
 
-                    if(session('season')){
-                        $season = session('season');
-                        session()->forget('season');
-                    }
-
-                    if(session('activityId')){
-                        $activityId = Activity::find(session('activityId'));
-                        if ($activityId != null)
-                            $activity = $activityId->id;
-
-                        session()->forget('activityId');
-                    }
-
                     if(count($guidance) == 0) {
                         $guidance = ['value1' => 'All Packages', 'value1Url' => '#'];
                         $title = 'All Package List';
                     }
-
                     break;
             }
+            $maxCost = Package::where('lang', app()->getLocale())->orderByDesc('money')->first();
+            if($maxCost != null)
+                $maxCost = $maxCost->money;
+            else
+                $maxCost = 0;
 
-            return \view('main.list', compact(['kind', 'activity', 'destination', 'season', 'guidance', 'title', 'tag']));
+            return \view('main.list', compact(['kind', 'activity', 'destination', 'season', 'guidance', 'title', 'tag', 'maxCost']));
         }
-
-
     }
 
     public function getListElems(Request $request)
@@ -738,8 +746,7 @@ class MainController extends Controller
 
         if($sqlQuery != '')
             $sqlQuery .= ' AND';
-        $sqlQuery .= ' money >= ' . $money[0] . ' AND money < ' . $money[1];
-
+        $sqlQuery .= ' money >= ' . $money[0] . ' AND money <= ' . $money[1];
 
         $today = Carbon::now()->format('Y-m-d');
         switch ($sort){
@@ -764,19 +771,22 @@ class MainController extends Controller
                 $orderType = 'DESC';
                 break;
         }
+
         $packages = Package::where('showPack', 1)->whereRaw($sqlQuery)
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
                 $query->where('sDate', '>', $today)
                         ->orWhereNull('sDate');
             })
+            ->where('lang', app()->getLocale())
             ->orderBy($orderBy, $orderType)
             ->skip(($page - 1) * $take)
             ->take($take)->get();
 
         foreach ($packages as $item){
             $item->bad = false;
-            $item->imgUrl = asset('uploaded/packages/' . $item->id . '/' . $item->pic);
+            $item = getMinPackage($item, 'list');
+            $item->imgUrl = $item->pic;
             $destination = Destination::find($item->destId);
             if($destination == null)
                 $item->bad = true;
@@ -789,7 +799,7 @@ class MainController extends Controller
             if($item->sDate != null)
                 $item->circleSDate = Carbon::createFromFormat('Y-m-d', $item->sDate)->format('d') . ' ' . Carbon::createFromFormat('Y-m-d', $item->sDate)->format('M');
             else
-                $item->circleSDate = 'Call Us';
+                $item->circleSDate = __('Call Us');
 
             $item->money = commaMoney($item->money);
             $actv = Activity::find($item->mainActivityId);
@@ -797,6 +807,8 @@ class MainController extends Controller
                 $item->bad = true;
             else
                 $item->activity = $actv->name;
+
+            $item->season = __($item->season);
         }
 
         echo json_encode(['status' => 'ok', 'result' => $packages]);

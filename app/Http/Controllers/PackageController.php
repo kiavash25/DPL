@@ -98,17 +98,25 @@ class PackageController extends Controller
 
     public function storePackage(Request $request)
     {
-        if(isset($request->name) && isset($request->id) && isset($request->lat) && isset($request->lng) && isset($request->destinationId) && isset($request->code) && isset($request->mainActivity)){
+        if(isset($request->name) && isset($request->id) && isset($request->lat) && isset($request->lng) && isset($request->destinationId) && isset($request->mainActivity)){
             $check = Package::where('name', $request->name)->where('id', '!=', $request->id)->where('destId', $request->destinationId)->first();
             if($check != null) {
                 echo json_encode(['status' => 'nok1']);
                 return;
             }
 
-            $codePack = Package::where('code', $request->code)->where('id' , '!=', $request->id)->where('lang', app()->getLocale())->first();
-            if($codePack != null) {
-                echo json_encode(['status' => 'nok9']);
-                return;
+            if($request->source == 0){
+                if(isset($request->code)){
+                    $codePack = Package::where('code', $request->code)->where('id' , '!=', $request->id)->where('lang', app()->getLocale())->first();
+                    if($codePack != null) {
+                        echo json_encode(['status' => 'nok9']);
+                        return;
+                    }
+                }
+                else{
+                    echo json_encode(['status' => 'nok11']);
+                    return;
+                }
             }
 
             if($request->id == 0) {
@@ -120,8 +128,6 @@ class PackageController extends Controller
 
             if($request->source == 0){
                 $pack->slug = makeSlug($request->name);
-                $pack->lat = $request->lat;
-                $pack->lng = $request->lng;
                 $pack->day = $request->day;
                 $pack->code = $request->code;
                 $pack->season = $request->season;
@@ -131,23 +137,19 @@ class PackageController extends Controller
                 $pack->showPack = $request->showPack;
                 $pack->langSource = 0;
                 Package::where('langSource', $pack->id)->update([
-                        'slug' => $pack->slug,
-                        'lat' => $pack->lat,
-                        'lng' => $pack->lng,
-                        'day' => $pack->day,
-                        'code' => $pack->code,
-                        'season' => $pack->season,
-                        'sDate' => $pack->sDate,
-                        'eDate' => $pack->eDate,
-                        'level' => $pack->level,
-                        'showPack' => $pack->showPack,
-                    ]);
+                    'slug' => $pack->slug,
+                    'day' => $pack->day,
+                    'code' => $pack->code,
+                    'season' => $pack->season,
+                    'sDate' => $pack->sDate,
+                    'eDate' => $pack->eDate,
+                    'level' => $pack->level,
+                    'showPack' => $pack->showPack,
+                ]);
             }
             else{
                 $s = Package::find($request->source);
                 $pack->slug = $s->slug;
-                $pack->lat = $s->lat;
-                $pack->lng = $s->lng;
                 $pack->day = $s->day;
                 $pack->code = $s->code;
                 $pack->season = $s->season;
@@ -160,6 +162,8 @@ class PackageController extends Controller
 
             $pack->name = $request->name;
             $pack->description = $request->description;
+            $pack->lat = $request->lat;
+            $pack->lng = $request->lng;
             $pack->money = $request->cost;
             $pack->destId = $request->destinationId;
             $pack->mainActivityId = $request->mainActivity;
