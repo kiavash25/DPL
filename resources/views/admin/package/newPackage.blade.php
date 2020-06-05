@@ -708,7 +708,7 @@
                             response = JSON.parse(response);
                             if(response['status'] == 'ok'){
                                 packageId = response['id'];
-                                resultLoading('Your Package Stored', 'success', goToImagePage);
+                                resultLoading('{{__('Your Package Stored')}}', 'success', goToImagePage);
                                 $('#pictureSection').css('display', 'flex');
                                 $('#brochureDiv').css('display', 'block');
                             }

@@ -108,6 +108,7 @@
     display: block;
 }
 .moreInfoTitleTextNoneSelected{
+    text-align: center;
     padding: 12px;
 }
 .moreInfoTitleTextSelected{

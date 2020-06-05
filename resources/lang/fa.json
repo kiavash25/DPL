@@ -51,6 +51,7 @@
     "Create New Package": "ایجاد پکیج جدید",
     "Draft/Show": "نمایش/پیش نویس",
     "Code": "کد",
+    "List": "لیست",
     "Start date": "تاریخ شروع",
     "Show": "نمایش",
     "Draft": "پیش نویس",
@@ -288,9 +289,13 @@
     "title": "عنوان",
     "Submit This Description": "تایید توضیح",
 
+    "Description Stored": "توضیح ذخیره شد",
+    "Please try again": "لطفا دوباره تلاش کنید",
+    "Your Package Stored": "اطلاعات پکیج ذخیره شد",
 
     "All Packages": "لیست تمامی پکیج ها",
     "All Package List": "لیست تمامی پکیج ها",
+    "Tag list": "لیست برچسپ ها",
     "See all": "مشاهده همه",
     "View Destination": "مشاهده مقصد",
     "More Information": "اطلاعات بیشتر",

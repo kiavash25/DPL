@@ -176,17 +176,17 @@
                     try{
                         response =  JSON.parse(response);
                         if(response['status'] == 'ok'){
-                            resultLoading('Description Stored', 'success');
+                            resultLoading('{{__('Description Stored')}}', 'success');
                         }
                         else
-                            resultLoading('Please try again', 'danger');
+                            resultLoading('{{__('Please try again')}}', 'danger');
                     }
                     catch (e) {
-                        resultLoading('Please try again', 'danger');
+                        resultLoading('{{__('Please try again')}}', 'danger');
                     }
                 },
                 error: function(err){
-                    resultLoading('Please try again', 'danger');
+                    resultLoading('{{__('Please try again')}}', 'danger');
                 }
             })
         }

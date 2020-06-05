@@ -82,6 +82,10 @@
 }
 .packageInfoValue{
     font-size: 14px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .seDateInfo{
     display: flex;

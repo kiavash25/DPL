@@ -7,7 +7,7 @@
 
 @section('body')
     <article style="margin-top: 30px">
-        <div class="row">
+        <div class="row" style="direction: ltr">
             <div id="mainContentDiv" class="col-lg-9" style="visibility: hidden;">
                 <div id="row##number##" class="row listElemsDiv" style="visibility: hidden;">
                     <div class="listElemsPicDiv col-md-4">

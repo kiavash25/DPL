@@ -155,7 +155,7 @@
         <div class="col-md-12 thumbnailSection">
             @foreach($content->thumbnails as $item)
                 <div class="thumbnailDiv" onclick="openThumbnailPic({{$item->id}})">
-                    <img src="{{$item->thumbnail}}" class="resizeImage thumbnailPic">
+                    <img src="{{$item->thumbnail}}" class="resizeImage thumbnailPic" onload="resizeThisImg(this)">
                     <div class="matteBack"></div>
                 </div>
             @endforeach
@@ -166,7 +166,7 @@
 
 @if(count($content->packages) > 0)
     <div style="width: 100%; margin-top: 45px">
-        <a href="{{$content->packageListUrl}}">
+        <a href="{{route('show.list', ['kind' => 'destinationPackage', 'value' => $content->destination->slug])}}">
             <div class="aboutHeader">
                 {{__('Other Packages In')}} {{$content->destination->name}}
             </div>
@@ -174,8 +174,65 @@
         <div class="mainContentPackages">
             <div class="swiper-container packageSwiper" >
 
-                <div class="swiper-wrapper" style="padding: 10px 0px; overflow-y: hidden">
+                <div class="swiper-wrapper" style="padding: 10px;">
                     @foreach($content->packages as $item)
+                        <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
+                            <div class=" packages">
+                                <div class="packageImgDiv">
+                                    <img src="{{$item->pic}}" class="packageImg" onload="resizeThisImg(this)">
+                                </div>
+                                <div class="packageContentDiv">
+                                    <div class="packageName">
+                                        {{$item->name}}
+                                    </div>
+                                    <div class="packageDescription">
+                                        {{$item->description}}
+                                    </div>
+                                    <div class="packageButtonDiv">
+                                        <a href="{{$item->url}}" class="packageButton">
+                                            {{__('See Package')}}
+                                        </a>
+                                    </div>
+
+                                    <div class="packageActivity">
+                                        {{$item->mainActivity->name}}
+                                    </div>
+                                </div>
+
+                                <div class="packageDate">
+                                    @if($item->sD == 'Call')
+                                        <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>
+                                    @else
+                                        <div style="color: white">{{$item->sD}}</div>
+                                        <div style="color: white">{{$item->sM}}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div id="nextPackage" class="sliderButton nextSlider" style="top: 45%; right: 10px; box-shadow: 0 0 10px 3px black">
+                    <div class="slider arrow right"></div>
+                </div>
+                <div id="prevPackage" class="sliderButton prevSlider" style="top: 45%; left: 10px; box-shadow: 0 0 10px 3px black">
+                    <div class="slider arrow left"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+@if(count($content->actPackage) > 0)
+    <div style="width: 100%; margin-top: 45px">
+        <div class="aboutHeader">
+            {{__('Other Packages In this activity')}}
+        </div>
+        <div class="mainContentPackages">
+            <div class="swiper-container packageSwiper" >
+
+                <div class="swiper-wrapper" style="padding: 10px;">
+                    @foreach($content->actPackage as $item)
                         <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
                             <div class=" packages">
                                 <div class="packageImgDiv">
@@ -212,181 +269,83 @@
                     @endforeach
                 </div>
 
-                <div id="nextPackage" class="sliderButton nextSlider" style="top: 33%; right: 10px; box-shadow: 0 0 10px 3px black">
+                <div id="nextPackage" class="sliderButton nextSlider" style="top: 45%; right: 10px; box-shadow: 0 0 10px 3px black">
                     <div class="slider arrow right"></div>
                 </div>
-                <div id="prevPackage" class="sliderButton prevSlider" style="top: 33%; left: 10px; box-shadow: 0 0 10px 3px black">
+                <div id="prevPackage" class="sliderButton prevSlider" style="top: 45%; left: 10px; box-shadow: 0 0 10px 3px black">
                     <div class="slider arrow left"></div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        var packageCount = {{count($content->packages)}};
-
-        var packageSwiper = 0;
-
-        function resizePackageSwiper(){
-            var windowW = $(window).width();
-            if((windowW > 1400 && packageCount <= 5) || (windowW > 1100 && packageCount <= 4) ||
-                (windowW > 840 && packageCount <= 3) || (windowW > 585 && packageCount <= 2) ||
-                (windowW <= 585 && packageCount <= 1)){
-                $('#nextPackage').hide();
-                $('#prevPackage').hide();
-                $('.swiperSlidePackage').css('width', 'auto');
-                $('.swiperSlidePackage').css('height', 'auto');
-                $('.swiperSlidePackage').parent().css('overflow-x', 'auto');
-                $('.swiperSlidePackage').parent().css('height', '275px');
-                $('.packages').css('margin', '10px 20px');
-                if(packageSwiper != 0)
-                    packageSwiper.destroy(true, true);
-                packageSwiper = 0;
-            }
-            else{
-                packageSwiper = new Swiper('.packageSwiper', {
-                    loop: true,
-                    navigation: {
-                        nextEl: '#nextPackage',
-                        prevEl: '#prevPackage',
-                    },
-                    breakpoints:{
-                        585:{
-                            slidesPerView: 1,
-                        },
-                        840:{
-                            slidesPerView: 2,
-                        },
-                        1100:{
-                            slidesPerView: 3,
-                        },
-                        1400:{
-                            slidesPerView: 4,
-                        },
-                        14000:{
-                            slidesPerView: 5,
-                        }
-                    }
-                });
-            }
-        }
-
-        resizePackageSwiper();
-    </script>
-@endif
-
-@if(count($content->actPackage) > 0)
-
-    <div class="row" style="position: relative; padding: 0px 20px; flex-direction: column">
-        <div class="aboutHeader">
-            {{__('Other Packages In this activity')}}
-        </div>
-        <div id="mainSliderDiv" class="mainSliderDiv">
-            <div id="sliderContentDiv" class="sliderContentDiv">
-                @foreach($content->actPackage as $item)
-                    <div class="destinationPackages packages">
-                        <div class="packageImgDiv">
-                            <img src="{{$item->pic}}" class="packageImg">
-                        </div>
-                        <div class="packageContentDiv">
-                            <div class="packageName">
-                                {{$item->name}}
-                            </div>
-                            <div class="packageDescription">
-                                {{$item->description}}
-                            </div>
-                            <div class="packageButtonDiv">
-                                <a href="{{$item->url}}" class="packageButton">
-                                    {{__('See Package')}}
-                                </a>
-                            </div>
-
-                            <div class="packageActivity">
-                                {{$item->mainActivity->name}}
-                            </div>
-                        </div>
-
-                        <div class="packageDate">
-                            @if($item->sD == 'Call')
-                                <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>
-                            @else
-                                <div style="color: white">{{$item->sD}}</div>
-                                <div style="color: white">{{$item->sM}}</div>
-                            @endif
-                        </div>
-
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="destinationSideButtonSlider packageSideButtonDiv" style="position: absolute; width: 100%; top: 50%">
-            <div id="nextDestinationSlider" class="sliderButton nextSlider" style="top: 43%; right: 35px; box-shadow: 0 0 10px 3px black" onclick="nextPackageSlider(-1)">
-                <div class="slider arrow right"></div>
-            </div>
-            <div id="prevDestinationSlider" class="sliderButton prevSlider" style="top: 43%; left: -10px; box-shadow: 0 0 10px 3px black" onclick="nextPackageSlider(1)">
-                <div class="slider arrow left"></div>
-            </div>
-        </div>
-    </div>
-
-    <script !src="">
-        let ownSwiper = {!! $content->actPackage !!};
-        let packagesMarg = 0;
-        let packagesMargLeft = 0;
-
-        function resizePackageSlide(){
-            let windowWidth = $('#mainSliderDiv').width();
-            let count = ownSwiper.length;
-            let countInWin = Math.floor(windowWidth / 250);
-
-            let marg = Math.floor((windowWidth % 250) / countInWin)/2;
-            packagesMarg = marg;
-            $('.destinationPackages').css('margin', '0px ' + marg + 'px');
-
-            let width = (marg * 2 * count) + (250 * count);
-
-            if(countInWin >= count)
-                $('.destinationSideButtonSlider').hide();
-            else
-                $('.destinationSideButtonSlider').show();
-
-            packagesMargLeft = 0;
-            nextPackageSlider(0);
-        }
-        resizePackageSlide();
-
-        function nextPackageSlider(_kind){
-            let mainSliderDiv = $('#mainSliderDiv').width();
-            let sliderContentDiv = $('#sliderContentDiv').width();
-
-            let left = (250 + (2 * packagesMarg)) * _kind;
-            packagesMargLeft += left;
-
-            $('#nextDestinationSlider').show();
-            $('#prevDestinationSlider').show();
-
-            if(packagesMargLeft >= 0)
-                $('#prevDestinationSlider').hide();
-            else if(Math.abs(packagesMargLeft) + mainSliderDiv +(250 + (2 * packagesMarg)) >= sliderContentDiv )
-                $('#nextDestinationSlider').hide();
-
-
-            if((Math.abs(packagesMargLeft) + mainSliderDiv <= sliderContentDiv + 50) && packagesMargLeft <= 0)
-                $('#sliderContentDiv').css('margin-left', packagesMargLeft);
-            else
-                packagesMargLeft -= left;
-        }
-
-        $(window).resize(resizePackageSlide);
-
-    </script>
-
 @endif
 
 {{--@include('main.common.packageList')--}}
 
-<script !src="">
+<script>
+    let packageSwiper = new Swiper('.packageSwiper', {
+        slidesPerGroup: 1,
+        spaceBetween: 5,
+        slidesPerView: 5,
+        watchOverflow: true,
+        navigation: {
+            nextEl: '.prevSlider',
+            prevEl: '.nextSlider',
+        },
+        breakpoints: {
+            600: {
+                slidesPerView: 1,
+            },
+            850: {
+                slidesPerView: 2,
+            },
+            1100: {
+                slidesPerView: 3,
+            },
+            1400: {
+                slidesPerView: 4,
+            }
+        },
+        on: {
+            init: function () {
+                let slideCount = this.slides.length;
+                if(slideCount <= this.params.slidesPerView){
+                    $(this.el).find(this.params.navigation.nextEl).css('display', 'none');
+                    $(this.el).find(this.params.navigation.prevEl).css('display', 'none');
+                }
+                else{
+                    $(this.el).find(this.params.navigation.nextEl).css('display', 'flex');
+                    $(this.el).find(this.params.navigation.prevEl).css('display', 'flex');
+                }
+
+                $(this.el).find(this.params.navigation.prevEl).css('display', 'none');
+            },
+            resize: function(){
+                let slideCount = this.slides.length;
+                if(slideCount <= this.params.slidesPerView){
+                    $(this.el).find(this.params.navigation.nextEl).css('display', 'none');
+                    $(this.el).find(this.params.navigation.prevEl).css('display', 'none');
+                }
+                else{
+                    $(this.el).find(this.params.navigation.nextEl).css('display', 'flex');
+                    $(this.el).find(this.params.navigation.prevEl).css('display', 'flex');
+                }
+            },
+            slideChange: function(){
+                if(this.isBeginning)
+                    $(this.el).find(this.params.navigation.prevEl).css('display', 'none');
+                else
+                    $(this.el).find(this.params.navigation.prevEl).css('display', 'flex');
+
+                if(this.isEnd)
+                    $(this.el).find(this.params.navigation.nextEl).css('display', 'none');
+                else
+                    $(this.el).find(this.params.navigation.nextEl).css('display', 'flex');
+            }
+        },
+    });
+
+
     let thumbnails = {!! $content->thumbnails !!}
 
     function openThumbnailPic(_id){
@@ -419,7 +378,6 @@
 
         createAlbum(main, thumb);
     }
-
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -462,5 +420,6 @@
         $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
         $('#moreInfoText_' + _id).addClass('moreInfoTextOpen');
     }
+
 </script>
 

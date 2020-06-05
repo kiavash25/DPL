@@ -560,7 +560,6 @@ class MainController extends Controller
 
     public function list($kind, $value1)
     {
-//        dd($_GET);
         if($kind == 'destination'){
             $category = DestinationCategory::where('name', $value1)->where('lang', app()->getLocale())->first();
             if($category == null)
@@ -579,7 +578,7 @@ class MainController extends Controller
                                         })->count();
             }
 
-            $title = 'List of ' . $category->name . ' category destinations';
+            $title = 'Destinations :' . $category->name;
             $guidance = ['value1' => $category->name, 'value1Url' => '#'];
 
             return \view('main.list', compact(['kind', 'destinations', 'guidance', 'title']));
@@ -601,36 +600,20 @@ class MainController extends Controller
                 $season = $_GET['season'];
 
             switch ($kind){
-                case 'activity':
-                    $activity = Activity::where('name', $value1)->where('lang', app()->getLocale())->first();
-                    if ($activity != null) {
-                        $guidance = ['value1' => 'Activity', 'value1Url' => '#',
-                            'value2' => $activity->name, 'value2Url' => '#'];
-                        $title = $activity->name . ' Package List';
-                        $activity = $activity->id;
-                    }
-                    else {
-                        $guidance = ['value1' => 'Activity', 'value1Url' => '#'];
-                        $title = 'All Activity List';
-                    }
-                    break;
                 case 'destinationPackage':
                     $destination = Destination::where('slug', $value1)->where('lang', app()->getLocale())->first();
                     if ($destination != null) {
-                        $ci = City::find($destination->cityId);
-                        $guidance = ['value1' => 'Destination', 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => 'All']),
-                            'value2' => $destination->name, 'value2Url' => route('show.destination', ['slug' => $destination->slug])];
-                        $title = $destination->name . ' Package List';
+                        $guidance = ['value1' => $destination->name, 'value1Url' => route('show.destination', ['slug' => $destination->slug]),
+                                    'value2' => __('List'), 'value2Url' => ''];
+                        $title = __('Package List') . ' :' . $destination->name;
                         $destination = $destination->id;
                     }
-                    else {
-                        $guidance = ['value1' => 'Destination', 'value1Url' => '#'];
-                        $title = 'All Destination List';
-                    }
+                    else
+                        return redirect()->back();
                     break;
                 case 'tags':
                     $tag = $value1;
-                    $title = $value1 . ' Tag Package List';
+                    $title = __('Tag list') . ' : ' . $value1 ;
                     $guidance = ['value1' => 'Tags', 'value1Url' => '#',
                         'value2' => $value1, 'value2Url' => '#'];
                     break;
@@ -655,6 +638,7 @@ class MainController extends Controller
                     }
                     break;
             }
+
             $maxCost = Package::where('lang', app()->getLocale())->orderByDesc('money')->first();
             if($maxCost != null)
                 $maxCost = $maxCost->money;

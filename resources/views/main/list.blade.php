@@ -175,7 +175,7 @@
                         <div id="listSample" style="display: none; flex-wrap: wrap; justify-content: center;">
                             <div class="row listSectionDiv">
                                     <div class="col-md-4 col-sm-12 picSection">
-                                        <img src="##imgUrl##" class="imgList" >
+                                        <img src="##imgUrl##" class="imgList" onload="resizeThisImg(this)">
                                     </div>
                                     <div class="col-md-5 col-sm-12 contentSection">
                                         <div class="headerContentSection">
@@ -289,6 +289,7 @@
 
 @section('script')
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script>
         let currencySymbol = '{{isset($showLang) ? $showLang->currencySymbol : '€'}}';
         let currencyName = '{{isset($showLang->currencyName) && $showLang->currencyName != null ? $showLang->currencyName : 'Euro'}}';
@@ -299,11 +300,12 @@
             $( ".slider-range" ).slider({
                 range: true,
                 min: 0,
+                step: 100,
                 max: {{$maxCost}},
                 values: [ 0, maxCost ],
                 slide: function( event, ui ) {
-                    $('.minCost').text(currencyName + ui.values[0]);
-                    $('.maxCost').text(currencyName + ui.values[1]);
+                    $('.minCost').text(currencyName + threeDotMoney(ui.values[0]));
+                    $('.maxCost').text(currencyName + threeDotMoney(ui.values[1]));
                     @if(app()->getLocale() == 'fa')
                         $('.minCost').persiaNumber('fa');
                         $('.maxCost').persiaNumber('fa');
@@ -315,6 +317,19 @@
                 }
             });
         } );
+
+        function threeDotMoney(_money){
+            _money += '';
+            let money = '';
+            let j = 0;
+            for (let i = _money.length-1; i >= 0 ; i--){
+                if(j % 3 == 0 && j != 0)
+                    money = ',' + money;
+                money = _money[i] + money;
+                j++;
+            }
+            return money;
+        }
 
         resizeImg('imgList');
         $(window).resize(function(){
@@ -464,8 +479,6 @@
                 kind = $(_element).attr('data_type');
                 value = $(_element).attr('data_value');
                 if(kind == 'activity') {
-                    console.log(value)
-                    console.log(activityId)
                     activityId[activityId.indexOf(parseInt(value))] = 0;
                     $($('.activityFilter' + value).children()[0]).prop('checked', false)
                 }
@@ -580,6 +593,11 @@
                 resizeImg('imgList');
                 closeLoading();
                 isLoading = false;
+
+                @if(app()->getLocale() == 'fa')
+                    $('.constValue').persiaNumber('fa');
+                    $('.filterInPc').persiaNumber('fa');
+                @endif
             }
 
             getListElem();
