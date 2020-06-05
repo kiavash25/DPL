@@ -67,9 +67,8 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
                             <div class="subSideNavMenu subSubSideNavMenu">
                                 <div class="sideNavTabs">
-                                    <a class="subSideNavTab"
-                                       href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}">
-                                        {{__('See all')}}
+                                    <a href="{{route('show.category', ['slug' => $item->slug])}}">
+                                        {{$item->name}}
                                     </a>
                                 </div>
                                 @for($i = 0; $i < count($item->destination); $i++)
@@ -100,6 +99,9 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                                     <div class="arrow right"></div>
                                 </a>
                                 <div class="subSideNavMenu subSubSideNavMenu">
+                                    <a href="{{route('show.activity', ['slug' => $item->slug])}}">
+                                        {{$item->name}}
+                                    </a>
                                     @for($i = 0; $i < count($item->subAct); $i++)
                                         <div class="sideNavTabs">
                                             <a class="subSideNavTab"
@@ -110,7 +112,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                                     @endfor
                                 </div>
                             @else
-                                <a href="{{url('activity/'. $item->slug)}}" class="subSideNavTab">
+                                <a href="{{url('activity/'. $item->slug)}}">
                                     {{$item->name}}
                                 </a>
                             @endif
@@ -411,10 +413,27 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
             </div>
             <div class="sideNavTabs">
-                <a href="{{route('journal.index')}}">
+                <a href="#" onclick="showSubSideNavMenu(this)">
                     {{ __('Journal') }}
+                    <div class="arrow right"></div>
                 </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a href="{{route('journal.index')}}">
+                            {{__('Journal')}}
+                        </a>
+                    </div>
+                    @foreach($journalCategoryList as $item)
+                        <div class="sideNavTabs">
+                            <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="subSideNavTab">
+                                {{$item->name}}
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
+
+
 
             <div class="langDiv">
                 <label for="languages" style="color: #2c3e50; font-size: 18px">{{__('Language')}}</label>
@@ -448,7 +467,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
         @if( !Request::is('/'))
             <div class="searchNavIconInFlag navSearchBar mobileHide" style="margin-right: auto; background: white; margin-left: 0;" onclick="$('.searchBackBlack').show(); inSearch = true; $('#pcSearchHeaderInput').css('display', 'flex'); $('.searchNavInput').focus();">
-                <i class="fas fa-search" style="color: #459ed1"></i>
+                <i class="fas fa-search" style="color: #459ed1; font-family: 'Font Awesome 5 Free' !important;"></i>
 
 
                 <div id="pcSearchHeaderInput" class="navSearchBar navSearchBarInputDivPc mobileHide">
@@ -562,6 +581,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
 
             </div>
+
             <div class="navLi mobileHide" onmouseleave="$('.navSubListAllCountries').css('height', '0px'); $('.navSubListAllCountries').css('overflow', 'hidden');">
                 <div class="navTabName">
                     {{__('Fest & Events')}}
@@ -739,15 +759,18 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
             </div>
 
-{{--            <div class="navLi posRel mobileHide">--}}
-{{--                <a href="{{route('aboutUs')}}" class="navTabName">--}}
-{{--                    {{ __('About us') }}--}}
-{{--                </a>--}}
-{{--            </div>--}}
             <div class="navLi posRel mobileHide">
                 <a href="{{route('journal.index')}}" class="navTabName">
                     {{ __('Journal') }}
                 </a>
+
+                <div class="subList subLisM">
+                    <div class="navSubListRow">
+                        @foreach($journalCategoryList as $item)
+                            <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="navSubListBody navSubListBodyM">{{$item->name}}</a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
 
             <div class="navLi posRel mobileHide rtlRight">
@@ -764,6 +787,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                     </div>
                 </div>
             </div>
+
             <div class="navLi posRel mobileHide">
                 <div class="navTabName" style="padding: 0">
                     <div class="navFlag">
@@ -779,9 +803,13 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                     </div>
                 </div>
             </div>
-            <div class="navLi">
+
+            <div class="navLi" style="direction: ltr">
+                <a href="#" class="pcHide">
+                    <img src="{{asset('images/mainImage/tv.png')}}" alt="DPL_TV" class="mobileTv">
+                </a>
                 <div class="searchNavIconInFlag pcHide" onclick="showNavSearchMobile()">
-                    <i class="fas fa-search" style="color: #459ed1"></i>
+                    <i class="fas fa-search" style="color: #459ed1; font-family: 'Font Awesome 5 Free' !important;"></i>
                 </div>
                 {{--                <div class="telPcLi">--}}
                 {{--                    <div class="navFlag">--}}
@@ -813,7 +841,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                     <div class="searchResult"></div>
                 </div>
                 <div class="closeIcon" onclick="closeNavSearchMobile()">
-                    <i class="fas fa-times" style="color: #1f75b9"></i>
+                    <i class="fas fa-times" style="color: #1f75b9; font-family: 'Font Awesome 5 Free' !important;"></i>
                 </div>
             </div>
         </div>
@@ -830,19 +858,19 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 <div>
                     <a href="{{url('/')}}" class="topMenuGuide">{{__('Home')}}</a>
                     <span class="topMenuGuide"> > </span>
-                    <a href="{{$guidance['value1Url']}}" class="topMenuGuide">{{$guidance['value1']}}</a>
+                    <a href="{{$guidance['value1Url']}}" class="topMenuGuide">{{__($guidance['value1'])}}</a>
                     @if(isset($guidance['value2']))
                         <a href="#" class="topMenuGuide"> > </a>
-                        <a href="{{$guidance['value2Url']}}" class="topMenuGuide">{{$guidance['value2']}}</a>
+                        <a href="{{$guidance['value2Url']}}" class="topMenuGuide">{{__($guidance['value2'])}}</a>
                         @if(isset($guidance['value3']))
                             <a href="#" class="topMenuGuide"> > </a>
-                            <a href="{{$guidance['value3Url']}}" class="topMenuGuide">{{$guidance['value3']}}</a>
+                            <a href="{{$guidance['value3Url']}}" class="topMenuGuide">{{__($guidance['value3'])}}</a>
                             @if(isset($guidance['value4']))
                                 <a href="#" class="topMenuGuide"> > </a>
-                                <a href="{{$guidance['value4Url']}}" class="topMenuGuide">{{$guidance['value4']}}</a>
+                                <a href="{{$guidance['value4Url']}}" class="topMenuGuide">{{__($guidance['value4'])}}</a>
                                 @if(isset($guidance['value5']))
                                     <a href="#" class="topMenuGuide"> > </a>
-                                    <a href="#" class="topMenuGuide">{{$guidance['value5']}}</a>
+                                    <a href="#" class="topMenuGuide">{{__($guidance['value5'])}}</a>
                                 @endif
                             @endif
                         @endif

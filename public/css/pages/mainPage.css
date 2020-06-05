@@ -102,6 +102,9 @@
     cursor: pointer;
     transition: 0.1s;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .seasons:hover{
     background-color: #1f75b9;

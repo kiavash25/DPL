@@ -1,0 +1,136 @@
+.mainSliderPic{
+    width: 100%;
+    height: 500px;
+    background: #ebeef2;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swiper-wrapper{
+    display: flex;
+    align-items: center;
+}
+.sliderButton{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background-color: #ebeef2;
+    border-radius: 50%;
+    top: 45%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.nextSlider{
+    right: 15px;
+}
+.prevSlider{
+    left: 15px;
+}
+.slider.arrow{
+    border: solid #6b6b6b;
+    border-width: 0 4px 4px 0;
+}
+.sliderImg{
+    width: 100%;
+}
+
+.likeButton{
+    width: 65px;
+    height: 65px;
+    position: absolute;
+    top: 90%;
+    margin: 0;
+    right: 5%;
+    background-color: #ebeef2;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    border: 1px solid #c7d0d9;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.14);
+    color: #9e9e9e;
+    cursor: pointer;
+    z-index: 1;
+
+}
+.likeBack{
+    z-index: 1;
+    transition: .3s;
+}
+.likeBorder{
+    z-index: 2;
+    position: absolute;
+    transition: .3s;
+}
+.likeButton:hover .likeBack{
+    color: #fb2626;
+}
+.likeButton:hover .likeBorder{
+    color: #ff9e9e;
+}
+.mainSliderImgTop{
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.albumeDiv{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    z-index: 9;
+    background-color: #211919;
+}
+.closeAlbume{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    cursor: pointer;
+    z-index: 2;
+}
+.albumePic{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.gallery-top {
+    height: 80%;
+    width: 100%;
+}
+.gallery-thumbs {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+.gallery-thumbs .swiper-slide {
+    height: 100px;
+    width: 100px;
+    opacity: 0.4;
+}
+.gallery-thumbs .swiper-slide-thumb-active {
+    opacity: 1;
+}
+p{
+    text-align: justify;
+}

@@ -11,6 +11,8 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+                        <input type="hidden" name="lvl" value="admin">
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 

@@ -1,0 +1,7 @@
+.moneyDiv{
+    display: block !important;
+    direction: ltr;
+}
+.moneyValue{
+    margin-left: 0px !important;
+}

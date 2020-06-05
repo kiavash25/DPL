@@ -7,6 +7,7 @@ use App\models\Destination;
 use App\models\DestinationCategory;
 use App\models\DestinationCategoryTitle;
 use App\models\DestinationCategoryTitleText;
+use App\models\JournalCategory;
 use App\models\Language;
 use Carbon\Carbon;
 use Closure;
@@ -50,7 +51,14 @@ class shareData
             $currencySymbol = '€';
         }
 
-        View::share(['destCategory' => $destCategory, 'activitiesList' => $activitiesList, 'languages' => $languages, 'currencyName' => $currencyName, 'currencySymbol' => $currencySymbol]);
+        $journalCategoryList = JournalCategory::where('lang', app()->getLocale())->orderByDESC('viewOrder')->get();
+
+        View::share(['destCategory' => $destCategory,
+                    'activitiesList' => $activitiesList,
+                    'languages' => $languages,
+                    'currencyName' => $currencyName,
+                    'currencySymbol' => $currencySymbol,
+                    'journalCategoryList' => $journalCategoryList]);
 
         return $next($request);
     }

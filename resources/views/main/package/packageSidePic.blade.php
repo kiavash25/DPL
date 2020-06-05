@@ -101,9 +101,11 @@
         font-size: 35px;
         font-weight: bold;
         margin-left: 6px;
+        display: inline-block;
     }
     .moneyName{
         font-size: 18px;
+        display: inline-block;
         font-weight: bold;
     }
     @media (max-width: 991px){

@@ -58,6 +58,14 @@
             font-size: 17px;
             margin-right: 10px;
         }
+        .listHeader{
+            line-height: 37px;
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 25px;
+        }
     </style>
     <?php
         $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
@@ -72,7 +80,7 @@
     <div class="container" style="margin-top: 10px">
         <div class="col-md-12 mainHeader">
             <h2 class="mainHeaderH1">
-                {{$title}}
+                {{__($title)}}
             </h2>
         </div>
         <div class="col-md-12" style="margin-top: 30px">
@@ -183,7 +191,7 @@
                                                 </a>
                                                 </span>
                                             </div>
-                                            <div style="line-height: 37px">
+                                            <div class="listHeader">
                                                 ##name##
                                             </div>
 

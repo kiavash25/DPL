@@ -26,8 +26,13 @@
             font-weight: bold;
         }
         .contactUsTexts{
+            padding: 0px 50px;
             font-size: 18px;
             text-align: justify;
+        }
+        .contactUsButtonDiv{
+            display: flex;
+            margin-top: 25px
         }
         .aboutUsDiv{
             min-height: 50vh;
@@ -60,6 +65,21 @@
             font-size: 19px;
             border-radius: 3px;
             width: 300px;
+        }
+
+        @media (max-width: 500px) {
+            .aboutUsText{
+                padding: 30px 0px;
+            }
+            .contactUsTextsHeader{
+                text-align: center;
+            }
+            .contactUsTexts{
+                padding: 0px;
+            }
+            .contactUsButtonDiv{
+                justify-content: center;
+            }
         }
     </style>
 
@@ -290,11 +310,11 @@
         <div class="contactUsTextsHeader">
             {{__('24/7 Customer Support')}}
         </div>
-        <div class="contactUsTexts" style="padding: 0px 50px">
+        <div class="contactUsTexts">
             Out team of experienced tour specialists have travelled to hundreds of countries around the global ana have decades of first-hand travel
             experience to share. Contact us now to have all of your tour-related questions answerd!
         </div>
-        <div style="display: flex; margin-top: 25px">
+        <div class="contactUsButtonDiv">
             <div class="contactUsButton">
                 {{__('Contact Us')}}
             </div>

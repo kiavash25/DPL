@@ -283,6 +283,7 @@ a:hover{
     align-items: center;
     justify-content: center;
     height: 100%;
+    margin-left: 10px;
 }
 .sidenav {
     height: 100%;
@@ -550,6 +551,9 @@ a:hover{
     border-radius: 10px;
     color: #1f75b9;
 }
+.mobileTv{
+    width: 40px;
+}
 
 @media (max-width: 1023px){
     .searchResult{
@@ -579,18 +583,28 @@ a:hover{
         padding: 5px 0px;
     }
     .navUl{
+        position: absolute;
+        right: 0px;
         min-width: 0px;
     }
 
 }
 
 @media (max-width: 768px) {
-    /*.telPcLi{*/
-        /*display: none;*/
-    /*}*/
-
     .telMobileLi{
         display: block;
+    }
+}
+
+@media (max-width: 500px){
+    .logoNavDiv{
+        width: 125px;
+    }
+    .searchNavIconInFlag{
+        font-size: 15px;
+    }
+    .mobileTv{
+        width: 25px;
     }
 }
 

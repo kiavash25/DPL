@@ -63,11 +63,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $level = isset($data['lvl']) ? $data['lvl'] : 'user';
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'level' => 'admin',
+            'level' => $level,
             'password' => Hash::make($data['password']),
         ]);
+
+        if($level == 'user')
+            return $user;
+        else
+            return auth()->user();
     }
 }

@@ -28,6 +28,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{asset('css/allPages.css')}}">
     <style>
         *{
             font-family: 'Varela Round', sans-serif;
@@ -40,7 +41,9 @@
             transition: .5s;
             position: fixed;
             right: 0px;
-            width: 80%;
+            /*width: 80%;*/
+            padding-bottom: 50px;
+            width: 100%;
             height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
@@ -77,21 +80,21 @@
             transform: rotate(45deg) translate(-8px, -8px);
         }
 
-        .logoNavDiv{
-            display: none !important;
-        }
-        .navSearchBar{
-            display: none !important;
-        }
-        .navUl{
-            margin-left: auto !important;
-            width: auto !important;
-        }
+        /*.logoNavDiv{*/
+        /*    display: none !important;*/
+        /*}*/
+        /*.navSearchBar{*/
+        /*    display: none !important;*/
+        /*}*/
+        /*.navUl{*/
+        /*    margin-left: auto !important;*/
+        /*    width: auto !important;*/
+        /*}*/
 
         @media (max-width: 1200px) {
-            .mainBase{
-                width: 70%;
-            }
+            /*.mainBase{*/
+            /*    width: 70%;*/
+            /*}*/
         }
         @media (max-width: 767px){
             .mainBase{
@@ -110,6 +113,7 @@
 
 </head>
 <body style="overflow-x: hidden;">
+
 @include('layouts.header')
 
 <div>
@@ -120,18 +124,19 @@
     ?>
 
     @if(isset($showLang->direction) && $showLang->direction == 'rtl')
+        <link rel="stylesheet" href="{{asset('css/rtl/rtlBase.css')}}">
         <link rel="stylesheet" href="{{asset('css/rtl/journalBase.css')}}">
     @endif
 
-    @include('journal.layout.sideNaveJournal')
+{{--    @include('journal.layout.sideNaveJournal')--}}
 
     <main>
         <div class="mainBase" style="direction: ltr">
-            <div class="sideNavButton threeLineDiv" onclick="toggleSideNav(this)">
-                <div class="navThreeLine1"></div>
-                <div class="navThreeLine2"></div>
-                <div class="navThreeLine3"></div>
-            </div>
+{{--            <div class="sideNavButton threeLineDiv" onclick="toggleSideNav(this)">--}}
+{{--                <div class="navThreeLine1"></div>--}}
+{{--                <div class="navThreeLine2"></div>--}}
+{{--                <div class="navThreeLine3"></div>--}}
+{{--            </div>--}}
 
             @yield('body')
         </div>
