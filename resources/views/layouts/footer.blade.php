@@ -36,9 +36,9 @@
                 <a href="{{route('journal.index')}}" class="footerContentHeader">
                     {{__('Journal')}}
                 </a>
-                <a href="{{route('aboutUs')}}" class="footerContentHeader">
-                    {{__('About us')}}
-                </a>
+{{--                <a href="{{route('aboutUs')}}" class="footerContentHeader">--}}
+{{--                    {{__('About us')}}--}}
+{{--                </a>--}}
                 <a href="#" class="footerContentHeader">
                     {{__('Contact us')}}
                 </a>
@@ -70,9 +70,9 @@
                 <button class="accordion">{{__('Journal')}}</button>
             </a>
 
-            <a href="{{route('aboutUs')}}">
-                <button class="accordion">{{__('About us')}}</button>
-            </a>
+{{--            <a href="{{route('aboutUs')}}">--}}
+{{--                <button class="accordion">{{__('About us')}}</button>--}}
+{{--            </a>--}}
 
             <a href="#">
                 <button class="accordion">{{__('Contact us')}}</button>

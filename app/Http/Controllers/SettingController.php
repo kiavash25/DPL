@@ -142,14 +142,14 @@ class SettingController extends Controller
         if($aboutUs != null)
             $aboutUs->pic = asset('uploaded/mainPage/' . $aboutUs->pic);
 
-        $pics = MainPageSetting::where('header', '!=', 'aboutus')->where('lang', app()->getLocale())->get();
-        foreach ($pics as $pic)
+        $center = MainPageSetting::where('header', '!=', 'aboutus')->where('lang', app()->getLocale())->get();
+        foreach ($center as $pic)
             $pic->pic = asset('uploaded/mainPage/' . $pic->pic);
 
-        return view('admin.setting.mainPageSetting', compact(['aboutUs', 'pics']));
+        return view('admin.setting.mainPageSetting', compact(['aboutUs', 'center']));
     }
 
-    public function storeHeaderPicMainPage(Request $request)
+    public function storeAboutUsPic(Request $request)
     {
         if(isset($request->header)){
             if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
@@ -186,20 +186,16 @@ class SettingController extends Controller
         return;
     }
 
-    public function storeHeaderTextMainPage(Request $request)
+    public function storeAboutUs(Request $request)
     {
         if(isset($request->id)){
-            if($request->id == 'aboutus'){
-                $set = MainPageSetting::where('header', $request->id)->where('lang', app()->getLocale())->first();
-                if($set == null){
-                    $set = new MainPageSetting();
-                    $set->header = 'aboutus';
-                    $set->pic = '';
-                    $set->lang = app()->getLocale();
-                }
+            $set = MainPageSetting::where('header', $request->id)->where('lang', app()->getLocale())->first();
+            if($set == null) {
+                $set = new MainPageSetting();
+                $set->header = 'aboutus';
+                $set->pic = '';
+                $set->lang = app()->getLocale();
             }
-            else
-                $set = MainPageSetting::find($request->id);
 
             if($set != null) {
                 $set->text = $request->text;
@@ -209,6 +205,56 @@ class SettingController extends Controller
             }
             else
                 echo json_encode(['status' => 'nok2']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeCenterHeaderPic(Request $request)
+    {
+        if(isset($request->id) && isset($request->header)){
+            if($request->id != 0)
+                $header = MainPageSetting::find($request->id);
+            else{
+                $header = new MainPageSetting();
+                $header->lang = app()->getLocale();
+                $header->text = '';
+            }
+            $header->header = $request->header;
+            if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                $location = __DIR__ .'/../../../public/uploaded/mainPage';
+                if(!is_dir($location))
+                    mkdir($location);
+
+                $fileName = time().$_FILES['pic']['name'];
+                move_uploaded_file($_FILES['pic']['tmp_name'], $location . '/' . $fileName);
+                $header->pic = $fileName;
+            }
+
+            $header->save();
+
+            $header->pic = asset('uploaded/mainPage/' . $header->pic);
+
+            echo json_encode(['status' => 'ok', 'result' => json_encode($header)]);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function deleteCenterHeaderPic(Request $request)
+    {
+        if(isset($request->id)){
+            $center = MainPageSetting::find($request->id);
+            $location = __DIR__ .'/../../../public/uploaded/mainPage/' . $center->pic;
+            if(is_file($location))
+                unlink($location);
+            $center->delete();
+
+            echo json_encode(['status' => 'ok']);
         }
         else
             echo json_encode(['status' => 'nok']);

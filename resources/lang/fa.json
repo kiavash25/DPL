@@ -35,6 +35,7 @@
     "Yes Deleted": "بله پاک شود",
     "Yes": "بله",
     "No": "خیر",
+    "Deleted": "پاک شد",
     "Create New Category Destination": "ایجاد دسته بندی مقصد جدید",
     "Category Name": "نام دسته بندی",
     "Category Description": "توضیح دسته بندی",
@@ -181,6 +182,7 @@
     "Popular order view change": "ترتیب مشهور به روز رسانی شد",
 
     "Packages": "پکیج",
+    "Image": "عگس",
 
     "Main page setting": "تنظیمات صفحه ی اول",
     "about us text": "متن درباره ی ما",
@@ -200,6 +202,7 @@
 
     "Delete Package": "حذف پکیج",
     "Are you sure you want to remove the": "آیا می خواهید پکیج را پاک کنید؟",
+    "Are you sure you want to remove the content :": "آیا می خواهید محتوا را پاک کنید:",
     "This package is not displayed due to lack of display or date of holding": "این پکیج به دلیل عدم نمایش و یا تاریخ برگزاری نمایش داده نمی شود",
 
     "Popular": "مشهور",
@@ -281,7 +284,7 @@
     "category deleted": "دسته بندی حذف شد",
     "Are you sure you want to remove the category": "آیا می خواهید دسته بندی را پاک کنید؟",
     "This category have journal and cant delete. first delete journals": "دسته بندی را به علت داشتن مجله نمی توانید پاک کنید. ابتدا مجله ها را پاک کنید",
-
+    "Are you sure you want to remove the ": "آیا می خواهید پاک کنید",
     "Edit category destination": "ویرایش دسته بندی مقصد",
     "Activity Descriptions": "توضیحات فعالیت",
     "Map icon": "نشانه گر نقشه",

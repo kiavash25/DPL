@@ -25,8 +25,6 @@ Route::middleware(['web'])->group(function () {
 
     Route::get('welcome/{local?}', 'MainController@mainPage');
 
-    Route::get('/about_us', 'MainController@aboutUs')->name('aboutUs');
-
     Route::post('beforeList', 'MainController@beforeList')->name('beforeList');
 
     Route::get('list/{kind}/{value1}', 'MainController@list')->name('show.list');
@@ -144,8 +142,10 @@ Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
 
     Route::middleware(['auth', 'web', 'acl:setting'])->group(function () {
         Route::get('/admin/setting/mainPage', 'SettingController@mainPage')->name('admin.setting.mainPage');
-        Route::post('/admin/setting/mainPage/storePic', 'SettingController@storeHeaderPicMainPage')->name('admin.setting.storeHeaderPicMainPage');
-        Route::post('/admin/setting/mainPage/storeText', 'SettingController@storeHeaderTextMainPage')->name('admin.setting.storeHeaderTextMainPage');
+        Route::post('/admin/setting/mainPage/storeAboutUsPic', 'SettingController@storeAboutUsPic')->name('admin.setting.storeAboutUsPic');
+        Route::post('/admin/setting/mainPage/storeAboutUs', 'SettingController@storeAboutUs')->name('admin.setting.storeAboutUs');
+        Route::post('/admin/setting/mainPage/storeCenterHeaderPic', 'SettingController@storeCenterHeaderPic')->name('admin.setting.storeCenterHeaderPic');
+        Route::post('/admin/setting/mainPage/deleteCenterHeaderPic', 'SettingController@deleteCenterHeaderPic')->name('admin.setting.deleteCenterHeaderPic');
 
         Route::get('/admin/setting/mainPageSlider', 'SettingController@mainPageSlider')->name('admin.setting.mainPageSlider');
         Route::post('/admin/setting/mainPageSliderStore', 'SettingController@mainPageSliderStore')->name('admin.setting.mainPageSliderStore');

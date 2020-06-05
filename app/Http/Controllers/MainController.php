@@ -29,6 +29,7 @@ use App\models\PackageTagRelation;
 use App\models\PackageThumbnailsPic;
 use App\models\Tags;
 use Carbon\Carbon;
+use DemeterChain\Main;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -92,12 +93,14 @@ class MainController extends Controller
         if($aboutUs != null)
             $aboutUs->pic = asset('uploaded/mainPage/' . $aboutUs->pic);
 
-        return \view('main.mainPage', compact(['destinationCategoryMain', 'recentlyPackage', 'mainPageSlider', 'mapDestination', 'mainSliderJournal', 'aboutUs']));
-    }
+        $center = MainPageSetting::where('header', '!=', 'aboutus')->where('lang', app()->getLocale())->get();
+        foreach ($center as $item)
+            $item->pic = asset('uploaded/mainPage/' . $item->pic);
 
-    public function aboutUs()
-    {
-        return \view('main.aboutUs');
+        return \view('main.mainPage', compact(['destinationCategoryMain',
+                                                    'recentlyPackage', 'mainPageSlider',
+                                                    'mapDestination', 'mainSliderJournal',
+                                                    'aboutUs', 'center']));
     }
 
     public function showActivity($slug)

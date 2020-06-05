@@ -297,14 +297,16 @@
         </div>
     @endif
 
-    <div class="mainContentSection">
-        <div class="container aboutHeader" style="margin-bottom: 10px; text-align: center">
-            {{__('Iran 30 highest summits awards (Seemorgh award)')}}
+    @foreach($center as $item)
+        <div class="mainContentSection">
+            <div class="container aboutHeader" style="margin-bottom: 10px; text-align: center">
+                {{$item->header}}
+            </div>
+            <div class="aboutUsDiv">
+                <img src="{{$item->pic}}" style="max-width: 100%; max-height: 100%">
+            </div>
         </div>
-        <div class="aboutUsDiv">
-            <img src="{{asset('images/mount.png')}}" style="max-width: 100%; max-height: 100%">
-        </div>
-    </div>
+    @endforeach
 
     <div class="container mainContentSection">
         <div class="contactUsTextsHeader">

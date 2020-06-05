@@ -63,6 +63,68 @@
                 </label>
                 <input type="file" name="aboutusPic" id="aboutusPic" accept="image/*" style="display: none" onchange="changeAboutUsPic(this)">
             </div>
+
+            <hr>
+
+            <div class="row">
+
+                <div id="centerResult" style="width: 100%;">
+                    @foreach($center as $item)
+                        <div id="row_{{$item->id}}" class="col-12">
+                            <div id="header_{{$item->id}}" class="container" style="margin-bottom: 10px; text-align: center; font-size: 25px; font-weight: bold;">
+                                {{$item->header}}
+                            </div>
+                            <div class="aboutUsDiv">
+                                <img id="pic_{{$item->id}}" src="{{$item->pic}}" style="max-height: 100%; max-width: 100%">
+                            </div>
+                            <div class="row" style="justify-content: space-evenly;">
+                                <button class="btn btn-primary" onclick="editCenter({{$item->id}})">{{__('Edit')}}</button>
+                                <button class="btn btn-danger" onclick="deleteCenter({{$item->id}})">{{__('Delete')}}</button>
+                            </div>
+                        </div>
+                        <hr>
+                    @endforeach
+                </div>
+
+                <div style="width: 100%; text-align: center">
+                    <div class="addTagIcon" style="margin-left: 30px; color: green" onclick="openNewCenterModal()">
+                        <i class="fas fa-plus-circle" style="cursor: pointer"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal" id="newCenter">
+        <div class="modal-dialog modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="newHeader">{{__('Title')}}</label>
+                            <input type="text" class="form-control" name="newHeader" id="newHeader" maxlength="191">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="newPic">{{__('Image')}}</label>
+                            <input type="file" class="form-control" name="newPic" id="newPic" onchange="showPics(this, 'newImg', setNewPic)">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <img src="" id="newImg" style="max-width: 100%; max-height: 100%;">
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; justify-content: center;">
+                    <input type="hidden" id="editId">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Cancel')}}</button>
+                    <button type="button" class="btn btn-success" onclick="storeNewCenter()" data-dismiss="modal">{{__('Store')}}</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -70,18 +132,18 @@
         <div class="modal-dialog modal-lg" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Destination</h4>
+                    <h4 class="modal-title">{{__('Delete')}}</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        Are you sure you want to remove the <span id="deletedDestinationName" style="font-weight: bold; color: red"></span>?
+                        {{__('Are you sure you want to remove the content :')}} <span id="deleteName" style="font-weight: bold; color: red"></span>?
                     </div>
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: center;">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" onclick="checkDestination()" data-dismiss="modal">Yes Deleted</button>
-                    <input type="hidden" id="deletedDestinationId">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('No')}}</button>
+                    <button type="button" class="btn btn-danger" onclick="doDelete()" data-dismiss="modal">{{__('Yes Deleted')}}</button>
+                    <input type="hidden" id="deleteId">
                 </div>
             </div>
         </div>
@@ -108,7 +170,7 @@
 
                     $.ajax({
                         type: 'post',
-                        url: '{{route("admin.setting.storeHeaderPicMainPage")}}',
+                        url: '{{route("admin.setting.storeAboutUsPic")}}',
                         data: data,
                         processData: false,
                         contentType: false,
@@ -145,7 +207,7 @@
             openLoading();
             $.ajax({
                 type: 'post',
-                url: '{{route("admin.setting.storeHeaderTextMainPage")}}',
+                url: '{{route("admin.setting.storeAboutUs")}}',
                 data: {
                     _token: '{{csrf_token()}}',
                     id: _id,
@@ -169,6 +231,167 @@
                 error: function(error){
                     console.log(error);
                     resultLoading("{{__('Error in Server connection')}}", 'danger');
+                }
+            })
+        }
+    </script>
+
+    <script>
+        let newPic = '';
+        let centerInfo = {!! json_encode($center) !!}
+
+        function setNewPic(_pic){
+            newPic = _pic;
+        }
+
+        function openNewCenterModal(){
+            $('#newImg').attr('src', '');
+            $('#newPic').val('');
+            $('#newHeader').val('');
+            $('#editId').val(0);
+            newPic = '';
+            $('#newCenter').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function storeNewCenter(){
+            let header = $('#newHeader').val();
+            let id = $('#editId').val();
+
+            if(header.trim().length > 0 && ((id == 0 && newPic != '') || id != 0)){
+                let formData = new FormData();
+                formData.append('_token', '{{csrf_token()}}');
+                formData.append('pic', newPic);
+                formData.append('header', header);
+                formData.append('id', id);
+                openLoading();
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.setting.storeCenterHeaderPic")}}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        try{
+                            response = JSON.parse(response);
+                            if(response.status == 'ok'){
+                                resultLoading("{{__('Store')}}", 'success');
+                                console.log(response);
+                                if(id == 0)
+                                    createNewRow(response.result);
+                                else
+                                    updateRow(response.result)
+                            }
+                            else{
+                                console.log(response.status);
+                                resultLoading("Error 3", 'danger');
+                            }
+                        }
+                        catch (e) {
+                            console.log(e);
+                            resultLoading("Error 2", 'danger');
+                        }
+                    },
+                    error: function(err){
+                        console.log(err);
+                        resultLoading("Error 1", 'danger');
+                    }
+                })
+            }
+        }
+
+        function editCenter(_id){
+            let cent = null;
+            centerInfo.forEach(item => {
+                if(item.id == _id)
+                    cent = item;
+            });
+
+            if(cent != null) {
+                $('#newImg').attr('src', cent.pic);
+                $('#newPic').val('');
+                $('#newHeader').val(cent.header);
+                $('#editId').val(cent.id);
+                newPic = '';
+                $('#newCenter').modal({backdrop: 'static', keyboard: false});
+            }
+        }
+
+        function updateRow(_result){
+            _result = JSON.parse(_result);
+            centerInfo.forEach(item => {
+                if(item.id == _result.id){
+                    item.pic = _result.pic;
+                    item.header = _result.header;
+                }
+            });
+
+            $('#header_' + _result.id).text(_result.header);
+            $('#pic_' + _result.id).attr('src', _result.pic);
+        }
+
+        function createNewRow(_result){
+            _result = JSON.parse(_result);
+
+            let text = '<div id="row_' + _result.id + '" class="col-12">\n' +
+                '                            <div class="container" style="margin-bottom: 10px; text-align: center; font-size: 25px; font-weight: bold;">' + _result.header + '</div>\n' +
+                '                            <div class="aboutUsDiv">\n' +
+                '                                <img src="' + _result.pic + '" style="max-height: 100%; max-width: 100%">\n' +
+                '                            </div>\n' +
+                '                            <div class="row" style="justify-content: space-evenly;">\n' +
+                '                                <button class="btn btn-primary" onclick="editCenter(' + _result.id + ')">{{__('Edit')}}</button>\n' +
+                '                                <button class="btn btn-danger" onclick="deleteCenter(' + _result.id + ')">{{__('Delete')}}</button>\n' +
+                '                            </div>\n' +
+                '                        </div>\n' +
+                '                        <hr>';
+
+            $('#centerResult').append(text);
+        }
+
+        function deleteCenter(_id){
+            let cent = null;
+            centerInfo.forEach(item => {
+                if(item.id == _id)
+                    cent = item;
+            });
+
+            if(cent != null){
+                $('#deleteName').text(cent.header) ;
+                $('#deleteId').val(cent.id);
+
+                $('#deleteModal').modal('show');
+            }
+        }
+
+        function doDelete(){
+            let id = $('#deleteId').val();
+
+            openLoading();
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.setting.deleteCenterHeaderPic")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    id: id
+                },
+                success: function(response){
+                    try{
+                        response = JSON.parse(response);
+                        if(response.status == 'ok') {
+                            $('#row_' + id).remove();
+                            resultLoading('Deleted', 'success');
+                        }
+                        else
+                            resultLoading(response.status, 'danger');
+                    }
+                    catch (e) {
+                        console.log(e);
+                        resultLoading('Error 2', 'danger');
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                    resultLoading('Error 1', 'danger');
                 }
             })
         }
