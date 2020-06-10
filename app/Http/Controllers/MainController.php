@@ -209,10 +209,11 @@ class MainController extends Controller
             return redirect(url('/'));
 
         $content->category = $category;
-        if($category->icon != null)
+        $location = __DIR__.'/../../../public/uploaded/destination/category/' . $category->id . '/' . $category->icon;
+        if($category->icon != null && is_file($location))
             $content->icon = asset('uploaded/destination/category/' . $category->id . '/' . $category->icon);
         else
-            $content->icon = null;
+            $content->icon = '0';
 
         $content->titles = DestinationCategoryTitle::where('categoryId', $content->categoryId)->get();
         foreach ($content->titles as $item){

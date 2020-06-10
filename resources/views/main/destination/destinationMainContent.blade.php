@@ -235,7 +235,7 @@
         });
 
         let _icon;
-        if( '{{$content->icon}}' !=  null)
+        if( '{{$content->icon}}' !=  0)
             _icon = {
                 url: '{{$content->icon}}', // url
                 scaledSize: new google.maps.Size(30, 30), // scaled size
