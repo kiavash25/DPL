@@ -25,7 +25,7 @@
 .thumbnailSection{
     display: flex;
     flex-wrap: wrap;
-    margin-top: 30px;
+    margin-top: 15px;
 }
 .thumbnailDiv{
     width: 100px;

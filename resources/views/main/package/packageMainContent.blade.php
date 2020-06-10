@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="{{asset('css/pages/packageMainContent.css')}}">
 
 <div class="aboutPackageDiv">
-    <div class="aboutHeader">
-        {{__('About')}} {{$content->name}}
-    </div>
+{{--    <div class="aboutHeader">--}}
+{{--        {{__('About')}} {{$content->name}}--}}
+{{--    </div>--}}
     <div class="aboutText">
         {!! $content->description !!}
     </div>
@@ -151,7 +151,11 @@
         </div>
     @endif
 
-    <div class="row">
+    <div class="row" style="margin-top: 35px;">
+        <div class="aboutHeader">
+            {{__('Virtual sense')}}
+        </div>
+
         <div class="col-md-12 thumbnailSection">
             @foreach($content->thumbnails as $item)
                 <div class="thumbnailDiv" onclick="openThumbnailPic({{$item->id}})">
@@ -164,64 +168,64 @@
 </div>
 
 
-@if(count($content->packages) > 0)
-    <div style="width: 100%; margin-top: 45px">
-        <a href="{{route('show.list', ['kind' => 'destinationPackage', 'value' => $content->destination->slug])}}">
-            <div class="aboutHeader">
-                {{__('Other Packages In')}} {{$content->destination->name}}
-            </div>
-        </a>
-        <div class="mainContentPackages">
-            <div class="swiper-container packageSwiper" >
+{{--@if(count($content->packages) > 0)--}}
+{{--    <div style="width: 100%; margin-top: 45px">--}}
+{{--        <a href="{{route('show.list', ['kind' => 'destinationPackage', 'value' => $content->destination->slug])}}">--}}
+{{--            <div class="aboutHeader">--}}
+{{--                {{__('Other Packages In')}} {{$content->destination->name}}--}}
+{{--            </div>--}}
+{{--        </a>--}}
+{{--        <div class="mainContentPackages">--}}
+{{--            <div class="swiper-container packageSwiper" >--}}
 
-                <div class="swiper-wrapper" style="padding: 10px;">
-                    @foreach($content->packages as $item)
-                        <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
-                            <div class=" packages">
-                                <div class="packageImgDiv">
-                                    <img src="{{$item->pic}}" class="packageImg" onload="resizeThisImg(this)">
-                                </div>
-                                <div class="packageContentDiv">
-                                    <div class="packageName">
-                                        {{$item->name}}
-                                    </div>
-                                    <div class="packageDescription">
-                                        {{$item->description}}
-                                    </div>
-                                    <div class="packageButtonDiv">
-                                        <a href="{{$item->url}}" class="packageButton">
-                                            {{__('See Package')}}
-                                        </a>
-                                    </div>
+{{--                <div class="swiper-wrapper" style="padding: 10px;">--}}
+{{--                    @foreach($content->packages as $item)--}}
+{{--                        <div class="swiper-slide swiperSlidePackage contentHtmlCenter">--}}
+{{--                            <div class=" packages">--}}
+{{--                                <div class="packageImgDiv">--}}
+{{--                                    <img src="{{$item->pic}}" class="packageImg" onload="resizeThisImg(this)">--}}
+{{--                                </div>--}}
+{{--                                <div class="packageContentDiv">--}}
+{{--                                    <div class="packageName">--}}
+{{--                                        {{$item->name}}--}}
+{{--                                    </div>--}}
+{{--                                    <div class="packageDescription">--}}
+{{--                                        {{$item->description}}--}}
+{{--                                    </div>--}}
+{{--                                    <div class="packageButtonDiv">--}}
+{{--                                        <a href="{{$item->url}}" class="packageButton">--}}
+{{--                                            {{__('See Package')}}--}}
+{{--                                        </a>--}}
+{{--                                    </div>--}}
 
-                                    <div class="packageActivity">
-                                        {{$item->mainActivity->name}}
-                                    </div>
-                                </div>
+{{--                                    <div class="packageActivity">--}}
+{{--                                        {{$item->mainActivity->name}}--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="packageDate">
-                                    @if($item->sD == 'Call')
-                                        <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>
-                                    @else
-                                        <div style="color: white">{{$item->sD}}</div>
-                                        <div style="color: white">{{$item->sM}}</div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
+{{--                                <div class="packageDate">--}}
+{{--                                    @if($item->sD == 'Call')--}}
+{{--                                        <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>--}}
+{{--                                    @else--}}
+{{--                                        <div style="color: white">{{$item->sD}}</div>--}}
+{{--                                        <div style="color: white">{{$item->sM}}</div>--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
 
-                <div id="nextPackage" class="sliderButton nextSlider" style="top: 45%; right: 10px; box-shadow: 0 0 10px 3px black">
-                    <div class="slider arrow right"></div>
-                </div>
-                <div id="prevPackage" class="sliderButton prevSlider" style="top: 45%; left: 10px; box-shadow: 0 0 10px 3px black">
-                    <div class="slider arrow left"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif
+{{--                <div id="nextPackage" class="sliderButton nextSlider" style="top: 45%; right: 10px; box-shadow: 0 0 10px 3px black">--}}
+{{--                    <div class="slider arrow right"></div>--}}
+{{--                </div>--}}
+{{--                <div id="prevPackage" class="sliderButton prevSlider" style="top: 45%; left: 10px; box-shadow: 0 0 10px 3px black">--}}
+{{--                    <div class="slider arrow left"></div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--@endif--}}
 
 @if(count($content->actPackage) > 0)
     <div style="width: 100%; margin-top: 45px">

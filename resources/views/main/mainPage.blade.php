@@ -291,7 +291,7 @@
             </div>
             <div class="aboutUsDiv aboutUsBackground" style="background-image: url({{$aboutUs->pic}});" >
                 <div class="aboutUsText">
-                    <div class="container" style="color: white">{!! $aboutUs->text !!}</div>
+                    <div class="container" style="color: white; text-align: justify">{!! $aboutUs->text !!}</div>
                 </div>
             </div>
         </div>
@@ -522,7 +522,7 @@
     <script>
         let mapDestinations = {!! $mapDestination !!};
         let mapMarker = [];
-        console.log(mapDestinations);
+
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 32.427908, lng: 53.688046},
@@ -542,7 +542,6 @@
                        };
                    else
                        _icon = null;
-
                   let m = new google.maps.Marker({
                       position: new google.maps.LatLng(dest.lat, dest.lng),
                       title: dest.name,

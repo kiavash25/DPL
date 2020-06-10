@@ -253,7 +253,7 @@
         let categoryId = {{isset($category->id) ? $category->id : 0}};
 
         DecoupledEditor.create( document.querySelector('#description'), {
-            toolbar: [ 'bold', 'italic', 'link' ],
+            toolbar: ['heading', 'bold', 'italic', 'link' ],
             language: '{{app()->getLocale()}}'
         }).then( editor => {
                 const toolbarContainer = document.querySelector( 'main .toolbar-container');

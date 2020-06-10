@@ -27,21 +27,32 @@
                     @endforeach
                 </div>
             </div>
+
             <div class="col-3 contentRow">
                 <div class="footerContentHeader">
                     {{__('Fest & Events')}}
                 </div>
+                <a href="#" class="footerContentNormal">
+                    {{__('Sport')}}
+                </a>
+                <a href="#" class="footerContentNormal">
+                    {{__('Local events')}}
+                </a>
+                <a href="#" class="footerContentNormal">
+                    {{__('Training')}}
+                </a>
             </div>
+
+
             <div class="col-3 contentRow">
                 <a href="{{route('journal.index')}}" class="footerContentHeader">
                     {{__('Journal')}}
                 </a>
-{{--                <a href="{{route('aboutUs')}}" class="footerContentHeader">--}}
-{{--                    {{__('About us')}}--}}
-{{--                </a>--}}
-                <a href="#" class="footerContentHeader">
-                    {{__('Contact us')}}
-                </a>
+                @foreach($journalCategoryList as $item)
+                    <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="footerContentNormal">
+                        {{$item->name}}
+                    </a>
+                @endforeach
             </div>
         </div>
 
@@ -65,18 +76,22 @@
             </div>
 
             <button class="accordion">{{__('Fest & Events')}}</button>
+            <div class="panel">
+                <a href="#" class="inPanel">
+                    {{__('Sport')}}
+                </a>
+                <a href="#" class="inPanel">
+                    {{__('Local events')}}
+                </a>
+                <a href="#" class="inPanel">
+                    {{__('Training')}}
+                </a>
+            </div>
 
             <a href="{{route('journal.index')}}">
                 <button class="accordion">{{__('Journal')}}</button>
             </a>
 
-{{--            <a href="{{route('aboutUs')}}">--}}
-{{--                <button class="accordion">{{__('About us')}}</button>--}}
-{{--            </a>--}}
-
-            <a href="#">
-                <button class="accordion">{{__('Contact us')}}</button>
-            </a>
         </div>
 
         <div class="socialContent">

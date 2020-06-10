@@ -107,9 +107,9 @@
     ?>
 
     <div class="col-md-{{$descNum}}">
-        <div class="aboutHeader">
-            {{__('About')}} {{$content->name}}
-        </div>
+{{--        <div class="aboutHeader">--}}
+{{--            {{__('About')}} {{$content->name}}--}}
+{{--        </div>--}}
         <div class="aboutText">
             {!! $content->description !!}
         </div>

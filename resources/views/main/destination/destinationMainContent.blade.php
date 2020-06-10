@@ -107,9 +107,9 @@
     ?>
 
     <div class="col-md-{{$descNum}}">
-        <div class="aboutHeader">
-            {{__('About')}} {{$content->name}}
-        </div>
+{{--        <div class="aboutHeader">--}}
+{{--            {{__('About')}} {{$content->name}}--}}
+{{--        </div>--}}
         <div class="aboutText">
             {!! $content->description !!}
         </div>
@@ -233,12 +233,25 @@
             center: {lat: {{$content->lat}}, lng: {{$content->lng}}},
             zoom: 10
         });
+
+        let _icon;
+        if( '{{$content->icon}}' !=  null)
+            _icon = {
+                url: '{{$content->icon}}', // url
+                scaledSize: new google.maps.Size(30, 30), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+                anchor: new google.maps.Point(15, 30) // anchor
+            };
+        else
+            _icon = null;
+
         marker = new google.maps.Marker({
             position: {
                 lat: parseFloat( {{$content->lat}} ),
                 lng: parseFloat( {{$content->lng}} )
             },
             map: map,
+            icon: _icon
         })
     }
 </script>

@@ -204,12 +204,16 @@ class MainController extends Controller
         if($content == null)
             return redirect(url('/'));
 
-
         $category = DestinationCategory::find($content->categoryId);
         if($category == null)
             return redirect(url('/'));
 
         $content->category = $category;
+        if($category->icon != null)
+            $content->icon = asset('uploaded/destination/category/' . $category->id . '/' . $category->icon);
+        else
+            $content->icon = null;
+
         $content->titles = DestinationCategoryTitle::where('categoryId', $content->categoryId)->get();
         foreach ($content->titles as $item){
             $item->text = DestinationCategoryTitleText::where('destId', $content->id)->where('titleId', $item->id)->first();

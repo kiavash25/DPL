@@ -446,7 +446,7 @@
 
     <script>
         DecoupledEditor.create( document.querySelector('#description'), {
-            toolbar: [ 'bold', 'italic', 'link' ],
+            toolbar: ['heading', 'bold', 'italic', 'link' ],
             language: '{{app()->getLocale()}}'
         }).then( editor => {
             const toolbarContainer = document.querySelector( 'main .toolbar-container');

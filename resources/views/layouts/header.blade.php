@@ -348,13 +348,6 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                         </div>
 
                     </div>
-
-                    <div class="sideNavTabs">
-                        <a href="#">
-                            {{__('Guides and experts')}}
-                        </a>
-                    </div>
-
                 </div>
             </div>
 
@@ -717,11 +710,6 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                             </a>
                             <a href="#" class="navSubListBody">
                                 {{__('Car rental')}}
-                            </a>
-                        </div>
-                        <div class="navSubListRow">
-                            <a href="#" class="navSubListHeader">
-                                {{__('Guides and experts')}}
                             </a>
                         </div>
                     </div>
