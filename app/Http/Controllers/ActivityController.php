@@ -96,9 +96,8 @@ class ActivityController extends Controller
     public function storeActivity(Request $request)
     {
         if(isset($request->id) && isset($request->parentId) && isset($request->name)){
-            $sameName = Activity::where('name', $request->name)->where('id', '!=', $request->id)->first();
+            $sameName = Activity::where('name', $request->name)->where('lang', app()->getLocale())->where('id', '!=', $request->id)->first();
             if($sameName == null){
-
                 if($request->id == 0) {
                     $activity = new Activity();
                     $activity->lang = app()->getLocale();
