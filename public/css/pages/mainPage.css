@@ -1,6 +1,6 @@
 
 .topSlider{
-    height: 450px;
+    height: 70vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -15,13 +15,13 @@
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
     top: 0px;
     left: 0px;
     background-color: #00000061;
     color: white;
     font-size: 45px;
+    padding: 30px 10px;
 }
 .mainSearchCenter{
     width: 100%;

@@ -38,6 +38,26 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         width: 400px;
         left: -20px;
     }
+    .topBlackNav{
+        height: 30px;
+        background: black;
+        width: 100%;
+        color: white;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .topBlackNavDot{
+        display: flex;
+        align-items: center;
+        font-size: 47px;
+        color: white;
+        line-height: 30px;
+        flex-direction: column;
+        padding-bottom: 22px;
+        width: 40px;
+    }
 </style>
 
 <div id="backBlackSideNav" class="backBlack" style="display: none">
@@ -443,6 +463,15 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 </div>
 
 <nav>
+    <div class="topBlackNav mobileHide">
+        {{__('RESERVE NOW!')}}
+        <span class="topBlackNavDot"> . </span>
+        INFO@DISCOVERPERSIALAND.COM
+        <span class="topBlackNavDot"> . </span>
+        <span style="color: white; direction: ltr">
+            +982100000000
+        </span>
+    </div>
     <div class="container navContainer">
         <div class="pcHide threeLineDiv" onclick="openNav()">
             <div class="navThreeLine"></div>

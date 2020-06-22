@@ -78,15 +78,23 @@ class MainController extends Controller
 
         $mapDestination = DestinationCategory::where('lang', app()->getLocale())->get();
         foreach ($mapDestination as $cate){
-            if($cate->icon != null)
-                $cate->icon = asset('uploaded/destination/category/' . $cate->id . '/' . $cate->icon);
-            else
-                $cate->icon = null;
+            if($cate->langSource == 0) {
+                if ($cate->icon != null)
+                    $cate->icon = asset('uploaded/destination/category/' . $cate->id . '/' . $cate->icon);
+                else
+                    $cate->icon = null;
+            }
+            else{
+                $sourceIcon = DestinationCategory::find($cate->langSource);
+                if($sourceIcon != null && $sourceIcon->icon != null)
+                    $cate->icon = asset('uploaded/destination/category/' . $sourceIcon->id . '/' . $sourceIcon->icon);
+                else
+                    $cate->icon = null;
+            }
 
             $cate->destinations = Destination::where('lang', app()->getLocale())->where('categoryId', $cate->id)->select(['id', 'name', 'slug', 'lat', 'lng'])->get();
-            foreach ($cate->destinations as $item){
+            foreach ($cate->destinations as $item)
                 $item->url = route('show.destination', ['slug' => $item->slug]);
-            }
         }
 
         $aboutUs = MainPageSetting::where('header', 'aboutus')->where('lang', app()->getLocale())->first();

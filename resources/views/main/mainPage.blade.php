@@ -37,6 +37,9 @@
         .aboutUsDiv{
             min-height: 50vh;
         }
+        .aboutUsDiv p{
+            color: white;
+        }
         .aboutUsBackground{
 
             background-size: cover, contain;
@@ -65,6 +68,9 @@
             font-size: 19px;
             border-radius: 3px;
             width: 300px;
+        }
+        .supportUsSection{
+
         }
 
         @media (max-width: 500px) {
@@ -122,7 +128,7 @@
             </div>
         @endif
 
-        <div class="textSlider" style=" flex-direction: column; text-align: center; z-index: 1; cursor: context-menu;">
+        <div class="textSlider" style=" flex-direction: column; z-index: 1; cursor: context-menu;">
             {{__('Culventure: metamorphosis of travel Experience')}}
             @if(count($mainPageSlider) > 1)
                 <div id="nextMainSlider" class="sliderButton nextSlider">
@@ -291,7 +297,7 @@
             </div>
             <div class="aboutUsDiv aboutUsBackground" style="background-image: url({{$aboutUs->pic}});" >
                 <div class="aboutUsText">
-                    <div class="container" style="color: white; text-align: justify">{!! $aboutUs->text !!}</div>
+                    <div class="container " style="color: white; text-align: justify">{!! $aboutUs->text !!}</div>
                 </div>
             </div>
         </div>
@@ -323,7 +329,6 @@
         </div>
     </div>
 
-
     <div class="mapSection">
         <div id="map" class="map" style="min-height: 400px"></div>
         <div class="mapOptionDiv">
@@ -340,6 +345,10 @@
                 @endforeach
             </div>
         </div>
+    </div>
+
+    <div class="supportUsSection">
+
     </div>
 @endsection
 

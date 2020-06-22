@@ -2,6 +2,8 @@
 
 @section('head')
     <script src="{{asset('js/autosize.min.js')}}"></script>
+    <script src="{{asset('js/ckeditor.js')}}"></script>
+
     <style>
         .aboutUsDiv{
             min-height: 50vh;
@@ -50,7 +52,11 @@
                                                         background-position: center;">
                         <div class="aboutUsText">
                             <div class="container">
-                                <textarea name="aboutusText" id="text_aboutus" cols="30" rows="10" class="form-control"  style="color: white; background: inherit; text-align: justify; font-size: 20px">{!! isset($aboutUs->text) ? $aboutUs->text : '' !!}</textarea>
+                                <div class="toolbar-container"></div>
+                                <div id="text_aboutus" class="textEditor">
+                                    {!! isset($aboutUs->text) ? $aboutUs->text : '' !!}
+                                </div>
+{{--                                <textarea name="aboutusText" id="text_aboutus" cols="30" rows="10" class="form-control"  style="color: white; background: inherit; text-align: justify; font-size: 20px"></textarea>--}}
                             </div>
                         </div>
                     </div>
@@ -157,6 +163,18 @@
             autosize($('textarea'));
         });
 
+        DecoupledEditor.create( document.querySelector( '#text_aboutus'),{
+            language: '{{app()->getLocale()}}'
+        }).then( editor => {
+            const toolbarContainer = document.querySelector( 'main .toolbar-container');
+            toolbarContainer.prepend( editor.ui.view.toolbar.element );
+
+            window.editor = editor;
+        } )
+            .catch( err => {
+                console.error( err.stack );
+            } );
+
         function changeAboutUsPic(_input){
             if(_input.files && _input.files[0]){
                 let reader = new FileReader();
@@ -203,7 +221,12 @@
         }
 
         function changeHeaderText(_id){
-            let text = $('#text_' + _id).val();
+            let text;
+            if(_id != 'aboutus')
+                text = $('#text_' + _id).val();
+            else
+                text = window.editor.getData();
+
             openLoading();
             $.ajax({
                 type: 'post',
