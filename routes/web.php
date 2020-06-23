@@ -23,6 +23,8 @@ Auth::routes();
 Route::middleware(['web'])->group(function () {
     Route::get('/', 'MainController@mainPage');
 
+    Route::post('/subscribe/store', 'MainController@subscribeStore')->name('subscribe.store');
+
     Route::get('welcome/{local?}', 'MainController@mainPage');
 
     Route::post('beforeList', 'MainController@beforeList')->name('beforeList');

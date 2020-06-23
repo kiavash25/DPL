@@ -337,7 +337,7 @@
         });
 
         @if($kind != 'destination')
-            openLoading();
+            openLoadingSample();
 
             function openFilterDropDown(_element){
                 var nextElem = $(_element).next();
@@ -518,7 +518,7 @@
                 createFilters();
 
                 if(!isLoading && !isFinish){
-                    openLoading();
+                    openLoadingSample();
                     isLoading = true;
                     $.ajax({
                         type: 'post',

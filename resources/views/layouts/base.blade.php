@@ -63,6 +63,7 @@
 </head>
 <body style="overflow-x: hidden">
 <div>
+    @include('common.alerts')
 
     <div class="loadingDiv">
         <div class="loadingLogo">
@@ -129,7 +130,7 @@
         resizeImg('resizeImage');
     });
 
-    function openLoading(){
+    function openLoadingSample(){
         $('.loadingDiv').css('display', 'flex');
     }
     function closeLoading(){

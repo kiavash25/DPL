@@ -27,6 +27,7 @@ use App\models\PackagePic;
 use App\models\PackageSideInfo;
 use App\models\PackageTagRelation;
 use App\models\PackageThumbnailsPic;
+use App\models\Subscribe;
 use App\models\Tags;
 use Carbon\Carbon;
 use DemeterChain\Main;
@@ -814,6 +815,28 @@ class MainController extends Controller
         echo json_encode(['status' => 'ok', 'result' => $packages]);
         return;
 
+    }
+
+    public function subscribeStore(Request $request)
+    {
+        if(isset($request->first) && isset($request->last) && isset($request->email)){
+            $sub = Subscribe::where('email', $request->email)->first();
+            if($sub == null){
+                $sub = new Subscribe();
+                $sub->firstName = $request->first;
+                $sub->lastName = $request->last;
+                $sub->email = $request->email;
+                $sub->save();
+
+                echo 'ok';
+            }
+            else
+                echo 'nok1';
+        }
+        else
+            echo 'nok';
+
+        return;
     }
 
 }

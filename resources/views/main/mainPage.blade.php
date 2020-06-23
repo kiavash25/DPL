@@ -3,91 +3,7 @@
 @section('head')
     <link rel="stylesheet" href="{{asset('css/swiper/swiper.css')}}">
     <link rel="stylesheet" href="{{asset('css/pages/mainPage.css')}}">
-    <link href="https://fonts.googleapis.com/css?family=Archivo+Black|Caveat|Kaushan+Script|Lobster&display=swap"
-          rel="stylesheet">
-
-    <style>
-        .fullLabel {
-            width: 100%;
-            height: 100%;
-            left: 0px;
-            top: 0px;
-            padding: 15px 10px;;
-        }
-        .contactUsTexts, .aboutUsDiv{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            overflow: hidden;
-        }
-        .contactUsTextsHeader{
-            font-size: 35px ;
-            font-weight: bold;
-        }
-        .contactUsTexts{
-            padding: 0px 50px;
-            font-size: 18px;
-            text-align: justify;
-        }
-        .contactUsButtonDiv{
-            display: flex;
-            margin-top: 25px
-        }
-        .aboutUsDiv{
-            min-height: 50vh;
-        }
-        .aboutUsDiv p{
-            color: white;
-        }
-        .aboutUsBackground{
-
-            background-size: cover, contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        .aboutUsText{
-            width: 100%;
-            color: white;
-            min-height: 50vh;
-            text-align: justify;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #00000042;
-            font-size: 20px;
-            padding: 30px;
-        }
-        .contactUsButton{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #1f75b9;
-            color: white;
-            padding: 15px;
-            font-size: 19px;
-            border-radius: 3px;
-            width: 300px;
-        }
-        .supportUsSection{
-
-        }
-
-        @media (max-width: 500px) {
-            .aboutUsText{
-                padding: 30px 0px;
-            }
-            .contactUsTextsHeader{
-                text-align: center;
-            }
-            .contactUsTexts{
-                padding: 0px;
-            }
-            .contactUsButtonDiv{
-                justify-content: center;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black|Caveat|Kaushan+Script|Lobster&display=swap" rel="stylesheet">
 
     <script src="{{asset('js/swiper/swiper.js')}}"></script>
 
@@ -221,12 +137,21 @@
                                 <a href="{{$item->url}}" class="recentlyPackageName">
                                     {{$item->name}}
                                 </a>
-                                <div class="recentlyPackageCost">
-                                    @if($item->day != null)
-                                        {{$item->day}} {{__('Day')}}
-                                    @endif
-                                    <span style="font-weight: bold">{{$item->money}} {{$currencySymbol}}</span>
+                                <div class="recentlyPackageTextContent">
+                                    {{$item->description}}
                                 </div>
+                                <a href="{{$item->url}}" class="recentlyPackageShowButton">
+                                    <i class="fas fa-long-arrow-alt-right" style="color: #1f75b9"></i>
+                                </a>
+{{--                                <div class="recentlyPackageDay">--}}
+{{--                                    @if($item->day != null)--}}
+{{--                                        {{$item->day}} {{__('Day')}}--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
+                                <div class="recentlyPackageCost">
+                                    {{$item->money}} {{$currencySymbol}}
+                                </div>
+
                             </div>
                         </div>
                     @endforeach
@@ -245,11 +170,19 @@
                                     <a href="{{$item->url}}" class="recentlyPackageName">
                                         {{$item->name}}
                                     </a>
+                                    <div class="recentlyPackageTextContent">
+                                        {{$item->description}}
+                                    </div>
+                                    <a href="{{$item->url}}" class="recentlyPackageShowButton">
+                                        <i class="fas fa-long-arrow-alt-right" style="color: #1f75b9"></i>
+                                    </a>
+{{--                                    <div class="recentlyPackageDay">--}}
+{{--                                        @if($item->day != null)--}}
+{{--                                            {{$item->day}} {{__('Day')}}--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
                                     <div class="recentlyPackageCost">
-                                        @if($item->day != null)
-                                            {{$item->day}} {{__('Day')}}
-                                        @endif
-                                        <span style="font-weight: bold">{{$item->money}} {{$currencySymbol}}</span>
+                                        {{$item->money}} {{$currencySymbol}}
                                     </div>
                                 </div>
                             </div>
@@ -289,6 +222,65 @@
             </div>
         @endif
     </div>
+    <div class="container subscribeSection">
+        <div class="row subscribeRow">
+            <div class="col-12 aboutHeader" style="color: white;">
+                {{__('Subscribe')}}
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="subscribeFirst" class="subscribeInput" placeholder="{{__('First name')}}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="subscribeLast" class="subscribeInput" placeholder="{{__('Last name')}}">
+            </div>
+            <div class="col-md-3">
+                <input type="email" id="subscribeEmail" class="subscribeInput" placeholder="{{__('Email')}}">
+            </div>
+            <div class="col-md-3">
+                <button class="subscribeButton" onclick="storeSubscribe()">{{__('Subscribe')}}</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function storeSubscribe(){
+            let first = $('#subscribeFirst').val();
+            let last = $('#subscribeLast').val();
+            let email = $('#subscribeEmail').val();
+
+            if(first.trim().length == 0 || last.trim().length == 0 || email.trim().length == 0)
+                alert('{{__('error.subscribeFill')}}');
+            else{
+                openLoading();
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("subscribe.store")}}',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        first: first,
+                        last: last,
+                        email: email
+                    },
+                    success: function(response){
+                        if(response == 'ok') {
+                            $('#subscribeFirst').val('');
+                            $('#subscribeLast').val('');
+                            $('#subscribeEmail').val('');
+                            resultLoading('{{__('error.subscribeSuccess')}}', 'success');
+                        }
+                        else if(response == 'nok1')
+                            resultLoading('{{__('error.emailDup')}}', 'danger');
+                        else
+                            resultLoading('{{__('error.serverConnection')}}', 'danger');
+                    },
+                    error: function(err){
+                        console.log(err);
+                        resultLoading('{{__('error.serverConnection')}}', 'danger');
+                    }
+                })
+            }
+        }
+    </script>
 
     @if($aboutUs != null)
         <div class="mainContentSection">
@@ -359,6 +351,7 @@
 
         new Swiper('#recentSwiper', {
             loop: true,
+            centeredSlides: true,
             slidesPerView: 'auto',
             navigation: {
                 nextEl: '#nextPackageSide',

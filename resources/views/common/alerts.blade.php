@@ -14,9 +14,9 @@
 <div id="alertDiv" class="backBlack alertBackBlack">
     <div id="alertMainBody" class="alertMainBody">
         <div class="alertTopCircle loadingCircle">
-            <i id="alertSuccessIcon" class="fas fa-check" style="display: none"></i>
-            <i id="alertDangerIcon" class="fas fa-times" style="display: none"></i>
-            <i id="alertWarningIcon" style="display: none">!</i>
+            <i id="alertSuccessIcon" class="fas fa-check" style="display: none; color: white"></i>
+            <i id="alertDangerIcon" class="fas fa-times" style="display: none; color: white"></i>
+            <i id="alertWarningIcon" style="display: none; color: white">!</i>
             <img id="alertLoading" src="{{asset('images/mainImage/loading.gif')}}" style="width: 100%;" >
         </div>
         <div id="alertMsg" class="alertMsg"></div>
