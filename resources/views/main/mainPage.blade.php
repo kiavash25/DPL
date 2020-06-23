@@ -242,46 +242,6 @@
         </div>
     </div>
 
-    <script>
-        function storeSubscribe(){
-            let first = $('#subscribeFirst').val();
-            let last = $('#subscribeLast').val();
-            let email = $('#subscribeEmail').val();
-
-            if(first.trim().length == 0 || last.trim().length == 0 || email.trim().length == 0)
-                alert('{{__('error.subscribeFill')}}');
-            else{
-                openLoading();
-                $.ajax({
-                    type: 'post',
-                    url: '{{route("subscribe.store")}}',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        first: first,
-                        last: last,
-                        email: email
-                    },
-                    success: function(response){
-                        if(response == 'ok') {
-                            $('#subscribeFirst').val('');
-                            $('#subscribeLast').val('');
-                            $('#subscribeEmail').val('');
-                            resultLoading('{{__('error.subscribeSuccess')}}', 'success');
-                        }
-                        else if(response == 'nok1')
-                            resultLoading('{{__('error.emailDup')}}', 'danger');
-                        else
-                            resultLoading('{{__('error.serverConnection')}}', 'danger');
-                    },
-                    error: function(err){
-                        console.log(err);
-                        resultLoading('{{__('error.serverConnection')}}', 'danger');
-                    }
-                })
-            }
-        }
-    </script>
-
     @if($aboutUs != null)
         <div class="mainContentSection">
             <div class="container aboutHeader" style="margin-bottom: 10px">
@@ -341,6 +301,24 @@
 
     <div class="supportUsSection">
 
+        <div class="container supportUsCont">
+            <div class="contactUsTextsHeader">
+                {{__('Who support us')}}
+            </div>
+
+            <div class="supportUsContent">
+                @foreach($supportUs as $item)
+                    <a href="{{$item->link}}" class="supportUsDiv">
+                        <div class="supportUsImgDiv">
+                            <img src="{{$item->pic}}" class="supportUsImg">
+                        </div>
+                        <div class="supportUsName">
+                            {{$item->name}}
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -518,6 +496,45 @@
                 $('#searchForm').submit();
             }
         }
+
+        function storeSubscribe(){
+            let first = $('#subscribeFirst').val();
+            let last = $('#subscribeLast').val();
+            let email = $('#subscribeEmail').val();
+
+            if(first.trim().length == 0 || last.trim().length == 0 || email.trim().length == 0)
+                alert('{{__('error.subscribeFill')}}');
+            else{
+                openLoading();
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("subscribe.store")}}',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        first: first,
+                        last: last,
+                        email: email
+                    },
+                    success: function(response){
+                        if(response == 'ok') {
+                            $('#subscribeFirst').val('');
+                            $('#subscribeLast').val('');
+                            $('#subscribeEmail').val('');
+                            resultLoading('{{__('error.subscribeSuccess')}}', 'success');
+                        }
+                        else if(response == 'nok1')
+                            resultLoading('{{__('error.emailDup')}}', 'danger');
+                        else
+                            resultLoading('{{__('error.serverConnection')}}', 'danger');
+                    },
+                    error: function(err){
+                        console.log(err);
+                        resultLoading('{{__('error.serverConnection')}}', 'danger');
+                    }
+                })
+            }
+        }
+
     </script>
 
 
@@ -576,6 +593,7 @@
                     item.setVisible(true);
             })
         }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>
 

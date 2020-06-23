@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\models\Language;
 use App\models\MainPageSetting;
 use App\models\MainPageSlider;
+use App\models\SupportUs;
 use Couchbase\TermRangeSearchQuery;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
@@ -146,7 +147,14 @@ class SettingController extends Controller
         foreach ($center as $pic)
             $pic->pic = asset('uploaded/mainPage/' . $pic->pic);
 
-        return view('admin.setting.mainPageSetting', compact(['aboutUs', 'center']));
+        $supportUs = SupportUs::all();
+        foreach ($supportUs as $item) {
+            $item->pic = asset('uploaded/mainPage/' . $item->pic);
+            if($item->link == null)
+                $item->link = '#';
+        }
+
+        return view('admin.setting.mainPageSetting', compact(['aboutUs', 'center', 'supportUs']));
     }
 
     public function storeAboutUsPic(Request $request)
@@ -258,6 +266,67 @@ class SettingController extends Controller
         }
         else
             echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function storeSupportUs(Request $request)
+    {
+        if(isset($request->id) && isset($request->name)){
+            if($request->id != 0)
+                $sup = SupportUs::find($request->id);
+            else
+                $sup = new SupportUs();
+
+            $sup->name = $request->name;
+            $sup->link = $request->link;
+
+            if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                $location = __DIR__ .'/../../../public/uploaded/mainPage';
+                if(!is_dir($location))
+                    mkdir($location);
+
+                $image = $request->file('pic');
+                $size = [
+                    [
+                        'width' => null,
+                        'height' => 150,
+                        'name' => '',
+                        'destination' => 'uploaded/mainPage'
+                    ]
+                ];
+                $fileName = resizeImage($image, $size);
+                $sup->pic = $fileName;
+            }
+
+            $sup->save();
+
+            $sup->pic = asset('uploaded/mainPage/' . $sup->pic);
+
+            if($sup->link == null)
+                $sup->link = '#';
+
+            echo json_encode(['status' => 'ok', 'result' => json_encode($sup)]);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function deleteSupportUs(Request $request)
+    {
+        if(isset($request->id)){
+            $sup = SupportUs::find($request->id);
+            $location = __DIR__ .'/../../../public/uploaded/mainPage/' . $sup->pic;
+            if(is_file($location))
+                unlink($location);
+            $sup->delete();
+
+            echo 'ok';
+        }
+        else
+            echo 'nok';
 
         return;
     }

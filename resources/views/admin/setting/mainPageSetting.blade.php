@@ -5,6 +5,10 @@
     <script src="{{asset('js/ckeditor.js')}}"></script>
 
     <style>
+        .row{
+            width: 100%;
+            margin: 0px;
+        }
         .aboutUsDiv{
             min-height: 50vh;
             display: flex;
@@ -24,6 +28,57 @@
             background-color: #00000042;
             font-size: 20px;
             padding: 30px;
+        }
+
+        .contactUsTextsHeader{
+            font-size: 35px ;
+            font-weight: bold;
+            display: flex;
+            color: #2c3e50;
+        }
+        .supportUsSection{
+            width: 100%;
+            margin-top: 15px;
+        }
+        .supportUsContent{
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+        }
+        .supportUsDiv{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 150px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .supportUsImgDiv{
+            width: 120px;
+            height: 120px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+        .supportUsImg{
+            height: 100%;
+            transition: .2s;
+        }
+        .supportUsName{
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: .2s;
+            color: #2c3e50;
+        }
+        .supportUsDiv:hover .supportUsImg{
+            transform: scale(1.1);
+        }
+        .supportUsDiv:hover .supportUsName{
+            color: #1f75b9;
         }
     </style>
 @endsection
@@ -56,7 +111,6 @@
                                 <div id="text_aboutus" class="textEditor">
                                     {!! isset($aboutUs->text) ? $aboutUs->text : '' !!}
                                 </div>
-{{--                                <textarea name="aboutusText" id="text_aboutus" cols="30" rows="10" class="form-control"  style="color: white; background: inherit; text-align: justify; font-size: 20px"></textarea>--}}
                             </div>
                         </div>
                     </div>
@@ -69,11 +123,9 @@
                 </label>
                 <input type="file" name="aboutusPic" id="aboutusPic" accept="image/*" style="display: none" onchange="changeAboutUsPic(this)">
             </div>
-
             <hr>
 
             <div class="row">
-
                 <div id="centerResult" style="width: 100%;">
                     @foreach($center as $item)
                         <div id="row_{{$item->id}}" class="col-12">
@@ -95,6 +147,34 @@
                 <div style="width: 100%; text-align: center">
                     <div class="addTagIcon" style="margin-left: 30px; color: green" onclick="openNewCenterModal()">
                         <i class="fas fa-plus-circle" style="cursor: pointer"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="supportUsSection">
+                    <div class="container supportUsCont">
+                        <div class="contactUsTextsHeader">
+                            {{__('Who support us')}}
+                            <div class="addTagIcon" style="margin-left: 30px; color: green" onclick="openNewSupportUs()">
+                                <i class="fas fa-plus-circle" style="cursor: pointer"></i>
+                            </div>
+                        </div>
+
+                        <div id="supportUsDiv" class="supportUsContent">
+                            @foreach($supportUs as $item)
+                                <div id="supp_{{$item->id}}" class="supportUsDiv">
+                                    <div class="supportUsImgDiv">
+                                        <img id="suppPic_{{$item->id}}" src="{{$item->pic}}" class="supportUsImg">
+                                    </div>
+                                    <a href="{{$item->link}}" id="suppName_{{$item->id}}" class="supportUsName" target="_blank">{{$item->name}}</a>
+                                    <div>
+                                        <button class="btn btn-primary" onclick="editSupportUs({{$item->id}})">{{__('Edit')}}</button>
+                                        <button class="btn btn-danger" onclick="deleteSupportUs({{$item->id}})">{{__('Delete')}}</button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,6 +214,46 @@
         </div>
     </div>
 
+    <div class="modal" id="newSupportUs">
+        <div class="modal-dialog modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="newSupportUsName">{{__('Name')}}</label>
+                            <input type="text" class="form-control" name="newSupportUsName" id="newSupportUsName" maxlength="191">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="newSupportUsLink">{{__('Link')}}</label>
+                            <input type="text" class="form-control" name="newSupportUsLink" id="newSupportUsLink" maxlength="191">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="newSupportUsPic">{{__('Image')}}</label>
+                            <input type="file" class="form-control" name="newSupportUsPic" id="newSupportUsPic" onchange="showPics(this, 'newSupportUsImg', setNewPicSuppUs)">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width: 120px; height: 120px; overflow: hidden; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                            <img src="" id="newSupportUsImg" style="height: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; justify-content: center;">
+                    <input type="hidden" id="editSupportUsId">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Cancel')}}</button>
+                    <button type="button" class="btn btn-success" onclick="storeNewSupportUs()">{{__('Store')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="deleteModal">
         <div class="modal-dialog modal-lg" >
             <div class="modal-content">
@@ -159,6 +279,11 @@
 
 @section('script')
     <script>
+        let newPic = '';
+        let newSupportUsPic = '';
+        let centerInfo = {!! json_encode($center) !!};
+        let supportUs = {!! json_encode($supportUs) !!};
+
         $(window).ready(function(){
             autosize($('textarea'));
         });
@@ -257,11 +382,6 @@
                 }
             })
         }
-    </script>
-
-    <script>
-        let newPic = '';
-        let centerInfo = {!! json_encode($center) !!}
 
         function setNewPic(_pic){
             newPic = _pic;
@@ -417,6 +537,154 @@
                     resultLoading('Error 1', 'danger');
                 }
             })
+        }
+
+
+        function openNewSupportUs(){
+            $('#editSupportUsId').val(0);
+            newSupportUsPic = '';
+
+            $('#newSupportUsName').val('');
+            $('#newSupportUsLink').val('');
+            $('#newSupportUsPic').val('');
+            $('#newSupportUsImg').attr('href', '');
+
+            $('#newSupportUs').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function setNewPicSuppUs(_pic){
+            newSupportUsPic = _pic;
+        }
+
+        function storeNewSupportUs(){
+            let id = $('#editSupportUsId').val();
+            let name = $('#newSupportUsName').val();
+            let link = $('#newSupportUsLink').val();
+
+            if(name.trim().length > 0 && ((id == 0 && newSupportUsPic != '') || id != 0)){
+                let formData = new FormData();
+                formData.append('_token', '{{csrf_token()}}');
+                formData.append('id', id);
+                formData.append('pic', newSupportUsPic);
+                formData.append('name', name);
+                formData.append('link', link);
+                openLoading();
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route("admin.setting.supportUs.store")}}',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        try{
+                            response = JSON.parse(response);
+                            if(response.status == 'ok'){
+                                resultLoading("{{__('Store')}}", 'success');
+                                console.log(response.result);
+                                if(id == 0)
+                                    createSupportUs(response.result);
+                                else
+                                    updateSupportUs(response.result)
+                            }
+                            else{
+                                console.log(response.status);
+                                resultLoading("Error 3", 'danger');
+                            }
+                        }
+                        catch (e) {
+                            console.log(e);
+                            resultLoading("Error 2", 'danger');
+                        }
+                    },
+                    error: function(err){
+                        console.log(err);
+                        resultLoading("Error 1", 'danger');
+                    }
+                })
+            }
+            else
+                alert("error")
+        }
+
+        function createSupportUs(_result){
+            _result = JSON.parse(_result);
+            let _id   = _result.id;
+            let _name = _result.name;
+            let _link = _result.link;
+            let _pic  = _result.pic;
+
+            let text =  '<div id="supp_' + _id + '" class="supportUsDiv">\n' +
+                        '                                <div class="supportUsImgDiv">\n' +
+                        '                                    <img id="suppPic_' + _id + '" src="' + _pic + '" class="supportUsImg">\n' +
+                        '                                </div>\n' +
+                        '                                <a href="' + _link + '" id="suppName_' + _id + '" class="supportUsName"  target="_blank">' + _name + '</a>\n' +
+                        '                                <div>\n' +
+                        '                                    <button class="btn btn-primary" onclick="editSupportUs(' + _id + ')">{{__('Edit')}}</button>\n' +
+                        '                                    <button class="btn btn-danger" onclick="deleteSupportUs(' + _id + ')">{{__('Delete')}}</button>\n' +
+                        '                                </div>\n' +
+                        '                            </div>';
+
+            $('#supportUsDiv').append(text);
+        }
+
+        function updateSupportUs(_result){
+            _result = JSON.parse(_result);
+            supportUs.forEach(item => {
+                if(item.id == _result.id){
+                    item.pic = _result.pic;
+                    item.name = _result.name;
+                    item.link = _result.link;
+                }
+            });
+
+            $('#suppName_' + _result.id).text(_result.name);
+            $('#suppPic_' + _result.id).attr('src', _result.pic);
+            $('#suppName_' + _result.id).attr('href', _result.link);
+        }
+
+        function deleteSupportUs(_id){
+            openLoading();
+
+            $.ajax({
+                type: 'post',
+                url: '{{route("admin.setting.supportUs.delete")}}',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    id: _id
+                },
+                success: function(response){
+                    if(response == 'ok') {
+                        $('#supp_' + _id).remove();
+                        resultLoading('{{__('Deleted')}}', 'success');
+                    }
+                    else
+                        resultLoading(response, 'danger');
+                },
+                error: function(err){
+                    console.log(err);
+                    resultLoading('Error 1', 'danger');
+                }
+            })
+        }
+
+        function editSupportUs(_id){
+            let supUs = null;
+            supportUs.forEach(item => {
+                if(item.id == _id)
+                    supUs = item;
+            });
+
+            if(supUs != null) {
+                newSupportUsPic = '';
+                $('#editSupportUsId').val(supUs.id);
+                $('#newSupportUsName').val(supUs.name);
+                $('#newSupportUsLink').val(supUs.link);
+                $('#newSupportUsPic').val('');
+                $('#newSupportUsImg').attr('href', supUs.pic);
+
+                $('#newSupportUs').modal({backdrop: 'static', keyboard: false});
+            }
         }
     </script>
 @endsection

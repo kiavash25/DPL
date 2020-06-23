@@ -149,6 +149,9 @@ Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
         Route::post('/admin/setting/mainPage/storeCenterHeaderPic', 'SettingController@storeCenterHeaderPic')->name('admin.setting.storeCenterHeaderPic');
         Route::post('/admin/setting/mainPage/deleteCenterHeaderPic', 'SettingController@deleteCenterHeaderPic')->name('admin.setting.deleteCenterHeaderPic');
 
+        Route::post('/admin/setting/mainPage/supportUs/store', 'SettingController@storeSupportUs')->name('admin.setting.supportUs.store');
+        Route::post('/admin/setting/mainPage/supportUs/delete', 'SettingController@deleteSupportUs')->name('admin.setting.supportUs.delete');
+
         Route::get('/admin/setting/mainPageSlider', 'SettingController@mainPageSlider')->name('admin.setting.mainPageSlider');
         Route::post('/admin/setting/mainPageSliderStore', 'SettingController@mainPageSliderStore')->name('admin.setting.mainPageSliderStore');
         Route::post('/admin/setting/mainPageSliderChangeNumber', 'SettingController@mainPageSliderChangeNumber')->name('admin.setting.mainPageSliderChangeNumber');

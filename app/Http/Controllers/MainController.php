@@ -28,6 +28,7 @@ use App\models\PackageSideInfo;
 use App\models\PackageTagRelation;
 use App\models\PackageThumbnailsPic;
 use App\models\Subscribe;
+use App\models\SupportUs;
 use App\models\Tags;
 use Carbon\Carbon;
 use DemeterChain\Main;
@@ -106,7 +107,14 @@ class MainController extends Controller
         foreach ($center as $item)
             $item->pic = asset('uploaded/mainPage/' . $item->pic);
 
-        return \view('main.mainPage', compact(['destinationCategoryMain',
+        $supportUs = SupportUs::all();
+        foreach ($supportUs as $item) {
+            $item->pic = asset('uploaded/mainPage/' . $item->pic);
+            if($item->link == null)
+                $item->link = '#';
+        }
+
+        return \view('main.mainPage', compact(['destinationCategoryMain', 'supportUs',
                                                     'recentlyPackage', 'mainPageSlider',
                                                     'mapDestination', 'mainSliderJournal',
                                                     'aboutUs', 'center']));
@@ -643,7 +651,7 @@ class MainController extends Controller
                             $ci = City::find($destination->cityId);
                             $guidance = ['value1' => 'Destination', 'value1Url' => route('show.list', ['kind' => 'destination', 'value1' => 'All']),
                                 'value2' => $destination->name, 'value2Url' => route('show.destination', ['slug' => $destination->slug])];
-                            $title = $destination->name . ' Package List';
+                            $title = $destination->name . ' ' . __('Package List');
                             $destination = $destination->id;
                         }
                         session()->forget('destId');
