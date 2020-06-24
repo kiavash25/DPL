@@ -35,14 +35,19 @@ class SettingController extends Controller
             $size = [
                 [
                     'width' => null,
-                    'height' => 450,
+                    'height' => 600,
                     'name' => '',
                     'destination' => 'images/MainSliderPics'
                 ]
             ];
             $fileName = resizeImage($image, $size);
             if($fileName != 'error'){
-                $maxNumber = MainPageSlider::orderByDesc('showNumber')->first()->showNumber;
+                $maxNumber = MainPageSlider::orderByDesc('showNumber')->first();
+
+                if($maxNumber == null)
+                    $maxNumber = 1;
+                else
+                    $maxNumber = $maxNumber->showNumber;
                 $pic = new MainPageSlider();
                 $pic->pic = $fileName;
                 $pic->showNumber = $maxNumber+1;

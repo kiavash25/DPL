@@ -40,7 +40,7 @@
             </div>
         @else
             <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
-                <img class="resizeImage" src="{{$mainPageSlider[0]->pic}}" alt="DPL" style="height: 450px">
+                <img class="resizeImage" src="{{isset($mainPageSlider[0]->pic) ? $mainPageSlider[0]->pic : ''}}" alt="DPL" style="height: 450px">
             </div>
         @endif
 
@@ -308,7 +308,7 @@
 
             <div class="supportUsContent">
                 @foreach($supportUs as $item)
-                    <a href="{{$item->link}}" class="supportUsDiv">
+                    <a href="{{$item->link}}" class="supportUsDiv" target="_blank">
                         <div class="supportUsImgDiv">
                             <img src="{{$item->pic}}" class="supportUsImg">
                         </div>
