@@ -74,7 +74,7 @@ class DestinationController extends Controller
             $item->pic = asset('uploaded/destination/'. $id . '/' . $item->pic);
         $destination->sidePic = $sideImage;
 
-        if($destination->video != null)
+        if($destination->video != null && $destination->isEmbeded == 0)
             $destination->video = asset('uploaded/destination/' . $destination->id . '/' . $destination->video);
 
         if($destination->podcast != null)
@@ -122,6 +122,20 @@ class DestinationController extends Controller
             $dest->categoryId = $request->categoryId;
             $dest->countryId = 107;
             $dest->langSource = $request->source;
+            if(isset($request->videoEmbeded)){
+                $dest->isEmbeded = 1;
+                if($dest->video != null){
+                    $location = __DIR__ .'/../../../public/uploaded/destination/'.$dest->id.'/'.$dest->video;
+                    if(is_file($location))
+                        unlink($location);
+                }
+                $dest->video = $request->videoEmbeded;
+            }
+            else if($dest->isEmbeded == 1){
+                $dest->isEmbeded = 0;
+                $dest->video = null;
+            }
+
             $dest->save();
 
             Destination::where('langSource', $dest->id)->update(['slug' => $dest->slug, 'lng' => $dest->lng, 'lat' => $dest->lat]);
@@ -140,6 +154,7 @@ class DestinationController extends Controller
                     $query .= ' ,';
                 $query .= '(Null, ' . $dest->id . ', ' . $t->id . ')';
             }
+
 
             DestinationTagRelation::where('destId', $dest->id)->delete();
             if($query != '')
@@ -256,6 +271,7 @@ class DestinationController extends Controller
                         if($dest->video != null)
                             \File::delete('uploaded/destination/'. $dest->id . '/' . $dest->video);
 
+                        $dest->isEmbeded = 0;
                         $dest->video = $fileName;
                         $dest->save();
 

@@ -167,18 +167,39 @@
                 </div>
 
                 <div class="col-md-6" style="margin-top: 40px;">
-                    <label class="inputLabel">
-                        {{__('Video')}}
-                        <label for="video" class="videoButton">
-                            {{isset($category->video) ? 'change' : 'add'}} video
-                        </label>
-                    </label>
-                    <label class="mainPicSection">
-                        <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($category->video) ? 'block' : 'none'}} ">
-                            <source id="videoSource" src="{{isset($category->video) ? $category->video : '#'}}">
-                        </video>
-                        <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
-                    </label>
+
+                    <div style="display: flex; flex-direction: column">
+                        <div>
+                            <label class="inputLabel">
+                                {{__('Video')}}
+                                Iframe code:
+                                <input type="text" id="videoEmbeded" value="{{$category->isEmbeded == 1 ? $category->video : ''}}" class="form-control" onchange="changeEmbeded(this)" style="margin-top: 10px">
+                                <button class="btn btn-danger" onclick="$('#videoEmbeded').val(''); $('#embedSHow').html('')">{{__('Empty Embeded')}}</button>
+                            </label>
+                            <div id="embedSHow" class="mainPicSection" style="display: block; height: auto">
+                                @if($category->isEmbeded == 1)
+                                    {!! $category->video !!}
+                                @endif
+                            </div>
+
+                        </div>
+                        {{__('OR')}}
+                        <div>
+                            <label class="inputLabel">
+                                {{__('Video')}}
+                                <label for="video" class="videoButton">
+                                    {{isset($category->video) ? 'change' : 'add'}} video
+                                </label>
+                            </label>
+
+                            <label class="mainPicSection">
+                                <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($category->video) ? 'block' : 'none'}} ">
+                                    <source id="videoSource" src="{{isset($category->video) ? $category->video : '#'}}">
+                                </video>
+                                <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
+                            </label>
+                        </div>
+                    </div>
 
                     <input type="file" name="video" id="video" accept="video/*" style="display: none" onchange="uploadVideo(this)">
                 </div>
@@ -270,6 +291,7 @@
             let name = $('#name').val();
             let source = $('#source').val();
             let viewOrder = $('#viewOrder').val();
+            let videoEmbeded = $('#videoEmbeded').val();
             let descriptionVal =  window.editor.getData();
             var titleElement = $("input[name*='titles']");
             var titles = [];
@@ -297,6 +319,7 @@
                         description: descriptionVal,
                         viewOrder: viewOrder,
                         source: source,
+                        videoEmbeded: videoEmbeded,
                         id: categoryId
                     },
                     success: function(response){
@@ -666,6 +689,11 @@
         @else
             showPicSection({{$category->langSource}});
         @endif
+
+
+        function changeEmbeded(_element) {
+            $('#embedSHow').html($(_element).val());
+        }
     </script>
 
 @endsection

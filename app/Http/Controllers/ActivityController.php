@@ -75,7 +75,7 @@ class ActivityController extends Controller
         foreach ($activity->sidePic as $pic)
             $pic->pic = asset('uploaded/activity/' . $activity->id . '/' . $pic->pic);
 
-        if ($activity->video != null)
+        if ($activity->video != null && $activity->isEmbeded == 0)
             $activity->video = asset('uploaded/activity/' . $activity->id . '/' . $activity->video);
         if ($activity->podcast != null)
             $activity->podcast = asset('uploaded/activity/' . $activity->id . '/' . $activity->podcast);
@@ -118,6 +118,20 @@ class ActivityController extends Controller
                 $activity->viewOrder = $request->viewOrder;
                 $activity->description = $request->description;
                 $activity->parent = $request->parentId;
+                if(isset($request->videoEmbeded)){
+                    $activity->isEmbeded = 1;
+                    if($activity->video != null){
+                        $location = __DIR__ .'/../../../public/uploaded/activity/'.$activity->id.'/'.$activity->video;
+                        if(is_file($location))
+                            unlink($location);
+                    }
+                    $activity->video = $request->videoEmbeded;
+                }
+                else if($activity->isEmbeded == 1){
+                    $activity->isEmbeded = 0;
+                    $activity->video = null;
+                }
+
                 $activity->save();
 
                 $childs = Activity::where('langSource', $activity->id)->get();
@@ -273,6 +287,7 @@ class ActivityController extends Controller
                         if($activity->video != null)
                             \File::delete('uploaded/activity/'. $activity->id . '/' . $activity->video);
 
+                        $activity->isEmbeded = 0;
                         $activity->video = $fileName;
                         $activity->save();
 

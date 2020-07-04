@@ -463,7 +463,10 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 </div>
 
 <nav>
-    <div class="topBlackNav mobileHide">
+    <div id="topHeaderReseverDiv" class="topBlackNav mobileHide">
+
+        <i class="fas fa-times" onclick="closeTopHeaderReserve()" style="position: absolute; left: 10px; cursor: pointer; color: white"></i>
+
         {{__('RESERVE NOW!')}}
         <span class="topBlackNavDot"> . </span>
         INFO@DISCOVERPERSIALAND.COM
@@ -781,13 +784,13 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                     {{ __('Journal') }}
                 </a>
 
-                <div class="subList subLisM">
-                    <div class="navSubListRow">
-                        @foreach($journalCategoryList as $item)
-                            <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="navSubListBody navSubListBodyM">{{$item->name}}</a>
-                        @endforeach
-                    </div>
-                </div>
+{{--                <div class="subList subLisM">--}}
+{{--                    <div class="navSubListRow">--}}
+{{--                        @foreach($journalCategoryList as $item)--}}
+{{--                            <a href="{{route('journal.list', ['kind' => 'category', 'value' => $item->name])}}" class="navSubListBody navSubListBodyM">{{$item->name}}</a>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
 
             <div class="navLi posRel mobileHide rtlRight">
@@ -981,6 +984,10 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         $('.searchResult').html(text);
     }
 
+    function closeTopHeaderReserve(){
+        $('#topHeaderReseverDiv').remove();
+        $('.subList').css('top', '53px');
+    }
 </script>
 
 <script src="{{asset('js/headerJs.js')}}"></script>

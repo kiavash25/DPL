@@ -48,7 +48,7 @@ class DestCategoryController extends Controller
         $category->titles = DestinationCategoryTitle::where('categoryId', $id)->get();
         $category->icon = asset('uploaded/destination/category/' . $id . '/' . $category->icon);
 
-        if($category->video != null)
+        if($category->video != null && $category->isEmbeded == 0)
             $category->video = asset('uploaded/destination/category/' . $id . '/' . $category->video);
 
         if($category->podcast != null)
@@ -84,6 +84,19 @@ class DestCategoryController extends Controller
                 $category->name = $request->name;
                 $category->viewOrder = $request->viewOrder;
                 $category->description = $request->description;
+                if(isset($request->videoEmbeded)){
+                    $category->isEmbeded = 1;
+                    if($category->video != null){
+                        $location = __DIR__ .'/../../../public/uploaded/destination/category/'.$category->id.'/'.$category->video;
+                        if(is_file($location))
+                            unlink($location);
+                    }
+                    $category->video = $request->videoEmbeded;
+                }
+                else if($category->isEmbeded == 1){
+                    $category->isEmbeded = 0;
+                    $category->video = null;
+                }
                 $category->save();
 
                 DestinationCategory::where('langSource', $category->id)->update(['icon' => $category->icon, 'slug' => $category->slug]);

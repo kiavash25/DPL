@@ -10,12 +10,13 @@ use Couchbase\TermRangeSearchQuery;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\URL;
 
 class SettingController extends Controller
 {
     public function mainPageSlider()
     {
-        $pics = MainPageSlider::orderByDesc('showNumber')->get();
+        $pics = MainPageSlider::where('lang', app()->getLocale())->orderByDesc('showNumber')->get();
         foreach ($pics as $pic)
             $pic->pic = asset('images/MainSliderPics/' . $pic->pic);
 
@@ -24,42 +25,83 @@ class SettingController extends Controller
 
     public function mainPageSliderStore(Request $request)
     {
-        $msg = '';
-        if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
-            $location = __DIR__ . '/../../../public/images/MainSliderPics';
+        if(isset($request->id)){
+            if($request->id == 0 && isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                $location = __DIR__ . '/../../../public/images/MainSliderPics';
 
-            if(!is_dir($location))
-                mkdir($location);
+                if(!is_dir($location))
+                    mkdir($location);
 
-            $image = $request->file('pic');
-            $size = [
-                [
-                    'width' => null,
-                    'height' => 600,
-                    'name' => '',
-                    'destination' => 'images/MainSliderPics'
-                ]
-            ];
-            $fileName = resizeImage($image, $size);
-            if($fileName != 'error'){
-                $maxNumber = MainPageSlider::orderByDesc('showNumber')->first();
+                $image = $request->file('pic');
+                $size = [
+                    [
+                        'width' => 1500,
+                        'height' => null,
+                        'name' => '',
+                        'destination' => 'images/MainSliderPics'
+                    ]
+                ];
+                $fileName = resizeImage($image, $size);
+                if($fileName != 'error'){
+                    $maxNumber = MainPageSlider::where('lang', app()->getLocale())->orderByDesc('showNumber')->first();
 
-                if($maxNumber == null)
-                    $maxNumber = 1;
-                else
-                    $maxNumber = $maxNumber->showNumber;
-                $pic = new MainPageSlider();
-                $pic->pic = $fileName;
-                $pic->showNumber = $maxNumber+1;
-                $pic->save();
+                    if($maxNumber == null)
+                        $maxNumber = 1;
+                    else
+                        $maxNumber = $maxNumber->showNumber;
+                    $slider = new MainPageSlider();
+                    $slider->pic = $fileName;
+                    $slider->showNumber = $maxNumber+1;
+                    $slider->lang = app()->getLocale();
+                    $slider->save();
+                }
+                else{
+                    echo json_encode(['status' => 'nok3']);
+                    return;
+                }
             }
-            else
-                $msg = '?error=error2';
+            else if($request->id != 0){
+                $slider = MainPageSlider::find($request->id);
+                $slider->text = $request->text;
+                $slider->link = $request->link;
+                $slider->showNumber = $request->number;
+
+                if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                    $location = __DIR__ . '/../../../public/images/MainSliderPics';
+
+                    if(!is_dir($location))
+                        mkdir($location);
+
+                    $image = $request->file('pic');
+                    $size = [
+                        [
+                            'width' => 1500,
+                            'height' => null,
+                            'name' => '',
+                            'destination' => 'images/MainSliderPics'
+                        ]
+                    ];
+                    $fileName = resizeImage($image, $size);
+
+                    if(is_file($location.'/'.$slider->pic))
+                        unlink($location.'/'.$slider->pic);
+
+                    $slider->pic = $fileName;
+                }
+                $slider->save();
+            }
+            else{
+                echo json_encode(['status' => 'nok1']);
+                return;
+            }
+
+            $slider->pic = URL::asset('images/MainSliderPics/'.$slider->pic);
+            echo json_encode(['status' => 'ok', 'result' => $slider]);
         }
         else
-            $msg = '?error=error1';
+            echo json_encode(['status' => 'nok']);
 
-         return redirect(route('admin.setting.mainPageSlider') . $msg);
+        return;
     }
 
     public function mainPageSliderChangeNumber(Request $request)

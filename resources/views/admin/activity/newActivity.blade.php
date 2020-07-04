@@ -173,18 +173,38 @@
                 </div>
 
                 <div class="col-md-6" style="margin-top: 40px;">
-                    <label class="inputLabel">
-                        {{__('Video')}}
-                        <label for="video" class="videoButton">
-                            {{isset($activity->video) ? 'change' : 'add'}} video
-                        </label>
-                    </label>
-                    <label class="mainPicSection">
-                        <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($activity->video) ? 'block' : 'none'}} ">
-                            <source id="videoSource" src="{{isset($activity->video) ? $activity->video : '#'}}">
-                        </video>
-                        <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
-                    </label>
+                    <div style="display: flex; flex-direction: column">
+                        <div>
+                            <label class="inputLabel">
+                                {{__('Video')}}
+                                Iframe code:
+                                <input type="text" id="videoEmbeded" value="{{$activity->isEmbeded == 1 ? $activity->video : ''}}" class="form-control" onchange="changeEmbeded(this)" style="margin-top: 10px">
+                                <button class="btn btn-danger" onclick="$('#videoEmbeded').val(''); $('#embededSHow').html('')">{{__('Empty Embeded')}}</button>
+                            </label>
+                            <div id="embededSHow" class="mainPicSection" style="display: block; height: auto">
+                                @if($activity->isEmbeded == 1)
+                                    {!! $activity->video !!}
+                                @endif
+                            </div>
+
+                        </div>
+                        {{__('OR')}}
+                        <div>
+                            <label class="inputLabel">
+                                {{__('Video')}}
+                                <label for="video" class="videoButton">
+                                    {{isset($activity->video) ? 'change' : 'add'}} video
+                                </label>
+                            </label>
+
+                            <label class="mainPicSection">
+                                <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($activity->video) ? 'block' : 'none'}} ">
+                                    <source id="videoSource" src="{{isset($activity->video) ? $activity->video : '#'}}">
+                                </video>
+                                <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
+                            </label>
+                        </div>
+                    </div>
 
                     <input type="file" name="video" id="video" accept="video/*" style="display: none" onchange="uploadVideo(this)">
                 </div>
@@ -323,6 +343,7 @@
             var parentId = $('#parentId').val();
             var viewOrder = $('#viewOrder').val();
             var source = $('#source').val();
+            var videoEmbeded = $('#videoEmbeded').val();
             var error = '<ul>';
 
             if(name.trim().length == 0)
@@ -343,6 +364,7 @@
                         parentId: parentId,
                         viewOrder: viewOrder,
                         source: source,
+                        videoEmbeded: videoEmbeded,
                         id: activityId
                     },
                     success: function(response){
@@ -665,6 +687,11 @@
                 $('#uploadPicButton').show();
             else
                 $('#uploadPicButton').hide();
+        }
+
+
+        function changeEmbeded(_element) {
+            $('#embededSHow').html($(_element).val());
         }
     </script>
 

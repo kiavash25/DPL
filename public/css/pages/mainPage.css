@@ -18,10 +18,23 @@
     justify-content: flex-end;
     top: 0px;
     left: 0px;
-    background-color: #00000061;
+    /*background-color: #00000061;*/
     color: white;
     font-size: 45px;
     padding: 30px 10px;
+}
+.sliderButtonDiv{
+    flex-direction: column;
+    z-index: 1;
+    cursor: context-menu;
+    height: 0;
+    padding: 0;
+    top: 50%;
+}
+.seeMoreSlideBut{
+    width: fit-content;
+    margin: 0px 10px;
+    border-radius: 30px;
 }
 .mainSearchCenter{
     width: 100%;
@@ -441,9 +454,10 @@
 
 }
 .supportUsContent{
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
+    /*display: flex;*/
+    /*justify-content: space-evenly;*/
+    /*flex-wrap: nowrap;*/
+    /*width: fit-content;*/
 }
 .supportUsDiv{
     display: flex;

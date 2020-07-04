@@ -33,19 +33,43 @@
                 <div class="swiper-wrapper">
                     @foreach($mainPageSlider as $item)
                         <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
-                            <img class="resizeImage" src="{{$item->pic}}" alt="DPL" style="height: 450px">
+                            <img class="resizeImage" src="{{$item->pic}}" alt="DPL" onload="resizeThisImg(this)" style="height: 450px">
+
+                            <div class="textSlider" style=" flex-direction: column; z-index: 1; cursor: context-menu;">
+
+                                <div style="display: flex; align-items: center">
+                                    <span style="color: white">{{$item->text}}</span>
+                                    @if($item->link != null)
+                                        <a href="{{$item->link}}" target="_blank">
+                                            <button class="btn btn-primary seeMoreSlideBut">{{__('See more')}}</button>
+                                        </a>
+                                    @endif
+                                </div>
+
+                            </div>
                         </div>
                     @endforeach
                 </div>
             </div>
         @else
             <div class="swiper-slide contentHtmlCenter picSliderSwiperSlide" style="overflow: hidden">
-                <img class="resizeImage" src="{{isset($mainPageSlider[0]->pic) ? $mainPageSlider[0]->pic : ''}}" alt="DPL" style="height: 450px">
+                <img class="resizeImage" src="{{isset($mainPageSlider[0]->pic) ? $mainPageSlider[0]->pic : ''}}" onload="resizeThisImg(this)" alt="DPL" style="height: 450px">
+                <div class="textSlider" style=" flex-direction: column; z-index: 1; cursor: context-menu;">
+                    @if($mainPageSlider[0]->text)
+                        <div style="display: flex; align-items: center">
+                            <span style="color: white">{{$mainPageSlider[0]->text}}</span>
+                            @if($mainPageSlider[0]->link != null)
+                                <a href="{{$mainPageSlider[0] ->link}}" target="_blank">
+                                    <button class="btn btn-primary seeMoreSlideBut">{{__('See more')}}</button>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+                </div>
             </div>
         @endif
 
-        <div class="textSlider" style=" flex-direction: column; z-index: 1; cursor: context-menu;">
-            {{__('Culventure: metamorphosis of travel Experience')}}
+        <div class="textSlider sliderButtonDiv mobileHide">
             @if(count($mainPageSlider) > 1)
                 <div id="nextMainSlider" class="sliderButton nextSlider">
                     <div class="slider arrow right"></div>
@@ -130,7 +154,7 @@
                         <div class="recentlyPackageDiv">
                             <a href="{{$item->url}}">
                                 <div class="recentlyPackageImg">
-                                    <img src="{{$item->pic}}" class="resizeImage" style="width: 100%;">
+                                    <img src="{{$item->pic}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
                                 </div>
                             </a>
                             <div class="recentlyPackageText">
@@ -163,7 +187,7 @@
                             <div class="swiper-slide recentlyPackageDiv">
                                 <a href="{{$item->url}}">
                                     <div class="recentlyPackageImg">
-                                        <img src="{{$item->pic}}" class="resizeImage" style="width: 100%;">
+                                        <img src="{{$item->pic}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
                                     </div>
                                 </a>
                                 <div class="recentlyPackageText">
@@ -211,7 +235,7 @@
                 <div class="mainRecentlyPackageTopDiv">
                     @foreach($mainSliderJournal as $item)
                         <a href="{{$item->url}}" target="_blank" class="JournalDiv">
-                            <img src="{{$item->pic}}" class="resizeImage" style="width: 100%">
+                            <img src="{{$item->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
                             <div class="JournalContentDiv">
                                 <div class="JournalName">{{$item->name}}</div>
                                 <div class="JournalCategory">{{$item->category}}</div>
@@ -242,18 +266,18 @@
         </div>
     </div>
 
-    @if($aboutUs != null)
-        <div class="mainContentSection">
-            <div class="container aboutHeader" style="margin-bottom: 10px">
-                {{__('About us')}}
-            </div>
-            <div class="aboutUsDiv aboutUsBackground" style="background-image: url({{$aboutUs->pic}});" >
-                <div class="aboutUsText">
-                    <div class="container " style="color: white; text-align: justify">{!! $aboutUs->text !!}</div>
-                </div>
-            </div>
-        </div>
-    @endif
+{{--    @if($aboutUs != null)--}}
+{{--        <div class="mainContentSection">--}}
+{{--            <div class="container aboutHeader" style="margin-bottom: 10px">--}}
+{{--                {{__('About us')}}--}}
+{{--            </div>--}}
+{{--            <div class="aboutUsDiv aboutUsBackground" style="background-image: url({{$aboutUs->pic}});" >--}}
+{{--                <div class="aboutUsText">--}}
+{{--                    <div class="container " style="color: white; text-align: justify">{!! $aboutUs->text !!}</div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    @endif--}}
 
     @foreach($center as $item)
         <div class="mainContentSection">
@@ -266,20 +290,20 @@
         </div>
     @endforeach
 
-    <div class="container mainContentSection">
-        <div class="contactUsTextsHeader">
-            {{__('24/7 Customer Support')}}
-        </div>
-        <div class="contactUsTexts">
-            Out team of experienced tour specialists have travelled to hundreds of countries around the global ana have decades of first-hand travel
-            experience to share. Contact us now to have all of your tour-related questions answerd!
-        </div>
-        <div class="contactUsButtonDiv">
-            <div class="contactUsButton">
-                {{__('Contact Us')}}
-            </div>
-        </div>
-    </div>
+{{--    <div class="container mainContentSection">--}}
+{{--        <div class="contactUsTextsHeader">--}}
+{{--            {{__('24/7 Customer Support')}}--}}
+{{--        </div>--}}
+{{--        <div class="contactUsTexts">--}}
+{{--            Out team of experienced tour specialists have travelled to hundreds of countries around the global ana have decades of first-hand travel--}}
+{{--            experience to share. Contact us now to have all of your tour-related questions answerd!--}}
+{{--        </div>--}}
+{{--        <div class="contactUsButtonDiv">--}}
+{{--            <div class="contactUsButton">--}}
+{{--                {{__('Contact Us')}}--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <div class="mapSection">
         <div id="map" class="map" style="min-height: 400px"></div>
@@ -306,18 +330,23 @@
                 {{__('Who support us')}}
             </div>
 
-            <div class="supportUsContent">
-                @foreach($supportUs as $item)
-                    <a href="{{$item->link}}" class="supportUsDiv" target="_blank">
-                        <div class="supportUsImgDiv">
-                            <img src="{{$item->pic}}" class="supportUsImg">
+            <div class="supportUsContent swiper-container">
+                <div class="swiper-wrapper">
+                    @foreach($supportUs as $item)
+                        <div class="swiper-slide" style="width: 150px">
+                            <a href="{{$item->link}}" class=" supportUsDiv" target="_blank">
+                                <div class="supportUsImgDiv">
+                                    <img src="{{$item->pic}}" class="supportUsImg">
+                                </div>
+                                <div class="supportUsName">
+                                    {{$item->name}}
+                                </div>
+                            </a>
                         </div>
-                        <div class="supportUsName">
-                            {{$item->name}}
-                        </div>
-                    </a>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
+
         </div>
     </div>
 @endsection
@@ -347,6 +376,17 @@
             navigation: {
                 nextEl: '#nextMainSlider',
                 prevEl: '#prevMainSlider',
+            },
+        });
+
+
+        var supportUsSwiper = new Swiper('.supportUsContent', {
+            loop: true,
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
             },
         });
 

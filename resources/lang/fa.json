@@ -1,4 +1,5 @@
 {
+    "See more": "مشاهده بیشتر",
     "name": "نام",
     "Source": "منبع",
     "New": "جدید",
@@ -317,6 +318,7 @@
     "filter applied": "فیلتر اعمال شدها",
     "Clear all": "پاک کردن همه",
     "Sort & filter": "فیلتر و مربط سازی",
+    "Empty Embed": "پاک کردن embed",
     "RESERVE NOW!": "حالا رزور کنید",
 
     "First name": "نام",
@@ -324,6 +326,9 @@
     "Subscribe": "اشتراک",
 
     "Who support us": "حامیان ما",
+    "Show Number": "ترتیب نمایش",
+    "Text": "متن",
+    "Link": "لینک",
 
 
     "Virtual sense": "دیدنی های سفر"

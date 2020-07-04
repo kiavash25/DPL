@@ -119,9 +119,14 @@
             <div class="aboutHeader" style="margin-top: 10px">
                 {{__('Video')}}
             </div>
-            <video poster="placeholder.png" controls style="width: 100%;">
-                <source src="{{$content->video}}#t=1">
-            </video>
+
+            @if($content->isEmbeded == 1)
+                {!! $content->video !!}
+            @else
+                <video poster="placeholder.png" controls style="width: 100%;">
+                    <source src="{{$content->video}}#t=1">
+                </video>
+            @endif
         @endif
     </div>
 </div>

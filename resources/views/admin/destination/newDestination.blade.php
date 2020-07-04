@@ -191,18 +191,38 @@
 
             <div class="row marg30" id="videoSection" style="display: {{$kind == 'new'? 'none': 'flex'}}">
                 <div class="col-md-6" style="margin-top: 40px;">
-                    <label class="inputLabel">
-                        {{__('Video')}}
-                        <label for="video" class="videoButton">
-                            {{isset($destination->video) ? 'change' : 'add'}} video
-                        </label>
-                    </label>
-                    <label class="mainPicSection">
-                        <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($destination->video) ? 'block' : 'none'}} ">
-                            <source id="videoSource" src="{{isset($destination->video) ? $destination->video : '#'}}">
-                        </video>
-                        <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
-                    </label>
+                    <div style="display: flex; flex-direction: column">
+                        <div>
+                            <label class="inputLabel">
+                                {{__('Video')}}
+                                Iframe code:
+                                <input type="text" id="videoEmbeded" value="{{$destination->isEmbeded == 1 ? $destination->video : ''}}" class="form-control" onchange="changeEmbeded(this)" style="margin-top: 10px">
+                                <button class="btn btn-danger" onclick="$('#videoEmbeded').val(''); $('#embededSHow').html('')">{{__('Empty Embeded')}}</button>
+                            </label>
+                            <div id="embededSHow" class="mainPicSection" style="display: block; height: auto">
+                                @if($destination->isEmbeded == 1)
+                                    {!! $destination->video !!}
+                                @endif
+                            </div>
+
+                        </div>
+                        {{__('OR')}}
+                        <div>
+                            <label class="inputLabel">
+                                {{__('Video')}}
+                                <label for="video" class="videoButton">
+                                    {{isset($destination->video) ? 'change' : 'add'}} video
+                                </label>
+                            </label>
+
+                            <label class="mainPicSection">
+                                <video id="videoTag" poster="placeholder.png" preload="none" controls style="width: 100%; height: 100%; display: {{isset($destination->video) ? 'block' : 'none'}} ">
+                                    <source id="videoSource" src="{{isset($destination->video) ? $destination->video : '#'}}">
+                                </video>
+                                <img id="videoLoader" src="{{asset('images/mainImage/loading.gif')}}" style="height: 100%; display: none;" >
+                            </label>
+                        </div>
+                    </div>
 
                     <input type="file" name="video" id="video" accept="video/*" style="display: none" onchange="uploadVideo(this)">
                 </div>
@@ -522,6 +542,7 @@
             var lng = $('#lng').val();
             var cityId = $('#cityId').val();
             var categoryId = $('#categoryId').val();
+            var videoEmbeded = $('#videoEmbeded').val();
             var tagsElement = $("input[name*='tags']");
             var tags = [];
             var error = '<ul>';
@@ -557,6 +578,7 @@
                         cityId: cityId,
                         lat: lat,
                         lng: lng,
+                        videoEmbeded: videoEmbeded,
                         source: source,
                         tags: JSON.stringify(tags),
                         id: destId
@@ -822,6 +844,11 @@
         @else
             showPicSection({{$destination->langSource}});
         @endif
+
+
+        function changeEmbeded(_element) {
+            $('#embededSHow').html($(_element).val());
+        }
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('Map_api')}}&callback=initMap"async defer></script>

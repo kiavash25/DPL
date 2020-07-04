@@ -42,7 +42,10 @@ class MainController extends Controller
     {
         $today = Carbon::now()->format('Y-m-d');
 
-        $mainPageSlider = MainPageSlider::orderByDesc('showNumber')->get();
+        $mainPageSlider = MainPageSlider::where('lang', app()->getLocale())->orderByDesc('showNumber')->get();
+        if(count($mainPageSlider) == 0)
+            $mainPageSlider = MainPageSlider::where('lang', 'en')->orderByDesc('showNumber')->get();
+
         foreach ($mainPageSlider as $item)
             $item->pic = asset('images/MainSliderPics/' . $item->pic);
 
@@ -197,7 +200,7 @@ class MainController extends Controller
 //        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $content->slug]);
         $content->packageListUrl = '#';
 
-        if($content->video != null)
+        if($content->video != null && $content->isEmbeded == 0)
             $content->video = asset('uploaded/activity/'. $content->id . '/' . $content->video);
         if($content->podcast != null)
             $content->podcast = asset('uploaded/activity/'. $content->id . '/' . $content->podcast);
@@ -292,7 +295,7 @@ class MainController extends Controller
 //        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $content->slug]);
         $content->packageListUrl = '#';
 
-        if($content->video != null)
+        if($content->video != null && $content->isEmbeded == 0)
             $content->video = asset('uploaded/destination/'. $content->id . '/' . $content->video);
         if($content->podcast != null)
             $content->podcast = asset('uploaded/destination/'. $content->id . '/' . $content->podcast);
@@ -493,7 +496,7 @@ class MainController extends Controller
 
             $content->titles = DestinationCategoryTitle::where('categoryId', $content->id)->get();
 
-            if($content->video != null)
+            if($content->video != null && $content->isEmbeded == 0)
                 $content->video = asset('uploaded/destination/category/' . $content->id . '/' . $content->video);
 
             if($content->podcast != null)
