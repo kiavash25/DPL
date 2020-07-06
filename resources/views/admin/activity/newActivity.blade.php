@@ -178,11 +178,11 @@
                             <label class="inputLabel">
                                 {{__('Video')}}
                                 Iframe code:
-                                <input type="text" id="videoEmbeded" value="{{$activity->isEmbeded == 1 ? $activity->video : ''}}" class="form-control" onchange="changeEmbeded(this)" style="margin-top: 10px">
+                                <input type="text" id="videoEmbeded" value="{{(isset($activity->isEmbeded) && $activity->isEmbeded == 1) ? $activity->video : ''}}" class="form-control" onchange="changeEmbeded(this)" style="margin-top: 10px">
                                 <button class="btn btn-danger" onclick="$('#videoEmbeded').val(''); $('#embededSHow').html('')">{{__('Empty Embeded')}}</button>
                             </label>
                             <div id="embededSHow" class="mainPicSection" style="display: block; height: auto">
-                                @if($activity->isEmbeded == 1)
+                                @if(isset($activity->isEmbeded) && $activity->isEmbeded == 1)
                                     {!! $activity->video !!}
                                 @endif
                             </div>

@@ -47,6 +47,9 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         display: flex;
         justify-content: center;
         align-items: center;
+        position: fixed;
+        top: 0;
+        z-index: 99;
     }
     .topBlackNavDot{
         display: flex;
@@ -462,19 +465,20 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
     </div>
 </div>
 
-<nav>
-    <div id="topHeaderReseverDiv" class="topBlackNav mobileHide">
+<div id="topHeaderReseverDiv" class="topBlackNav mobileHide">
 
-        <i class="fas fa-times" onclick="closeTopHeaderReserve()" style="position: absolute; left: 10px; cursor: pointer; color: white"></i>
+    <i class="fas fa-times" onclick="closeTopHeaderReserve()" style="position: absolute; left: 10px; cursor: pointer; color: white"></i>
 
-        {{__('RESERVE NOW!')}}
-        <span class="topBlackNavDot"> . </span>
-        INFO@DISCOVERPERSIALAND.COM
-        <span class="topBlackNavDot"> . </span>
-        <span style="color: white; direction: ltr">
+    {{__('RESERVE NOW!')}}
+    <span class="topBlackNavDot"> . </span>
+    INFO@DISCOVERPERSIALAND.COM
+    <span class="topBlackNavDot"> . </span>
+    <span style="color: white; direction: ltr">
             +982100000000
         </span>
-    </div>
+</div>
+
+<nav>
     <div class="container navContainer">
         <div class="pcHide threeLineDiv" onclick="openNav()">
             <div class="navThreeLine"></div>
@@ -986,6 +990,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
     function closeTopHeaderReserve(){
         $('#topHeaderReseverDiv').remove();
+        $('.navContainer').css('marginTop', '0px');
         $('.subList').css('top', '53px');
     }
 </script>

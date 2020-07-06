@@ -60,6 +60,26 @@
         <link rel="stylesheet" href="{{asset('css/rtl/rtlBase.css')}}">
     @endif
 
+    <script>
+        function resizeThisImg(_element){
+            var img = $(_element);
+            var imgW = img.width();
+            var imgH = img.height();
+
+            var secW = img.parent().width();
+            var secH = img.parent().height();
+
+            if(imgH < secH){
+                img.css('height', '100%');
+                img.css('width', 'auto');
+            }
+            else if(imgW < secW){
+                img.css('width', '100%');
+                img.css('height', 'auto');
+            }
+        }
+    </script>
+
 </head>
 <body style="overflow-x: hidden">
 <div>
@@ -102,24 +122,6 @@
                 img.css('height', 'auto');
             }
 
-        }
-    }
-
-    function resizeThisImg(_element){
-        var img = $(_element);
-        var imgW = img.width();
-        var imgH = img.height();
-
-        var secW = img.parent().width();
-        var secH = img.parent().height();
-
-        if(imgH < secH){
-            img.css('height', '100%');
-            img.css('width', 'auto');
-        }
-        else if(imgW < secW){
-            img.css('width', '100%');
-            img.css('height', 'auto');
         }
     }
 
