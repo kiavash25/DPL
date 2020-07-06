@@ -151,34 +151,34 @@
             </div>
             <div class="mainRecentlyPackageTopDiv recentlyPackageNonSwiper ">
                 @foreach($recentlyPackage as $item)
-                        <div class="recentlyPackageDiv">
-                            <a href="{{$item->url}}">
-                                <div class="recentlyPackageImg">
-                                    <img src="{{$item->pic}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
-                                </div>
+                    <div class="recentlyPackageDiv">
+                        <a href="{{$item->url}}">
+                            <div class="recentlyPackageImg">
+                                <img src="{{$item->pic}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
+                            </div>
+                        </a>
+                        <div class="recentlyPackageText">
+                            <a href="{{$item->url}}" class="recentlyPackageName">
+                                {{$item->name}}
                             </a>
-                            <div class="recentlyPackageText">
-                                <a href="{{$item->url}}" class="recentlyPackageName">
-                                    {{$item->name}}
-                                </a>
-                                <div class="recentlyPackageTextContent">
-                                    {{$item->description}}
-                                </div>
-                                <a href="{{$item->url}}" class="recentlyPackageShowButton">
-                                    <i class="fas fa-long-arrow-alt-right" style="color: #1f75b9"></i>
-                                </a>
+                            <div class="recentlyPackageTextContent">
+                                {{$item->description}}
+                            </div>
+                            <a href="{{$item->url}}" class="recentlyPackageShowButton">
+                                <i class="fas fa-long-arrow-alt-right" style="color: #1f75b9"></i>
+                            </a>
 {{--                                <div class="recentlyPackageDay">--}}
 {{--                                    @if($item->day != null)--}}
 {{--                                        {{$item->day}} {{__('Day')}}--}}
 {{--                                    @endif--}}
 {{--                                </div>--}}
-                                <div class="recentlyPackageCost">
-                                    {{$item->money}} {{$currencySymbol}}
-                                </div>
-
+                            <div class="recentlyPackageCost">
+                                {{$item->money}} {{$currencySymbol}}
                             </div>
+
                         </div>
-                    @endforeach
+                    </div>
+                @endforeach
             </div>
             <div class="recentlyPackageSwiper">
                 <div id="recentSwiper" class="swiper-container">
@@ -246,6 +246,7 @@
             </div>
         @endif
     </div>
+
     <div class="container subscribeSection">
         <div class="row subscribeRow">
             <div class="col-12 aboutHeader" style="color: white;">
@@ -265,6 +266,28 @@
             </div>
         </div>
     </div>
+
+@if(count($awards) > 0)
+    <div class="container" style="margin-bottom: 50px;">
+        <div class="mainContentSection">
+            <div class="aboutHeader" style="text-align: center">
+                {{__('Award')}}
+            </div>
+
+            <div class="mainRecentlyPackageTopDiv">
+                @for($i = 0; $i < 4 && $i < count($awards); $i++)
+                    <a href="{{$awards[$i]->link}}" target="_blank" class="JournalDiv">
+                        <img src="{{$awards[$i]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                        <div class="JournalContentDiv">
+                            <div class="JournalName">{{$awards[$i]->name}}</div>
+                        </div>
+                    </a>
+                @endfor
+
+            </div>
+        </div>
+    </div>
+@endif
 
 {{--    @if($aboutUs != null)--}}
 {{--        <div class="mainContentSection">--}}

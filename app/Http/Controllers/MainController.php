@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\models\Activity;
 use App\models\ActivityPic;
 use App\models\ActivityTitle;
+use App\models\Award;
 use App\models\City;
 use App\models\Continents;
 use App\models\Countries;
@@ -117,10 +118,17 @@ class MainController extends Controller
                 $item->link = '#';
         }
 
+        $awards = Award::where('lang', app()->getLocale())->get();
+        foreach ($awards as $item) {
+            $item->pic = asset('images/awards/' . $item->pic);
+            if($item->link == null)
+                $item->link = '#';
+        }
+
         return \view('main.mainPage', compact(['destinationCategoryMain', 'supportUs',
                                                     'recentlyPackage', 'mainPageSlider',
                                                     'mapDestination', 'mainSliderJournal',
-                                                    'aboutUs', 'center']));
+                                                    'aboutUs', 'center', 'awards']));
     }
 
     public function showActivity($slug)

@@ -157,6 +157,10 @@ Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
         Route::post('/admin/setting/mainPageSliderChangeNumber', 'SettingController@mainPageSliderChangeNumber')->name('admin.setting.mainPageSliderChangeNumber');
         Route::post('/admin/setting/mainPageSlider/delete', 'SettingController@mainPageSliderDelete')->name('admin.setting.mainPageSlider.delete');
 
+        Route::get('/admin/setting/award', 'SettingController@awardSetting')->name('admin.setting.awards');
+        Route::post('/admin/setting/awardStore', 'SettingController@awardStore')->name('admin.setting.awardStore');
+\        Route::post('/admin/setting/award/delete', 'SettingController@awardDelete')->name('admin.setting.award.delete');
+
         Route::get('/admin/setting/lang/index', 'SettingController@languagePage')->name('admin.setting.lang');
         Route::post('/admin/setting/lang/store', 'SettingController@storeLanguage')->name('admin.setting.lang.store');
         Route::post('/admin/setting/lang/delete', 'SettingController@deleteLanguage')->name('admin.setting.lang.delete');
@@ -168,8 +172,6 @@ Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
         Route::post('/admin/userAccess/language/store', 'UserAccessController@languageStore')->name('admin.userAccess.language.store');
         Route::post('/admin/userAccess/acl/disableAccess', 'UserAccessController@disableAccess')->name('admin.userAccess.acl.disableAccess');
     });
-
-
 
 
     Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');

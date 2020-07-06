@@ -130,6 +130,11 @@
                         </a>
                     </div>
                     <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.setting.awards')}}">
+                            {{__('Awards')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
                         <a class="subSideNavTab" href="{{route('admin.setting.lang')}}">
                             {{__('Language')}}
                         </a>

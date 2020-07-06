@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Award;
 use App\models\Language;
 use App\models\MainPageSetting;
 use App\models\MainPageSlider;
@@ -374,6 +375,106 @@ class SettingController extends Controller
         }
         else
             echo 'nok';
+
+        return;
+    }
+
+    public function awardSetting()
+    {
+        $awards = Award::all();
+        foreach ($awards as $award)
+            $award->pic = URL::asset('images/awards/'.$award->pic);
+
+        return view('admin.setting.awards', compact(['awards']));
+    }
+
+    public function awardStore(Request $request)
+    {
+        if(isset($request->id) && isset($request->name)){
+            if($request->id == 0 && isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                $location = __DIR__ . '/../../../public/images/awards';
+
+                if(!is_dir($location))
+                    mkdir($location);
+
+                $image = $request->file('pic');
+                $size = [
+                    [
+                        'width' => 700,
+                        'height' => null,
+                        'name' => '',
+                        'destination' => 'images/awards'
+                    ]
+                ];
+                $fileName = resizeImage($image, $size);
+                if($fileName != 'error'){
+                    $award = new Award();
+                    $award->pic = $fileName;
+                    $award->name = $request->name;
+                    $award->link = $request->link;
+                    $award->lang = app()->getLocale();
+                    $award->save();
+                }
+                else{
+                    echo json_encode(['status' => 'nok3']);
+                    return;
+                }
+            }
+            else if($request->id != 0){
+                $award = Award::find($request->id);
+                $award->name = $request->name;
+                $award->link = $request->link;
+
+                if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
+                    $location = __DIR__ . '/../../../public/images/awards';
+
+                    if(!is_dir($location))
+                        mkdir($location);
+
+                    $image = $request->file('pic');
+                    $size = [
+                        [
+                            'width' => 700,
+                            'height' => null,
+                            'name' => '',
+                            'destination' => 'images/awards'
+                        ]
+                    ];
+                    $fileName = resizeImage($image, $size);
+
+                    if(is_file($location.'/'.$award->pic))
+                        unlink($location.'/'.$award->pic);
+
+                    $award->pic = $fileName;
+                }
+                $award->save();
+            }
+            else{
+                echo json_encode(['status' => 'nok1']);
+                return;
+            }
+
+            $award->pic = URL::asset('images/awards/'.$award->pic);
+            echo json_encode(['status' => 'ok', 'result' => $award]);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
+
+        return;
+    }
+
+    public function awardDelete(Request $request)
+    {
+        if(isset($request->id)){
+            $pic = Award::find($request->id);
+            $location = __DIR__ . '/../../../public/images/awards/' . $pic->pic;
+            if(is_file($location))
+                unlink($location);
+            $pic->delete();
+            echo json_encode(['status' => 'ok']);
+        }
+        else
+            echo json_encode(['status' => 'nok']);
 
         return;
     }
