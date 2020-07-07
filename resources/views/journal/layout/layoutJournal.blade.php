@@ -112,7 +112,7 @@
     @yield('head')
 
 </head>
-<body style="overflow-x: hidden;">
+<body style="overflow: hidden;">
 
 @include('layouts.header')
 

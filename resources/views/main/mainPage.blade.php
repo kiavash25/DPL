@@ -267,6 +267,48 @@
         </div>
     </div>
 
+
+    <style>
+        .awardsDiv{
+            display: flex;
+            align-items: center;
+            height: 400px !important;
+            width: 100%;
+        }
+        .awardsBig{
+            height: 100%;
+        }
+        .awardSection{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .awardsName{
+            position: absolute;
+            bottom: 0px;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            font-size: 22px;
+            height: 37%;
+            display: flex;
+            align-items: flex-end;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8547794117647058) 24%, rgba(0,0,0,0.5102415966386555) 79%, rgba(0,0,0,0) 100%);
+        }
+        .fullZeroRow{
+            padding: 0px;
+            margin: 0px;
+            height: 100%;
+        }
+        .awardsRow{
+            width: 100%;
+            height: 50%;
+        }
+    </style>
 @if(count($awards) > 0)
     <div class="container" style="margin-bottom: 50px;">
         <div class="mainContentSection">
@@ -275,14 +317,66 @@
             </div>
 
             <div class="mainRecentlyPackageTopDiv">
-                @for($i = 0; $i < 4 && $i < count($awards); $i++)
-                    <a href="{{$awards[$i]->link}}" target="_blank" class="JournalDiv">
-                        <img src="{{$awards[$i]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
-                        <div class="JournalContentDiv">
-                            <div class="JournalName">{{$awards[$i]->name}}</div>
+                <div class="row awardsDiv fullZeroRow">
+                    @if(isset($awards[0]))
+                        <div class="col-md-6 awardsBig fullZeroRow">
+                            <a href="{{$awards[0]->link}}" class="awardSection">
+                                <img src="{{$awards[0]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                <div class="awardsName">
+                                    {{$awards[0]->name}}
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                @endfor
+                    @endif
+                    @if(isset($awards[1]))
+                        <div class="col-md-6 awardsBig fullZeroRow">
+                        <div class="row awardsRow fullZeroRow">
+                            @if(isset($awards[1]))
+                                <div class="col-6 fullZeroRow">
+                                    <a href="{{$awards[1]->link}}" class="awardSection">
+                                        <img src="{{$awards[1]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <div class="awardsName">
+                                            {{$awards[1]->name}}
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                            @if(isset($awards[2]))
+                                <div class="col-6 fullZeroRow">
+                                    <a href="{{$awards[2]->link}}" class="awardSection">
+                                        <img src="{{$awards[2]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <div class="awardsName">
+                                            {{$awards[2]->name}}
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="row awardsRow fullZeroRow">
+                            @if(isset($awards[3]))
+                                <div class="col-6 fullZeroRow">
+                                    <a href="{{$awards[3]->link}}" class="awardSection">
+                                        <img src="{{$awards[3]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <div class="awardsName">
+                                            {{$awards[3]->name}}
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                            @if(isset($awards[4]))
+                                <div class="col-6 fullZeroRow">
+                                    <a href="{{$awards[4]->link}}" class="awardSection">
+                                        <img src="{{$awards[4]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <div class="awardsName">
+                                            {{$awards[4]->name}}
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                </div>
 
             </div>
         </div>
