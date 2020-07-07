@@ -381,7 +381,7 @@ class SettingController extends Controller
 
     public function awardSetting()
     {
-        $awards = Award::all();
+        $awards = Award::where('lang', app()->getLocale())->get();
         foreach ($awards as $award)
             $award->pic = URL::asset('images/awards/'.$award->pic);
 
