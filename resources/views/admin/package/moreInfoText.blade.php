@@ -77,7 +77,7 @@
         <div class="col-md-12">
 
             <div class="tab">
-                <h3>{{__('Callventure Titles')}}</h3>
+                <h3>{{__('Culventure Titles')}}</h3>
                 @foreach($moreInfoCallVenture as $item)
                     <button class="tablinks" onclick="openCity(event, 'titleTab{{$item->id}}')">{{$item->name}}</button>
                 @endforeach

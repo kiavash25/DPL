@@ -114,7 +114,7 @@
     "READ MORE": "مشاهده",
     "Language": "زبان",
     "Call Us": "تماس با ما",
-    "Callventure Details": "اطلاعات کالونچر",
+    "Culventure Details": "اطلاعات کالونچر",
     "Neutral Details": "مشاهده جزئیات سفر",
     "View Order": "ترتیب نمایش",
     "Most Popular": "پیشنهادهای ویژه",
@@ -270,14 +270,14 @@
 
     "24/7 Customer Support": "پشتیبانی مشتری 24/7",
 
-    "CallVenture Category": "دسته بندی کالونچر",
+    "Culventure Category": "دسته بندی کالونچر",
     "Neutral Category": "دسته بندی نتچرال",
     "Edit Title": "ویرایش عنوان",
     "Title Stored": "عنوان ذخیره شد",
     "Title Duplicate!": "عنوان تکراری است!",
 
     "Package More Info": "اطلاعات بیشتر پکیج",
-    "Callventure Titles": "عنوان های کالونچر",
+    "Culventure Titles": "عنوان های کالونچر",
     "Neutral Titles": "عنوان های نتچرال",
 
     "New Journal Category": "دسته بندی جدید مجله",
@@ -322,8 +322,8 @@
     "Empty Embed": "پاک کردن embed",
     "RESERVE NOW!": "حالا رزور کنید",
 
-    "Awards": "جایزه ها",
-    "Award": "جایزه",
+    "Awards": "طرح ها و جشنواره ها",
+    "Award": "طرح ها و جشنواره ها",
 
     "First name": "نام",
     "Last name": "نام خانوادگی",

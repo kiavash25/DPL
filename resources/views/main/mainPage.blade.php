@@ -448,7 +448,7 @@
             </div>
 
             <div class="supportUsContent swiper-container">
-                <div class="swiper-wrapper">
+                <div class="swiper-wrapper" style="justify-content: center">
                     @foreach($supportUs as $item)
                         <div class="swiper-slide" style="width: 150px">
                             <a href="{{$item->link}}" class=" supportUsDiv" target="_blank">
@@ -498,13 +498,13 @@
 
 
         var supportUsSwiper = new Swiper('.supportUsContent', {
-            loop: true,
+            loop: false,
             slidesPerView: 'auto',
-            centeredSlides: true,
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
+            // centeredSlides: true,
+            // autoplay: {
+            //     delay: 2500,
+            //     disableOnInteraction: false,
+            // },
         });
 
     </script>

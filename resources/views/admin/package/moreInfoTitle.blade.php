@@ -22,7 +22,7 @@
 
         <div class="col-md-12">
             <div class="row">
-                <h3>{{__('CallVenture Category')}}</h3>
+                <h3>{{__('Culventure Category')}}</h3>
                 <table id="tableCall" class="table table-striped  table-bordered">
                     @foreach($moreInfoCallVenture as $more)
                         <tr id="moreInfoRow_{{$more->id}}">
@@ -79,7 +79,7 @@
                                 <label for="selectCategory">{{__('Select Category')}}:</label>
                                 <select id="selectCategory" class="form-control">
                                     <option value="neutralDetail">{{__('Neutral Category')}}</option>
-                                    <option value="callventureDetail">{{__('CallVenture Category')}}</option>
+                                    <option value="callventureDetail">{{__('Culventure Category')}}</option>
                                 </select>
                             </div>
                         </div>

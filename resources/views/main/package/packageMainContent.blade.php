@@ -106,7 +106,7 @@
             <div class="MoreInfoBase" style="border-radius: 0px 0px 10px 10px">
                 <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
                     <div class="arrow down"></div>
-                    {{__('Callventure Details')}}
+                    {{__('Culventure Details')}}
                 </div>
 
                 <div class="moreInfoContentDiv">
