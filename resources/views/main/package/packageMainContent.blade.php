@@ -2,10 +2,60 @@
 <link rel="stylesheet" href="{{asset('css/common/ownSlider.css')}}">
 <link rel="stylesheet" href="{{asset('css/pages/packageMainContent.css')}}">
 
+<style>
+    .stickyTitles {
+        overflow: auto;
+        white-space: nowrap;
+        display: flex;
+        background-color: #30759d;
+        margin-top: 25px;
+        width: 100%;
+    }
+
+    .stickyTitles a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .stickyTitles a:hover {
+        background-color: #b2d0f7;
+        color: white;
+    }
+
+    .stickyTitles a.activeTitle {
+        background-color: #fcb316;
+        color: white;
+    }
+
+    .content {
+        padding: 16px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .sticky {
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        margin-top: 0px !important;
+        left: 0;
+        display: flex;
+        z-index: 99;
+    }
+
+    .sticky + .content {
+        padding-top: 60px;
+    }
+</style>
+
 <div class="aboutPackageDiv">
-{{--    <div class="aboutHeader">--}}
-{{--        {{__('About')}} {{$content->name}}--}}
-{{--    </div>--}}
     <div class="aboutText">
         {!! $content->description !!}
     </div>
@@ -21,22 +71,6 @@
         ?>
 
         <div class="col-lg-{{12 - $mapNum}}">
-{{--            <div class="activitiesDiv">--}}
-{{--                <div class="aboutHeader">--}}
-{{--                    Activities In Package:--}}
-{{--                </div>--}}
-{{--                <div class="activityRow">--}}
-{{--                    <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">--}}
-{{--                    {{$content->mainActivity->name}}--}}
-{{--                </div>--}}
-{{--                @foreach($content->activities as $item)--}}
-{{--                    <div class="activityRow">--}}
-{{--                        <img src="{{$item->icon}}" alt="{{$item->name}}" style="width: 50px; height: 50px;">--}}
-{{--                        {{$item->name}}--}}
-{{--                    </div>--}}
-{{--                @endforeach--}}
-{{--            </div>--}}
-
             <div class="activitiesDiv" style="display: {{count($content->sideInfos) > 0 ? 'block' : 'none'}}">
                 <div class="aboutHeader">
                     {{__('Infos')}}:
@@ -56,176 +90,66 @@
     </div>
 
     @if($hasMoreInfo > 0)
-        <div class="row" style="margin-top: 30px;">
-            <div class="aboutHeader" style="width: 100%">
-                {{__('More Info')}}:
-            </div>
-            <div class="MoreInfoBase" style="border-bottom: 0; border-radius: 10px 10px 0px 0px">
-                <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
-                    <div class="arrow down"></div>
-                    {{__('Neutral Details')}}
-                </div>
-                <div class="moreInfoContentDiv">
-                    <div class="row">
-                        <div class="moreInfoContentHeaderDiv">
-                            <?php
-                                $firsTitle = 0;
-                            ?>
-                            @foreach($moreInfoNeutral as $item)
-                                @if(isset($item->text) && $item->text != null)
-                                    <div class="moreInfoTitles" onclick="showMoreInfoText(this, {{$item->id}})">
-                                        <div class="moreInfoTitleTextNoneSelected {{$firsTitle == 0 ? 'moreInfoTitleTextSelected firstMoreInfoTitle' : ''}}">
-                                            {{$item->name}}
-                                        </div>
-                                    </div>
-                                    <?php
-                                        $firsTitle++;
-                                    ?>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="row moreInfoTextDiv">
-                        <?php
-                            $firsText = 0;
-                        ?>
-                        @foreach($moreInfoNeutral as $item)
-                            @if(isset($item->text) && $item->text != null)
-                                <div id="moreInfoText_{{$item->id}}" class="moreInfoText {{$firsText == 0 ? 'moreInfoTextOpen firstMoreInfoText' : ''}}">
-                                    {!! $item->text !!}
-                                </div>
-                                <?php
-                                    $firsText++;
-                                ?>
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <div class="MoreInfoBase" style="border-radius: 0px 0px 10px 10px">
-                <div class="moreInfoHeader" onclick="openMoreInfoDiv(this)">
-                    <div class="arrow down"></div>
-                    {{__('Culventure Details')}}
-                </div>
-
-                <div class="moreInfoContentDiv">
-                    <div class="row">
-                        <div class="moreInfoContentHeaderDiv">
-                            <?php
-                                $firsTitle = 0;
-                            ?>
-                            @foreach($moreInfoCallVenture as $item)
-                                @if(isset($item->text) && $item->text != null)
-                                    <div class="moreInfoTitles" onclick="showMoreInfoText(this, {{$item->id}})">
-                                        <div class="moreInfoTitleTextNoneSelected {{$firsTitle == 0 ? 'moreInfoTitleTextSelected firstMoreInfoTitle' : ''}}">
-                                            {{$item->name}}
-                                        </div>
-                                    </div>
-                                    <?php
-                                        $firsTitle++;
-                                    ?>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="row moreInfoTextDiv">
-                        <?php
-                            $firsText = 0;
-                        ?>
-                        @foreach($moreInfoCallVenture as $item)
-                            @if(isset($item->text) && $item->text != null)
-                                <div id="moreInfoText_{{$item->id}}" class="moreInfoText {{$firsText == 0 ? 'moreInfoTextOpen firstMoreInfoText' : ''}}">
-                                    {!! $item->text !!}
-                                </div>
-                                    <?php
-                                        $firsText++;
-                                    ?>
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-
-            </div>
-
+    <div class="row">
+        <div class="aboutHeader" style="width: 100%; margin-top: 30px;">
+            {{__('Neutral Details')}}
         </div>
-    @endif
-
-    <div class="row" style="margin-top: 35px;">
-        <div class="aboutHeader">
-            {{__('Virtual sense')}}
-        </div>
-
-        <div class="col-md-12 thumbnailSection">
-            @foreach($content->thumbnails as $item)
-                <div class="thumbnailDiv" onclick="openThumbnailPic({{$item->id}})">
-                    <img src="{{$item->thumbnail}}" class="resizeImage thumbnailPic" onload="resizeThisImg(this)">
-                    <div class="matteBack"></div>
-                </div>
+        <div class="stickyTitles" style=" margin-top: 0px;">
+            <?php
+            $first = true;
+            ?>
+            @foreach($moreInfoNeutral as $key => $item)
+                @if($item->text != null)
+                    <a id="title_{{$item->id}}" class="natTabs {{$first ? 'activeTitle' : ''}}" href="javascript:void(0)" onclick="showDescription(this, {{$item->id}},'nat')">{{$item->name}}</a>
+                    <?php
+                        $first = false;
+                    ?>
+                @endif
             @endforeach
         </div>
+        <div class="content titleDescriptions"></div>
     </div>
+
+    <div class="row">
+        <div class="aboutHeader" style="width: 100%; margin-top: 30px;">
+            {{__('Culventure Details')}}
+        </div>
+        <div class="stickyTitles" style="margin-top: 0px;">
+            <?php
+            $first = true;
+            ?>
+            @foreach($moreInfoCallVenture as $key => $item)
+                @if($item->text != null)
+                    <a id="title_{{$item->id}}" class="callTabs {{$first ? 'activeTitle' : ''}}" href="javascript:void(0)" onclick="showDescription(this, {{$item->id}}, 'call')">{{$item->name}}</a>
+                    <?php
+                        $first = false;
+                    ?>
+                @endif
+            @endforeach
+        </div>
+        <div class="content titleDescriptions"></div>
+    </div>
+    @endif
+
+{{--    @include('deleted.packageMoreInfo')--}}
+
+    @if(count($content->thumbnails) > 0 )
+        <div class="row" style="margin-top: 35px;">
+            <div class="aboutHeader">
+                {{__('Virtual sense')}}
+            </div>
+
+            <div class="col-md-12 thumbnailSection">
+                @foreach($content->thumbnails as $item)
+                    <div class="thumbnailDiv" onclick="openThumbnailPic({{$item->id}})">
+                        <img src="{{$item->thumbnail}}" class="resizeImage thumbnailPic" onload="resizeThisImg(this)">
+                        <div class="matteBack"></div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
 </div>
-
-
-{{--@if(count($content->packages) > 0)--}}
-{{--    <div style="width: 100%; margin-top: 45px">--}}
-{{--        <a href="{{route('show.list', ['kind' => 'destinationPackage', 'value' => $content->destination->slug])}}">--}}
-{{--            <div class="aboutHeader">--}}
-{{--                {{__('Other Packages In')}} {{$content->destination->name}}--}}
-{{--            </div>--}}
-{{--        </a>--}}
-{{--        <div class="mainContentPackages">--}}
-{{--            <div class="swiper-container packageSwiper" >--}}
-
-{{--                <div class="swiper-wrapper" style="padding: 10px;">--}}
-{{--                    @foreach($content->packages as $item)--}}
-{{--                        <div class="swiper-slide swiperSlidePackage contentHtmlCenter">--}}
-{{--                            <div class=" packages">--}}
-{{--                                <div class="packageImgDiv">--}}
-{{--                                    <img src="{{$item->pic}}" class="packageImg" onload="resizeThisImg(this)">--}}
-{{--                                </div>--}}
-{{--                                <div class="packageContentDiv">--}}
-{{--                                    <div class="packageName">--}}
-{{--                                        {{$item->name}}--}}
-{{--                                    </div>--}}
-{{--                                    <div class="packageDescription">--}}
-{{--                                        {{$item->description}}--}}
-{{--                                    </div>--}}
-{{--                                    <div class="packageButtonDiv">--}}
-{{--                                        <a href="{{$item->url}}" class="packageButton">--}}
-{{--                                            {{__('See Package')}}--}}
-{{--                                        </a>--}}
-{{--                                    </div>--}}
-
-{{--                                    <div class="packageActivity">--}}
-{{--                                        {{$item->mainActivity->name}}--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="packageDate">--}}
-{{--                                    @if($item->sD == 'Call')--}}
-{{--                                        <div style="color: white; text-align: center; font-size: 13px;">{{__('Call Us')}}</div>--}}
-{{--                                    @else--}}
-{{--                                        <div style="color: white">{{$item->sD}}</div>--}}
-{{--                                        <div style="color: white">{{$item->sM}}</div>--}}
-{{--                                    @endif--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-
-{{--                <div id="nextPackage" class="sliderButton nextSlider" style="top: 45%; right: 10px; box-shadow: 0 0 10px 3px black">--}}
-{{--                    <div class="slider arrow right"></div>--}}
-{{--                </div>--}}
-{{--                <div id="prevPackage" class="sliderButton prevSlider" style="top: 45%; left: 10px; box-shadow: 0 0 10px 3px black">--}}
-{{--                    <div class="slider arrow left"></div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--@endif--}}
 
 @if(count($content->actPackage) > 0)
     <div style="width: 100%; margin-top: 45px">
@@ -349,8 +273,7 @@
         },
     });
 
-
-    let thumbnails = {!! $content->thumbnails !!}
+    let thumbnails = {!! $content->thumbnails !!};
 
     function openThumbnailPic(_id){
         let main = [];
@@ -397,7 +320,6 @@
         })
     }
 
-
     function openMoreInfoDiv(_element){
         $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
         $('.moreInfoTextOpen').removeClass('moreInfoTextOpen');
@@ -416,7 +338,6 @@
         }
     }
 
-
     function showMoreInfoText(_element, _id){
         $('.moreInfoTitleTextSelected').removeClass('moreInfoTitleTextSelected');
         $($(_element).children()[0]).addClass('moreInfoTitleTextSelected');
@@ -425,5 +346,67 @@
         $('#moreInfoText_' + _id).addClass('moreInfoTextOpen');
     }
 
+    window.onscroll = function() {myFunction()};
+    let navbar = $('.stickyTitles');
+    let stickeNum = [];
+    let descCont;
+    let moreInfoNeutral = {!! $moreInfoNeutral !!};
+    let moreInfoCallVenture = {!! $moreInfoCallVenture !!};
+
+    function myFunction() {
+        for(let i = 0; i < navbar.length; i++){
+            let titleDescriptions = $(navbar[i]).parent().find('.titleDescriptions');
+            if (window.pageYOffset >= titleDescriptions.offset().top && (window.pageYOffset <= stickeNum[i])) {
+                $(navbar[i]).addClass("sticky");
+                descCont = titleDescriptions.offset().top + titleDescriptions.height();
+                stickeNum[i] = descCont;
+            }
+            else
+                $(navbar[i]).removeClass("sticky");
+        }
+    }
+
+    function showDescription(_element, _id, _kind){
+        if(_kind == 'call') {
+            $('.callTabs').removeClass('activeTitle');
+            for (let i = 0; i < moreInfoCallVenture.length; i++) {
+                if (moreInfoCallVenture[i].id == _id) {
+                    $(_element).parent().parent().find('.titleDescriptions').html(moreInfoCallVenture[i].text);
+                    break;
+                }
+            }
+        }
+        else if(_kind == 'nat'){
+            $('.natTabs').removeClass('activeTitle');
+            for (let i = 0; i < moreInfoNeutral.length; i++) {
+                if (moreInfoNeutral[i].id == _id) {
+                    $(_element).parent().parent().find('.titleDescriptions').html(moreInfoNeutral[i].text);
+                    break;
+                }
+            }
+        }
+
+        $(_element).addClass('activeTitle');
+
+        for(let i = 0; i < navbar.length; i++){
+            let titleDescriptions = $(navbar[i]).parent().find('.titleDescriptions');
+            descBottom = titleDescriptions.offset().top + titleDescriptions.height();
+            stickeNum[i] = descBottom;
+        }
+    }
+
+    $('.activeTitle').click();
+
+    $(window).resize(function(){
+        if($('#stickyTitles').hasClass('sticky')){
+            $('#stickyTitles').removeClass('sticky');
+            stickeNum = navbar.offset().top;
+            $('#stickyTitles').addClass('sticky');
+        }
+        else
+            stickeNum = navbar.offset().top;
+    });
 </script>
+
+
 

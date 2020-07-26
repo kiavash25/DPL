@@ -59,11 +59,12 @@
 
     .sticky {
         position: fixed;
-        top: 0;
+        top: 0px;
         width: 100%;
         margin-top: 0px !important;
         left: 0;
         display: flex;
+        z-index: 99;
     }
 
     .sticky + .content {

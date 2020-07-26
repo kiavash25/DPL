@@ -239,6 +239,14 @@
                                 <button id="brochureName" class="btn btn-success">{{isset($package->brochure) ? $package->brochure : ''}}</button>
                             </a>
                         </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="inputLabel" for="specialName">{{__('Special name')}}</label>
+                                <input type="text" id="specialName" name="specialName" class="form-control" value="{{$package->specialName}}">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -646,6 +654,7 @@
             let eDate = $('#eDate').val();
             let cost = $('#cost').val();
             let season = $('#season').val();
+            let specialName = $('#specialName').val();
             let level = $('#level').val();
             let tagsElement = $("input[name*='tags']");
             let tags = [];
@@ -701,6 +710,7 @@
                         season: season,
                         level: level,
                         source: source,
+                        specialName: specialName,
                         showPack: showPack
                     },
                     success: function(response){

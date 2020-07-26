@@ -322,9 +322,9 @@
                         <div class="col-md-6 awardsBig fullZeroRow">
                             <a href="{{$awards[0]->link}}" class="awardSection">
                                 <img src="{{$awards[0]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
-                                <div class="awardsName">
-                                    {{$awards[0]->name}}
-                                </div>
+{{--                                <div class="awardsName">--}}
+{{--                                    {{$awards[0]->name}}--}}
+{{--                                </div>--}}
                             </a>
                         </div>
                     @endif
@@ -335,9 +335,9 @@
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[1]->link}}" class="awardSection">
                                         <img src="{{$awards[1]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
-                                        <div class="awardsName">
-                                            {{$awards[1]->name}}
-                                        </div>
+{{--                                        <div class="awardsName">--}}
+{{--                                            {{$awards[1]->name}}--}}
+{{--                                        </div>--}}
                                     </a>
                                 </div>
                             @endif
@@ -345,9 +345,9 @@
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[2]->link}}" class="awardSection">
                                         <img src="{{$awards[2]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
-                                        <div class="awardsName">
-                                            {{$awards[2]->name}}
-                                        </div>
+{{--                                        <div class="awardsName">--}}
+{{--                                            {{$awards[2]->name}}--}}
+{{--                                        </div>--}}
                                     </a>
                                 </div>
                             @endif
@@ -357,9 +357,9 @@
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[3]->link}}" class="awardSection">
                                         <img src="{{$awards[3]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
-                                        <div class="awardsName">
-                                            {{$awards[3]->name}}
-                                        </div>
+{{--                                        <div class="awardsName">--}}
+{{--                                            {{$awards[3]->name}}--}}
+{{--                                        </div>--}}
                                     </a>
                                 </div>
                             @endif
@@ -367,9 +367,9 @@
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[4]->link}}" class="awardSection">
                                         <img src="{{$awards[4]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
-                                        <div class="awardsName">
-                                            {{$awards[4]->name}}
-                                        </div>
+{{--                                        <div class="awardsName">--}}
+{{--                                            {{$awards[4]->name}}--}}
+{{--                                        </div>--}}
                                     </a>
                                 </div>
                             @endif

@@ -42,7 +42,7 @@
         font-weight: bold;
     }
     .infoValue{
-
+        text-align: center;
     }
     .activityInfoDiv{
         margin-top: 25px;
@@ -50,10 +50,12 @@
     .activityInfoName{
         font-size: 25px;
         font-weight: bold;
+        text-align: center;
     }
     .activityInfoValue{
         padding: 0px 20px;
         font-size: 20px;
+        text-align: center;
     }
     .days{
         color: #818d99;
@@ -108,6 +110,7 @@
         display: inline-block;
         font-weight: bold;
     }
+
     @media (max-width: 991px){
         .sidePicTextContent{
             max-height: none;
@@ -143,32 +146,43 @@
         @endif
         @if($content->eDate != null)
             <div class="infoDiv">
-                <div class="infoName">{{__('End Date')}}:</div>
+                <div class="infoName">{{__('End Date')}}</div>
                 <div class="infoValue">{{$content->eDate}}</div>
             </div>
         @endif
         <div class="infoDiv">
-            <div class="infoName">{{__('Season')}}:</div>
+            <div class="infoName">{{__('Season')}}</div>
             <div class="infoValue">{{__($content->season)}}</div>
         </div>
         <div class="infoDiv">
-            <div class="infoName">{{__('Level')}}:</div>
+            <div class="infoName">{{__('Level')}}</div>
             <div class="infoValue">{{__($content->level)}}</div>
         </div>
         <div class="infoDiv">
-            <div class="infoName">{{__('Package Code')}}:</div>
+            <div class="infoName">{{__('Package Code')}}</div>
             <div class="infoValue">{{$content->code}}</div>
         </div>
     </div>
 
-    <div class="activityInfoDiv">
-        <div class="activityInfoName">
-            {{__('Activity')}}:
+    <div class="activityInfoDiv" style="display: flex; align-items: center">
+        <div>
+            <div class="activityInfoName">
+                {{__('Activity')}}
+            </div>
+            <div class="activityInfoValue" style="padding: 0px">
+                {{$content->mainActivity->name}}
+            </div>
         </div>
-        <div class="activityInfoValue">
-{{--            <img src="{{$content->mainActivity->icon}}" alt="{{$content->mainActivity->name}}" style="width: 50px; height: 50px;">--}}
-            {{$content->mainActivity->name}}
-        </div>
+        @if($content->specialName != null)
+            <div style="margin: 0px 50px">
+                <div class="activityInfoName">
+                    {{__('Special name')}}
+                </div>
+                <div class="activityInfoValue" style="padding: 0px">
+                    {{$content->specialName}}
+                </div>
+            </div>
+        @endif
     </div>
 
     <div class="moneyAndOrderDiv">

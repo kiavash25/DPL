@@ -417,8 +417,8 @@ class MainController extends Controller
         $content->money = commaMoney($content->money);
 
         $hasMoreInfo = 0;
-        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->get();
-        $moreInfoNeutral = PackageMoreInfo::where('category', 'neutralDetail')->get();
+        $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->where('lang', app()->getLocale())->get();
+        $moreInfoNeutral = PackageMoreInfo::where('category', 'neutralDetail')->where('lang', app()->getLocale())->get();
         foreach ($moreInfoCallVenture as $item){
             $text = PackageMoreInfoRelation::where('moreInfoId', $item->id)->where('packageId', $content->id)->first();
             if($text != null) {

@@ -167,6 +167,7 @@ class PackageController extends Controller
             $pack->money = $request->cost;
             $pack->destId = $request->destinationId;
             $pack->mainActivityId = $request->mainActivity;
+            $pack->specialName = $request->specialName;
             $pack->save();
 
             $tags = json_decode($request->tags);
