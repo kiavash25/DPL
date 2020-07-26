@@ -18,6 +18,10 @@ Route::get('locale/{locale}', function ($locale){
     return redirect()->back();
 });
 
+Route::get('loginPage', function(){
+    return view('auth.newLogin');
+})->name('loginPage')->middleware(['guest']);
+
 Auth::routes();
 
 Route::middleware(['web'])->group(function () {
@@ -51,8 +55,11 @@ Route::middleware(['web'])->group(function () {
     Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
 });
 
+
+
 //admin panel
 Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
+
     Route::get('admin/locale/{locale}', function ($locale){
         $user = auth()->user();
         $acl = \App\models\Acl::where('userId', $user->id)->where('role', 'language')->where('value', $locale)->first();

@@ -165,7 +165,7 @@
         @endcan
 
         <div class="sideNavTabs">
-            <a class="subSideNavTab"href="{{ route('logout') }}"
+            <a class="subSideNavTab" href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 {{__('Log out')}}
             </a>

@@ -805,9 +805,20 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </div>
                 <div class="subList subLisM">
                     <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">{{__('sign in')}}</div>
-                        <div class="navSubListBody navSubListBodyM">{{__('login')}}</div>
-                        <div class="navSubListBody navSubListBodyM">{{__('Community')}}</div>
+                        @if(!auth()->check())
+                            <a href="{{route('loginPage')}}/#register" class="navSubListBody navSubListBodyM">{{__('sign up')}}</a>
+                            <a href="{{route('loginPage')}}" class="navSubListBody navSubListBodyM">{{__('login')}}</a>
+                            <div class="navSubListBody navSubListBodyM">{{__('Community')}}</div>
+                        @else
+                            <a href="#" class="navSubListBody navSubListBodyM">{{auth()->user()->email}}</a>
+                            <div class="navSubListBody navSubListBodyM">{{__('Community')}}</div>
+                            <a href="#" class="navSubListBody navSubListBodyM">{{__('profile')}}</a>
+                            <a class="navSubListBody navSubListBodyM" href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{__('Log out')}}</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
