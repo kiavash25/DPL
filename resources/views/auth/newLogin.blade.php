@@ -214,7 +214,7 @@
                 {{__('Forgot your password?')}}
             </span>
             <div style="text-align: center; color: #2c3e50;font-size: 20px;">
-               {{__(" Please, check your email")}}
+               {{__("Please, check your email")}}
                 <div style="opacity: .6; font-size: 15px; margin-top: 10px; margin-bottom: 20px;">
                     {{__('auth.successSendEmailText')}}
                 </div>

@@ -180,8 +180,6 @@ function generateRandomString($length = 20) {
     return $randomString;
 }
 
-
-
 //email
 function forgetPassEmail($userName, $email, $newPassword){
     $header = __('Forget password');

@@ -31,7 +31,7 @@ class PackageController extends Controller
             $item->activity = Activity::find($item->mainActivityId);
         }
 
-        return view('admin.package.listPackage', compact(['packages']));
+        return view('profile.admin.package.listPackage', compact(['packages']));
     }
 
     public function newPackage()
@@ -48,7 +48,7 @@ class PackageController extends Controller
 
         $allDestination = Destination::where('lang', app()->getLocale())->get();
 
-        return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'sourceParent']));
+        return view('profile.admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'sourceParent']));
     }
 
     public function editPackage($id)
@@ -93,7 +93,7 @@ class PackageController extends Controller
             $item->sub = Activity::where('lang', app()->getLocale())->where('parent', $item->id)->get();
 
         $allDestination = Destination::where('lang', app()->getLocale())->get();
-        return view('admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'package', 'sourceParent']) );
+        return view('profile.admin.package.newPackage', compact(['kind', 'destinations', 'allDestination', 'activity', 'package', 'sourceParent']) );
     }
 
     public function storePackage(Request $request)
@@ -499,7 +499,7 @@ class PackageController extends Controller
         $moreInfo = PackageMoreInfo::where('lang', app()->getLocale())->get();
         $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->where('lang', app()->getLocale())->get();
         $moreInfoNature = PackageMoreInfo::where('category', 'neutralDetail')->where('lang', app()->getLocale())->get();
-        return view('admin.package.moreInfoTitle', compact(['moreInfo', 'moreInfoCallVenture', 'moreInfoNature']));
+        return view('profile.admin.package.moreInfoTitle', compact(['moreInfo', 'moreInfoCallVenture', 'moreInfoNature']));
     }
 
     public function storeMoreInfoTitlePackage(Request $request)
@@ -567,7 +567,7 @@ class PackageController extends Controller
         foreach ($moreInfo as $item)
             $item->text = PackageMoreInfoRelation::where('packageId', $package->id)->where('moreInfoId', $item->id)->first();
 
-        return view('admin.package.moreInfoText', compact(['moreInfoCallVenture', 'moreInfoNature', 'moreInfo', 'package']));
+        return view('profile.admin.package.moreInfoText', compact(['moreInfoCallVenture', 'moreInfoNature', 'moreInfo', 'package']));
     }
 
     public function storeMoreInfoTextPackage(Request $request)

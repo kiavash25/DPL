@@ -13,15 +13,8 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('code',2);
-            $table->string('name',64);
-            $table->string('full_name',128);
-            $table->string('iso3',3);
-            $table->integer('number');
-            $table->string('continent_code',2);
-            $table->integer('display_order')->default(900);
+        Schema::create('country', function (Blueprint $table) {
+//            in countrySql
         });
     }
 

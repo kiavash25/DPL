@@ -24,14 +24,14 @@ class DestCategoryController extends Controller
             $item->destNum = Destination::where('categoryId', $item->id)->count();
         }
 
-        return view('admin.destination.categoryDestination', compact(['category']));
+        return view('profile.admin.destination.categoryDestination', compact(['category']));
     }
 
     public function newCategory()
     {
         $sourceParent = DestinationCategory::where('lang', 'en')->get();
 
-        return view('admin.destination.newDestinationCategory', compact(['sourceParent']));
+        return view('profile.admin.destination.newDestinationCategory', compact(['sourceParent']));
     }
 
     public function editCategory($id){
@@ -55,7 +55,7 @@ class DestCategoryController extends Controller
             $category->podcast = asset('uploaded/destination/category/' . $id . '/' . $category->podcast);
 
         $sourceParent = DestinationCategory::where('lang', 'en')->get();
-        return view('admin.destination.newDestinationCategory', compact(['category', 'sourceParent']));
+        return view('profile.admin.destination.newDestinationCategory', compact(['category', 'sourceParent']));
     }
 
     public function storeCategory(Request $request)

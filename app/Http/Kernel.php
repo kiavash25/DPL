@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\Localization::class,
             \App\Http\Middleware\shareData::class,
             \App\Http\Middleware\JournalShareData::class,
+            \App\Http\Middleware\ShareProfile::class
         ],
 
         'api' => [

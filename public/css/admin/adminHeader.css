@@ -21,7 +21,7 @@ a:hover{
     height: 80px !important;
     justify-content: center !important;
     align-items: center !important;
-    background: white !important;
+    background: #99b4c3 !important;
     border-radius: 50% !important;
     color: #30759d !important;
     overflow: hidden !important;
@@ -279,7 +279,7 @@ a:hover{
     height: 125px;
     background-color: #30759d;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     color: black;
     font-weight: bold;

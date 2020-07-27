@@ -61,11 +61,45 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
         padding-bottom: 22px;
         width: 40px;
     }
+    .headerSignLogIn{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        direction: ltr;
+    }
+    .headerSignLogIn > a{
+        padding: 10px;
+        background: white;
+        font-weight: bold;
+        width: 85px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 5px;
+        font-size: 11px;
+    }
 </style>
 
 <div id="backBlackSideNav" class="backBlack" style="display: none">
     <div id="mySidenav" class="sidenav">
-        <div class="sideHeader"></div>
+        <div class="sideHeader">
+            @if(!auth()->check())
+                <div class="headerSignLogIn">
+                    <a href="{{route('loginPage')}}" style="border-radius: 0px 25px 0px 25px">{{__('Log In')}}</a>
+                    <a href="{{route('loginPage')}}#register" style="border-radius: 25px 0px 25px 0px">{{__('Sign Up')}}</a>
+                </div>
+            @else
+                <div style="width: 100%; text-align: center; color: white; margin-bottom: 10px;">
+                   Hi {{auth()->user()->name}}
+                </div>
+                <div class="headerSignLogIn">
+                    <a href="{{route('profile')}}" style="border-radius: 0px 25px 0px 25px">{{__('Profile')}}</a>
+                    <a style="border-radius: 25px 0px 25px 0px"  href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{__('Log Out')}}</a>
+                </div>
+            @endif
+        </div>
 
         <div class="sideBody">
             <div id="backSideNavMenuDiv" class="sideNavTabs" style="margin-bottom: 20px; display: none">
@@ -812,12 +846,12 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                         @else
                             <a href="#" class="navSubListBody navSubListBodyM">{{auth()->user()->email}}</a>
                             <div class="navSubListBody navSubListBodyM">{{__('Community')}}</div>
-                            <a href="#" class="navSubListBody navSubListBodyM">{{__('profile')}}</a>
+                        @if(auth()->user()->level == 'admin' || auth()->user()->level == 'superAdmin' )
+                                <a href="{{route('admin.index')}}" class="navSubListBody navSubListBodyM">{{__('panel admin')}}</a>
+                            @endif
+                            <a href="{{route('profile')}}" class="navSubListBody navSubListBodyM">{{__('profile')}}</a>
                             <a class="navSubListBody navSubListBodyM" href="{{ route('logout') }}"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{__('Log out')}}</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
                         @endif
                     </div>
                 </div>
@@ -860,14 +894,6 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
             </div>
         </div>
 
-
-{{--        <div class="headerSearchAndMenuPc">--}}
-{{--            --}}
-
-{{--           --}}
-{{--        </div>--}}
-
-
         <div id="searchNavMobile" class="searchNavMobile pcHide">
             <div style="width: 100%; display: flex; height: 100%;">
                 <div class="mobileNavSearchDiv">
@@ -885,6 +911,10 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
     </div>
 </nav>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
 
 @if(isset($guidance))
     <div class="guideNav">

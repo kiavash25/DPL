@@ -29,7 +29,7 @@ class UserAccessController extends Controller
             $user->language = Acl::where('userId', $user->id)->where('role', 'language')->pluck('value')->toArray();
         }
 
-        return view('admin.userAccess.userAccessList', compact(['adminUser', 'aclList', 'languageList']));
+        return view('profile.admin.userAccess.userAccessList', compact(['adminUser', 'aclList', 'languageList']));
     }
 
     public function aclStore(Request $request)

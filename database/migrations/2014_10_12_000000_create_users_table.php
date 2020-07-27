@@ -20,6 +20,11 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('level',20)->default('user');
+            $table->string('phone', 20)->nullable();
+            $table->unsignedBigInteger('countryId')->nullable();
+            $table->string('pic')->nullable();
+            $table->string('birthDate',20)->nullable();
+            $table->tinyInteger('gender')->nullable();// 0 Female, 1 man
             $table->rememberToken();
             $table->timestamps();
         });

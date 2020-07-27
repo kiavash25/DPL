@@ -26,7 +26,7 @@ class DestinationController extends Controller
         foreach ($destination as $item)
             $item->category = DestinationCategory::find($item->categoryId);
 
-        return view('admin.destination.listDestination', compact(['destination']));
+        return view('profile.profile.admin.destination.listDestination', compact(['destination']));
     }
 
     public function newDestination()
@@ -40,7 +40,7 @@ class DestinationController extends Controller
         foreach($category as $item)
             $item->titles = DestinationCategoryTitle::where('categoryId', $item->id)->get();
 
-        return view('admin.destination.newDestination', compact(['countries', 'kind', 'category', 'sourceParent']));
+        return view('profile.admin.destination.newDestination', compact(['countries', 'kind', 'category', 'sourceParent']));
     }
 
     public function editDestination($id)
@@ -84,7 +84,7 @@ class DestinationController extends Controller
         foreach($category as $item)
             $item->titles = DestinationCategoryTitle::where('categoryId', $item->id)->get();
 
-        return view('admin.destination.newDestination', compact(['countries', 'destination', 'kind', 'category', 'sourceParent']));
+        return view('profile.admin.destination.newDestination', compact(['countries', 'destination', 'kind', 'category', 'sourceParent']));
     }
 
     public function storeDestination(Request $request)
@@ -330,7 +330,7 @@ class DestinationController extends Controller
                 $item->text = $item->text->text;
         }
 
-        return view('admin.destination.titleDescriptionDestination', compact(['dest', 'category']) );
+        return view('profile.admin.destination.titleDescriptionDestination', compact(['dest', 'category']) );
     }
 
     public function storeDescriptionDestination(Request $request)

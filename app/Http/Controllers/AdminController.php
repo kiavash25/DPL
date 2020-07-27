@@ -16,7 +16,7 @@ class AdminController extends Controller
         $packageCount = Package::where('lang', app()->getLocale())->count();
         $journalCount = Journal::where('lang', app()->getLocale())->count();
 
-        return view('admin.adminIndex', compact(['destinationCount', 'packageCount', 'journalCount']));
+        return view('profile.admin.adminIndex', compact(['destinationCount', 'packageCount', 'journalCount']));
     }
 
 

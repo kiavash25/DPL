@@ -23,7 +23,7 @@ class JournalAdminController extends Controller
         foreach ($category as $item)
             $item->journalCount = Journal::where('categoryId', $item->id)->count();
 
-        return view('admin.journal.categoryIndex', compact(['category']));
+        return view('profile.admin.journal.categoryIndex', compact(['category']));
     }
 
     public function storeCategory(Request $request)
@@ -106,7 +106,7 @@ class JournalAdminController extends Controller
             $item->user = User::find($item->userId);
         }
 
-        return view('admin.journal.listJournal', compact(['journal']));
+        return view('profile.admin.journal.listJournal', compact(['journal']));
     }
 
     public function newJournal()
@@ -115,7 +115,7 @@ class JournalAdminController extends Controller
         $category = JournalCategory::where('lang', app()->getLocale())->get();
         $code = random_int(10000, 999999);
 
-        return view('admin.journal.newJournal', compact(['kind', 'category', 'code']));
+        return view('profile.admin.journal.newJournal', compact(['kind', 'category', 'code']));
     }
 
     public function editJournal($id)
@@ -143,7 +143,7 @@ class JournalAdminController extends Controller
         $category = JournalCategory::where('lang', app()->getLocale())->get();
         $code = 0;
 
-        return view('admin.journal.newJournal', compact(['journal', 'kind', 'code', 'category']));
+        return view('profile.admin.journal.newJournal', compact(['journal', 'kind', 'code', 'category']));
     }
 
     public function storeDescriptionImgJournal(Request $request)

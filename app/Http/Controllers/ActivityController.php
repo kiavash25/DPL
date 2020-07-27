@@ -43,7 +43,7 @@ class ActivityController extends Controller
                 $item->parent = '';
         }
 
-        return view('admin.activity.listActivity', compact(['activity']));
+        return view('profile.admin.activity.listActivity', compact(['activity']));
     }
 
     public function newActivity()
@@ -52,7 +52,7 @@ class ActivityController extends Controller
         $parent = Activity::where('parent', 0)->where('lang', $lng)->get();
         $sourceParent = Activity::where('lang', 'en')->get();
 
-        return view('admin.activity.newActivity', compact(['parent', 'sourceParent']));
+        return view('profile.admin.activity.newActivity', compact(['parent', 'sourceParent']));
     }
 
     public function editActivity($id)
@@ -89,7 +89,7 @@ class ActivityController extends Controller
 
         $sourceParent = Activity::where('lang', 'en')->get();
 
-        return view('admin.activity.newActivity', compact(['parent', 'activity', 'sourceParent']));
+        return view('profile.admin.activity.newActivity', compact(['parent', 'activity', 'sourceParent']));
     }
 
 
@@ -358,7 +358,7 @@ class ActivityController extends Controller
 
         if($activity != null){
             $activity->titles = ActivityTitle::where('activityId', $activity->id)->get();
-            return view('admin.activity.descriptionActivity', compact(['activity', 'showLang']));
+            return view('profile.admin.activity.descriptionActivity', compact(['activity', 'showLang']));
         }
 
         return redirect(route('admin.activity.list'));

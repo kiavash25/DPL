@@ -21,7 +21,7 @@ class SettingController extends Controller
         foreach ($pics as $pic)
             $pic->pic = asset('images/MainSliderPics/' . $pic->pic);
 
-        return view('admin.setting.mainPageSlider', compact(['pics']));
+        return view('profile.admin.setting.mainPageSlider', compact(['pics']));
     }
 
     public function mainPageSliderStore(Request $request)
@@ -147,7 +147,7 @@ class SettingController extends Controller
     public function languagePage()
     {
         $lang = Language::all();
-        return view('admin.setting.language', compact(['lang']));
+        return view('profile.admin.setting.language', compact(['lang']));
     }
 
     public function storeLanguage(Request $request)
@@ -202,7 +202,7 @@ class SettingController extends Controller
                 $item->link = '#';
         }
 
-        return view('admin.setting.mainPageSetting', compact(['aboutUs', 'center', 'supportUs']));
+        return view('profile.admin.setting.mainPageSetting', compact(['aboutUs', 'center', 'supportUs']));
     }
 
     public function storeAboutUsPic(Request $request)
@@ -385,7 +385,7 @@ class SettingController extends Controller
         foreach ($awards as $award)
             $award->pic = URL::asset('images/awards/'.$award->pic);
 
-        return view('admin.setting.awards', compact(['awards']));
+        return view('profile.admin.setting.awards', compact(['awards']));
     }
 
     public function awardStore(Request $request)
