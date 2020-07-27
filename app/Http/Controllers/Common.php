@@ -3,6 +3,7 @@
 use App\models\Activity;
 use App\models\Destination;
 use Carbon\Carbon;
+use PHPMailer\PHPMailer\PHPMailer;
 
 function storeImage($source, $destination){
     try {
@@ -38,7 +39,6 @@ function compressImage($source, $destination, $quality){
 ////        dd($x);
 //    }
 }
-
 
 //    http://image.intervention.io/
 function resizeImage($pic, $size){
@@ -168,4 +168,55 @@ function emptyFolder($dir){
             return false;
     }
     catch(\Exception $exception){return false;}
+}
+
+function generateRandomString($length = 20) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+
+
+//email
+function forgetPassEmail($userName, $email, $newPassword){
+    $header = __('Forget password');
+    $view = \View::make('email.forgetPass', compact(['header', 'userName', 'newPassword']));
+    $html = $view->render();
+
+    if(sendEmail($html, $header, $email))
+        return true;
+    else
+        return false;
+}
+
+function sendEmail($text, $subject, $to){
+
+    $mail = new PHPMailer(true);
+    try {
+        $mail->SMTPDebug = 0;
+        $mail->CharSet = "UTF-8";
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $text;
+        $mail->setFrom('support@discoverpersialand.com', 'dpl');
+        $mail->addAddress($to);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'allow_self_signed' => true
+            )
+        );
+        $mail->send();
+
+        return true;
+    }
+    catch (Exception $e) {
+        return false;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\makeLog;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +73,13 @@ class RegisterController extends Controller
             'level' => $level,
             'password' => Hash::make($data['password']),
         ]);
+
+        event(new makeLog([
+            'userId' => $user->id,
+            'subject' => 'user_register',
+            'referenceId' => $user->id,
+            'referenceTable' => 'users'
+        ]));
 
         if($level == 'user')
             return $user;

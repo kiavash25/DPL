@@ -11,6 +11,8 @@
 |
 */
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 Route::get('locale/{locale}', function ($locale){
@@ -18,11 +20,45 @@ Route::get('locale/{locale}', function ($locale){
     return redirect()->back();
 });
 
-Route::get('loginPage', function(){
-    return view('auth.newLogin');
-})->name('loginPage')->middleware(['guest']);
+Route::get('sendEmail', function (){
+    $html = '<span>Hi:</span>';
+    $html .= '<span style="color: red">This is new password: </span>';
+    $html .= '<span>sdfkjsdfksaf</span>';
+
+   $mail = new PHPMailer(true);
+    try {
+        $mail->SMTPDebug = 1;
+        $mail->CharSet = "UTF-8";
+        $mail->isHTML(true);
+        $mail->Subject = 'alaki';
+        $mail->Body    = $html;
+        $mail->setFrom('info@discoverpersialand.com', 'dpl');
+        $mail->addAddress('kiavashriddler@gmail.com');
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'allow_self_signed' => true
+            )
+        );
+        $mail->send();
+    }
+    catch (Exception $e) {
+        dd($e);
+        return false;
+    }
+});
+
+Route::get('forgetPass', 'AjaxController@forgetPass');
+
 
 Auth::routes();
+
+Route::middleware(['guest'])->group(function(){
+    Route::get('loginPage', 'UserController@loginRegisterPage')->name('loginPage');
+
+    Route::post('forgetPassword', 'UserController@forgetPassword')->name('forgetPassword');
+});
 
 Route::middleware(['web'])->group(function () {
     Route::get('/', 'MainController@mainPage');
@@ -54,8 +90,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('journal/list/{kind}/{value?}', 'JournalController@listJournal')->name('journal.list');
     Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
 });
-
-
 
 //admin panel
 Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {

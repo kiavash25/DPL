@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 
 class AjaxController extends Controller
 {
+    public function forgetPass()
+    {
+        $result = forgetPassEmail('kiavash', 'kiavashriddler@gmail.com', '4787287923047');
+        dd($result);
+    }
+
     public function findCity(Request $request)
     {
         if(isset($request->city) && isset($request->countryId)){

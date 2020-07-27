@@ -59,7 +59,7 @@
             <img src="{{asset('images/mainImage/dplIcon.jpg')}}" alt="DPL" style="height: 100%">
         </a>
 
-        <form id="singinFrom" class="login100-form" method="POST" action="{{ route('login') }}">
+        <form id="signinForm" class="login100-form" method="POST" action="{{ route('login') }}">
             @csrf
             <span class="login100-form-title p-b-37">
                 {{__('Sign In')}}
@@ -91,7 +91,7 @@
                 </button>
             </div>
 
-            <div class="text-center p-t-57 p-b-20">
+            <div class="text-center p-t-30 p-b-20">
                 <span class="txt1">
                     {{__('Or login with')}}
                 </span>
@@ -103,14 +103,17 @@
                 </a>
             </div>
 
-            <div class="text-center">
-                <a href="#register" class="txt2 hov1" onclick="toggleRegister()" style="cursor:pointer;">
+            <div class="text-center" style="display: flex; justify-content: space-between;">
+                <a href="#forget" class="txt2 hov1" onclick="toggleRegister('forget')" style="cursor:pointer;">
+                    {{__('Forgot your password?')}}
+                </a>
+                <a href="#register" class="txt2 hov1" onclick="toggleRegister('register')" style="cursor:pointer;">
                     {{__('Sign Up')}}
                 </a>
             </div>
         </form>
 
-        <form method="POST" action="{{ route('register') }}" id="registerFrom" class="login100-form validate-form" style="display: none" >
+        <form id="registerForm" method="POST" action="{{ route('register') }}" class="login100-form validate-form" style="display: none" >
             @csrf
             <span class="login100-form-title p-b-37">
                 {{__('Register')}}
@@ -163,11 +166,66 @@
             </div>
 
             <div class="text-center" style="margin-top: 30px">
-                <a href="#singin" class="txt2 hov1" onclick="toggleRegister()" style="cursor:pointer;">
+                <a href="#singin" class="txt2 hov1" onclick="toggleRegister('signin')" style="cursor:pointer;">
                     {{__('Sign In')}}
                 </a>
             </div>
         </form>
+
+        <div id="forgetPassword" style="display: none">
+            <span class="login100-form-title p-b-37" style="font-size: 25px; padding-bottom: 25px">
+                {{__('Forgot your password?')}}
+            </span>
+            <div style="text-align: center; color: #2c3e50;">
+                <div style="font-size: 20px; opacity: .5;">
+                    {{__("No problem. We're here to help.")}}
+                </div>
+                <div style="margin-top: 5px; margin-bottom: 15px;">
+                   {{__(" Enter your email and we'll send you an email have a new password.")}}
+                </div>
+            </div>
+
+            <div class="wrap-input100 m-b-20 " data-validate="{{__('Enter email')}}" style="margin-bottom: 0px">
+                <input class="input100" type="text" id="forgetEmail" placeholder="{{__('email')}}">
+                <span class="focus-input100"></span>
+            </div>
+            <span id="wrongEmail" class="invalid-feedback errorForget" role="alert" style="display: none">
+                {{__('This email not registered')}}
+            </span>
+            <span id="wrongTime" class="invalid-feedback errorForget" role="alert" style="display: none">
+                {{__('auth.forgetTime')}}
+            </span>
+
+            <div class="container-login100-form-btn" style="margin: 25px 0px">
+                <button class="login100-form-btn" onclick="sendNewPassword()">
+                    {{__('Submit')}}
+                </button>
+            </div>
+
+            <div class="text-center">
+                <a href="#signin" class="txt2 hov1" onclick="toggleRegister('signin')" style="cursor:pointer;">
+                    {{__('Sign In')}}
+                </a>
+            </div>
+        </div>
+
+        <div id="submitForgetPassword" style="display: none">
+            <span class="login100-form-title p-b-37" style="font-size: 25px; padding-bottom: 25px">
+                {{__('Forgot your password?')}}
+            </span>
+            <div style="text-align: center; color: #2c3e50;font-size: 20px;">
+               {{__(" Please, check your email")}}
+                <div style="opacity: .6; font-size: 15px; margin-top: 10px; margin-bottom: 20px;">
+                    {{__('auth.successSendEmailText')}}
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="#signin" class="txt2 hov1" onclick="toggleRegister('signin')" style="cursor:pointer;">
+                    {{__('Sign In')}}
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -194,19 +252,58 @@
 
 <script>
     let url = new URL(location.href);
-    function toggleRegister(){
-        $('#singinFrom').toggle();
-        $('#registerFrom').toggle();
+    function toggleRegister(_kind){
+        $('#signinForm').hide();
+        $('#registerForm').hide();
+        $('#forgetPassword').hide();
+        $('#submitForgetPassword').hide();
+
+        if(_kind == 'register')
+            $('#registerForm').show();
+        else if(_kind == 'signin')
+            $('#signinForm').show();
+        else if(_kind == 'forget')
+            $('#forgetPassword').show();
+        else if(_kind == 'submitForget')
+            $('#submitForgetPassword').show();
     }
 
     if(url.hash == '#register') {
-        toggleRegister();
-        $('#singinFrom').find('.invalid-feedback').remove();
-        $('#singinFrom').find('.invalidInput').removeClass('invalidInput');
+        toggleRegister('register');
+        $('#signinForm').find('.invalid-feedback').remove();
+        $('#signinForm').find('.invalidInput').removeClass('invalidInput');
     }
     else{
-        $('#registerFrom').find('.invalid-feedback').remove();
-        $('#registerFrom').find('.invalidInput').removeClass('invalidInput');
+        $('#registerForm').find('.invalid-feedback').remove();
+        $('#registerForm').find('.invalidInput').removeClass('invalidInput');
+    }
+
+    function sendNewPassword(){
+        let email = $('#forgetEmail').val();
+        if(email.trim().length > 5){
+            $.ajax({
+                type: 'post',
+                url: '{{route('forgetPassword')}}',
+                data:{
+                    _token: '{{csrf_token()}}',
+                    email: email,
+                },
+                success: function(response){
+                    $('#forgetEmail').parent().removeClass('invalidInput');
+                    $('.errorForget').hide();
+
+                    if(response == 'ok')
+                        toggleRegister('submitForget');
+                    else if(response == 'notUser'){
+                        $('#forgetEmail').parent().addClass('invalidInput');
+                        $('#wrongEmail').show();
+                    }
+                    else if(response == 'beforeSent')
+                        $('#wrongTime').show();
+
+                }
+            })
+        }
     }
 
 </script>
