@@ -57,6 +57,7 @@ class UserController extends Controller
 
     public function profile()
     {
+        return redirect()->route('profile.setting');
         return view('profile.user.dashboard');
     }
 

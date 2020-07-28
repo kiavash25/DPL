@@ -849,7 +849,9 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                         @if(auth()->user()->level == 'admin' || auth()->user()->level == 'superAdmin' )
                                 <a href="{{route('admin.index')}}" class="navSubListBody navSubListBodyM">{{__('panel admin')}}</a>
                             @endif
-                            <a href="{{route('profile')}}" class="navSubListBody navSubListBodyM">{{__('profile')}}</a>
+                            <a href="{{route('profile')}}" class="navSubListBody navSubListBodyM">
+                                {{__("User profile")}}
+                            </a>
                             <a class="navSubListBody navSubListBodyM" href="{{ route('logout') }}"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{__('Log out')}}</a>
                         @endif
