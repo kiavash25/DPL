@@ -26,7 +26,7 @@ class DestinationController extends Controller
         foreach ($destination as $item)
             $item->category = DestinationCategory::find($item->categoryId);
 
-        return view('profile.profile.admin.destination.listDestination', compact(['destination']));
+        return view('profile.admin.destination.listDestination', compact(['destination']));
     }
 
     public function newDestination()

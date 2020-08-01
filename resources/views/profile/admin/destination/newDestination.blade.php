@@ -73,7 +73,6 @@
                     <div id="description" class="textEditor" >
                         {!! isset($destination->description) ? $destination->description : '' !!}
                     </div>
-
                 </div>
             </div>
 

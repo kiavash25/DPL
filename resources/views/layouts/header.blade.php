@@ -94,7 +94,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                    Hi {{auth()->user()->name}}
                 </div>
                 <div class="headerSignLogIn">
-                    <a href="{{route('profile')}}" style="border-radius: 0px 25px 0px 25px">{{__('Profile')}}</a>
+                    <a href="{{route('profile')}}" style="border-radius: 0px 25px 0px 25px">{{__('User profile')}}</a>
                     <a style="border-radius: 25px 0px 25px 0px"  href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{__('Log Out')}}</a>
                 </div>

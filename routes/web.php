@@ -200,12 +200,6 @@ Route::middleware(['web'])->group(function () {
     });
 });
 
-//admin panel
-Route::middleware(['auth', 'acl:admin', 'web'])->group(function () {
-
-
-});
-
 
 Route::post('findCity', 'AjaxController@findCity')->name('findCity');
 Route::post('findTag', 'AjaxController@findTag')->name('findTag');
