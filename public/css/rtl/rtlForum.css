@@ -1,0 +1,35 @@
+.sideInfoForumList{
+    border-right: solid 1px gray;
+    border-left: none;
+    margin-right: 1%;
+    padding-right: 1%;
+    margin-left: 0%;
+    padding-left: 0%;
+}
+.forumInfosList .number{
+    margin-right: 0px;
+    margin-left: 6px;
+}
+.forumTag{
+    margin-right: 6px;
+    margin-left: 0px;
+}
+.reportSection{
+    left: 10px;
+    right: auto;
+}
+.dropright.float-left .dropdown-toggle {
+    direction: ltr;
+}
+.topicUser .userPic{
+    margin-left: 15px;
+    margin-right: 0px;
+}
+.seenTopic{
+    margin-left: 0px;
+    margin-right: 20px;
+}
+.forumUserImgSection{
+    margin-right: 0px;
+    margin-left: 15px;
+}

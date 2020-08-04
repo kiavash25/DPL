@@ -146,6 +146,21 @@
         @can('canSee', 'userAccess')
             <div class="sideNavTabs">
                 <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Topical discussion')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.forum.category')}}">
+                            {{__('Category')}}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                     {{__('Users')}}
                     <div class="arrow rightArrow"></div>
                 </a>

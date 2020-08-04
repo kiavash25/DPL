@@ -20,8 +20,6 @@
     <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
 
     <style>
-
-
         body{
             font-family: 'Varela Round', sans-serif;
             /*font-family: 'Montserrat', sans-serif;*/
@@ -83,6 +81,7 @@
 </head>
 <body style="overflow-x: hidden">
 <div>
+
     @include('common.alerts')
 
     <div class="loadingDiv">

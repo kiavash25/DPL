@@ -218,3 +218,18 @@ function sendEmail($text, $subject, $to){
         return false;
     }
 }
+
+function checkAcl($userId, $role){
+    $user = \App\User::find($userId);
+    if($user->level == 'admin') {
+        $acl = \App\models\Acl::where('userId', $userId)->where('role', $role)->first();
+        if ($acl == null)
+            return false;
+        else
+            return true;
+    }
+    else if($user->level == 'superAdmin')
+        return true;
+    else
+        return false;
+}

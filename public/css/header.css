@@ -589,7 +589,7 @@ a:hover{
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 5px 0px;
+        /*padding: 5px 0px;*/
     }
     .navUl{
         position: absolute;

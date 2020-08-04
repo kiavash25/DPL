@@ -55,6 +55,25 @@ Route::middleware(['web'])->group(function () {
 
     Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
 
+    Route::middleware(['web', 'forumPages'])->group(function(){
+        Route::get('topicalDiscussion', 'ForumController@forumIndex')->name('forum.index');
+        Route::get('topicalDiscussion/category/{categoryId}', 'ForumController@forumCategoryList')->name('forum.category.list');
+        Route::get('topicalDiscussion/topic/{topicId}', 'ForumController@forumTopic')->name('forum.topic.show');
+
+        Route::middleware(['auth'])->group(function(){
+            Route::get('topicalDiscussion/newTopic', 'ForumController@forumNewTopic')->name('forum.newTopic');
+            Route::post('topicalDiscussion/store', 'ForumController@storeNewTopic')->name('forum.storeTopic');
+
+            Route::post('topicalDiscussion/storeTopicAns', 'ForumController@storeTopicAns')->name('forum.storeTopicAns');
+            Route::post('topicalDiscussion/setBestAnswerTopic', 'ForumController@setBestAnswerTopic')->name('forum.setBestAnswerTopic');
+            Route::post('topicalDiscussion/likeForum', 'ForumController@likeForum')->name('forum.likeForum');
+
+            Route::post('topicalDiscussion/deleteTopic', 'ForumController@deleteTopic')->name('forum.deleteTopic');
+            Route::post('topicalDiscussion/deleteReply', 'ForumController@deleteReply')->name('forum.deleteReply');
+        });
+    });
+
+
     Route::middleware(['guest'])->group(function(){
         Route::get('loginPage', 'UserController@loginRegisterPage')->name('loginPage');
 
@@ -188,6 +207,10 @@ Route::middleware(['web'])->group(function () {
             });
 
             Route::middleware(['auth', 'web', 'acl:userAccess'])->group(function () {
+                Route::get('/admin/forum/categories', 'ForumController@adminForumCategory')->name('admin.forum.category');
+                Route::post('/admin/forum/category/store', 'ForumController@storeForumCategory')->name('admin.forum.category.store');
+                Route::post('/admin/forum/category/delete', 'ForumController@deleteForumCategory')->name('admin.forum.category.delete');
+
                 Route::get('/admin/userAccess/list', 'UserAccessController@list')->name('admin.userAccess.list');
                 Route::post('/admin/userAccess/acl/store', 'UserAccessController@aclStore')->name('admin.userAccess.acl.store');
                 Route::post('/admin/userAccess/language/store', 'UserAccessController@languageStore')->name('admin.userAccess.language.store');
