@@ -19,28 +19,47 @@ class JournalController extends Controller
     public function mainPageJournal()
     {
         $today = Carbon::now()->format('Y-m-d');
-        $mainSliderJournal = Journal::where('releaseDate' , '!=', 'draft')->where('lang', app()->getLocale())->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(3)->get();
+        $mainSliderJournal = Journal::where('releaseDate' , '!=', 'draft')->where('lang', app()->getLocale())->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic', 'userId', 'releaseDate'])->orderByDesc('releaseDate')->take(5)->get();
         foreach ($mainSliderJournal as $item) {
+            $item->username = User::find($item->userId);
+            if($item->username != null)
+                $item->username = $item->username->name;
+
             $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
             $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
             $item->category = JournalCategory::find($item->categoryId);
             if($item->category != null)
                 $item->category = $item->category->name;
+
+
+            $item->date = Carbon::createFromFormat('Y-m-d', $item->releaseDate)->format('d F Y');
         }
 
-        $journals = Journal::where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->where('lang', app()->getLocale())->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(3)->get();
-        foreach ($journals as $item) {
-            $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
-            $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
-            $item->category = JournalCategory::find($item->categoryId);
-            if($item->category != null)
-                $item->category = $item->category->name;
+        $showCategories = [];
+        $categoryList = JournalCategory::where('viewOrder', '!=', 0)->where('lang', app()->getLocale())->orderByDesc('viewOrder')->get();
+        foreach ($categoryList as $categ){
+            $categ->journals = Journal::where('categoryId', $categ->id)->where('releaseDate' , '!=', 'draft')->where('releaseDate', '<=', $today)->where('lang', app()->getLocale())->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic', 'userId', 'releaseDate'])->orderByDesc('releaseDate')->take(5)->get();
+            foreach ($categ->journals as $item) {
+                $item->pic = asset('uploaded/journal/mainPics/' . $item->pic);
+                $item->url = route('journal.show', ['id' => $item->id, $item->slug]);
+                if($item->category != null)
+                    $item->category = $item->category->name;
+
+                $item->username = User::find($item->userId);
+                if($item->username != null)
+                    $item->username = $item->username->name;
+                $item->date = Carbon::createFromFormat('Y-m-d', $item->releaseDate)->format('d F Y');
+            }
+
+            if(count($categ->journals) > 0)
+                array_push($showCategories,$categ);
         }
+
 
         if(count($mainSliderJournal) == 0)
             return redirect(url('/'));
 
-        return view('journal.mainPageJournal', compact(['journals', 'mainSliderJournal']));
+        return view('journal.mainPageJournal', compact(['showCategories', 'mainSliderJournal']));
     }
 
     public function getElems(Request $request)
@@ -115,6 +134,7 @@ class JournalController extends Controller
 
         $journal->date = Carbon::createFromFormat('Y-m-d', $journal->releaseDate)->format('d F Y');
 
+        $journal->userPic = User::getUserPic($journal->userId);
         $journal->username = User::find($journal->userId);
 
         if($journal->username != null)

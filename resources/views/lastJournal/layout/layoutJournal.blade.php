@@ -80,6 +80,22 @@
             transform: rotate(45deg) translate(-8px, -8px);
         }
 
+        /*.logoNavDiv{*/
+        /*    display: none !important;*/
+        /*}*/
+        /*.navSearchBar{*/
+        /*    display: none !important;*/
+        /*}*/
+        /*.navUl{*/
+        /*    margin-left: auto !important;*/
+        /*    width: auto !important;*/
+        /*}*/
+
+        @media (max-width: 1200px) {
+            /*.mainBase{*/
+            /*    width: 70%;*/
+            /*}*/
+        }
         @media (max-width: 767px){
             .mainBase{
                 width: 100%;
@@ -95,15 +111,45 @@
 
     @yield('head')
 
-    <script>
-        function resizeImg(_class) {
-            var imgs = $('.' + _class);
-            for(i = 0; i < imgs.length; i++)
-                fitThisImg(imgs);
-        }
+</head>
+<body style="overflow: hidden;">
 
-        function fitThisImg(_img){
-            var img = $(_img);
+@include('layouts.header')
+
+<div>
+
+
+    <?php
+        $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
+    ?>
+
+    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
+        <link rel="stylesheet" href="{{asset('css/rtl/rtlBase.css')}}">
+        <link rel="stylesheet" href="{{asset('css/rtl/journalBase.css')}}">
+    @endif
+
+{{--    @include('journal.layout.sideNaveJournal')--}}
+
+    <main>
+        <div class="mainBase" style="direction: ltr">
+{{--            <div class="sideNavButton threeLineDiv" onclick="toggleSideNav(this)">--}}
+{{--                <div class="navThreeLine1"></div>--}}
+{{--                <div class="navThreeLine2"></div>--}}
+{{--                <div class="navThreeLine3"></div>--}}
+{{--            </div>--}}
+
+            @yield('body')
+        </div>
+    </main>
+
+</div>
+</body>
+
+<script>
+    function resizeImg(_class) {
+        var imgs = $('.' + _class);
+        for(i = 0; i < imgs.length; i++){
+            var img = $(imgs[i]);
             var imgW = img.width();
             var imgH = img.height();
 
@@ -119,40 +165,32 @@
                 img.css('height', 'auto');
             }
         }
-    </script>
-</head>
-<body style="overflow: hidden;">
+    }
 
-@include('layouts.header')
+</script>
 
-<div>
-    <?php
-        $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
-    ?>
+@yield('script')
 
-    @if(isset($showLang->direction) && $showLang->direction == 'rtl')
-        <link rel="stylesheet" href="{{asset('css/rtl/rtlBase.css')}}">
-        <link rel="stylesheet" href="{{asset('css/rtl/journalBase.css')}}">
-    @endif
-
-    <main>
-        <div class="mainBase" style="direction: ltr;">
-            @yield('body')
-        </div>
-    </main>
-
-</div>
-</body>
-
-<script>
+<script >
     $(document).ready(function(){
         resizeImg('resizeImage');
         $(window).resize(function(){
             resizeImg('resizeImage');
         });
+
+        $('#mainContentDiv').transition({
+            animation  : 'fade up',
+            duration   : '1s',
+        });
+
+        setTimeout(function(){
+            $('#sideContentDiv').transition({
+                animation  : 'fade up',
+                duration   : '1s',
+            });
+        }, 300);
     });
 
 </script>
 
-@yield('script')
 </html>

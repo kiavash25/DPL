@@ -12,7 +12,7 @@
                 <div id="row##number##" class="row listElemsDiv" style="visibility: hidden;">
                     <div class="listElemsPicDiv col-md-4">
                         <a href="##url##" class="imageHref">
-                            <img src="##pic##" class="resizeImage listPics" style="width: 100%;" onload="fitThisImg(this)">
+                            <img src="##pic##" class="resizeImage listPics" style="width: 100%;">
                         </a>
                         <div class="listElemsSideData">
                             <a href="##categoryUrl##" class="listElemsSideDataCategory">##category##</a>
@@ -39,7 +39,6 @@
                     </div>
                 </div>
             </div>
-
             @include('journal.layout.sideContentJournal')
         </div>
     </article>
@@ -49,6 +48,7 @@
 
 
 @section('script')
+
     <script>
         let listValue = '{{$listValue}}';
         let listKind = '{{$listKind}}';
@@ -187,13 +187,6 @@
 
         $(window).on('resize', function(){
             checkListElemsHeight();
-        });
-
-        $(document).ready(function(){
-            $('#mainContentDiv').transition({
-                animation  : 'fade up',
-                duration   : '1s',
-            });
         });
     </script>
 @endsection

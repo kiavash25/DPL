@@ -94,7 +94,7 @@
                         <input type="text" class="form-control" id="categoryName">
                     </div>
                     <div class="row">
-                        <label for="categoryViewOrder">{{__('View Order')}}</label>
+                        <label for="categoryViewOrder">{{__('View Order')}} ({{__('big first - 0 not show in journalPage')}})</label>
                         <input type="number" class="form-control" id="categoryViewOrder">
                     </div>
                     <div class="row" style="display: flex; justify-content: center; align-items: center">
@@ -149,7 +149,7 @@
             let orderView = parseInt($('#activityViewOrder' + _id).text());
             let name = $('#activityName' + _id).text();
 
-            $('#categoryName').val(name);
+            $('#categoryName').val(name.trim());
             $('#categoryViewOrder').val(orderView);
             $('#categoryId').val(_id);
             $('#modalHeader').text('{{__('Edit')}} ' + name);

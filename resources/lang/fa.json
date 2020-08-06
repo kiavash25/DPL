@@ -322,11 +322,13 @@
     "Neutral Titles": "عنوان های نتچرال",
 
     "New Journal Category": "دسته بندی جدید مجله",
+    "RECENT JOURNALS": "آخرین مجله ها",
     "Journal count": "تعداد مجله",
     "Delete Category": "پاک کردن دسته بندی",
     "category deleted": "دسته بندی حذف شد",
     "Are you sure you want to remove the category": "آیا می خواهید دسته بندی را پاک کنید؟",
     "This category have journal and cant delete. first delete journals": "دسته بندی را به علت داشتن مجله نمی توانید پاک کنید. ابتدا مجله ها را پاک کنید",
+    "big first - 0 not show in journalPage": "عدد بزرگتر اول نمایش داده می شود - 0 نمایش داده نمی شود.",
     "Are you sure you want to remove the ": "آیا می خواهید پاک کنید",
     "Edit category destination": "ویرایش دسته بندی مقصد",
     "Activity Descriptions": "توضیحات فعالیت",
@@ -419,7 +421,8 @@
 
     "Other language" : "دیگر زبان",
     "All category" : "تمامی دسته بندی ها",
-    "" : "",
+
+    "Written by" : "نوشته شده توسط",
     "" : "",
     "" : "",
     "" : "",
