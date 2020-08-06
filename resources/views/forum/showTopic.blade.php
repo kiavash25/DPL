@@ -6,8 +6,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-
 @endsection
 
 @section('forumBody')
@@ -196,32 +194,25 @@
 {{--                </div>--}}
             </div>
 
-            <style>
-                .sendAnsRow{
-                    padding-top: 15px;
-                    display: flex;
-                    justify-content: flex-end;
-                }
-                .sendAnsRow > button{
-                    border: none;
-                    background: #007bff;
-                    color: white;
-                    padding: 6px 8px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                }
-            </style>
             <div id="youAnsSection" class="topicYourAns">
                 <div class="answerNumber" style="margin-bottom: 10px">
                     {{__('Your Answer')}}
                 </div>
-                <div class="toolbar-container"></div>
-                <div id="youAns" class="textEditor" ></div>
-                <div class="sendAnsRow">
-                    <button onclick="sendAnswers()">
-                        {{__('Post your answer')}}
-                    </button>
-                </div>
+                @if(auth()->check())
+                    <div class="toolbar-container"></div>
+                    <div id="youAns" class="textEditor" ></div>
+                    <div class="sendAnsRow">
+                        <button onclick="sendAnswers()">
+                            {{__('Post your answer')}}
+                        </button>
+                    </div>
+                @else
+                    <div class="sendAnsRow" style="padding: 0; justify-content: center;">
+                        <a href="{{route('loginPage')}}">
+                            {{__('Login / Register')}}
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -283,7 +274,6 @@
             .catch( err => {
                 console.error( err.stack );
             } );
-
 
         function sendAnswers(){
             let ans = window.editor.getData();

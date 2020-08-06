@@ -55,9 +55,19 @@ Route::middleware(['web'])->group(function () {
 
     Route::post('journal/getListElemes', 'JournalController@getElems')->name('journal.getElems');
 
-    Route::middleware(['web', 'forumPages'])->group(function(){
+    Route::middleware(['web'])->group(function(){
+        Route::get('shots/our', 'ShotsController@shotPage')->name('shot.page');
+
+        Route::middleware(['auth'])->group(function() {
+            Route::post('shots/like', 'ShotsController@likeShot')->name('shot.like');
+        });
+    });
+
+    Route::middleware(['forumPages'])->group(function(){
         Route::get('topicalDiscussion', 'ForumController@forumIndex')->name('forum.index');
+
         Route::get('topicalDiscussion/category/{categoryId}', 'ForumController@forumCategoryList')->name('forum.category.list');
+
         Route::get('topicalDiscussion/topic/{topicId}', 'ForumController@forumTopic')->name('forum.topic.show');
 
         Route::middleware(['auth'])->group(function(){
@@ -72,7 +82,6 @@ Route::middleware(['web'])->group(function () {
             Route::post('topicalDiscussion/deleteReply', 'ForumController@deleteReply')->name('forum.deleteReply');
         });
     });
-
 
     Route::middleware(['guest'])->group(function(){
         Route::get('loginPage', 'UserController@loginRegisterPage')->name('loginPage');
@@ -210,6 +219,14 @@ Route::middleware(['web'])->group(function () {
                 Route::get('/admin/forum/categories', 'ForumController@adminForumCategory')->name('admin.forum.category');
                 Route::post('/admin/forum/category/store', 'ForumController@storeForumCategory')->name('admin.forum.category.store');
                 Route::post('/admin/forum/category/delete', 'ForumController@deleteForumCategory')->name('admin.forum.category.delete');
+
+                Route::get('/admin/shots/category', 'ShotsController@adminShotsCategory')->name('admin.shots.category');
+                Route::post('/admin/shots/category/store', 'ShotsController@adminShotsCategoryStore')->name('admin.shots.category.store');
+                Route::post('/admin/shots/category/delete', 'ShotsController@adminShotsCategoryDelete')->name('admin.shots.category.delete');
+
+                Route::get('/admin/ourShots', 'ShotsController@adminOurShots')->name('admin.shots.ourShot');
+                Route::post('/admin/ourShots/store', 'ShotsController@adminOurShotsStore')->name('admin.shots.ourShot.store');
+                Route::post('/admin/ourShots/delete', 'ShotsController@adminOurShotsDelete')->name('admin.shots.ourShot.delete');
 
                 Route::get('/admin/userAccess/list', 'UserAccessController@list')->name('admin.userAccess.list');
                 Route::post('/admin/userAccess/acl/store', 'UserAccessController@aclStore')->name('admin.userAccess.acl.store');

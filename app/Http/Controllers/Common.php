@@ -53,10 +53,10 @@ function resizeImage($pic, $size){
             $width = $img->width();
             $height = $img->height();
 
-            if($item['width'] == null || $width > $item['width'])
+            if($item['width'] != null && $width > $item['width'])
                 $width = $item['width'];
 
-            if($item['height'] == null || $height > $item['height'])
+            if($item['height'] != null && $height > $item['height'])
                 $height = $item['height'];
 
             $img->resize($width, $height, function ($constraint) {

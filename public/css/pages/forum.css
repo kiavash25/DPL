@@ -357,6 +357,7 @@ html{
 .topicLike.dislikeSection.chosenLike > span{
     color: red;
 }
+
 .topicLike.dislikeSection.chosenLike > i{
     color: red;
 }
@@ -364,6 +365,7 @@ html{
 .topicLike.likeSection.chosenLike > i{
     color: green;
 }
+
 .topicLike.likeSection.chosenLike > span{
     color: green;
 }
@@ -442,6 +444,21 @@ html{
 
 .forumSummeryList.infos{
     margin-top: 10px;
+}
+
+.sendAnsRow{
+    padding-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sendAnsRow > button , .sendAnsRow > a{
+    border: none;
+    background: #007bff;
+    color: white;
+    padding: 6px 8px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 @media (max-width: 991px) {

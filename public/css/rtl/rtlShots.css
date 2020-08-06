@@ -1,0 +1,12 @@
+.dropdown-toggle::after{
+    margin-left: 0;
+    margin-right: .255em;
+}
+.shotMenu .dropdown-item{
+    text-align: right;
+}
+
+.shotTitle{
+    left: auto;
+    right: 20px;
+}

@@ -14,7 +14,8 @@ class UserController extends Controller
 {
     public function loginRegisterPage()
     {
-        return view('auth.newLogin');
+        $redirectBack = url()->previous();
+        return view('auth.newLogin', compact(['redirectBack']));
     }
 
     public function forgetPassword(Request $request)

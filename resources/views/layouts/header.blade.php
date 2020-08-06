@@ -456,7 +456,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                         </a>
                     </div>
                     <div class="sideNavTabs">
-                        <a href="#" class="subSideNavTab">
+                        <a href="{{route('shot.page')}}" class="subSideNavTab">
                             {{__('Our shots')}}
                         </a>
                     </div>
@@ -812,7 +812,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                         <a href="{{route('forum.index')}}" class="navSubListBody navSubListBodyM">{{__('Topical discussion')}}</a>
                         <div class="navSubListBody navSubListBodyM">{{__('GO-Live')}}</div>
                         <div class="navSubListBody navSubListBodyM">{{__('Your shots')}}</div>
-                        <div class="navSubListBody navSubListBodyM">{{__('Our shots')}}</div>
+                        <a href="{{route('shot.page')}}" class="navSubListBody navSubListBodyM">{{__('Our shots')}}</a>
                     </div>
                 </div>
             </div>

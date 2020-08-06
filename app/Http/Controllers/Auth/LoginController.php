@@ -34,6 +34,9 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        if(isset($_POST['redirectBack']))
+            $this->redirectTo = $_POST['redirectBack'];
+
         $this->middleware('guest')->except('logout');
     }
-}    
+}

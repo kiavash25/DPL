@@ -146,6 +146,33 @@
         @can('canSee', 'userAccess')
             <div class="sideNavTabs">
                 <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Content')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                            {{__('Shots')}}
+                            <div class="arrow rightArrow"></div>
+                        </a>
+                        <div class="subSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="{{route('admin.shots.category')}}">
+                                    {{__('Shots category')}}
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="{{route('admin.shots.ourShot')}}">
+                                    {{__('Our shot')}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                     {{__('Topical discussion')}}
                     <div class="arrow rightArrow"></div>
                 </a>

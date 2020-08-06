@@ -61,6 +61,7 @@
 
         <form id="signinForm" class="login100-form" method="POST" action="{{ route('login') }}">
             @csrf
+            <input type="hidden" name="redirectBack" value="{{$redirectBack}}">
             <span class="login100-form-title p-b-37">
                 {{__('Sign In')}}
             </span>
