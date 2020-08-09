@@ -20,6 +20,8 @@ use App\models\Journal;
 use App\models\JournalCategory;
 use App\models\MainPageSetting;
 use App\models\MainPageSlider;
+use App\models\NatureFriend;
+use App\models\NatureFriendPic;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackageMoreInfo;
@@ -565,6 +567,109 @@ class MainController extends Controller
 
             return \view('main.content', compact(['content', 'kind', 'guidance']));
         }
+    }
+
+    public function showNatureFriend($slug)
+    {
+        $kind = 'natureFriend';
+
+        $content = NatureFriend::where('slug', $slug)->where('lang', app()->getLocale())->first();
+        if($content == null)
+            return redirect(url('/'));
+
+        if($content->langSource == 0)
+            $picId = $content->id;
+        else
+            $picId = $content->langSource;
+
+        $slip = [];
+        $loc = 'uploaded/natureFriend/' . $picId;
+        $sliderPics =  NatureFriendPic::where('natId', $picId)->get();
+        foreach ($sliderPics as $item){
+            array_push($slip, (object)[
+                'pic' => getKindPic($loc, $item->pic, ''),
+                'slide' =>  getKindPic($loc, $item->pic, 'slide'),
+                'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'id' => $item->id
+            ]);
+        }
+        if($content->langSource == 0)
+            $mainPic = $content->pic;
+        else
+            $mainPic = NatureFriend::find($content->langSource)->pic;
+
+        if ($mainPic != null) {
+            array_unshift($slip, (object)[
+                'pic' => getKindPic($loc, $mainPic, ''),
+                'slide' => getKindPic($loc, $mainPic, 'slide'),
+                'thumbnail' => getKindPic($loc, $mainPic, 'min'),
+                'id' => 0
+            ]);
+        }
+
+        $content->slidePic = $slip;
+
+        if($content->video != null && $content->isEmbeded == 0)
+            $content->video = asset('uploaded/natureFriend/'. $content->id . '/' . $content->video);
+        if($content->podcast != null)
+            $content->podcast = asset('uploaded/natureFriend/'. $content->id . '/' . $content->podcast);
+
+
+        $guidance = ['value1' => __('Nature friend'), 'value1Url' => '#', 'value2' => __('Events'), 'value2Url' => '#',
+                    'value3' => $content->name, 'value3Url' => '#'];
+
+        return view('main.content', compact(['content', 'kind', 'guidance']));
+    }
+
+    public function firstNatureFriend()
+    {
+        $kind = 'natureFriend';
+        $content = NatureFriend::where('lang', app()->getLocale())->first();
+        if($content == null)
+            return redirect(url('/'));
+
+        if($content->langSource == 0)
+            $picId = $content->id;
+        else
+            $picId = $content->langSource;
+
+        $slip = [];
+        $loc = 'uploaded/natureFriend/' . $picId;
+        $sliderPics =  NatureFriendPic::where('natId', $picId)->get();
+        foreach ($sliderPics as $item){
+            array_push($slip, (object)[
+                'pic' => getKindPic($loc, $item->pic, ''),
+                'slide' =>  getKindPic($loc, $item->pic, 'slide'),
+                'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'id' => $item->id
+            ]);
+        }
+        if($content->langSource == 0)
+            $mainPic = $content->pic;
+        else
+            $mainPic = NatureFriend::find($content->langSource)->pic;
+
+        if ($mainPic != null) {
+            array_unshift($slip, (object)[
+                'pic' => getKindPic($loc, $mainPic, ''),
+                'slide' => getKindPic($loc, $mainPic, 'slide'),
+                'thumbnail' => getKindPic($loc, $mainPic, 'min'),
+                'id' => 0
+            ]);
+        }
+
+        $content->slidePic = $slip;
+
+        if($content->video != null && $content->isEmbeded == 0)
+            $content->video = asset('uploaded/natureFriend/'. $content->id . '/' . $content->video);
+        if($content->podcast != null)
+            $content->podcast = asset('uploaded/natureFriend/'. $content->id . '/' . $content->podcast);
+
+
+        $guidance = ['value1' => __('Nature friend'), 'value1Url' => '#', 'value2' => __('Events'), 'value2Url' => '#',
+            'value3' => $content->name, 'value3Url' => '#'];
+
+        return view('main.content', compact(['content', 'kind', 'guidance']));
     }
 
     public function beforeList(Request $request)

@@ -20,13 +20,13 @@
     <div class="container">
         <div class="row" style="margin-bottom: 30px">
             <?php
-                if($kind == 'destination' || $kind == 'category' || $kind == 'activity'){
-                    $picNum = 8;
-                    $sideNum = 4;
-                }
-                else{
+                if($kind == 'package'){
                     $picNum = 7;
                     $sideNum = 5;
+                }
+                else{
+                    $picNum = 8;
+                    $sideNum = 4;
                 }
             ?>
 
@@ -62,6 +62,8 @@
                     @include('main.destination.category.categorySidePic')
                 @elseif($kind == 'activity')
                     @include('main.activity.activitySidePic')
+                @elseif($kind == 'natureFriend')
+                    @include('main.natureFriend.natureFriendSidePic')
                 @else
                     @include('main.package.packageSidePic')
                 @endif
@@ -76,6 +78,8 @@
                     @include('main.destination.category.categoryMainContent')
                 @elseif($kind == 'activity')
                     @include('main.activity.activityMainContent')
+                @elseif($kind == 'natureFriend')
+                    @include('main.natureFriend.natureFriendMainContent')
                 @else
                     @include('main.package.packageMainContent')
                 @endif
@@ -103,7 +107,7 @@
 
 @section('script')
 
-    <script !src="">
+    <script>
         let galleryThumbs = 0;
         let galleryTop = 0;
 

@@ -66,7 +66,6 @@
                     <div class="arrow rightArrow"></div>
                 </a>
                 <div class="subSideNavMenu">
-
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="{{route('admin.package.moreInfoTitle')}}">
                             {{__('Package More Info Titles')}}
@@ -80,6 +79,20 @@
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="{{route('admin.package.new')}}">
                             {{__('Create New Package')}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Nature friend')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.natureFriend.list')}}">
+                            {{__('Nature friend list')}}
                         </a>
                     </div>
                 </div>
@@ -106,6 +119,67 @@
                     <div class="sideNavTabs">
                         <a class="subSideNavTab" href="{{route('admin.journal.new')}}">
                             {{__("Create New Journal")}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endcan
+
+        @can('canSee', 'userAccess')
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('User content')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                            {{__('Shots')}}
+                            <div class="arrow rightArrow"></div>
+                        </a>
+                        <div class="subSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="{{route('admin.shots.category')}}">
+                                    {{__('Shots category')}}
+                                </a>
+                            </div>
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="{{route('admin.shots.ourShot')}}">
+                                    {{__('Our shot')}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                            {{__('Topical discussion')}}
+                            <div class="arrow rightArrow"></div>
+                        </a>
+                        <div class="subSideNavMenu">
+                            <div class="sideNavTabs">
+                                <a class="subSideNavTab" href="{{route('admin.forum.category')}}">
+                                    {{__('Category')}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sideNavTabs">
+                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
+                    {{__('Users')}}
+                    <div class="arrow rightArrow"></div>
+                </a>
+                <div class="subSideNavMenu">
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('admin.userAccess.list')}}">
+                            {{__('Admin List')}}
+                        </a>
+                    </div>
+                    <div class="sideNavTabs">
+                        <a class="subSideNavTab" href="{{route('register')}}">
+                            {{__('Add new admin')}}
                         </a>
                     </div>
                 </div>
@@ -143,68 +217,6 @@
             </div>
         @endcan
 
-        @can('canSee', 'userAccess')
-            <div class="sideNavTabs">
-                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                    {{__('Content')}}
-                    <div class="arrow rightArrow"></div>
-                </a>
-                <div class="subSideNavMenu">
-                    <div class="sideNavTabs">
-                        <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                            {{__('Shots')}}
-                            <div class="arrow rightArrow"></div>
-                        </a>
-                        <div class="subSideNavMenu">
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="{{route('admin.shots.category')}}">
-                                    {{__('Shots category')}}
-                                </a>
-                            </div>
-                            <div class="sideNavTabs">
-                                <a class="subSideNavTab" href="{{route('admin.shots.ourShot')}}">
-                                    {{__('Our shot')}}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sideNavTabs">
-                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                    {{__('Topical discussion')}}
-                    <div class="arrow rightArrow"></div>
-                </a>
-                <div class="subSideNavMenu">
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="{{route('admin.forum.category')}}">
-                            {{__('Category')}}
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="sideNavTabs">
-                <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
-                    {{__('Users')}}
-                    <div class="arrow rightArrow"></div>
-                </a>
-                <div class="subSideNavMenu">
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="{{route('admin.userAccess.list')}}">
-                            {{__('Admin List')}}
-                        </a>
-                    </div>
-                    <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="{{route('register')}}">
-                            {{__('Add new admin')}}
-                        </a>
-                    </div>
-                </div>
-            </div>
-        @endcan
 
         <div class="sideNavTabs">
             <a class="subSideNavTab" href="{{ route('logout') }}"

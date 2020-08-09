@@ -43,6 +43,10 @@ Route::middleware(['web'])->group(function () {
 
     Route::get('category/{slug}', 'MainController@showCategory')->name('show.category');
 
+    Route::get('natureFriend/{slug}', 'MainController@showNatureFriend')->name('show.natureFriend');
+
+    Route::get('firstNatureFriend', 'MainController@firstNatureFriend')->name('firstNatureFriend');
+
     Route::post('findDestination', 'AjaxController@findDestination')->name('findDestination');
 
     Route::post('search', 'AjaxController@search')->name('search');
@@ -176,6 +180,16 @@ Route::middleware(['web'])->group(function () {
                 Route::post('/admin/package/delete', 'PackageController@deletePackage')->name('admin.package.delete');
 
                 Route::post('/admin/package/popular/store', 'PackageController@popularPackageStore')->name('admin.package.popularStore');
+
+
+                Route::get('/admin/natureFriend/list', 'NatureFriendController@natAdminList')->name('admin.natureFriend.list');
+                Route::get('/admin/natureFriend/new', 'NatureFriendController@newAdminNat')->name('admin.natureFriend.new');
+                Route::get('/admin/natureFriend/edit/{id}', 'NatureFriendController@editAdminNat')->name('admin.natureFriend.edit');
+                Route::post('/admin/natureFriend/storeImg', 'NatureFriendController@storeImgAdminNat')->name('admin.natureFriend.storeImg');
+                Route::post('/admin/natureFriend/storeVideoPodcast', 'NatureFriendController@storeVideoAudioNat')->name('admin.natureFriend.storeVideoPodcast');
+                Route::post('/admin/natureFriend/deleteImg', 'NatureFriendController@deleteImgNat')->name('admin.natureFriend.deleteImg');
+                Route::post('/admin/natureFriend/store', 'NatureFriendController@storeAdminNat')->name('admin.natureFriend.store');
+                Route::post('/admin/natureFriend/delete', 'NatureFriendController@deleteAdminNat')->name('admin.natureFriend.delete');
             });
 
             Route::middleware(['auth', 'web', 'acl:journal'])->group(function () {

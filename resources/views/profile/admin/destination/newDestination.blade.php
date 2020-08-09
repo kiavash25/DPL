@@ -203,7 +203,6 @@
                                     {!! $destination->video !!}
                                 @endif
                             </div>
-
                         </div>
                         {{__('OR')}}
                         <div>
@@ -225,6 +224,7 @@
 
                     <input type="file" name="video" id="video" accept="video/*" style="display: none" onchange="uploadVideo(this)">
                 </div>
+
                 <div class="col-md-6" style="margin-top: 40px;">
                     <label class="inputLabel">
                         {{__('podcast')}}

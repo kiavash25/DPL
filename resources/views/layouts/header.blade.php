@@ -415,17 +415,17 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                 </a>
                 <div class="subSideNavMenu">
                     <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
+                        <a class="subSideNavTab" href="{{route("firstNatureFriend")}}">
                             {{__('Trekking Guide Course')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
+                        <a class="subSideNavTab" href="{{route("firstNatureFriend")}}">
                             {{__('Events')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="#">
+                        <a class="subSideNavTab" href="{{route("firstNatureFriend")}}">
                             {{__('News')}}
                         </a>
                     </div>
@@ -794,9 +794,9 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
                 <div class="subList subLisM">
                     <div class="navSubListRow">
-                        <div class="navSubListBody navSubListBodyM">{{__('Trekking Guide Course')}}</div>
-                        <div class="navSubListBody navSubListBodyM">{{__('Events')}}</div>
-                        <div class="navSubListBody navSubListBodyM">{{__('News')}}</div>
+                        <a href="{{route("firstNatureFriend")}}" class="navSubListBody navSubListBodyM">{{__('Trekking Guide Course')}}</a>
+                        <a href="{{route("firstNatureFriend")}}" class="navSubListBody navSubListBodyM">{{__('Events')}}</a>
+                        <a href="{{route("firstNatureFriend")}}" class="navSubListBody navSubListBodyM">{{__('News')}}</a>
                     </div>
                 </div>
 

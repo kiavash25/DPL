@@ -1,6 +1,6 @@
 <?php
 return [
-
+    'tryAgain' => 'Please Try Again',
     'subscribeFill' => 'Please fill in all the items',
     'serverConnection' => 'Server connection error',
     'subscribeSuccess' => 'Your information was successfully recorded',

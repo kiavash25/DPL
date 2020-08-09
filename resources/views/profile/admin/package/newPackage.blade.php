@@ -244,7 +244,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="inputLabel" for="specialName">{{__('Special name')}}</label>
-                                <input type="text" id="specialName" name="specialName" class="form-control" value="{{$package->specialName}}">
+                                <input type="text" id="specialName" name="specialName" class="form-control" value="{{isset($package->specialName) ? $package->specialName : ''}}">
                             </div>
                         </div>
                     </div>

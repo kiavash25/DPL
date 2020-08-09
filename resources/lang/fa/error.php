@@ -1,5 +1,6 @@
 <?php
 return [
+    'tryAgain' => 'لطفا دوباره تلاش کنید.',
     'subscribeFill' => 'لطفا تمامی موارد را پر کنید',
     'serverConnection' => 'خطای اتصال به سرور',
     'subscribeSuccess' => 'اطلاعات شما با موفقیت ثبت شد',
