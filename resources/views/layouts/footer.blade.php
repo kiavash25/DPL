@@ -60,7 +60,7 @@
             <button class="accordion">{{__('Destinations')}}</button>
             <div class="panel">
                 @foreach($destCategory as $item)
-                    <a href="{{route('show.list', ['kind' => 'destination', 'value1' => $item->name ])}}" class="inPanel">
+                    <a href="{{route('show.category', ['slug' => $item->slug ])}}" class="inPanel">
                         {{$item->name}}
                     </a>
                 @endforeach
@@ -69,7 +69,7 @@
             <button class="accordion">{{__('Activities')}}</button>
             <div class="panel">
                 @foreach($activitiesList as $item)
-                    <a href="{{url('list/activity/'. $item->name)}}" class="inPanel">
+                    <a href="{{route('show.activity', ['slug' => $item->slug])}}" class="inPanel">
                         {{$item->name}}
                     </a>
                 @endforeach

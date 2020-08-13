@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Booking;
 use App\models\Activity;
 use App\models\ActivityPic;
 use App\models\ActivityTitle;
@@ -68,7 +69,7 @@ class MainController extends Controller
         $recentlyPackage = Package::where('showPack', 1)->where('lang', app()->getLocale())->where('popularNum', '>', 0)
                                     ->where(function ($query) {
                                         $today = Carbon::now()->format('Y-m-d');
-                                        $query->where('sDate', '>', $today)
+                                        $query->where('eDate', '>', $today)
                                             ->orWhereNull('sDate');
                                     })
                                     ->orderByDesc('popularNum')->take(8)->get();
@@ -170,7 +171,7 @@ class MainController extends Controller
             ->where('lang', app()->getLocale())
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
-                $query->where('sDate', '>', $today)
+                $query->where('eDate', '>', $today)
                     ->orWhereNull('sDate');
             })->get();
 
@@ -199,7 +200,7 @@ class MainController extends Controller
             ->where('lang', app()->getLocale())
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
-                $query->where('sDate', '>', $today)
+                $query->where('eDate', '>', $today)
                     ->orWhereNull('sDate');
             })
             ->orderBy('sDate')->take(5)->get();
@@ -295,7 +296,7 @@ class MainController extends Controller
                             ->where('destId', $content->id)
                             ->where(function ($query) {
                                 $today = Carbon::now()->format('Y-m-d');
-                                $query->where('sDate', '>', $today)
+                                $query->where('eDate', '>', $today)
                                     ->orWhereNull('sDate');
                             })
                             ->orderBy('sDate')->take(5)->get();
@@ -392,7 +393,7 @@ class MainController extends Controller
                         ->where('lang', app()->getLocale())
                         ->where(function ($query) {
                             $today = Carbon::now()->format('Y-m-d');
-                            $query->where('sDate', '>', $today)
+                            $query->where('eDate', '>', $today)
                                 ->orWhereNull('sDate');
                         })
                         ->where('destId', $content->destination->id)
@@ -405,7 +406,7 @@ class MainController extends Controller
                                 ->where('lang', app()->getLocale())
                                 ->where(function ($query) {
                                     $today = Carbon::now()->format('Y-m-d');
-                                    $query->where('sDate', '>', $today)
+                                    $query->where('eDate', '>', $today)
                                         ->orWhereNull('sDate');
                                 })
                                 ->where('mainActivityId', $content->mainActivityId)
@@ -428,13 +429,38 @@ class MainController extends Controller
                 $hasMoreInfo++;
             }
         }
-            foreach ($moreInfoNeutral as $item){
+        foreach ($moreInfoNeutral as $item){
             $text = PackageMoreInfoRelation::where('moreInfoId', $item->id)->where('packageId', $content->id)->first();
             if($text != null) {
                 $item->text = $text->text;
                 $hasMoreInfo++;
             }
         }
+
+        $content->booking = true;
+        $bookingErr = array();
+
+        if($content->capacity != 0 && $content->capacity != null) {
+            $registered = Booking::where('eventKind', 'package')->where('eventId', $content->id)->count();
+            $content->availableCap = $content->capacity - $registered;
+            if($content->availableCap < 1) {
+                $content->booking = false;
+                 array_push($bookingErr, __('Capacity full'));
+            }
+            $content->capacity = $content->availableCap;
+        }
+        $today = Carbon::now()->format('Y-m-d');
+
+        if($content->registerSDate != null && $content->registerSDate > $today) {
+            $content->booking = false;
+            array_push($bookingErr, __('Registration time is not started.'));
+        }
+
+        if($content->registerEDate != null && $content->registerEDate < $today) {
+            $content->booking = false;
+            array_push($bookingErr, __('Registration time is over.'));
+        }
+        $content->bookingErr = $bookingErr;
 
 //        $content->packageListUrl = route('show.list', ['kind' => 'destinationPackage', 'value1' => $destination->slug]);
         $content->packageListUrl = '#';
@@ -537,7 +563,7 @@ class MainController extends Controller
                             ->where('showPack', 1)
                             ->where(function ($query) {
                                 $today = Carbon::now()->format('Y-m-d');
-                                $query->where('sDate', '>', $today)
+                                $query->where('eDate', '>', $today)
                                     ->orWhereNull('sDate');
                             })->orderBy('day', 'DESC')->take(1)->get();
                 if(count($p) != 0) {
@@ -714,7 +740,7 @@ class MainController extends Controller
                                         ->where('showPack', 1)
                                         ->where(function ($query) {
                                             $today = Carbon::now()->format('Y-m-d');
-                                            $query->where('sDate', '>', $today)
+                                            $query->where('eDate', '>', $today)
                                                 ->orWhereNull('sDate');
                                         })->count();
             }
@@ -900,7 +926,7 @@ class MainController extends Controller
         $packages = Package::where('showPack', 1)->whereRaw($sqlQuery)
             ->where(function ($query) {
                 $today = Carbon::now()->format('Y-m-d');
-                $query->where('sDate', '>', $today)
+                $query->where('eDate', '>', $today)
                         ->orWhereNull('sDate');
             })
             ->where('lang', app()->getLocale())

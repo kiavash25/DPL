@@ -75,6 +75,7 @@ class RegisterController extends Controller
         ]);
 
         event(new makeLog([
+            'userId' => $user->id,
             'subject' => 'user_register',
             'referenceId' => $user->id,
             'referenceTable' => 'users'

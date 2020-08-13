@@ -98,7 +98,10 @@ class PackageController extends Controller
 
     public function storePackage(Request $request)
     {
-        if(isset($request->name) && isset($request->id) && isset($request->lat) && isset($request->lng) && isset($request->destinationId) && isset($request->mainActivity)){
+        if( isset($request->name) && isset($request->id) &&
+            isset($request->lat) && isset($request->lng) &&
+            isset($request->destinationId) && isset($request->mainActivity))
+        {
             $check = Package::where('name', $request->name)->where('id', '!=', $request->id)->where('destId', $request->destinationId)->first();
             if($check != null) {
                 echo json_encode(['status' => 'nok1']);
@@ -121,12 +124,30 @@ class PackageController extends Controller
 
             if($request->id == 0) {
                 $pack = new Package();
-                $pack->lang = app()->getLocale();
+                $pack->lang = $request->lang;
             }
             else
                 $pack = Package::find($request->id);
 
             if($request->source == 0){
+                $pack->capacity = $request->capacity;
+                if($pack->capacity == 0)
+                    $pack->capacity = null;
+
+                $pack->registerSDate = $request->registerSDate;
+                if($pack->registerSDate == null)
+                    $pack->registerSDate = Carbon::now()->format('Y-m-d');
+
+                $pack->registerEDate = $request->registerEDate;
+
+                $pack->minRegister = $request->minRegister;
+                if($pack->minRegister == null)
+                    $pack->minRegister = 0;
+
+                $pack->maxRegister = $request->maxRegister;
+                if($pack->maxRegister == 0)
+                    $pack->maxRegister = null;
+
                 $pack->slug = makeSlug($request->name);
                 $pack->day = $request->day;
                 $pack->code = $request->code;
@@ -135,6 +156,7 @@ class PackageController extends Controller
                 $pack->eDate = $request->eDate;
                 $pack->level = $request->level;
                 $pack->showPack = $request->showPack;
+                $pack->freeTime = $request->freeTime;
                 $pack->langSource = 0;
                 Package::where('langSource', $pack->id)->update([
                     'slug' => $pack->slug,
@@ -145,6 +167,11 @@ class PackageController extends Controller
                     'eDate' => $pack->eDate,
                     'level' => $pack->level,
                     'showPack' => $pack->showPack,
+                    'capacity' => $pack->capacity,
+                    'registerSDate' => $pack->registerSDate,
+                    'registerEDate' => $pack->registerEDate,
+                    'minRegister' => $pack->minRegister,
+                    'maxRegister' => $pack->maxRegister,
                 ]);
             }
             else{
@@ -157,7 +184,14 @@ class PackageController extends Controller
                 $pack->eDate = $s->eDate;
                 $pack->level = $s->level;
                 $pack->showPack = $s->showPack;
+                $pack->freeTime = $s->freeTime;
                 $pack->langSource = $s->id;
+
+                $pack->capacity = $s->capacity;
+                $pack->registerSDate = $s->registerSDate;
+                $pack->registerEDate = $s->registerEDate;
+                $pack->minRegister = $s->minRegister;
+                $pack->maxRegister = $s->maxRegister;
             }
 
             $pack->name = $request->name;

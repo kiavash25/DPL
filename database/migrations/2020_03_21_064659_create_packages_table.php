@@ -23,8 +23,14 @@ class CreatePackagesTable extends Migration
             $table->string('pic')->nullable();
             $table->string('day')->nullable();
             $table->string('season', 20)->nullable();
+            $table->tinyInteger('freeTime')->default(0);
             $table->string('sDate', 20)->nullable();
             $table->string('eDate',20)->nullable();
+            $table->string('registerSDate', 20)->nullable();
+            $table->string('registerEDate', 20)->nullable();
+            $table->integer('capacity')->nullable();
+            $table->integer('minRegister')->default(0);
+            $table->integer('maxRegister')->nullable();
             $table->string('money')->default(0);
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();

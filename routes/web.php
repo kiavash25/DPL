@@ -102,6 +102,13 @@ Route::middleware(['web'])->group(function () {
             return redirect()->back();
         });
 
+        Route::middleware(['booking'])->group(function(){
+            Route::get('booking/package/{packageId}', 'BookController@packageBook')->name('book.package');
+
+            Route::post('booking/package/store', 'BookController@packageBookStore')->name('book.package.store');
+            Route::post('booking/package/delete', 'BookController@deleteAllBooking')->name('book.package.delete');
+        });
+
         Route::get('profile', 'UserController@profile')->name('profile');
 
         Route::get('profile/setting', 'UserController@profileSetting')->name('profile.setting');

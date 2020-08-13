@@ -1,0 +1,224 @@
+.footerContent{
+    margin-top: 0px !important;
+}
+.mainBody{
+    background: #f9f9f9;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 30px;
+}
+.sections{
+    background: white;
+    border: solid #e2e2e2 1px;
+    border-radius: 10px;
+    padding: 20px;
+}
+.sideInfosSection{
+    width: 430px;
+}
+.mainContentSection{
+
+}
+.sideInfosSection .name{
+    font-size: 30px;
+    font-weight: bold;
+}
+.sideInfosSection .name > span{
+    font-size: 10px;
+    color: gray;
+}
+.sideInfosSection .day{
+    color: gray;
+    margin-left: 20px;
+    font-size: 13px;
+}
+.sideInfosSection .title{
+    margin-top: 13px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.sideInfosSection .content{
+    font-weight: normal;
+}
+.sideInfosSection .brochure{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.travellerCount{
+    border-top: solid #e2e2e2 1px;
+    margin-top: 10px;
+    padding: 15px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.travellerCount .title{
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.travellerCount .counter{
+    display: flex;
+    align-items: center;
+}
+.travellerCount .counter > div{
+    margin: 0px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+}
+
+.travellerCount .counter .button{
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: solid 2px;
+    font-weight: bold;
+    transition: .3s;
+    font-size: 28px;
+}
+.trave
+llerCount .counter .button:hover{
+    background: #2c3e50;
+    color: white;
+}
+
+.totalCount{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    background: #2c3e50;
+    padding: 15px 20px;
+    margin: 0px -20px;
+}
+
+.totalCount .title{
+    font-size: inherit;
+    margin: 0;
+    color: white;
+}
+
+.totalCount .cost{
+    color: white;
+}
+
+.sticky{
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 1;
+}
+
+.mainContentSection .header{
+    border-bottom: solid #e2e2e2 1px;
+    font-size: 30px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.mainContentSection .body{
+    width: 80%;
+}
+
+.mainContentSection .body .inputHeader{
+    color: gray;
+    font-size: 13px;
+    margin-bottom: 10px;
+    margin-top: 40px;
+}
+
+.mainContentSection .body .form-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mainContentSection .body .form-group.radioSection{
+}
+
+.radioSection .inputWithError{
+    display: flex;
+    align-items: center;
+    width: 300px;
+    justify-content: space-between;
+}
+
+.radioSection .inputWithError > div{
+    display: flex;
+    align-items: center;
+}
+
+.radioSection .inputWithError > div > label{
+    margin: 0px;
+    cursor: pointer;
+}
+
+.mainContentSection .body .form-control{
+    display: flex;
+    width: 300px;
+}
+
+.inputLabel{
+    color: #235a79;
+    font-size: 15px;
+    margin-bottom: 0px;
+    margin-right: 50px;
+}
+
+.invalidInput{
+    border: solid 2px red;
+}
+
+.errorImportantInput{
+    color: red;
+    font-size: 11px;
+}
+
+.bordBot{
+    border-bottom: solid #e2e2e2 1px;
+}
+
+.bordTop{
+    border-top: solid #e2e2e2 1px;
+}
+
+input[type='radio']{
+    width: auto !important;
+    margin-left: 10px;
+}
+
+.birthDateDiv > select{
+    width: 33% !important;
+    font-size: 11px;
+}
+
+.birthDateDiv{
+    width: 300px;
+}
+
+.mainContentSection .footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    padding: 15px;
+    flex-direction: column;
+}
+
+.bookButton{
+    border: none;
+    background: #459ed1;
+    color: white;
+    width: 300px;
+    padding: 10px 0px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}

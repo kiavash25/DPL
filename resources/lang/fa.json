@@ -117,6 +117,7 @@
     "Cost (Euro)": "هزینه (یورو)",
     "Cost": "هزینه",
     "Brochure": "بروشور",
+    "get brochure": "دریافت بروشور",
     "Package Tags": "برچسپ های پکیج",
     "Side Info": "اطلاعات حاشیه",
     "Thumbnail Picture": "عکس های کوچک",
@@ -432,6 +433,30 @@
     "Your nature friend stored" : "دوستدار طبیعت شما با موفقیت ثبت شد",
     "Your nature friend name is duplicate" : "نام دوستدار طبیعت شما تکراری است",
     "Delete nature friend" : "پاک کردن دوستدار طبیعت",
+
+
+    "Traveller details" : "اطلاعات مسافران",
+
+    "Start register date" : "تاریخ شروع ثبت نام",
+    "End register date" : "تاریخ پایان ثبت نام",
+    "Capacity" : "ظرفیت",
+    "Min register" : "حداقل شرکت کننده",
+    "Max register" : "حداکثر شرکت کننده",
+
+    "Capacity full" : "ظرفیت تکمیل است",
+    "Registration time is over." : "زمان ثبت نام تمام شده است.",
+    "Registration time is not started" : "زمان ثبت نام شروع نشده است",
+
+    "Please set national images" : "لطفا عکس کارت شناسایی را قرار دهید.",
+    "Review your dates" : "تاریخ های خود را انتهاب کنید",
+    "" : "",
+    "" : "",
+    "" : "",
+    "" : "",
+    "" : "",
+    "" : "",
+    "" : "",
+    "" : "",
     "" : "",
     "" : "",
     "" : "",

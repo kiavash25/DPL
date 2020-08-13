@@ -33,16 +33,24 @@
     .sideInfo{
         display: flex;
         flex-wrap: wrap;
+        margin-top: 10px;
     }
     .infoDiv{
-        margin-right: 10%;
+        margin-right: 5px;
+        margin-bottom: 4px;
+        padding: 10px;
+        border: solid 1px gray;
+        border-radius: 10px;
     }
     .infoName{
-        font-size: 18px;
+        font-size: 13px;
         font-weight: bold;
+        text-align: center;
     }
     .infoValue{
         text-align: center;
+        font-size: 11px;
+        color: gray;
     }
     .activityInfoDiv{
         margin-top: 25px;
@@ -71,6 +79,14 @@
     .orderDiv{
         display: flex;
     }
+    .disableBookingErr{
+
+    }
+    .disableBookingErr .err{
+        color: red;
+        font-size: 10px;
+        text-align: center;
+    }
     .orderButton{
         display: flex;
         justify-content: center;
@@ -84,6 +100,12 @@
         border-radius: 5px;
         cursor: pointer;
         transition: .2s;
+    }
+    .orderButton.disable{
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+        opacity: .3;
     }
     .orderButtonRevers{
         background: white ;
@@ -140,7 +162,7 @@
     <div class="sideInfo">
         @if($content->sDate != null)
             <div class="infoDiv">
-                <div class="infoName">{{__('Start Date')}}:</div>
+                <div class="infoName">{{__('Start Date')}}</div>
                 <div class="infoValue">{{$content->sDate}}</div>
             </div>
         @endif
@@ -163,25 +185,53 @@
             <div class="infoValue">{{$content->code}}</div>
         </div>
     </div>
+    <div class="sideInfo">
+        @if($content->registerSDate != null)
+            <div class="infoDiv">
+                <div class="infoName">{{__('Start register date')}}</div>
+                <div class="infoValue">{{$content->registerSDate}}</div>
+            </div>
+        @endif
+        @if($content->registerEDate != null)
+            <div class="infoDiv">
+                <div class="infoName">{{__('End register date')}}</div>
+                <div class="infoValue">{{$content->registerEDate}}</div>
+            </div>
+        @endif
+        @if($content->capacity != 0 && $content->capacity != null)
+            <div class="infoDiv">
+                <div class="infoName">{{__('Capacity')}}</div>
+                <div class="infoValue">{{$content->capacity}}</div>
+            </div>
+        @endif
+    </div>
 
     <div class="activityInfoDiv" style="display: flex; align-items: center">
         <div>
-            <div class="activityInfoName">
-                {{__('Activity')}}
+            <div class="infoDiv">
+                <div class="infoName">{{__('Activity')}}</div>
+                <div class="infoValue">{{$content->mainActivity->name}}</div>
             </div>
-            <div class="activityInfoValue" style="padding: 0px">
-                {{$content->mainActivity->name}}
-            </div>
+{{--            <div class="activityInfoName">--}}
+{{--                {{__('Activity')}}--}}
+{{--            </div>--}}
+{{--            <div class="activityInfoValue" style="padding: 0px">--}}
+{{--                {{$content->mainActivity->name}}--}}
+{{--            </div>--}}
         </div>
         @if($content->specialName != null)
-            <div style="margin: 0px 50px">
-                <div class="activityInfoName">
-                    {{__('Special name')}}
-                </div>
-                <div class="activityInfoValue" style="padding: 0px">
-                    {{$content->specialName}}
-                </div>
+            <div class="infoDiv">
+                <div class="infoName">{{__('Special name')}}</div>
+                <div class="infoValue">{{$content->specialName}}</div>
             </div>
+{{--            <div style="margin: 0px 50px">--}}
+{{--                <div class="activityInfoName">--}}
+{{--                    {{__('Special name')}}--}}
+{{--                </div>--}}
+{{--                <div class="activityInfoValue" style="padding: 0px">--}}
+{{--                    {{$content->specialName}}--}}
+{{--                </div>--}}
+{{--            </div>--}}
         @endif
     </div>
 
@@ -194,14 +244,20 @@
                 {{$currencySymbol}} {{$content->money}}
             </div>
         </div>
-        <div class="orderDiv">
-            <div class="orderButton" style="width: {{isset($content->brochure) && $content->brochure != null ? '50%' : '100%'}}">
-                {{__('Book Now')}}
+        @if(!$content->booking)
+            <div class="disableBookingErr">
+                @foreach($content->bookingErr as $err)
+                    <div class="err">{{$err}}</div>
+                @endforeach
             </div>
+        @endif
+        <div class="orderDiv">
+            <a href="{{route('book.package', ['packageId' => $content->id])}}" class="orderButton {{$content->booking ? '' : 'disable'}}" style="width: {{isset($content->brochure) && $content->brochure != null ? '50%' : '100%'}}">
+                {{__('Book Now')}}
+            </a>
             <a class="orderButton orderButtonRevers" href="{{$content->brochure}}"  style="display: {{isset($content->brochure) && $content->brochure != null ? 'flex' : 'none'}}; width: 50%;">
                 {{__('Brochure')}}
             </a>
-
         </div>
     </div>
 </div>

@@ -346,12 +346,12 @@
         $('#moreInfoText_' + _id).addClass('moreInfoTextOpen');
     }
 
-    window.onscroll = function() {myFunction()};
     let navbar = $('.stickyTitles');
     let stickeNum = [];
     let descCont;
     let moreInfoNeutral = {!! $moreInfoNeutral !!};
     let moreInfoCallVenture = {!! $moreInfoCallVenture !!};
+    window.onscroll = function() {myFunction()};
 
     function myFunction() {
         for(let i = 0; i < navbar.length; i++){

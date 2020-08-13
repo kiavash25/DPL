@@ -17,8 +17,8 @@
 
     <script src="{{asset('js/ckeditor.js')}}"></script>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="{{asset('css/common/jquery-ui.css')}}">
+    <script src="{{asset('js/jquery-ui.js')}}"></script>
 
     <style>
 
@@ -27,6 +27,28 @@
             border: solid 1px var(--ck-color-toolbar-border) !important;
             border-top: none !important;
             border-radius: 5px !important;
+        }
+
+        .section{
+            padding: 10px;
+            border: solid lightgray 1px;
+            border-radius: 10px;
+        }
+
+        .dateInputSection{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .dateInputSection > button{
+            border-radius: 50%;
+            font-size: 9px;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 4px;
         }
     </style>
 
@@ -164,24 +186,24 @@
             </div>
 
             <div class="row marg30">
-                <div class="col-md-6">
-                    <div class="row" style="padding: 10px; border: solid lightgray 1px; border-radius: 10px;">
+                <div class="col-md-12">
+                    <div class="row section">
 
-                        <div class="col-md-6 relatedSection">
+                        <div class="col-md-3 relatedSection">
                             <div class="form-group">
                                 <label class="inputLabel" for="code">{{__('Package Code')}}</label>
                                 <input type="text" id="code" name="code" class="form-control" value="{{isset($package->code) ? $package->code : ''}}">
                             </div>
                         </div>
 
-                        <div class="col-md-6 relatedSection">
+                        <div class="col-md-3 relatedSection">
                             <div class="form-group">
                                 <label class="inputLabel" for="day">{{__('Day')}}</label>
                                 <input type="number" id="day" name="day" class="form-control" value="{{isset($package->day) ? $package->day : ''}}">
                             </div>
                         </div>
 
-                        <div class="col-md-6 relatedSection">
+                        <div class="col-md-3 relatedSection">
                             <div class="form-group">
                                 <label class="inputLabel" for="season">{{__('Season')}}</label>
                                 <select name="season" id="season" class="form-control">
@@ -193,7 +215,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 relatedSection">
+                        <div class="col-md-3 relatedSection">
                             <div class="form-group">
                                 <label class="inputLabel" for="level">{{__('Level')}}</label>
                                 <select name="level" id="level" class="form-control">
@@ -204,20 +226,78 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 relatedSection">
+                        <div class="col-md-3 relatedSection">
                             <div class="form-group">
                                 <label class="inputLabel" for="sDate">{{__('Start date')}}</label>
-                                <input type="text" id="sDate" name="sDate" class="form-control" value="{{isset($package->sDate) ? $package->sDate : ''}}" readonly>
-                                <button class="btn btn-danger" onclick="$('#sDate').val('')">{{__('clear Start Date')}}</button>
+                                <div class="dateInputSection">
+                                    <input type="text" id="sDate" name="sDate" class="form-control" value="{{isset($package->sDate) ? $package->sDate : ''}}" readonly>
+                                    <button class="btn btn-danger" onclick="$('#sDate').val('')">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6 relatedSection">
+
+                        <div class="col-md-3 relatedSection">
                             <div class="form-group">
                                 <label class="inputLabel" for="eDate">{{__('End Date')}}</label>
-                                <input type="text" id="eDate" name="eDate" class="form-control" value="{{isset($package->eDate) ? $package->eDate : ''}}" readonly>
-                                <button class="btn btn-danger" onclick="$('#eDate').val('')">{{__('clear End Date')}}</button>
+                                <div class="dateInputSection">
+                                    <input type="text" id="eDate" name="eDate" class="form-control" value="{{isset($package->eDate) ? $package->eDate : ''}}" readonly>
+                                    <button class="btn btn-danger" onclick="$('#eDate').val('')">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="col-md-3 relatedSection">
+                            <div class="form-group">
+                                <label class="inputLabel" for="registerSDate">{{__('Start register date')}}</label>
+                                <div class="dateInputSection">
+                                    <input type="text" id="registerSDate" name="registerSDate" class="form-control" value="{{isset($package->registerSDate) ? $package->registerSDate : ''}}" readonly>
+                                    <button class="btn btn-danger" onclick="$('#registerSDate').val('')">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 relatedSection">
+                            <div class="form-group">
+                                <label class="inputLabel" for="registerEDate">{{__('End register date')}}</label>
+                                <div class="dateInputSection">
+                                    <input type="text" id="registerEDate" name="registerEDate" class="form-control" value="{{isset($package->registerEDate) ? $package->registerEDate : ''}}" readonly>
+                                    <button class="btn btn-danger" onclick="$('#registerEDate').val('')">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 relatedSection">
+                            <div class="form-group">
+                                <label class="inputLabel" for="capacity">
+                                    {{__('Capacity')}}
+                                </label>
+                                <input type="number" id="capacity" name="capacity" class="form-control" value="{{isset($package->capacity) ? $package->capacity : 0}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 relatedSection">
+                            <div class="form-group"  style="display: none">
+                                <label class="inputLabel" for="minRegister">{{__('Min register')}}</label>
+                                <input type="number" id="minRegister" name="minRegister" class="form-control" value="{{isset($package->minRegister) ? $package->minRegister : 0}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 relatedSection">
+                            <div class="form-group" style="display: none">
+                                <label class="inputLabel" for="maxRegister">{{__('Max register')}}</label>
+                                <input type="number" id="maxRegister" name="maxRegister" class="form-control" value="{{isset($package->maxRegister) ? $package->maxRegister : 0}}">
+                            </div>
+                        </div>
+
+
                         <?php
                             $currentLang = \App\models\Language::where('symbol', app()->getLocale())->first();
                             if($currentLang != null)
@@ -225,14 +305,33 @@
                             else
                                 $currencyName = 'Euro';
                         ?>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="inputLabel" for="cost">{{__('Cost')}} ({{$currencyName}})</label>
                                 <input type="text" id="cost" name="Cost" class="form-control" value="{{isset($package->money) ? $package->money : '0'}}">
                             </div>
                         </div>
 
-                        <div id="brochureDiv" class="col-md-6" style="display: {{isset($package->id) ? 'block' : 'none'}}">
+                        <div class="col-md-3 relatedSection" style="flex-direction: column;">
+                            <label class="inputLabel">{{__('choose Date')}}</label>
+                            <div class="form-group">
+                                <label class="rocker">
+                                    <input id="freeTime" type="checkbox" {{isset($package->freeTime) && $package->freeTime == 1 ? 'checked' : ''}}>
+                                    <span class="switch-left">
+                                        <div style="font-size: 12px">
+                                            {{__('Allow')}}
+                                        </div>
+                                    </span>
+                                    <span class="switch-right">
+                                        <div style="font-size: 12px">
+                                            {{__('Dont allow')}}
+                                        </div>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="brochureDiv" class="col-md-3" style="display: {{isset($package->id) ? 'block' : 'none'}}">
                             <label class="inputLabel" for="brochure">{{__('Brochure')}}</label>
                             <input type="file" name="brochure" id="brochure" onchange="uploadBrochure(this)">
                             <a href="{{isset($package->brochureUrl) ? $package->brochureUrl : ''}}">
@@ -240,18 +339,18 @@
                             </a>
                         </div>
 
-
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="inputLabel" for="specialName">{{__('Special name')}}</label>
                                 <input type="text" id="specialName" name="specialName" class="form-control" value="{{isset($package->specialName) ? $package->specialName : ''}}">
                             </div>
                         </div>
+
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="row" style="padding: 10px; border: solid lightgray 1px; border-radius: 10px;">
+                <div class="col-md-12">
+                    <div class="row section">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="inputLabel" style="display: flex; align-items: center">
@@ -467,9 +566,14 @@
 
         $('#sDate').datepicker({
             dateFormat: "yy-mm-dd"
-
         });
         $('#eDate').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        $('#registerSDate').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        $('#registerEDate').datepicker({
             dateFormat: "yy-mm-dd"
         });
 
@@ -641,6 +745,11 @@
                 showPack = 0;
             else
                 showPack = 1;
+            let freeTime = $('#freeTime:checked').val();
+            if(freeTime == undefined)
+                freeTime = 0;
+            else
+                freeTime = 1;
 
             let description = window.editor.getData();
             let lat = $('#lat').val();
@@ -652,6 +761,11 @@
             let day = $('#day').val();
             let sDate = $('#sDate').val();
             let eDate = $('#eDate').val();
+            let registerEDate = $('#registerEDate').val();
+            let registerSDate = $('#registerSDate').val();
+            let capacity = $('#capacity').val();
+            let minRegister = $('#minRegister').val();
+            let maxRegister = $('#maxRegister').val();
             let cost = $('#cost').val();
             let season = $('#season').val();
             let specialName = $('#specialName').val();
@@ -665,6 +779,9 @@
                 if($(tagsElement[i]).val() != null && $(tagsElement[i]).val().trim().length != 0)
                     tags[tags.length] = $(tagsElement[i]).val();
             }
+
+            if(freeTime == 1 && day == 0 || day == null)
+                error += '<li style="margin: 15px 0px"> {{__('error.chooseDay')}}.</li>';
 
             if(source == 0){
                 if(code.trim().length == 0)
@@ -711,7 +828,14 @@
                         level: level,
                         source: source,
                         specialName: specialName,
-                        showPack: showPack
+                        showPack: showPack,
+                        registerSDate : registerSDate,
+                        registerEDate : registerEDate,
+                        capacity : capacity,
+                        minRegister : minRegister,
+                        maxRegister : maxRegister,
+                        freeTime : freeTime,
+                        lang: '{{app()->getLocale()}}'
                     },
                     success: function(response){
                         try{
