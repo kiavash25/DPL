@@ -35,11 +35,11 @@
                                             @if($index > 0)
                                                 <div class="col-md-6">
                                                     <div class="recentlySide">
-                                                        <a href="{{$item->ur}}" class="imgSection">
+                                                        <a href="{{$item->url}}" class="imgSection">
                                                             <img src="{{$item->pic}}" class="resizeImage" onload="fitThisImg(this)">
                                                         </a>
                                                         <div class="infos">
-                                                            <a href="{{$item->ur}}" class="name">
+                                                            <a href="{{$item->url}}" class="name">
                                                                 {{$item->name}}
                                                             </a>
                                                             <div class="writer">
@@ -91,7 +91,7 @@
                                             <div class="body">
                                                 @if($hasBig)
                                                     <div class="recentlySide main">
-                                                        <a href="{{$categ->journals[0]->ur}}" class="imgSection">
+                                                        <a href="{{$categ->journals[0]->url}}" class="imgSection">
                                                             <img src="{{$categ->journals[0]->pic}}" class="resizeImage" onload="fitThisImg(this)">
                                                         </a>
                                                         <div class="infos">
