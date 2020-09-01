@@ -228,10 +228,13 @@ class JournalAdminController extends Controller
             $journal->categoryId= $request->categoryId;
             $journal->summery = $request->summery;
             $journal->text = $request->description;
-            if($request->releaseDateType == 'now')
+            if($request->releaseDateType == 'now' && $request->releaseDateType != $journal->releaseType)
                 $journal->releaseDate = Carbon::now()->format('Y-m-d');
             else if($request->releaseDateType == 'future' && isset($request->releaseDate) && $request->releaseDate != null)
                 $journal->releaseDate = $request->releaseDate;
+
+            $journal->releaseType = $request->releaseDateType;
+
             $journal->save();
 
             if(isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){
