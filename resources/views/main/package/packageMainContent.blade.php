@@ -77,7 +77,7 @@
                 </div>
                 @foreach($content->sideInfos as $sideInfo)
                     <div class="activityRow" style="display: flex">
-                        <img src="{{$sideInfo->icon}}" style="width: 50px; height: 50px;">
+                        <img src="{{$sideInfo->icon}}" alt="{{$sideInfo->text}}" style="width: 50px; height: 50px;">
                         <div style="margin-left: 10px; width: calc(100% - 70px);">{{$sideInfo->text}}</div>
                     </div>
                 @endforeach
@@ -142,7 +142,7 @@
             <div class="col-md-12 thumbnailSection">
                 @foreach($content->thumbnails as $item)
                     <div class="thumbnailDiv" onclick="openThumbnailPic({{$item->id}})">
-                        <img src="{{$item->thumbnail}}" class="resizeImage thumbnailPic" onload="resizeThisImg(this)">
+                        <img src="{{$item->thumbnail}}" alt="{{$item->alt}}" class="resizeImage thumbnailPic" onload="resizeThisImg(this)">
                         <div class="matteBack"></div>
                     </div>
                 @endforeach
@@ -164,7 +164,7 @@
                         <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
                             <div class=" packages">
                                 <div class="packageImgDiv">
-                                    <img src="{{$item->pic}}" class="packageImg">
+                                    <img src="{{$item->pic}}" alt="{{$item->name}}" class="packageImg">
                                 </div>
                                 <div class="packageContentDiv">
                                     <div class="packageName">
@@ -284,17 +284,17 @@
 
         for(let i = 0; i < thumbnails.length; i++){
             if(allow){
-                main.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '" style="max-height: 100%; max-width: 100%;"></div>');
+                main.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '" alt="' + thumbnails[i]["alt"] + '" style="max-height: 100%; max-width: 100%;"></div>');
                 thumb.push('<div class="swiper-slide albumePic" style="background-image:url(' + thumbnails[i]["thumbnail"] + '); cursor:pointer;"></div>');
             }
             else {
                 if (thumbnails[i]['id'] == _id){
-                    main.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
+                    main.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '" alt="' + thumbnails[i]["alt"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
                     thumb.push('<div class="swiper-slide albumePic" style="background-image:url(' + thumbnails[i]["thumbnail"] + '); cursor:pointer;"></div>');
                     allow = true;
                 }
                 else{
-                    main0.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
+                    main0.push('<div class="swiper-slide albumePic" ><img src="' + thumbnails[i]["pic"] + '" alt="' + thumbnails[i]["alt"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
                     thumb0.push('<div class="swiper-slide albumePic" style="background-image:url(' + thumbnails[i]["thumbnail"] + '); cursor:pointer;"></div>');
                 }
             }

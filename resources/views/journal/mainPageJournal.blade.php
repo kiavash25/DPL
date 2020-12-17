@@ -23,7 +23,7 @@
                                 <div class="body" style="padding-top: 20px;">
                                     @if(isset($mainSliderJournal[0]))
                                         <div class="mainRecently">
-                                            <img src="{{$mainSliderJournal[0]->pic}}" class="resizeImage" onload="fitThisImg(this)">
+                                            <img src="{{$mainSliderJournal[0]->pic}}" alt="{{$mainSliderJournal[0]->name}}" class="resizeImage" onload="fitThisImg(this)">
                                             <a href="{{$mainSliderJournal[0]->url}}" class="hoverPic">
                                                 <div class="name">{{$mainSliderJournal[0]->name}}</div>
                                                 <div class="writer">{{__('Written by')}} {{$mainSliderJournal[0]->username}}</div>
@@ -36,15 +36,13 @@
                                                 <div class="col-md-6">
                                                     <div class="recentlySide">
                                                         <a href="{{$item->url}}" class="imgSection">
-                                                            <img src="{{$item->pic}}" class="resizeImage" onload="fitThisImg(this)">
+                                                            <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage" onload="fitThisImg(this)">
                                                         </a>
                                                         <div class="infos">
-                                                            <a href="{{$item->url}}" class="name">
-                                                                {{$item->name}}
-                                                            </a>
+                                                            <a href="{{$item->url}}" class="name"> {{$item->name}}</a>
                                                             <div class="writer">
                                                         <span>
-                                                            {{__('by')}} {{$item->username}}
+                                                        {{__('by')}} {{$item->username}}
                                                         </span>
                                                                 <span>
                                                             {{$item->date}}
@@ -92,19 +90,13 @@
                                                 @if($hasBig)
                                                     <div class="recentlySide main">
                                                         <a href="{{$categ->journals[0]->url}}" class="imgSection">
-                                                            <img src="{{$categ->journals[0]->pic}}" class="resizeImage" onload="fitThisImg(this)">
+                                                            <img src="{{$categ->journals[0]->pic}}" alt="{{$categ->journals[0]->name}}" class="resizeImage" onload="fitThisImg(this)">
                                                         </a>
                                                         <div class="infos">
-                                                            <a href="{{$categ->journals[0]->url}}" class="name">
-                                                                {{$categ->journals[0]->name}}
-                                                            </a>
+                                                            <a href="{{$categ->journals[0]->url}}" class="name"> {{$categ->journals[0]->name}} </a>
                                                             <div class="writer">
-                                                                <span>
-                                                                    {{__('by')}} {{$categ->journals[0]->username}}
-                                                                </span>
-                                                                <span>
-                                                                    {{$categ->journals[0]->date}}
-                                                                </span>
+                                                                <span> {{__('by')}} {{$categ->journals[0]->username}} </span>
+                                                                <span> {{$categ->journals[0]->date}} </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -114,19 +106,13 @@
                                                         @if(($index > 0 || ($index == 0 && !$hasBig)) && (($index < 4 && !$hasBig) || ($hasBig && $index < 5)))
                                                             <div class="col-md-6 recentlySide">
                                                                 <a href="{{$item->url}}" class="imgSection">
-                                                                    <img src="{{$item->pic}}" class="resizeImage" onload="fitThisImg(this)">
+                                                                    <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage" onload="fitThisImg(this)">
                                                                 </a>
                                                                 <div class="infos">
-                                                                    <a href="{{$item->url}}" class="name">
-                                                                        {{$item->name}}
-                                                                    </a>
+                                                                    <a href="{{$item->url}}" class="name"> {{$item->name}} </a>
                                                                     <div class="writer">
-                                                                        <span>
-                                                                            {{__('by')}} {{$item->username}}
-                                                                        </span>
-                                                                        <span>
-                                                                            {{$item->date}}
-                                                                        </span>
+                                                                        <span> {{__('by')}} {{$item->username}} </span>
+                                                                        <span> {{$item->date}} </span>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -63,7 +63,7 @@
         <div class="fullShotHeader">
             <div class="userInfo">
                 <div class="userpic">
-                    <img id="userPicFullImg" src="" class="resizeImage">
+                    <img id="userPicFullImg" src="" alt="userPic" class="resizeImage">
                 </div>
                 <div id="usernameFull" class="username"></div>
             </div>
@@ -129,7 +129,7 @@
             $('#userPicFullImg').attr('src', showShots[_index].userpic);
             $('#usernameFull').text('');
             $('#fullLike').text(showShots[_index].like);
-            $('#fullImg').attr('src', showShots[_index].pic);
+            $('#fullImg').attr('src', showShots[_index].pic).attr('alt', showShots[_index].name);
             $('#fullName').text(showShots[_index].name);
             $('#fullText').text(showShots[_index].text);
             $('#nowIndex').val(_index);
@@ -183,7 +183,7 @@
                     likeClass = 'green';
 
                 let text =  '<div class="imageSection" onclick="openFullShot(' + i + ')">' +
-                            '   <img src="' + showShots[i].pic500 + '" style="width: 100%">' +
+                            '   <img src="' + showShots[i].pic500 + '" alt="' + showShots[i].name + '" style="width: 100%">' +
                             '   <div class="imageHover">' +
                             '       <div class="shotInfo">' +
                             '           <div class="shotName">' + showShots[i].name + '</div>' +

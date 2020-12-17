@@ -88,7 +88,7 @@
                     {{csrf_field()}}
                     <label for="centerSearchInputWhere" class="col-md-5 whereToSearch">
                         <div class="navSearchIcon" style="position: absolute; left: 0px">
-                            <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
+                            <img src="{{asset('images/mainImage/searchIcon.svg')}}" alt="searchIcon" style="width: 100%;">
                         </div>
                         <label class="centerSearchLabel fullLabel" onclick="searchLabelClick(this)"
                                style="right: 0; left: auto; width: 85%">{{__('Where to?')}}</label>
@@ -154,7 +154,7 @@
                     <div class="recentlyPackageDiv">
                         <a href="{{$item->url}}">
                             <div class="recentlyPackageImg">
-                                <img src="{{$item->pic}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
+                                <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
                             </div>
                         </a>
                         <div class="recentlyPackageText">
@@ -187,7 +187,7 @@
                             <div class="swiper-slide recentlyPackageDiv">
                                 <a href="{{$item->url}}">
                                     <div class="recentlyPackageImg">
-                                        <img src="{{$item->pic}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
+                                        <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage" onload="resizeThisImg(this)" style="width: 100%;">
                                     </div>
                                 </a>
                                 <div class="recentlyPackageText">
@@ -235,7 +235,7 @@
                 <div class="mainRecentlyPackageTopDiv">
                     @foreach($mainSliderJournal as $item)
                         <a href="{{$item->url}}" target="_blank" class="JournalDiv">
-                            <img src="{{$item->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                            <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
                             <div class="JournalContentDiv">
                                 <div class="JournalName">{{$item->name}}</div>
                                 <div class="JournalCategory">{{$item->category}}</div>
@@ -321,7 +321,7 @@
                     @if(isset($awards[0]))
                         <div class="col-md-6 awardsBig fullZeroRow">
                             <a href="{{$awards[0]->link}}" class="awardSection">
-                                <img src="{{$awards[0]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                <img src="{{$awards[0]->pic}}" alt="{{$awards[0]->name}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
 {{--                                <div class="awardsName">--}}
 {{--                                    {{$awards[0]->name}}--}}
 {{--                                </div>--}}
@@ -334,7 +334,7 @@
                             @if(isset($awards[1]))
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[1]->link}}" class="awardSection">
-                                        <img src="{{$awards[1]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <img src="{{$awards[1]->pic}}" alt="{{$awards[1]->name}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
 {{--                                        <div class="awardsName">--}}
 {{--                                            {{$awards[1]->name}}--}}
 {{--                                        </div>--}}
@@ -344,7 +344,7 @@
                             @if(isset($awards[2]))
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[2]->link}}" class="awardSection">
-                                        <img src="{{$awards[2]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <img src="{{$awards[2]->pic}}" alt="{{$awards[2]->name}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
 {{--                                        <div class="awardsName">--}}
 {{--                                            {{$awards[2]->name}}--}}
 {{--                                        </div>--}}
@@ -356,7 +356,7 @@
                             @if(isset($awards[3]))
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[3]->link}}" class="awardSection">
-                                        <img src="{{$awards[3]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <img src="{{$awards[3]->pic}}" alt="{{$awards[3]->name}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
 {{--                                        <div class="awardsName">--}}
 {{--                                            {{$awards[3]->name}}--}}
 {{--                                        </div>--}}
@@ -366,7 +366,7 @@
                             @if(isset($awards[4]))
                                 <div class="col-6 fullZeroRow">
                                     <a href="{{$awards[4]->link}}" class="awardSection">
-                                        <img src="{{$awards[4]->pic}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
+                                        <img src="{{$awards[4]->pic}}" alt="{{$awards[4]->name}}" class="resizeImage" style="width: 100%" onload="resizeThisImg(this)">
 {{--                                        <div class="awardsName">--}}
 {{--                                            {{$awards[4]->name}}--}}
 {{--                                        </div>--}}
@@ -402,7 +402,7 @@
                 {{$item->header}}
             </div>
             <div class="aboutUsDiv">
-                <img src="{{$item->pic}}" style="max-width: 100%; max-height: 100%">
+                <img src="{{$item->pic}}" alt="{{$item->header}}" style="max-width: 100%; max-height: 100%">
             </div>
         </div>
     @endforeach
@@ -453,7 +453,7 @@
                         <div class="swiper-slide" style="width: 150px">
                             <a href="{{$item->link}}" class=" supportUsDiv" target="_blank">
                                 <div class="supportUsImgDiv">
-                                    <img src="{{$item->pic}}" class="supportUsImg">
+                                    <img src="{{$item->pic}}" alt="{{$item->name}}" class="supportUsImg">
                                 </div>
                                 <div class="supportUsName">
                                     {{$item->name}}

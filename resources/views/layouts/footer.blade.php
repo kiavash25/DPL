@@ -96,16 +96,16 @@
 
         <div class="socialContent">
             <a href="#" class="footerSocialIcons">
-                <img src="{{asset('images/mainImage/facebook.png')}}" style="width: 100%; height: 100%">
+                <img src="{{asset('images/mainImage/facebook.png')}}" alt="facebook" style="width: 100%; height: 100%">
             </a>
             <a href="#" class="footerSocialIcons">
-                <img src="{{asset('images/mainImage/insta.png')}}" style="width: 100%; height: 100%">
+                <img src="{{asset('images/mainImage/insta.png')}}" alt="instagram" style="width: 100%; height: 100%">
             </a>
             <a href="#" class="footerSocialIcons">
-                <img src="{{asset('images/mainImage/twitter.png')}}" style="width: 100%; height: 100%">
+                <img src="{{asset('images/mainImage/twitter.png')}}" alt="twitter" style="width: 100%; height: 100%">
             </a>
             <a href="#" class="footerSocialIcons">
-                <img src="{{asset('images/mainImage/teleg.png')}}" style="width: 100%; height: 100%">
+                <img src="{{asset('images/mainImage/teleg.png')}}" alt="telegram" style="width: 100%; height: 100%">
             </a>
         </div>
 

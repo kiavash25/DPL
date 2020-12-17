@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Destination extends Model
 {
+    protected $guarded = [];
     protected $table = 'destinations';
 
     public static function deleteWithPic($id){
@@ -20,6 +21,8 @@ class Destination extends Model
 
             $location = __DIR__ . '/../../public/uploaded/destination/' . $dest->id;
             emptyFolder($location);
+
+            Destination::where('langSource', $dest->id)->update(['langSource' => 0]);
 
             $dest->delete();
 

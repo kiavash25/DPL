@@ -38,7 +38,7 @@
             <div id="mainContentDiv" class="col-lg-9" style="visibility: hidden; margin-bottom: 100px">
                 <div class="row" style="padding: 0px; margin: 0px">
                     <div class="mainPic">
-                        <img src="{{$journal->pic}}" class="resizeImage" style="width: 100%;">
+                        <img src="{{$journal->pic}}" alt="{{$journal->name}}" class="resizeImage" style="width: 100%;">
                     </div>
                 </div>
                 <div class="row" style="padding: 0px; margin: 0px;">

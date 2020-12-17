@@ -93,6 +93,23 @@ class ActivityController extends Controller
     }
 
 
+
+    public function storeAltImgActivity(Request $request)
+    {
+        if(isset($request->id) && isset($request->alt)){
+            $pic = ActivityPic::find($request->id);
+            if($pic != null){
+                $pic->alt = $request->alt;
+                $pic->save();
+                return response()->json(['status' => 'ok']);
+            }
+            else
+                return response()->json(['status' => 'error2']);
+        }
+        else
+            return response()->json(['status' => 'error1']);
+    }
+
     public function storeActivity(Request $request)
     {
         if(isset($request->id) && isset($request->parentId) && isset($request->name)){

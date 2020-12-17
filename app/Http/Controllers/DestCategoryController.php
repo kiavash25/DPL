@@ -112,6 +112,22 @@ class DestCategoryController extends Controller
         return;
     }
 
+    public function storeAltImgCategory(Request $request)
+    {
+        if(isset($request->id) && isset($request->alt)){
+            $pic = DestinationCategoryPic::find($request->id);
+            if($pic != null){
+                $pic->alt = $request->alt;
+                $pic->save();
+                return response()->json(['status' => 'ok']);
+            }
+            else
+                return response()->json(['status' => 'error2']);
+        }
+        else
+            return response()->json(['status' => 'error1']);
+    }
+
     public function storeImgCategory(Request $request)
     {
         if(isset($request->id) && isset($request->kind) && isset($_FILES['pic']) && $_FILES['pic']['error'] == 0){

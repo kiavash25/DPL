@@ -5,7 +5,7 @@
     <meta content="article" property="og:type"/>
 
     <meta name="keywords" content="{{$journal->keyword}}">
-    <meta property="og:title" content=" {{$journal->seoTitle}} " />
+    <meta property="og:title" content="{{$journal->seoTitle}}" />
     <meta property="og:description" content=" {{$journal->meta}}" />
     <meta name="twitter:title" content=" {{$journal->seoTitle}} " />
     <meta name="twitter:description" content=" {{$journal->meta}}" />
@@ -135,20 +135,18 @@
             <div class="col-lg-9">
                 <div id="mainContentDiv" class="mainContentDiv">
                 <div class="mainContentName">
-                    <h1 style="text-align: center">
-                        {{$journal->name}}
-                    </h1>
+                    <h1 style="text-align: center"> {{$journal->name}} </h1>
                     <a href="{{route('journal.list', ['kind' => 'category', 'value' => $journal->category])}}" style="color: #2c3e50">
                         {{$journal->category}}
                     </a>
                 </div>
                 <div class="mainSideContent">{{$journal->date}}</div>
                 <div class="mainPic">
-                    <img src="{{$journal->pic}}" class="resizeImage" style="width: 100%;" onload="fitThisImg(this)">
+                    <img src="{{$journal->pic}}" alt="{{$journal->name}}" class="resizeImage" style="width: 100%;" onload="fitThisImg(this)">
                 </div>
                 <div class="userInfoSection">
                     <div class="circle-100 userPicBorder">
-                        <img src="{{$journal->userPic}}" class="resizeImage" style="width: 100%">
+                        <img src="{{$journal->userPic}}" alt="userPic" class="resizeImage" style="width: 100%">
                     </div>
                     <div class="userName">
                         {{__('Written by')}}

@@ -8,37 +8,7 @@
 @section('body')
     <article style="margin-top: 30px">
         <div class="row" style="direction: ltr">
-            <div id="mainContentDiv" class="col-lg-9" style="visibility: hidden;">
-                <div id="row##number##" class="row listElemsDiv" style="visibility: hidden;">
-                    <div class="listElemsPicDiv col-md-4">
-                        <a href="##url##" class="imageHref">
-                            <img src="##pic##" class="resizeImage listPics" style="width: 100%;" onload="fitThisImg(this)">
-                        </a>
-                        <div class="listElemsSideData">
-                            <a href="##categoryUrl##" class="listElemsSideDataCategory">##category##</a>
-                            <div class="listElemsSideDataCategory">##date##</div>
-                            <div class="listElemsSideDataCategory" >##username##</div>
-                        </div>
-                    </div>
-                    <div class="listElemsContentDiv col-md-8">
-                        <div class="listContentHeight">
-                            <div>
-                                <a href="##url##" class="listElemsContentName">
-                                    ##name##
-                                </a>
-                            </div>
-                            <div class="listElemsContentSummery">
-                                ##summery##
-                            </div>
-                            <div class="readMorebutton">
-                                <a href="##url##" class="listElemsContentButton">
-                                    {{__('READ MORE')}}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="mainContentDiv" class="col-lg-9" style="visibility: hidden;"></div>
 
             @include('journal.layout.sideContentJournal')
         </div>
@@ -50,10 +20,41 @@
 
 @section('script')
     <script>
+        var listElemSample = `
+            <div id="row##number##" class="row listElemsDiv" style="visibility: hidden;">
+                    <div class="listElemsPicDiv col-md-4">
+                        <a href="##url##" class="imageHref">
+                            <img src="##pic##" alt="##name##" class="resizeImage listPics" style="width: 100%;" onload="fitThisImg(this)">
+                        </a>
+                        <div class="listElemsSideData">
+                            <a href="##categoryUrl##" class="listElemsSideDataCategory">##category##</a>
+                            <div class="listElemsSideDataCategory">##date##</div>
+                            <div class="listElemsSideDataCategory" >##username##</div>
+                        </div>
+                    </div>
+                    <div class="listElemsContentDiv col-md-8">
+                        <div class="listContentHeight">
+                            <div>
+                                <a href="##url##" class="listElemsContentName"> ##name## </a>
+                            </div>
+                            <div class="listElemsContentSummery">
+                                ##summery##
+                            </div>
+                            <div class="readMorebutton">
+                                <a href="##url##" class="listElemsContentButton">
+                                    {{__('READ MORE')}}
+        </a>
+    </div>
+</div>
+</div>
+</div>
+`;
+    </script>
+
+    <script>
         let listValue = '{{$listValue}}';
         let listKind = '{{$listKind}}';
 
-        let listElemSample = $('#mainContentDiv').html();
         let numOfElems = 1;
         let take = 5;
         let skip = 0;

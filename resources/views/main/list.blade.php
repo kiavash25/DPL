@@ -175,7 +175,7 @@
                         <div id="listSample" style="display: none; flex-wrap: wrap; justify-content: center;">
                             <div class="row listSectionDiv">
                                     <div class="col-md-4 col-sm-12 picSection">
-                                        <img src="##imgUrl##" class="imgList" onload="resizeThisImg(this)">
+                                        <img src="##imgUrl##" alt="##name##" class="imgList" onload="resizeThisImg(this)">
                                     </div>
                                     <div class="col-md-5 col-sm-12 contentSection">
                                         <div class="headerContentSection">
@@ -191,9 +191,7 @@
                                                 </a>
                                                 </span>
                                             </div>
-                                            <div class="listHeader">
-                                                ##name##
-                                            </div>
+                                            <div class="listHeader"> ##name## </div>
 
                                         </div>
                                         <div class="textContentSection">
@@ -256,7 +254,7 @@
                             @foreach($destinations as $item)
                                     <div class="row listSectionDiv">
                                         <div class="col-md-4 col-sm-12 picSection">
-                                            <img src="{{asset($item->pic)}}" class="imgList" >
+                                            <img src="{{asset($item->pic)}}" alt="{{$item->name}}" class="imgList" >
                                         </div>
                                         <div class="col-md-5 col-sm-12 contentSection">
                                             <div class="headerContentSection">

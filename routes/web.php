@@ -87,12 +87,6 @@ Route::middleware(['web'])->group(function () {
         });
     });
 
-    Route::middleware(['guest'])->group(function(){
-        Route::get('loginPage', 'UserController@loginRegisterPage')->name('loginPage');
-
-        Route::post('forgetPassword', 'UserController@forgetPassword')->name('forgetPassword');
-    });
-
     Route::middleware(['auth'])->group(function (){
         Route::get('admin/locale/{locale}', function ($locale){
             $user = auth()->user();
@@ -130,6 +124,7 @@ Route::middleware(['web'])->group(function () {
                 Route::get('/admin/activity/description/{id}', 'ActivityController@descriptionActivity')->name('admin.activity.description');
                 Route::post('/admin/activity/store', 'ActivityController@storeActivity')->name('admin.activity.store');
                 Route::post('/admin/activity/storeImg', 'ActivityController@storeImgActivity')->name('admin.activity.storeImg');
+                Route::post('/admin/activity/storeImgAlt', 'ActivityController@storeAltImgActivity')->name('admin.activity.storeImgAlt');
                 Route::post('/admin/activity/storeTitle', 'ActivityController@storeTitleActivity')->name('admin.activity.storeTitle');
                 Route::post('/admin/activity/storeTitleTextImg', 'ActivityController@storeTitleTextImgActivity')->name('admin.activity.storeTitleTextImg');
                 Route::post('/admin/activity/storeTitleText', 'ActivityController@storeTitleTextActivity')->name('admin.activity.storeTitleText');
@@ -146,6 +141,7 @@ Route::middleware(['web'])->group(function () {
                 Route::get('/admin/destination/category/edit/{id}', 'DestCategoryController@editCategory')->name('admin.destination.category.edit');
                 Route::post('/admin/destination/category/store', 'DestCategoryController@storeCategory')->name('admin.destination.category.store');
                 Route::post('/admin/destination/category/storeImg', 'DestCategoryController@storeImgCategory')->name('admin.destination.category.storeImg');
+                Route::post('/admin/destination/category/storeAltImg', 'DestCategoryController@storeAltImgCategory')->name('admin.destination.category.storeAltImg');
                 Route::post('/admin/destination/category/deleteImg', 'DestCategoryController@deleteImgCategory')->name('admin.destination.category.deleteImg');
                 Route::post('/admin/destination/category/storeVideoAudio', 'DestCategoryController@storeVideoAudioCategory')->name('admin.destination.category.storeVideoAudio');
                 Route::post('/admin/destination/category/delete', 'DestCategoryController@deleteCategory')->name('admin.destination.category.delete');
@@ -158,6 +154,7 @@ Route::middleware(['web'])->group(function () {
                 Route::get('/admin/destination/edit/{id}', 'DestinationController@editDestination')->name('admin.destination.edit');
                 Route::get('/admin/destination/description/{id}', 'DestinationController@descriptionDestination')->name('admin.destination.description');
                 Route::post('/admin/destination/store', 'DestinationController@storeDestination')->name('admin.destination.store');
+                Route::post('/admin/destination/storeAltImgDestination', 'DestinationController@storeAltImgDestination')->name('admin.destination.storeAltImg');
                 Route::post('/admin/destination/storeImg', 'DestinationController@storeImgDestination')->name('admin.destination.storeImg');
                 Route::post('/admin/destination/storeDescriptionImg', 'DestinationController@storeDescriptionImgDestination')->name('admin.destination.storeDescriptionImg');
                 Route::post('/admin/destination/storeDescription', 'DestinationController@storeDescriptionDestination')->name('admin.destination.storeDescription');
@@ -178,6 +175,7 @@ Route::middleware(['web'])->group(function () {
                 Route::post('/admin/package/moreInfoTitle/store', 'PackageController@storeMoreInfoTitlePackage')->name('admin.package.moreInfoTitle.store');
                 Route::post('/admin/package/moreInfoTitle/delete', 'PackageController@deleteMoreInfoTitlePackage')->name('admin.package.moreInfoTitle.delete');
                 Route::post('/admin/package/store', 'PackageController@storePackage')->name('admin.package.store');
+                Route::post('/admin/package/storeAltImg', 'PackageController@storeAltImgPackage')->name('admin.package.storeAltImg');
                 Route::post('/admin/package/storeImg', 'PackageController@storeImgPackage')->name('admin.package.storeImg');
                 Route::post('/admin/package/storeSideInfo', 'PackageController@storeSideInfo')->name('admin.package.storeSideInfo');
                 Route::post('/admin/package/storeVideoAudio', 'PackageController@storeVideoAudioPackage')->name('admin.package.storeVideoAudio');
@@ -192,6 +190,7 @@ Route::middleware(['web'])->group(function () {
                 Route::get('/admin/natureFriend/list', 'NatureFriendController@natAdminList')->name('admin.natureFriend.list');
                 Route::get('/admin/natureFriend/new', 'NatureFriendController@newAdminNat')->name('admin.natureFriend.new');
                 Route::get('/admin/natureFriend/edit/{id}', 'NatureFriendController@editAdminNat')->name('admin.natureFriend.edit');
+                Route::post('/admin/natureFriend/storeAltImg', 'NatureFriendController@storeAltImgAdminNat')->name('admin.natureFriend.storeAltImg');
                 Route::post('/admin/natureFriend/storeImg', 'NatureFriendController@storeImgAdminNat')->name('admin.natureFriend.storeImg');
                 Route::post('/admin/natureFriend/storeVideoPodcast', 'NatureFriendController@storeVideoAudioNat')->name('admin.natureFriend.storeVideoPodcast');
                 Route::post('/admin/natureFriend/deleteImg', 'NatureFriendController@deleteImgNat')->name('admin.natureFriend.deleteImg');
@@ -259,6 +258,12 @@ Route::middleware(['web'])->group(function () {
         });
 
     });
+});
+
+Route::middleware(['guest'])->group(function(){
+    Route::get('loginPage', 'UserController@loginRegisterPage')->name('loginPage');
+
+    Route::post('forgetPassword', 'UserController@forgetPassword')->name('forgetPassword');
 });
 
 

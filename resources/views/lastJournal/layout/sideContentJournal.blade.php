@@ -149,7 +149,7 @@
                 @foreach($recentlyJournal as $item)
                     <div class="recentDiv">
                         <a href="{{$item->url}}" class="recentImgDiv">
-                            <img src="{{$item->pic}}" class="resizeImage recentlyPic" style="width: 100%;">
+                            <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage recentlyPic" style="width: 100%;">
                         </a>
                         <div class="recentContentDiv">
                             <a href="{{$item->url}}" class="recentName">

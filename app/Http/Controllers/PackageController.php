@@ -7,6 +7,7 @@ use App\models\City;
 use App\models\Countries;
 use App\models\Destination;
 use App\models\DestinationCategory;
+use App\models\DestinationPic;
 use App\models\Package;
 use App\models\PackageActivityRelations;
 use App\models\PackageMoreInfo;
@@ -241,6 +242,26 @@ class PackageController extends Controller
             echo json_encode(['status' => 'nok']);
 
         return;
+    }
+
+    public function storeAltImgPackage(Request $request)
+    {
+        if(isset($request->id) && isset($request->alt)){
+            if($request->kind == 'main')
+                $pic = PackagePic::find($request->id);
+            else
+                $pic = PackageThumbnailsPic::find($request->id);
+
+            if($pic != null){
+                $pic->alt = $request->alt;
+                $pic->save();
+                return response()->json(['status' => 'ok']);
+            }
+            else
+                return response()->json(['status' => 'error2']);
+        }
+        else
+            return response()->json(['status' => 'error1']);
     }
 
     public function storeImgPackage(Request $request)

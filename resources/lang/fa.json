@@ -5,6 +5,8 @@
     "Please, check your email": "لطفا اییمل خود را چک کنید.",
     " Enter your email and we'll send you an email have a new password.": "ایمیل خود را وارد کنید تا ما برای شما رمز عبور جدیدی را ارسال کنیم.",
 
+    "Choose a photo alt" : "انتخاب نام عکس",
+    "alt" : "نام عکس",
     "panel admin" : "پنل مدیریت",
     "Login & Security" : "امنیت و ورود",
     "Password Changed" : "رمز عبور با موفقیت تغییر یافت",

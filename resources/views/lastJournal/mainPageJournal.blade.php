@@ -14,7 +14,7 @@
                 <div class="swiper-wrapper">
                     @foreach($mainSliderJournal as $item)
                         <div class="swiper-slide" style="overflow: hidden; width: 100%; display: flex; justify-content: center; align-items: center;">
-                            <img src="{{$item->pic}}" class="resizeImage">
+                            <img src="{{$item->pic}}" alt="{{$item->name}}" class="resizeImage">
                         </div>
                     @endforeach
                 </div>
@@ -123,7 +123,7 @@
                 <div class="col-lg-6 padl0 margb30">
                     <div class="row marp0 margb30">
                         <div class="blogDiv height235">
-                            <img src="##image1##" class="resizeImage">
+                            <img src="##image1##" alt="##name1##" class="resizeImage">
                             <div class="blogDivContentDiv">
                                 <a href="##url1##" class="mainSliderContent">
                                     <div  class="blogContentCategory">##category1##</div>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="row marp0">
                         <div class="blogDiv height235">
-                            <img src="##image2##" class="resizeImage">
+                            <img src="##image2##" alt="##name2##" class="resizeImage">
                             <div class="blogDivContentDiv">
                                 <a href="##url2##" class="mainSliderContent">
                                     <div class="blogContentCategory">##category2##</div>
@@ -148,7 +148,7 @@
                 </div>
                 <div class="col-lg-6 padr0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image3##" class="resizeImage">
+                        <img src="##image3##" alt="##name3##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url3##" class="mainSliderContent">
                                 <div class="blogContentCategory">##category3##</div>
@@ -165,25 +165,19 @@
             <div id="row##number##" class="row marp0">
                 <div class="col-lg-4 padl0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image1##" class="resizeImage">
+                        <img src="##image1##" alt="##name1##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url1##" class="mainSliderContent">
-                                <div class="blogContentCategory">
-                                    ##category1##
-                                </div>
-                                <div class="blogContentName">
-                                    ##name1##
-                                </div>
-                                <div class="blogContentSummery">
-                                    ##summery1##
-                                </div>
+                                <div class="blogContentCategory"> ##category1## </div>
+                                <div class="blogContentName"> ##name1## </div>
+                                <div class="blogContentSummery"> ##summery1##</div>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 padc0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image2##" class="resizeImage">
+                        <img src="##image2##" alt="##name2##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url2##" class="mainSliderContent">
                                 <div class="blogContentCategory">
@@ -201,7 +195,7 @@
                 </div>
                 <div class="col-lg-4 padr0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image3##" class="resizeImage">
+                        <img src="##image3##" alt="##name3##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url3##" class="mainSliderContent">
                                 <div class="blogContentCategory">
@@ -225,7 +219,7 @@
             <div id="row##number##" class="row marp0">
                 <div class="col-lg-6 padl0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image1##" class="resizeImage">
+                        <img src="##image1##" alt="##name1##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url1##" class="mainSliderContent">
                                 <div class="blogContentCategory">##category1##</div>
@@ -238,7 +232,7 @@
                 <div class="col-lg-6 padr0 margb30">
                     <div class="row marp0 margb30">
                         <div class="blogDiv height235">
-                            <img src="##image2##" class="resizeImage">
+                            <img src="##image2##" alt="##name2##" class="resizeImage">
                             <div class="blogDivContentDiv">
                                 <a href="##url2##" class="mainSliderContent">
                                     <div class="blogContentCategory">##category2##</div>
@@ -250,7 +244,7 @@
                     </div>
                     <div class="row marp0">
                         <div class="blogDiv height235">
-                            <img src="##image3##" class="resizeImage">
+                            <img src="##image3##" alt="##name3##" class="resizeImage">
                             <div class="blogDivContentDiv">
                                 <a href="##url3##" class="mainSliderContent">
                                     <div class="blogContentCategory">##category3##</div>
@@ -269,7 +263,7 @@
             <div id="row##number##" class="row marp0">
                 <div class="col-lg-6 padl0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image1##" class="resizeImage">
+                        <img src="##image1##" alt="##name1##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url1##" class="mainSliderContent">
                                 <div class="blogContentCategory">
@@ -287,7 +281,7 @@
                 </div>
                 <div class="col-lg-6 padc0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image2##" class="resizeImage">
+                        <img src="##image2##" alt="##name2##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url2##" class="mainSliderContent">
                                 <div class="blogContentCategory">
@@ -310,7 +304,7 @@
             <div id="row##number##" class="row marp0">
                 <div class="col-lg-12 padl0 margb30">
                     <div class="blogDiv height500">
-                        <img src="##image1##" class="resizeImage">
+                        <img src="##image1##" alt="##name1##" class="resizeImage">
                         <div class="blogDivContentDiv">
                             <a href="##url1##" class="mainSliderContent">
                                 <div class="blogContentCategory">

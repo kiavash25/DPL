@@ -535,7 +535,7 @@ $showLang = \App\models\Language::where('symbol', app()->getLocale())->first();
 
                 <div id="pcSearchHeaderInput" class="navSearchBar navSearchBarInputDivPc mobileHide">
                     <div class="navSearchIcon">
-                        <img src="{{asset('images/mainImage/searchIcon.svg')}}" style="width: 100%;">
+                        <img src="{{asset('images/mainImage/searchIcon.svg')}}" alt="searchIcon" style="width: 100%;">
                     </div>
                     <input type="text" class="searchNavInput" placeholder="{{__('Where do you want to go?')}}" onfocusout="closePcSearchNav()" onkeydown="gollobalSearch(this.value)">
                     <div class="searchResult"></div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\models\Destination;
+use App\models\DestinationCategoryPic;
 use App\models\DestinationPic;
 use App\models\DestinationTagRelation;
 use App\models\NatureFriend;
@@ -99,6 +100,22 @@ class NatureFriendController extends Controller
             echo json_encode(['status' => 'nok']);
 
         return;
+    }
+
+    public function storeAltImgAdminNat(Request $request)
+    {
+        if(isset($request->id) && isset($request->alt)){
+            $pic = NatureFriendPic::find($request->id);
+            if($pic != null){
+                $pic->alt = $request->alt;
+                $pic->save();
+                return response()->json(['status' => 'ok']);
+            }
+            else
+                return response()->json(['status' => 'error2']);
+        }
+        else
+            return response()->json(['status' => 'error1']);
     }
 
     public function storeImgAdminNat(Request $request)

@@ -168,6 +168,22 @@ class DestinationController extends Controller
         return;
     }
 
+    public function storeAltImgDestination(Request $request)
+    {
+        if(isset($request->id) && isset($request->alt)){
+            $pic = DestinationPic::find($request->id);
+            if($pic != null){
+                $pic->alt = $request->alt;
+                $pic->save();
+                return response()->json(['status' => 'ok']);
+            }
+            else
+                return response()->json(['status' => 'error2']);
+        }
+        else
+            return response()->json(['status' => 'error1']);
+    }
+
     public function storeImgDestination(Request $request)
     {
         if(isset($request->id) && isset($request->kind) && isset($request->pic) && $_FILES['pic'] && $_FILES['pic']['error'] == 0){

@@ -156,6 +156,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $item->pic, ''),
                 'slide' =>  getKindPic($loc, $item->pic, 'slide'),
                 'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'alt' =>  $item->alt,
                 'id' => $item->id
             ]);
         }
@@ -272,6 +273,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $item->pic, ''),
                 'slide' =>  getKindPic($loc, $item->pic, 'slide'),
                 'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'alt' =>  $item->alt,
                 'id' => $item->id
             ]);
         }
@@ -285,6 +287,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $mainPic, ''),
                 'slide' => getKindPic($loc, $mainPic, 'slide'),
                 'thumbnail' => getKindPic($loc, $mainPic, 'min'),
+                'alt' => $content->name,
                 'id' => 0
             ]);
         }
@@ -296,8 +299,7 @@ class MainController extends Controller
                             ->where('destId', $content->id)
                             ->where(function ($query) {
                                 $today = Carbon::now()->format('Y-m-d');
-                                $query->where('eDate', '>', $today)
-                                    ->orWhereNull('sDate');
+                                $query->where('eDate', '>', $today)->orWhereNull('sDate');
                             })
                             ->orderBy('sDate')->take(5)->get();
         foreach ($content->packages as $item)
@@ -369,6 +371,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $item->pic, ''),
                 'slide' =>  getKindPic($loc, $item->pic, 'slide'),
                 'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'alt' =>  $item->alt,
                 'id' => $item->id
             ]);
         }
@@ -377,6 +380,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $picName, ''),
                 'slide' =>  getKindPic($loc, $picName, 'slide'),
                 'thumbnail' =>  getKindPic($loc, $picName, 'min'),
+                'alt' =>  $content->name,
                 'id' => 0
             ]);
         }
@@ -502,6 +506,7 @@ class MainController extends Controller
                     'pic' => getKindPic($loc, $item->pic, ''),
                     'slide' =>  getKindPic($loc, $item->pic, 'slide'),
                     'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                    'alt' =>  $item->alt,
                     'id' => $item->id
                 ]);
             }
@@ -510,6 +515,7 @@ class MainController extends Controller
                     'pic' => getKindPic($loc, $picName, ''),
                     'slide' =>  getKindPic($loc, $picName, 'slide'),
                     'thumbnail' =>  getKindPic($loc, $picName, 'min'),
+                    'alt' => $content->name,
                     'id' => 0
                 ]);
             }
@@ -517,13 +523,14 @@ class MainController extends Controller
 
             if(count($content->slidePic) == 0){
                 $slidePic = [];
-                $destIds = Destination::where('categoryId', $content->id)->select(['id', 'pic'])->inRandomOrder()->take(5)->get();
+                $destIds = Destination::where('categoryId', $content->id)->select(['id', 'pic', 'name'])->inRandomOrder()->take(5)->get();
                 foreach ($destIds as $de){
                     $loc = 'uploaded/destination/' . $de->id;
                     array_push($slidePic, (object)[
                         'pic' => getKindPic($loc, $de->pic, ''),
                         'slide' =>  getKindPic($loc, $de->pic, 'slide'),
                         'thumbnail' =>  getKindPic($loc, $de->pic, 'min'),
+                        'alt' => $de->name,
                         'id' => $de->id
                     ]);
                 }
@@ -667,6 +674,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $item->pic, ''),
                 'slide' =>  getKindPic($loc, $item->pic, 'slide'),
                 'thumbnail' =>  getKindPic($loc, $item->pic, 'min'),
+                'alt' => $item->alt,
                 'id' => $item->id
             ]);
         }
@@ -680,6 +688,7 @@ class MainController extends Controller
                 'pic' => getKindPic($loc, $mainPic, ''),
                 'slide' => getKindPic($loc, $mainPic, 'slide'),
                 'thumbnail' => getKindPic($loc, $mainPic, 'min'),
+                'alt' => $content->name,
                 'id' => 0
             ]);
         }

@@ -36,7 +36,7 @@
                         <div class="swiper-wrapper">
                             @foreach($content->slidePic as $item)
                                 <div class="swiper-slide mainSliderImgTop" onclick="openMainPicAlbum({{$item->id}})">
-                                    <img src="{{$item->slide}}" class="sliderImg">
+                                    <img src="{{$item->slide}}" alt="{{$item->alt}}" class="sliderImg">
                                 </div>
                             @endforeach
                         </div>
@@ -166,17 +166,17 @@
 
             for(let i = 0; i < sliderPics.length; i++){
                 if(allow){
-                    main.push('<div class="swiper-slide albumePic" ><img src="' + sliderPics[i]["pic"] + '" style="max-height: 100%; max-width: 100%;"></div>');
+                    main.push('<div class="swiper-slide albumePic" ><img src="' + sliderPics[i]["pic"] + '" alt="'+sliderPics[i]["alt"]+'" style="max-height: 100%; max-width: 100%;"></div>');
                     thumb.push('<div class="swiper-slide albumePic" style="background-image:url(' + sliderPics[i]["thumbnail"] + '); cursor:pointer;"></div>');
                 }
                 else {
                     if (sliderPics[i]['id'] == _id){
-                        main.push('<div class="swiper-slide albumePic" ><img src="' + sliderPics[i]["pic"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
+                        main.push('<div class="swiper-slide albumePic" ><img src="' + sliderPics[i]["pic"] + '" alt="'+sliderPics[i]["alt"]+'"  style="max-height: 100%; max-width: 100%;"></div>');
                         thumb.push('<div class="swiper-slide albumePic" style="background-image:url(' + sliderPics[i]["thumbnail"] + '); cursor:pointer;"></div>');
                         allow = true;
                     }
                     else{
-                        main0.push('<div class="swiper-slide albumePic" ><img src="' + sliderPics[i]["pic"] + '"  style="max-height: 100%; max-width: 100%;"></div>');
+                        main0.push('<div class="swiper-slide albumePic" ><img src="' + sliderPics[i]["pic"] + '" alt="'+sliderPics[i]["alt"]+'"  style="max-height: 100%; max-width: 100%;"></div>');
                         thumb0.push('<div class="swiper-slide albumePic" style="background-image:url(' + sliderPics[i]["thumbnail"] + '); cursor:pointer;"></div>');
                     }
                 }

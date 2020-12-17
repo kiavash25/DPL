@@ -70,7 +70,7 @@
                 @foreach($content->destinations as $item)
                     <div class="destinationPackages packages">
                         <div class="packageImgDiv">
-                            <img src="{{$item->minPic}}" class="packageImg">
+                            <img src="{{$item->minPic}}" alt="{{$item->name}}" class="packageImg">
                         </div>
                         <div class="packageContentDiv">
                             <div class="packageName">

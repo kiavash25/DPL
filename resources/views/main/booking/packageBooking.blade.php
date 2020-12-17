@@ -225,7 +225,7 @@
                                            <div class="inputWithError picSection">
                                                <input type="file" id="natPic_0" class="form-control importantInput" onchange="showPics(this, 0)" style="display: none">
                                                <label for="natPic_0" style="cursor: pointer">
-                                                   <img id="natImgTag_0" src="{{asset('images/mainImage/nationalPic.png')}}" style="width: 200px;">
+                                                   <img id="natImgTag_0" src="{{asset('images/mainImage/nationalPic.png')}}" alt="nationalPic" style="width: 200px;">
                                                </label>
                                            </div>
                                        </div>
@@ -463,7 +463,7 @@
                         '       <label class="inputLabel">{{__("National Image")}}* :</label>\n' +
                         '       <div class="inputWithError picSection">\n' +
                         '           <input type="file" id="natPic_'+i+'" class="form-control importantInput" onchange="showPics(this, ' + i + ')" style="display: none">\n' +
-                        '           <label for="natPic_'+i+'" style="cursor: pointer"><img id="natImgTag_'+i+'" src="' + travellerInfos[i]["pic"] + '" style="width: 200px;"></label>'+
+                        '           <label for="natPic_'+i+'" style="cursor: pointer"><img id="natImgTag_'+i+'" src="' + travellerInfos[i]["pic"] + '" alt="nationalPic" style="width: 200px;"></label>'+
                         '       </div>\n' +
                         '   </div>\n' +
                         '</div>\n';

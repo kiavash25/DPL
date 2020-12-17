@@ -159,6 +159,7 @@
                                 <div class="col-md-3 uploadedPic">
                                     <img src="{{$item->pic}}" class="uploadedPicImg">
                                     <div class="uploadedPicHover">
+                                        <button class="btn btn-primary" data-alt="{{$item->alt}}" onclick="openAltModal({{$item->id}}, this)">{{__('alt')}} : {{$item->alt}}</button>
                                         <button class="btn btn-danger" onclick="deletePic({{$item->id}}, this)">{{__('Delete')}}</button>
                                     </div>
                                 </div>
@@ -277,6 +278,71 @@
             </div>
         </div>
 
+        <div id="pictureAltModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{__('Choose a photo alt')}}</h4>
+                        <button type="button" class="close" data-dismiss="modal" onclick="$('#pictureAltModal').modal('hide')">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin: 0px;">
+                            <div class="form-group">
+                                <label for="newAlt">{{__('alt')}}</label>
+                                <input type="text" id="newAlt" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content: center">
+                            <button class="btn btn-success" onclick="storePictureAlt()">{{__('Submit')}}</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#pictureAltModal').modal('hide')">{{__('Close')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var pictureAltElement = null;
+            var pictureAltId = _id;
+            function openAltModal(_id, _element){
+                $('#pictureAltModal').modal('show');
+                $('#pictureAltModal').modal({backdrop: 'static', keyboard: false});
+                $('#newAlt').val($(_element).attr('data-alt'));
+                pictureAltElement = _element;
+                pictureAltId = _id;
+            }
+
+            function storePictureAlt(){
+                var value = $('#newAlt').val();
+                if(value.trim().length > 1) {
+                    openLoading();
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{route("admin.activity.storeImgAlt")}}',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            id: pictureAltId,
+                            alt: value.trim(),
+                        },
+                        success: response =>{
+                            if(response.status == 'ok') {
+                                pictureAltId = 0;
+                                $(pictureAltElement).attr('data-alt', value.trim()).text('alt: ' + value.trim());
+                                resultLoading('Alt Stored', 'success');
+                                $('#pictureAltModal').modal('hide');
+                            }
+                            else
+                                resultLoading(response.status, 'danger');
+                        },
+                        error: err =>{
+                            resultLoading('Error', 'danger');
+                        }
+                    });
+                }
+            }
+        </script>
+
     </div>
 @endsection
 
@@ -326,6 +392,7 @@
                 var text =  '<div class="col-md-3 uploadedPic">\n' +
                     '<img src="' + file['dataURL'] + '" class="uploadedPicImg">\n' +
                     '<div class="uploadedPicHover">\n' +
+                    '<button class="btn btn-primary" data-alt="" onclick="openAltModal('+response['id']+', this)">{{__("alt")}} : </button>\n' +
                     '<button class="btn btn-danger" onclick="deletePic(' + response['id'] + ', this)">delete</button>\n' +
                     '</div>\n' +
                     '</div>';

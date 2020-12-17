@@ -86,7 +86,7 @@
 
     <div class="loadingDiv">
         <div class="loadingLogo">
-            <img id="loadingImg" src="{{asset('images/mainImage/mainLoading.gif')}}" style="width: 270px;">
+            <img id="loadingImg" alt="loading" src="{{asset('images/mainImage/mainLoading.gif')}}" style="width: 270px;">
         </div>
     </div>
 

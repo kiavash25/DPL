@@ -19,7 +19,7 @@
                     <div class="swiper-slide swiperSlidePackage contentHtmlCenter">
                         <div class=" packages">
                             <div class="packageImgDiv">
-                                <img src="{{$item->pic}}" class="packageImg">
+                                <img src="{{$item->pic}}" alt="{{$item->name}}" class="packageImg">
                             </div>
                             <div class="packageContentDiv">
                                 <div class="packageName">
