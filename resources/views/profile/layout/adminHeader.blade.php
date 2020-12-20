@@ -173,13 +173,13 @@
                 </a>
                 <div class="subSideNavMenu">
                     <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="{{route('admin.userAccess.list')}}">
-                            {{__('Admin List')}}
+                        <a class="subSideNavTab" href="{{route('admin.userList.list')}}">
+                            {{__('User List')}}
                         </a>
                     </div>
                     <div class="sideNavTabs">
-                        <a class="subSideNavTab" href="{{route('register')}}">
-                            {{__('Add new admin')}}
+                        <a class="subSideNavTab" href="{{route('admin.userAccess.list')}}">
+                            {{__('Admin List')}}
                         </a>
                     </div>
                 </div>

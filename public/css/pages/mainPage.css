@@ -209,7 +209,8 @@
     background-color: #1f75b9;
     color: white !important;
     padding: 5px;
-    width: 80px;
+    /*width: 80px;*/
+    max-width: 50%;
     text-align: center;
     top: -35px;
 }

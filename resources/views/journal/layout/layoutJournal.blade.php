@@ -42,11 +42,14 @@
             position: fixed;
             right: 0px;
             /*width: 80%;*/
-            padding-bottom: 50px;
             width: 100%;
-            height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
+
+            /*padding-bottom: 50px;*/
+            /*height: 100vh;*/
+            padding-bottom: 0px;
+            height: calc(100vh - 85px);
         }
         .sideNavButton{
             position: absolute;
@@ -136,7 +139,7 @@
     @endif
 
     <main>
-        <div class="mainBase" style="direction: ltr;">
+        <div id="mainBodyJournal" class="mainBase" style="direction: ltr;">
             @yield('body')
         </div>
     </main>
@@ -155,4 +158,7 @@
 </script>
 
 @yield('script')
+
+@include('common.goToTopButton')
+
 </html>

@@ -248,10 +248,12 @@ Route::middleware(['web'])->group(function () {
                 Route::post('/admin/ourShots/store', 'ShotsController@adminOurShotsStore')->name('admin.shots.ourShot.store');
                 Route::post('/admin/ourShots/delete', 'ShotsController@adminOurShotsDelete')->name('admin.shots.ourShot.delete');
 
+                Route::get('/admin/userList/list', 'UserAccessController@userLists')->name('admin.userList.list');
+
                 Route::get('/admin/userAccess/list', 'UserAccessController@list')->name('admin.userAccess.list');
                 Route::post('/admin/userAccess/acl/store', 'UserAccessController@aclStore')->name('admin.userAccess.acl.store');
                 Route::post('/admin/userAccess/language/store', 'UserAccessController@languageStore')->name('admin.userAccess.language.store');
-                Route::post('/admin/userAccess/acl/disableAccess', 'UserAccessController@disableAccess')->name('admin.userAccess.acl.disableAccess');
+                Route::post('/admin/userAccess/acl/changeAdminAccess', 'UserAccessController@changeAdminAccess')->name('admin.userAccess.acl.changeAdminAccess');
             });
 
             Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');

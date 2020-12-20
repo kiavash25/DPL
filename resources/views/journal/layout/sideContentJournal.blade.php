@@ -172,6 +172,10 @@
 </div>
 
 <script >
+    $('#sideSearchInput').on('keypress', e => {
+        if(e.which == 13)
+            sideSearch();
+    });
     function sideSearch(){
         let val = $('#sideSearchInput').val();
         if(val.trim().length > 2){

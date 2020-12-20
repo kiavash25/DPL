@@ -197,7 +197,7 @@ a:hover{
     border-right: 5px;
     align-items: center;
     font-size: 14px;
-    width: 100px;
+    /*width: 100px;*/
     overflow: hidden;
     display: block;
     text-overflow: ellipsis;

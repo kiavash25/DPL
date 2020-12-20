@@ -21,9 +21,6 @@
         <div class="col-md-12">
             <h2 style="display: flex; ">
                 {{__('Admin List')}}
-                <a href="{{route('register')}}" class="addTagIcon" style="margin-left: 30px; color: green">
-                    <i class="fas fa-plus-circle" style="cursor: pointer"></i>
-                </a>
             </h2>
         </div>
         <hr>
@@ -290,20 +287,20 @@
             openLoading();
             $.ajax({
                 type: 'post',
-                url: '{{route("admin.userAccess.acl.disableAccess")}}',
+                url: '{{route("admin.userAccess.acl.changeAdminAccess")}}',
                 data:{
                     _token: '{{csrf_token()}}',
                     id: id,
+                    access: 0,
                 },
                 success: function (response) {
                     try{
-                        response = JSON.parse(response);
-                        if(response['status'] == 'ok'){
+                        if(response.status == 'ok'){
                             $('#user_'+id).remove();
                             resultLoading("{{__('Admin access disabled')}}", 'success');
                         }
                         else {
-                            console.log(response['status']);
+                            console.log(response.status);
                             resultLoading("{{__('Error in store')}}", 'danger');
                         }
                     }

@@ -32,6 +32,13 @@ class UserAccessController extends Controller
         return view('profile.admin.userAccess.userAccessList', compact(['adminUser', 'aclList', 'languageList']));
     }
 
+    public function userLists()
+    {
+        $users = User::where('level', 'user')->get();
+
+        return view('profile.admin.userAccess.userLists', compact(['users']));
+    }
+
     public function aclStore(Request $request)
     {
         if(isset($request->userId) && isset($request->acl)){
@@ -83,20 +90,19 @@ class UserAccessController extends Controller
         return;
     }
 
-    public function disableAccess(Request $request)
+    public function changeAdminAccess(Request $request)
     {
         if(isset($request->id)){
             $user = User::find($request->id);
-            $user->level = 'user';
+            $user->level = $request->access == 0 ? 'user' : 'admin';
             $user->save();
 
-            Acl::where('userId', $user->id)->delete();
+            if($request->access == 0)
+                Acl::where('userId', $user->id)->delete();
 
-            echo json_encode(['status' => 'ok']);
+            return response()->json(['status' => 'ok']);
         }
         else
-            echo json_encode(['status' => 'nok']);
-
-        return;
+            return response()->json(['status' => 'nok']);
     }
 }

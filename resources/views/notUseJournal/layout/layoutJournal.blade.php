@@ -42,9 +42,9 @@
             position: fixed;
             right: 0px;
             /*width: 80%;*/
-            padding-bottom: 50px;
+            /*padding-bottom: 50px;*/
             width: 100%;
-            height: 100vh;
+            height: calc(100vh - 55px);
             overflow-y: auto;
             overflow-x: hidden;
         }

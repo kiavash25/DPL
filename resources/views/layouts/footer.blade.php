@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="{{asset('css/footer.css')}}">
 
+@include('common.goToTopButton')
 <footer>
     <div class="container footer">
         <div class="row footerContent pcFooter">
@@ -95,16 +96,16 @@
         </div>
 
         <div class="socialContent">
-            <a href="#" class="footerSocialIcons">
+            <a href="https://www.facebook.com/DiscoverPersiaLand1/" class="footerSocialIcons">
                 <img src="{{asset('images/mainImage/facebook.png')}}" alt="facebook" style="width: 100%; height: 100%">
             </a>
-            <a href="#" class="footerSocialIcons">
+            <a href="https://instagram.com/discoverpersialand?igshid=u8cyy3dlfsgg" class="footerSocialIcons">
                 <img src="{{asset('images/mainImage/insta.png')}}" alt="instagram" style="width: 100%; height: 100%">
             </a>
-            <a href="#" class="footerSocialIcons">
+            <a href="https://twitter.com/Discoverpersia2?s=08" class="footerSocialIcons">
                 <img src="{{asset('images/mainImage/twitter.png')}}" alt="twitter" style="width: 100%; height: 100%">
             </a>
-            <a href="#" class="footerSocialIcons">
+            <a href="https://t.me/discoverpersialand" class="footerSocialIcons">
                 <img src="{{asset('images/mainImage/teleg.png')}}" alt="telegram" style="width: 100%; height: 100%">
             </a>
         </div>
@@ -114,3 +115,5 @@
         </div>
     </div>
 </footer>
+
+

@@ -73,8 +73,10 @@ class MainController extends Controller
                                             ->orWhereNull('sDate');
                                     })
                                     ->orderByDesc('popularNum')->take(8)->get();
-        foreach ($recentlyPackage as $item)
+        foreach ($recentlyPackage as $item) {
             $item = getMinPackage($item, 'list');
+            $item->money = number_format($item->money);
+        }
 
         $mainSliderJournal = Journal::where('releaseDate' , '!=', 'draft')->where('lang', app()->getLocale())->where('releaseDate', '<=', $today)->select(['id', 'slug', 'name', 'summery', 'categoryId', 'pic'])->orderByDesc('releaseDate')->take(4)->get();
         foreach ($mainSliderJournal as $item) {
@@ -421,7 +423,7 @@ class MainController extends Controller
         if($content->brochure != null)
             $content->brochure = asset('uploaded/packages/' . $content->id . '/' . $content->brochure);
 
-        $content->money = commaMoney($content->money);
+        $content->money = number_format($content->money);
 
         $hasMoreInfo = 0;
         $moreInfoCallVenture = PackageMoreInfo::where('category', 'callventureDetail')->where('lang', app()->getLocale())->get();
@@ -961,7 +963,7 @@ class MainController extends Controller
             else
                 $item->circleSDate = __('Call Us');
 
-            $item->money = commaMoney($item->money);
+            $item->money = number_format($item->money);
             $actv = Activity::find($item->mainActivityId);
             if($actv == null)
                 $item->bad = true;
