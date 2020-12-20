@@ -236,6 +236,15 @@ Route::middleware(['web'])->group(function () {
             });
 
             Route::middleware(['auth', 'web', 'acl:userAccess'])->group(function () {
+                Route::get('/admin/userList/list', 'UserAccessController@userLists')->name('admin.userList.list');
+
+                Route::get('/admin/userAccess/list', 'UserAccessController@list')->name('admin.userAccess.list');
+                Route::post('/admin/userAccess/acl/store', 'UserAccessController@aclStore')->name('admin.userAccess.acl.store');
+                Route::post('/admin/userAccess/language/store', 'UserAccessController@languageStore')->name('admin.userAccess.language.store');
+                Route::post('/admin/userAccess/acl/changeAdminAccess', 'UserAccessController@changeAdminAccess')->name('admin.userAccess.acl.changeAdminAccess');
+            });
+
+            Route::middleware(['auth', 'web', 'acl:userContent'])->group(function () {
                 Route::get('/admin/forum/categories', 'ForumController@adminForumCategory')->name('admin.forum.category');
                 Route::post('/admin/forum/category/store', 'ForumController@storeForumCategory')->name('admin.forum.category.store');
                 Route::post('/admin/forum/category/delete', 'ForumController@deleteForumCategory')->name('admin.forum.category.delete');
@@ -247,13 +256,6 @@ Route::middleware(['web'])->group(function () {
                 Route::get('/admin/ourShots', 'ShotsController@adminOurShots')->name('admin.shots.ourShot');
                 Route::post('/admin/ourShots/store', 'ShotsController@adminOurShotsStore')->name('admin.shots.ourShot.store');
                 Route::post('/admin/ourShots/delete', 'ShotsController@adminOurShotsDelete')->name('admin.shots.ourShot.delete');
-
-                Route::get('/admin/userList/list', 'UserAccessController@userLists')->name('admin.userList.list');
-
-                Route::get('/admin/userAccess/list', 'UserAccessController@list')->name('admin.userAccess.list');
-                Route::post('/admin/userAccess/acl/store', 'UserAccessController@aclStore')->name('admin.userAccess.acl.store');
-                Route::post('/admin/userAccess/language/store', 'UserAccessController@languageStore')->name('admin.userAccess.language.store');
-                Route::post('/admin/userAccess/acl/changeAdminAccess', 'UserAccessController@changeAdminAccess')->name('admin.userAccess.acl.changeAdminAccess');
             });
 
             Route::post('/admin/addCity', 'AdminController@addCity')->name('admin.addCity');

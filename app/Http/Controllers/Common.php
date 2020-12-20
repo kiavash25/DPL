@@ -223,10 +223,7 @@ function checkAcl($userId, $role){
     $user = \App\User::find($userId);
     if($user->level == 'admin') {
         $acl = \App\models\Acl::where('userId', $userId)->where('role', $role)->first();
-        if ($acl == null)
-            return false;
-        else
-            return true;
+        return $acl != null;
     }
     else if($user->level == 'superAdmin')
         return true;

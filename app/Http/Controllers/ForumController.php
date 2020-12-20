@@ -187,7 +187,7 @@ class ForumController extends Controller
             else
                 $topic->youLike = $topic->youLike->like;
 
-            if(checkAcl($user->id, 'userAccess') || $user->id == $topic->userId)
+            if(checkAcl($user->id, 'userContent') || $user->id == $topic->userId)
                 $topic->canDelete = true;
 
             if($user->id == $topic->userId)
@@ -385,7 +385,7 @@ class ForumController extends Controller
         if(isset($request->id)){
             $user = \auth()->user();
             $topic = ForumTopic::find($request->id);
-            if($topic != null && ($user->id == $topic->userId || checkAcl($user->id, 'userAccess'))){
+            if($topic != null && ($user->id == $topic->userId || checkAcl($user->id, 'userContent'))){
                 ForumLike::where('topicId', $topic->id)->delete();
                 ForumTagRelation::where('topicId', $topic->id)->delete();
 
@@ -424,7 +424,7 @@ class ForumController extends Controller
         if(isset($request->id)){
             $user = \auth()->user();
             $reply = ForumReply::find($request->id);
-            if($reply != null && ($user->id == $reply->userId || checkAcl($user->id, 'userAccess'))){
+            if($reply != null && ($user->id == $reply->userId || checkAcl($user->id, 'userContent'))){
                 ForumLike::where('replyId', $reply->id)->delete();
                 $topic = ForumTopic::find($reply->topicId);
                 if($topic->bestAnsId == $reply->id) {
@@ -455,7 +455,7 @@ class ForumController extends Controller
         if(\auth()->check()) {
             $user = \auth()->user();
             $reply->youLike = ForumLike::where('userId', $user->id)->where('replyId', $reply->id)->first();
-            if(checkAcl($user->id, 'userAccess') || $user->id == $reply->userId)
+            if(checkAcl($user->id, 'userContent') || $user->id == $reply->userId)
                 $reply->canDelete = true;
         }
 

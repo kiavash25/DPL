@@ -125,7 +125,7 @@
             </div>
         @endcan
 
-        @can('canSee', 'userAccess')
+        @can('canSee', 'userContent')
             <div class="sideNavTabs">
                 <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                     {{__('User content')}}
@@ -165,7 +165,9 @@
                     </div>
                 </div>
             </div>
+        @endcan
 
+        @can('canSee', 'userAccess')
             <div class="sideNavTabs">
                 <a href="#" class="subSideNavTab" onclick="showSubSideNavMenu(this)">
                     {{__('Users')}}

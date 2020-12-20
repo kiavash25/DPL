@@ -18,6 +18,7 @@ class UserAccessController extends Controller
             'journal',
             'setting',
             'userAccess',
+            'userContent',
         ];
 
         $languageList = Language::all();
