@@ -204,18 +204,22 @@
         });
 
         function addNewTag(_name){
-            if(tags.indexOf(_name) > -1){
-                $('#newTag').val('');
-                return;
-            }
-            text =  '<div class="tag">\n' +
-                    '   <span>' + _name + '</span>\n' +
-                    '   <span class="cancelTag" onclick="cancelThisTag(this)"> × </span>\n' +
-                    '</div>';
+            if(_name.search(',') != -1)
+                _name = _name.split(',');
+            else
+                _name = [_name];
+            _name.map(item => {
+                item = item.trim();
+                if(tags.indexOf(item) == -1){
+                    text = '<div class="tag">\n' +
+                        '   <span>' + item + '</span>\n' +
+                        '   <span class="cancelTag" onclick="cancelThisTag(this)"> × </span>\n' +
+                        '</div>';
+                    tags.push(item);
+                    $(text).insertBefore('#newTag');
+                }
+            });
 
-            tags.push(_name);
-
-            $(text).insertBefore('#newTag');
             $('#newTag').val('');
         }
 
