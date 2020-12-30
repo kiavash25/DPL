@@ -151,7 +151,10 @@
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <label for="shotTags">{{__('Tag')}}</label>
+                                <label for="shotTags">
+                                    {{__('Tag')}}
+                                    <i id="copyTagsIcon" class="fas fa-copy" onclick="copyAllTags()" style="margin-left: 20px;cursor: pointer;font-size: 22px;"></i>
+                                </label>
                                 <div id="tagSection" class="tagSection">
                                     <input type="text" class="inputTag" id="newTag" placeholder="Enter new tag" onchange="addNewTag(this.value)">
                                 </div>
@@ -356,6 +359,23 @@
                     resultLoading("{{__('Error in Server connection')}}", 'danger');
                 }
             })
+        }
+
+        function copyAllTags(){
+            var copyText = '';
+            tags.map((item, index) => {
+                copyText += item;
+                if(index != tags.length - 1)
+                    copyText += ',';
+            });
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(copyText).select();
+            document.execCommand("copy");
+            $temp.remove();
+
+            $('#copyTagsIcon').css('color', 'blue');
+            setTimeout(() => $('#copyTagsIcon').css('color', 'black'), 3000);
         }
     </script>
 @endsection
