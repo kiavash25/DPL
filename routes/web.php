@@ -17,7 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 Route::get('locale/{locale}', function ($locale){
     Session::put('locale', $locale);
-    return redirect()->back();
+
+    if(isset($_GET['redirect']))
+        return redirect($_GET['redirect']);
+    else
+        return redirect()->back();
 });
 
 Auth::routes();

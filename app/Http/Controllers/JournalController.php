@@ -123,9 +123,14 @@ class JournalController extends Controller
     {
         $today = Carbon::now()->format('Y-m-d');
 
-        $journal = Journal::where('id', $id)->where('lang', app()->getLocale())->first();
+        $journal = Journal::where('id', $id)->first();
         if($journal == null || $journal->releaseDate > $today)
             return redirect(route('journal.index'));
+
+        if(app()->getLocale() != $journal->lang){
+            $url = route('journal.show', ['id' => $id, 'slug' => $slug]);
+            return redirect(url('locale/'.$journal->lang.'?redirect='.$url));
+        }
 
         $journal->pic = asset('uploaded/journal/mainPics/' . $journal->pic);
         $journal->category = JournalCategory::find($journal->categoryId);
